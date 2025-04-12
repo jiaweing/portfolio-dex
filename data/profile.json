@@ -1,0 +1,229 @@
+{
+  "present": [
+    {
+      "title": "Business Director",
+      "organization": "base07.com",
+      "url": "#",
+      "description": "singapore-based software holding company"
+    },
+    {
+      "title": "Founder",
+      "organization": "supply.tf",
+      "url": "#",
+      "description": "boldness, individuality, and the creation of opportunities through streetwear"
+    },
+    {
+      "title": "Founder, Host & Writer",
+      "organization": "updatenight.com",
+      "url": "#",
+      "description": "newsletter delivering unique business and tech insights that rarely make headlines (1k+ views)"
+    },
+    {
+      "title": "Founder",
+      "organization": "Division Null ∅",
+      "url": "#",
+      "description": "discord server for tech enthusiasts to discover and share the latest in technology (80+ members)"
+    },
+    {
+      "title": "",
+      "organization": "YouTube Partner",
+      "url": "#",
+      "description": "sharing my life as a tech startup founder in Singapore (850+ subscribers, 100k views)"
+    },
+    {
+      "title": "Founder",
+      "organization": "decosmic.com",
+      "url": "https://decosmic.com",
+      "description": "build and deploy AI agents grounded on your own trusted data sources"
+    },
+    {
+      "title": "Founder",
+      "organization": "been.place",
+      "url": "https://been.place",
+      "description": "track, remember, and share places you've visited and want to visit"
+    },
+    {
+      "title": "Computer Science",
+      "organization": "University of Glasgow",
+      "url": "https://www.gla.ac.uk",
+      "description": "(sophomore, 2026)"
+    },
+    {
+      "title": "Computer Science",
+      "organization": "Singapore Institute of Technology",
+      "url": "#",
+      "description": "(sophomore, 2026)"
+    },
+    {
+      "title": "",
+      "organization": "Unsplash",
+      "url": "https://unsplash.com/@jiaweing",
+      "description": "(360k views and 3k downloads)"
+    },
+    {
+      "title": "Software Engineer",
+      "organization": "betteragesolutions.com",
+      "url": "#",
+      "description": "streamlined medicine delivery processes for Singapore's public hospitals"
+    },
+    {
+      "title": "Founder",
+      "organization": "titan.tf",
+      "url": "#",
+      "description": "(450k unique players with 10k monthly active users)"
+    },
+    {
+      "title": "",
+      "organization": "+6 upcoming",
+      "url": "",
+      "description": ""
+    }
+  ],
+  "past": [
+    {
+      "title": "",
+      "organization": "Dell Cloud Native Award",
+      "url": "#",
+      "description": "(professional software development)"
+    },
+    {
+      "title": "",
+      "organization": "Dell Cloud Native Award",
+      "url": "#",
+      "description": "(cloud computing)"
+    },
+    {
+      "title": "",
+      "organization": "GovTech x OpenAI Hackathon 2024",
+      "url": "#",
+      "description": "(top 25)"
+    },
+    {
+      "title": "Administrative Assistant",
+      "organization": "mindef.gov.sg",
+      "url": "#",
+      "description": "predictive models and machine-assisted analysis for large datasets"
+    },
+    {
+      "title": "Software Developer",
+      "organization": "1citadel.com",
+      "url": "#",
+      "description": "blockchain solutions for document security, tokenization, and contact tracing"
+    },
+    {
+      "title": "",
+      "organization": "Director's Roll of Honour",
+      "url": "#",
+      "description": "(2017-2019)"
+    }
+  ],
+  "opensource": [
+    {
+      "name": "best-before",
+      "url": "https://github.com/jiaweing/best-before",
+      "description": "mobile app using Google Gemini to scan and track food expiry dates"
+    },
+    {
+      "name": "bus-map",
+      "url": "https://github.com/jiaweing/bus-map",
+      "description": "real-time Singapore bus locations and arrivals using LTA DataMall APIs"
+    },
+    {
+      "name": "localLLM-api",
+      "url": "https://github.com/jiaweing/localLLM-api",
+      "description": "openAI-compatible API server for running GGUF models locally"
+    },
+    {
+      "name": "localRAG-api",
+      "url": "https://github.com/jiaweing/localRAG-api",
+      "description": "lightweight API for Retrieval-Augmented Generation with multi-embedding search"
+    },
+    {
+      "name": "GeminiTelegramBot",
+      "url": "https://github.com/jiaweing/GeminiTelegramBot",
+      "description": "telegram bot using Gemini 2.0 for conversations and AI image generation"
+    },
+    {
+      "name": "verify.supply.tf",
+      "url": "https://github.com/jiaweing/verify.supply.tf",
+      "description": "blockchain verification system for tracking product authenticity and ownership for supply.tf"
+    },
+    {
+      "name": "updatenight-agent",
+      "url": "https://github.com/jiaweing/updatenight-agent",
+      "description": "automated system using AI agents to generate the Update Night newsletter"
+    },
+    {
+      "name": "lemon8-travel-research-agent",
+      "url": "https://github.com/jiaweing/lemon8-travel-research-agent",
+      "description": "ai agents analyzing Lemon8 user experiences to create travel guides"
+    },
+    {
+      "name": "agoda-agent",
+      "url": "https://github.com/jiaweing/agoda-agent",
+      "description": "specialized agents analyzing hotel listings for accommodation guides"
+    },
+    {
+      "name": "copilot-chat-api",
+      "url": "https://github.com/jiaweing/copilot-chat-api",
+      "description": "http API for GitHub Copilot with native GitHub authentication"
+    },
+    {
+      "name": "altq-qr-reader-extension",
+      "url": "https://github.com/jiaweing/altq-qr-reader-extension",
+      "description": "browser extension for reading QR codes from web pages offline"
+    },
+    {
+      "name": "FYP-THYROID-NODULE-CLASSIFICATION",
+      "url": "https://github.com/jiaweing/FYP-THYROID-NODULE-CLASSIFICATION",
+      "description": "neural networks for classifying thyroid nodules in ultrasound images"
+    },
+    {
+      "name": "Unsplash-Multiple-Download",
+      "url": "https://github.com/jiaweing/Unsplash-Multiple-Download",
+      "description": "javaScript utility to download all images on a page from Unsplash"
+    },
+    {
+      "name": "TF2-Navs",
+      "url": "https://github.com/jiaweing/TF2-Navs",
+      "description": "navigation meshes collection for all stock Team Fortress 2 maps"
+    },
+    {
+      "name": "TF2-Borderlands",
+      "url": "https://github.com/jiaweing/TF2-Borderlands",
+      "description": "mod adding Borderlands-style black outlines to Team Fortress 2"
+    },
+    {
+      "name": "Spotify-Auto-Playlist",
+      "url": "https://github.com/jiaweing/Spotify-Auto-Playlist",
+      "description": "script to automatically launch Spotify and play specified playlists"
+    }
+  ],
+  "social": [
+    {
+      "name": "X/Twitter",
+      "url": "https://x.com/j14wei",
+      "icon": "/logos/x.svg"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/in/jiaweing/",
+      "icon": "/logos/linkedin.svg"
+    },
+    {
+      "name": "Threads",
+      "url": "https://www.threads.net/@j14.wei",
+      "icon": "/logos/threads.svg"
+    },
+    {
+      "name": "TikTok",
+      "url": "https://www.tiktok.com/@j14.wei",
+      "icon": "/logos/tiktok.svg"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://www.youtube.com/@j14wei",
+      "icon": "/logos/youtube.svg"
+    }
+  ]
+}

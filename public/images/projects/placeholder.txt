@@ -1,0 +1,8 @@
+This directory will contain project images:
+
+1. decosmic-desktop.png
+2. been-desktop.png
+3. c.png
+4. d.png
+
+Please add these images to make the projects showcase work properly.
