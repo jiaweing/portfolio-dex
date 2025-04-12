@@ -25,6 +25,12 @@
       "description": "discord server for tech enthusiasts to discover and share the latest in technology (80+ members)"
     },
     {
+      "title": "Software Engineer",
+      "organization": "paoverse.com",
+      "url": "https://paoverse.com",
+      "description": "handcrafted stationery and desk accessories made with love from Singapore"
+    },
+    {
       "title": "",
       "organization": "YouTube Partner",
       "url": "#",
@@ -119,6 +125,16 @@
   ],
   "opensource": [
     {
+      "name": "base7-landing",
+      "url": "https://github.com/jiaweing/base7-landing",
+      "description": "landing page for base07.com - build your next app in 10 days"
+    },
+    {
+      "name": "portfolio-dex",
+      "url": "https://github.com/jiaweing/portfolio-dex",
+      "description": "this personal portfolio website you are looking at now built with Next.js, React, and Tailwind"
+    },
+    {
       "name": "best-before",
       "url": "https://github.com/jiaweing/best-before",
       "description": "mobile app using Google Gemini to scan and track food expiry dates"
@@ -197,6 +213,156 @@
       "name": "Spotify-Auto-Playlist",
       "url": "https://github.com/jiaweing/Spotify-Auto-Playlist",
       "description": "script to automatically launch Spotify and play specified playlists"
+    },
+    {
+      "name": "Bowling",
+      "url": "https://github.com/titantf/Bowling",
+      "description": "bowling gamemode for Team Fortress 2"
+    },
+    {
+      "name": "Server-Refresh",
+      "url": "https://github.com/titantf/Server-Refresh",
+      "description": "all-inclusive server restart features for TF2 servers"
+    },
+    {
+      "name": "Free-For-All",
+      "url": "https://github.com/titantf/Free-For-All",
+      "description": "friendly fire mod for Team Fortress 2"
+    },
+    {
+      "name": "Any-Headshot",
+      "url": "https://github.com/titantf/Any-Headshot",
+      "description": "deal critical damage headshots with any weapon in TF2"
+    },
+    {
+      "name": "1-vs-All-Respawn",
+      "url": "https://github.com/titantf/1-vs-All-Respawn",
+      "description": "respawn feature for boss gamemodes like Deathrun and VSH"
+    },
+    {
+      "name": "Resize-Projectiles",
+      "url": "https://github.com/titantf/Resize-Projectiles",
+      "description": "change the size of all projectiles in Team Fortress 2"
+    },
+    {
+      "name": "Resize-Mod",
+      "url": "https://github.com/titantf/Resize-Mod",
+      "description": "change the model size of an entity you are looking at in TF2"
+    },
+    {
+      "name": "Change-Class-on-Kill",
+      "url": "https://github.com/titantf/Change-Class-on-Kill",
+      "description": "change to your victim's class when you kill them in TF2"
+    },
+    {
+      "name": "Teleport-on-Kill",
+      "url": "https://github.com/titantf/Teleport-on-Kill",
+      "description": "teleport to your victim's position when you kill them in TF2"
+    },
+    {
+      "name": "ClassWarfare-Arena",
+      "url": "https://github.com/titantf/ClassWarfare-Arena",
+      "description": "class warfare for arena gamemodes in Team Fortress 2"
+    },
+    {
+      "name": "ClassWarfare-MvM",
+      "url": "https://github.com/titantf/ClassWarfare-MvM",
+      "description": "class warfare made for Mann vs Machine in Team Fortress 2"
+    },
+    {
+      "name": "Sudden-Death",
+      "url": "https://github.com/titantf/Sudden-Death",
+      "description": "a team wins on capture, made for KOTH maps in TF2"
+    },
+    {
+      "name": "Total-Mayhem",
+      "url": "https://github.com/titantf/Total-Mayhem",
+      "description": "increases move speed, reload and fire rate, clip size in TF2"
+    },
+    {
+      "name": "Infection",
+      "url": "https://github.com/titantf/Infection",
+      "description": "spawn as any class and make everyone turn into your class in TF2"
+    },
+    {
+      "name": "Titan-DLC",
+      "url": "https://github.com/titantf/Titan-DLC",
+      "description": "optional content pack for Titan.TF servers"
+    },
+    {
+      "name": "Ultimate-Content-Pack",
+      "url": "https://github.com/titantf/Ultimate-Content-Pack",
+      "description": "content packs for all gamemodes in Team Fortress 2"
+    },
+    {
+      "name": "Saysounds",
+      "url": "https://github.com/titantf/Saysounds",
+      "description": "saysounds used on Titan.TF servers"
+    },
+    {
+      "name": "Machine-Attacks-Subtitles",
+      "url": "https://github.com/titantf/Machine-Attacks-Subtitles",
+      "description": "community project to fix subtitles for Machine Attacks in TF2"
+    },
+    {
+      "name": "Docs",
+      "url": "https://github.com/titantf/Docs",
+      "description": "documentation for Titan.TF projects and services"
+    },
+    {
+      "name": "titantf-ufw",
+      "url": "https://github.com/titantf/titantf-ufw",
+      "description": "script to update UFW with titan.tf IPs"
+    },
+    {
+      "name": "Issue-Tracking",
+      "url": "https://github.com/titantf/Issue-Tracking",
+      "description": "tracking all titan.tf development, bugs and feature requests"
+    },
+    {
+      "name": "API-Docs",
+      "url": "https://github.com/titantf/API-Docs",
+      "description": "documentation on how to interact with Titan APIs"
+    },
+    {
+      "name": "color-by-number",
+      "url": "https://github.com/jiaweing/color-by-number",
+      "description": "interactive color-by-number web application"
+    },
+    {
+      "name": "dotnet8-jwt-api-boilerplate",
+      "url": "https://github.com/jiaweing/dotnet8-jwt-api-boilerplate",
+      "description": "simple API boilerplate with JWT authentication and MySQL database setup"
+    },
+    {
+      "name": "TicTacToe",
+      "url": "https://github.com/jiaweing/TicTacToe",
+      "description": "simple Tic Tac Toe game written in C using the SDL2 library"
+    },
+    {
+      "name": "Deathrun-Freerun",
+      "url": "https://github.com/jiaweing/Deathrun-Freerun",
+      "description": "adds the ability for Death to activate a freerun in TF2 Deathrun"
+    },
+    {
+      "name": "TF2-NoRefunds",
+      "url": "https://github.com/jiaweing/TF2-NoRefunds",
+      "description": "disables upgrade refunds in Mann vs Machine"
+    },
+    {
+      "name": "TF2-Configs",
+      "url": "https://github.com/jiaweing/TF2-Configs",
+      "description": "personal Team Fortress 2 configuration files"
+    },
+    {
+      "name": "YouTube-Playlist-Delete-Video",
+      "url": "https://github.com/jiaweing/YouTube-Playlist-Delete-Video",
+      "description": "Stylus style to simplify removing videos from YouTube playlists"
+    },
+    {
+      "name": "Tinder-OkCupid-Bumble-Auto-Swipe",
+      "url": "https://github.com/jiaweing/Tinder-OkCupid-Bumble-Auto-Swipe",
+      "description": "script to automate swiping on dating apps"
     }
   ],
   "social": [

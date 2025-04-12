@@ -27,7 +27,7 @@ export function FeatherEffect({
     <motion.div
       className={cn(
         "fixed left-0 right-0 pointer-events-none",
-        isTop ? "top-0 h-24" : "bottom-0 h-24",
+        isTop ? "top-0 h-20 md:h-24" : "bottom-0 h-20 md:h-24",
         "w-full",
         className
       )}
