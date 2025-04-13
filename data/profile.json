@@ -3,37 +3,37 @@
     {
       "title": "Business Director",
       "organization": "base07.com",
-      "url": "#",
+      "url": "https://base07.com",
       "description": "singapore-based software holding company"
     },
     {
       "title": "Founder",
       "organization": "supply.tf",
-      "url": "#",
+      "url": "https://supply.tf",
       "description": "boldness, individuality, and the creation of opportunities through streetwear"
     },
     {
       "title": "Founder, Host & Writer",
       "organization": "updatenight.com",
-      "url": "#",
+      "url": "https://updatenight.com",
       "description": "newsletter delivering unique business and tech insights that rarely make headlines (1k+ views)"
     },
     {
       "title": "Founder",
       "organization": "Division Null ∅",
-      "url": "#",
+      "url": "https://discord.com/invite/KTCGWC7bZn",
       "description": "discord server for tech enthusiasts to discover and share the latest in technology (80+ members)"
     },
     {
       "title": "Software Engineer",
       "organization": "paoverse.com",
       "url": "https://paoverse.com",
-      "description": "handcrafted stationery and desk accessories made with love from Singapore"
+      "description": "universe of original characters and merchandise (270+ followers)"
     },
     {
       "title": "",
       "organization": "YouTube Partner",
-      "url": "#",
+      "url": "https://www.youtube.com/@j14wei",
       "description": "sharing my life as a tech startup founder in Singapore (850+ subscribers, 100k views)"
     },
     {
@@ -57,7 +57,7 @@
     {
       "title": "Computer Science",
       "organization": "Singapore Institute of Technology",
-      "url": "#",
+      "url": "https://www.singaporetech.edu.sg",
       "description": "(sophomore, 2026)"
     },
     {
@@ -69,13 +69,13 @@
     {
       "title": "Software Engineer",
       "organization": "betteragesolutions.com",
-      "url": "#",
+      "url": "https://betteragesolutions.com",
       "description": "streamlined medicine delivery processes for Singapore's public hospitals"
     },
     {
       "title": "Founder",
       "organization": "titan.tf",
-      "url": "#",
+      "url": "https://titan.tf",
       "description": "(450k unique players with 10k monthly active users)"
     },
     {
@@ -89,37 +89,43 @@
     {
       "title": "",
       "organization": "Dell Cloud Native Award",
-      "url": "#",
+      "url": "https://dell.com.sg",
       "description": "(professional software development)"
     },
     {
       "title": "",
       "organization": "Dell Cloud Native Award",
-      "url": "#",
+      "url": "https://dell.com.sg",
       "description": "(cloud computing)"
     },
     {
       "title": "",
       "organization": "GovTech x OpenAI Hackathon 2024",
-      "url": "#",
+      "url": "https://www.tech.gov.sg",
       "description": "(top 25)"
     },
     {
       "title": "Administrative Assistant",
       "organization": "mindef.gov.sg",
-      "url": "#",
+      "url": "https://mindef.gov.sg",
       "description": "predictive models and machine-assisted analysis for large datasets"
     },
     {
       "title": "Software Developer",
       "organization": "1citadel.com",
-      "url": "#",
+      "url": "https://1citadel.com",
       "description": "blockchain solutions for document security, tokenization, and contact tracing"
+    },
+    {
+      "title": "Diploma in Business Information Systems",
+      "organization": "Republic Polytechnic",
+      "url": "https://www.rp.edu.sg",
+      "description": "(2017-2019)"
     },
     {
       "title": "",
       "organization": "Director's Roll of Honour",
-      "url": "#",
+      "url": "https://www.rp.edu.sg",
       "description": "(2017-2019)"
     }
   ],
@@ -292,7 +298,7 @@
     {
       "name": "Titan-DLC",
       "url": "https://github.com/titantf/Titan-DLC",
-      "description": "optional content pack for Titan.TF servers"
+      "description": "optional content pack for titan.tf servers"
     },
     {
       "name": "Ultimate-Content-Pack",
@@ -302,7 +308,7 @@
     {
       "name": "Saysounds",
       "url": "https://github.com/titantf/Saysounds",
-      "description": "saysounds used on Titan.TF servers"
+      "description": "saysounds used on titan.tf servers"
     },
     {
       "name": "Machine-Attacks-Subtitles",
@@ -312,7 +318,7 @@
     {
       "name": "Docs",
       "url": "https://github.com/titantf/Docs",
-      "description": "documentation for Titan.TF projects and services"
+      "description": "documentation for titan.tf projects and services"
     },
     {
       "name": "titantf-ufw",
@@ -368,7 +374,7 @@
     },
     {
       "name": "LinkedIn",
-      "url": "https://www.linkedin.com/in/jiaweing/",
+      "url": "https://www.linkedin.com/in/jiaweing",
       "icon": "/logos/linkedin.svg"
     },
     {
@@ -391,49 +397,49 @@
     {
       "name": "iPhone 14 Pro Max",
       "description": "primary mobile device",
-      "url": "https://www.apple.com/iphone-14-pro/",
+      "url": "https://www.apple.com/iphone-14-pro",
       "category": "mobile"
     },
     {
       "name": "Samsung S22+",
       "description": "secondary mobile device",
-      "url": "https://www.samsung.com/global/galaxy/galaxy-s22/",
+      "url": "https://www.samsung.com/global/galaxy/galaxy-s22",
       "category": "mobile"
     },
     {
       "name": "Apple Watch 8",
       "description": "primary smartwatch",
-      "url": "https://www.apple.com/apple-watch-series-8/",
+      "url": "https://www.apple.com/apple-watch-series-8",
       "category": "wearable"
     },
     {
       "name": "Samsung Galaxy Watch 4",
       "description": "secondary smartwatch",
-      "url": "https://www.samsung.com/global/galaxy/galaxy-watch4/",
+      "url": "https://www.samsung.com/global/galaxy/galaxy-watch4",
       "category": "wearable"
     },
     {
       "name": "Primary Workstation",
       "description": "i7-14700KF, RTX 4070 Ti SUPER, 32GB RAM",
-      "url": "#",
+      "url": "https://www.aftershockpc.com/",
       "category": "computer"
     },
     {
       "name": "Secondary Workstation",
       "description": "RYZEN 5 3600, RTX 2060 SUPER, 16GB RAM",
-      "url": "#",
+      "url": "https://www.aftershockpc.com/",
       "category": "computer"
     },
     {
       "name": "M2 MacBook Air Midnight",
       "description": "my portable machine",
-      "url": "https://www.apple.com/macbook-air-m2/",
+      "url": "https://www.apple.com/macbook-air-m2",
       "category": "computer"
     },
     {
       "name": "iPad Air 4",
       "description": "tablet for notes and sketching",
-      "url": "https://www.apple.com/ipad-air/",
+      "url": "https://www.apple.com/ipad-air",
       "category": "tablet"
     },
     {
@@ -493,7 +499,7 @@
     {
       "name": "IKEA ALEX & SÄLJAN",
       "description": "3 alex drawers & 2 countertops for desk setup",
-      "url": "https://www.ikea.com/",
+      "url": "https://www.ikea.com",
       "category": "furniture"
     },
     {
@@ -523,7 +529,7 @@
     {
       "name": "Nintendo Switch OLED",
       "description": "gaming console",
-      "url": "https://www.nintendo.com/switch/oled-model/",
+      "url": "https://www.nintendo.com/switch/oled-model",
       "category": "gaming"
     },
     {
@@ -570,13 +576,13 @@
       "title": "The Almanack of Naval Ravikant",
       "author": "Eric Jorgenson",
       "status": "completed",
-      "url": "https://www.navalmanack.com/"
+      "url": "https://www.navalmanack.com"
     },
     {
       "title": "The Woke Salaryman Crash Course on Capitalism",
       "author": "The Woke Salaryman",
       "status": "completed",
-      "url": "#"
+      "url": "https://thewokesalaryman.com/book"
     },
     {
       "title": "100M Leads: How to Get Strangers To Want To Buy Your Stuff",
@@ -588,7 +594,7 @@
       "title": "Start Marketing the Day You Start Coding",
       "author": "Rob Walling",
       "status": "completed",
-      "url": "https://startmarketingtheday.com/"
+      "url": "https://startmarketingtheday.com"
     },
     {
       "title": "Eat That Frog: 21 Great Ways to Stop Procrastinating",
@@ -600,7 +606,7 @@
       "title": "The SaaS Playbook: Build a Multimillion-Dollar Startup",
       "author": "Rob Walling",
       "status": "completed",
-      "url": "https://saasplaybook.com/"
+      "url": "https://saasplaybook.com"
     },
     {
       "title": "The Psychology of Money",
@@ -612,7 +618,7 @@
       "title": "Million Dollar Weekend: The Surprising Secrets to Starting Your Business",
       "author": "Noah Kagan",
       "status": "completed",
-      "url": "https://milliondollarweekend.co/"
+      "url": "https://milliondollarweekend.co"
     }
   ]
 }
