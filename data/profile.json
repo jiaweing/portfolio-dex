@@ -135,6 +135,11 @@
       "description": "this personal portfolio website you are looking at now built with Next.js, React, and Tailwind"
     },
     {
+      "name": "color-by-number",
+      "url": "https://github.com/jiaweing/color-by-number",
+      "description": "interactive color-by-number web application"
+    },
+    {
       "name": "best-before",
       "url": "https://github.com/jiaweing/best-before",
       "description": "mobile app using Google Gemini to scan and track food expiry dates"
@@ -145,14 +150,9 @@
       "description": "real-time Singapore bus locations and arrivals using LTA DataMall APIs"
     },
     {
-      "name": "localLLM-api",
-      "url": "https://github.com/jiaweing/localLLM-api",
-      "description": "openAI-compatible API server for running GGUF models locally"
-    },
-    {
-      "name": "localRAG-api",
-      "url": "https://github.com/jiaweing/localRAG-api",
-      "description": "lightweight API for Retrieval-Augmented Generation with multi-embedding search"
+      "name": "altq-qr-reader-extension",
+      "url": "https://github.com/jiaweing/altq-qr-reader-extension",
+      "description": "browser extension for reading QR codes from web pages offline"
     },
     {
       "name": "GeminiTelegramBot",
@@ -185,9 +185,14 @@
       "description": "http API for GitHub Copilot with native GitHub authentication"
     },
     {
-      "name": "altq-qr-reader-extension",
-      "url": "https://github.com/jiaweing/altq-qr-reader-extension",
-      "description": "browser extension for reading QR codes from web pages offline"
+      "name": "localLLM-api",
+      "url": "https://github.com/jiaweing/localLLM-api",
+      "description": "openAI-compatible API server for running GGUF models locally"
+    },
+    {
+      "name": "localRAG-api",
+      "url": "https://github.com/jiaweing/localRAG-api",
+      "description": "lightweight API for Retrieval-Augmented Generation with multi-embedding search"
     },
     {
       "name": "FYP-THYROID-NODULE-CLASSIFICATION",
@@ -325,19 +330,9 @@
       "description": "documentation on how to interact with Titan APIs"
     },
     {
-      "name": "color-by-number",
-      "url": "https://github.com/jiaweing/color-by-number",
-      "description": "interactive color-by-number web application"
-    },
-    {
       "name": "dotnet8-jwt-api-boilerplate",
       "url": "https://github.com/jiaweing/dotnet8-jwt-api-boilerplate",
       "description": "simple API boilerplate with JWT authentication and MySQL database setup"
-    },
-    {
-      "name": "TicTacToe",
-      "url": "https://github.com/jiaweing/TicTacToe",
-      "description": "simple Tic Tac Toe game written in C using the SDL2 library"
     },
     {
       "name": "Deathrun-Freerun",
@@ -390,6 +385,234 @@
       "name": "YouTube",
       "url": "https://www.youtube.com/@j14wei",
       "icon": "/logos/youtube.svg"
+    }
+  ],
+  "gear": [
+    {
+      "name": "iPhone 14 Pro Max",
+      "description": "primary mobile device",
+      "url": "https://www.apple.com/iphone-14-pro/",
+      "category": "mobile"
+    },
+    {
+      "name": "Samsung S22+",
+      "description": "secondary mobile device",
+      "url": "https://www.samsung.com/global/galaxy/galaxy-s22/",
+      "category": "mobile"
+    },
+    {
+      "name": "Apple Watch 8",
+      "description": "primary smartwatch",
+      "url": "https://www.apple.com/apple-watch-series-8/",
+      "category": "wearable"
+    },
+    {
+      "name": "Samsung Galaxy Watch 4",
+      "description": "secondary smartwatch",
+      "url": "https://www.samsung.com/global/galaxy/galaxy-watch4/",
+      "category": "wearable"
+    },
+    {
+      "name": "Primary Workstation",
+      "description": "i7-14700KF, RTX 4070 Ti SUPER, 32GB RAM",
+      "url": "#",
+      "category": "computer"
+    },
+    {
+      "name": "Secondary Workstation",
+      "description": "RYZEN 5 3600, RTX 2060 SUPER, 16GB RAM",
+      "url": "#",
+      "category": "computer"
+    },
+    {
+      "name": "M2 MacBook Air Midnight",
+      "description": "my portable machine",
+      "url": "https://www.apple.com/macbook-air-m2/",
+      "category": "computer"
+    },
+    {
+      "name": "iPad Air 4",
+      "description": "tablet for notes and sketching",
+      "url": "https://www.apple.com/ipad-air/",
+      "category": "tablet"
+    },
+    {
+      "name": "Wacom One Pen Tablet",
+      "description": "drawing tablet",
+      "url": "https://www.wacom.com/en-us/products/pen-tablets/wacom-one",
+      "category": "tablet"
+    },
+    {
+      "name": "PRISM+ Q43-QE",
+      "description": "43-inch primary monitor",
+      "url": "https://prismplus.sg/collections/monitors",
+      "category": "monitor"
+    },
+    {
+      "name": "Acer KG251Q",
+      "description": "secondary monitor",
+      "url": "https://www.acer.com/us-en/monitors/gaming/kg1-series",
+      "category": "monitor"
+    },
+    {
+      "name": "Dell S2721DS",
+      "description": "27-inch QHD monitor",
+      "url": "https://www.dell.com/en-us/shop/dell-27-monitor-s2721ds/apd/210-AXKP/monitors-monitor-accessories",
+      "category": "monitor"
+    },
+    {
+      "name": "Yunzii AL75",
+      "description": "custom mechanical keyboard with HMX Chu switches and Aifei Stealth keycaps",
+      "url": "https://yunzii.com/products/yunzii-al75-keyboard-kit",
+      "category": "keyboard"
+    },
+    {
+      "name": "Ducky One 2 Mini",
+      "description": "60% mechanical keyboard",
+      "url": "https://www.duckychannel.com.tw/en/Ducky-One2-Mini-Pure-White-RGB",
+      "category": "keyboard"
+    },
+    {
+      "name": "Ducky One 3",
+      "description": "mechanical keyboard",
+      "url": "https://www.duckychannel.com.tw/en/Ducky-One3",
+      "category": "keyboard"
+    },
+    {
+      "name": "Logitech MX Master 3",
+      "description": "wireless productivity mouse",
+      "url": "https://www.logitech.com/en-us/products/mice/mx-master-3.html",
+      "category": "mouse"
+    },
+    {
+      "name": "Sony WH-1000XM5",
+      "description": "noise-cancelling headphones",
+      "url": "https://www.sony.com/electronics/headband-headphones/wh-1000xm5",
+      "category": "audio"
+    },
+    {
+      "name": "IKEA ALEX & SÄLJAN",
+      "description": "3 alex drawers & 2 countertops for desk setup",
+      "url": "https://www.ikea.com/",
+      "category": "furniture"
+    },
+    {
+      "name": "Shure SM7B",
+      "description": "professional dynamic microphone",
+      "url": "https://www.shure.com/en-US/products/microphones/sm7b",
+      "category": "audio"
+    },
+    {
+      "name": "Focusrite Scarlett 2i2",
+      "description": "audio interface",
+      "url": "https://focusrite.com/en/usb-audio-interface/scarlett/scarlett-2i2",
+      "category": "audio"
+    },
+    {
+      "name": "DJI Pocket 3",
+      "description": "portable camera for content creation",
+      "url": "https://www.dji.com/pocket-3",
+      "category": "camera"
+    },
+    {
+      "name": "DJI Mic 2",
+      "description": "wireless microphone system",
+      "url": "https://www.dji.com/dji-mic-2",
+      "category": "audio"
+    },
+    {
+      "name": "Nintendo Switch OLED",
+      "description": "gaming console",
+      "url": "https://www.nintendo.com/switch/oled-model/",
+      "category": "gaming"
+    },
+    {
+      "name": "ANBERNIC RG40XX V",
+      "description": "retro game console with 4-inch screen and 64GB storage",
+      "url": "https://anbernic.com/products/rg40xx-v",
+      "category": "gaming"
+    },
+    {
+      "name": "Google Nest Hub",
+      "description": "smart display with Google Assistant",
+      "url": "https://store.google.com/product/nest_hub_2nd_gen",
+      "category": "smart home"
+    },
+    {
+      "name": "Google Nest Mini",
+      "description": "compact smart speaker",
+      "url": "https://store.google.com/product/google_nest_mini",
+      "category": "smart home"
+    },
+    {
+      "name": "Kindle Paperwhite",
+      "description": "e-reader for books",
+      "url": "https://www.amazon.com/Kindle-Paperwhite/dp/B08KTZ8249",
+      "category": "reading"
+    },
+    {
+      "name": "My Collection",
+      "description": "view my complete desk setup and gear collection",
+      "url": "https://mycollection.shop/jiaweing",
+      "category": "collection"
+    }
+  ],
+  "books": [
+    {
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "lastHighlighted": "recently",
+      "highlights": 0,
+      "status": "in-progress",
+      "url": "https://jamesclear.com/atomic-habits"
+    },
+    {
+      "title": "The Almanack of Naval Ravikant",
+      "author": "Eric Jorgenson",
+      "status": "completed",
+      "url": "https://www.navalmanack.com/"
+    },
+    {
+      "title": "The Woke Salaryman Crash Course on Capitalism",
+      "author": "The Woke Salaryman",
+      "status": "completed",
+      "url": "#"
+    },
+    {
+      "title": "100M Leads: How to Get Strangers To Want To Buy Your Stuff",
+      "author": "Alex Hormozi",
+      "status": "completed",
+      "url": "https://www.amazon.com/100M-Leads-Strangers-Want-Stuff/dp/B0C2SD1HSP"
+    },
+    {
+      "title": "Start Marketing the Day You Start Coding",
+      "author": "Rob Walling",
+      "status": "completed",
+      "url": "https://startmarketingtheday.com/"
+    },
+    {
+      "title": "Eat That Frog: 21 Great Ways to Stop Procrastinating",
+      "author": "Brain Tracy",
+      "status": "completed",
+      "url": "https://www.briantracy.com/catalog/eat-that-frog"
+    },
+    {
+      "title": "The SaaS Playbook: Build a Multimillion-Dollar Startup",
+      "author": "Rob Walling",
+      "status": "completed",
+      "url": "https://saasplaybook.com/"
+    },
+    {
+      "title": "The Psychology of Money",
+      "author": "Morgan Housel",
+      "status": "completed",
+      "url": "https://www.morganhousel.com/book"
+    },
+    {
+      "title": "Million Dollar Weekend: The Surprising Secrets to Starting Your Business",
+      "author": "Noah Kagan",
+      "status": "completed",
+      "url": "https://milliondollarweekend.co/"
     }
   ]
 }

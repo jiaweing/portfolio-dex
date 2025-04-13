@@ -2,6 +2,8 @@
 import { InView } from "@/components/core/in-view";
 import profileData from "@/data/profile.json";
 import Link from "next/link";
+import { BooksSection } from "./BooksSection";
+import { GearSection } from "./GearSection";
 
 export function ExperienceSection() {
   return (
@@ -26,7 +28,7 @@ export function ExperienceSection() {
       </div>
 
       {/* Open source section appears when scrolled into view */}
-      <div>
+      <div className="mb-6">
         <InView
           variants={{
             hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
@@ -36,6 +38,34 @@ export function ExperienceSection() {
           viewOptions={{ once: true, amount: 0.1 }}
         >
           <OpenSourceSection />
+        </InView>
+      </div>
+
+      {/* Books section appears when scrolled into view */}
+      <div className="mb-6">
+        <InView
+          variants={{
+            hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+            visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewOptions={{ once: true, amount: 0.1 }}
+        >
+          <BooksSection />
+        </InView>
+      </div>
+
+      {/* Gear section appears when scrolled into view */}
+      <div>
+        <InView
+          variants={{
+            hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+            visible: { opacity: 1, y: 0, filter: "blur(0px)" },
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewOptions={{ once: true, amount: 0.1 }}
+        >
+          <GearSection />
         </InView>
       </div>
     </div>
