@@ -1,6 +1,7 @@
 "use client";
 import { InView } from "@/components/core/in-view";
 import profileData from "@/data/profile.json";
+import Image from "next/image";
 import Link from "next/link";
 
 type SocialItem = {
@@ -55,12 +56,12 @@ function SocialLink({ href, ariaLabel, imgSrc, alt, delay }: SocialLinkProps) {
         aria-label={ariaLabel}
         className="text-muted-foreground hover:text-primary text-center w-6 h-6 flex items-center justify-center"
       >
-        <img
+        <Image
           className="h-5 w-5 dark:invert hover:opacity-100 opacity-50 transition-colors duration-300 grayscale"
           src={imgSrc}
           alt={alt}
-          height="16"
-          width="16"
+          height={16}
+          width={16}
         />
       </Link>
     </InView>
