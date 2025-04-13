@@ -233,7 +233,7 @@
     {
       "name": "Server-Refresh",
       "url": "https://github.com/titantf/Server-Refresh",
-      "description": "all-inclusive server restart features for TF2 servers"
+      "description": "all-inclusive server restart features for Team Fortress 2 servers"
     },
     {
       "name": "Free-For-All",
@@ -243,7 +243,7 @@
     {
       "name": "Any-Headshot",
       "url": "https://github.com/titantf/Any-Headshot",
-      "description": "deal critical damage headshots with any weapon in TF2"
+      "description": "deal critical damage headshots with any weapon in Team Fortress 2"
     },
     {
       "name": "1-vs-All-Respawn",
@@ -258,17 +258,17 @@
     {
       "name": "Resize-Mod",
       "url": "https://github.com/titantf/Resize-Mod",
-      "description": "change the model size of an entity you are looking at in TF2"
+      "description": "change the model size of an entity you are looking at in Team Fortress 2"
     },
     {
       "name": "Change-Class-on-Kill",
       "url": "https://github.com/titantf/Change-Class-on-Kill",
-      "description": "change to your victim's class when you kill them in TF2"
+      "description": "change to your victim's class when you kill them in Team Fortress 2"
     },
     {
       "name": "Teleport-on-Kill",
       "url": "https://github.com/titantf/Teleport-on-Kill",
-      "description": "teleport to your victim's position when you kill them in TF2"
+      "description": "teleport to your victim's position when you kill them in Team Fortress 2"
     },
     {
       "name": "ClassWarfare-Arena",
@@ -283,17 +283,17 @@
     {
       "name": "Sudden-Death",
       "url": "https://github.com/titantf/Sudden-Death",
-      "description": "a team wins on capture, made for KOTH maps in TF2"
+      "description": "a team wins on capture, made for KOTH maps in Team Fortress 2"
     },
     {
       "name": "Total-Mayhem",
       "url": "https://github.com/titantf/Total-Mayhem",
-      "description": "increases move speed, reload and fire rate, clip size in TF2"
+      "description": "increases move speed, reload and fire rate, clip size in Team Fortress 2"
     },
     {
       "name": "Infection",
       "url": "https://github.com/titantf/Infection",
-      "description": "spawn as any class and make everyone turn into your class in TF2"
+      "description": "spawn as any class and make everyone turn into your class in Team Fortress 2"
     },
     {
       "name": "Titan-DLC",
@@ -343,7 +343,7 @@
     {
       "name": "Deathrun-Freerun",
       "url": "https://github.com/jiaweing/Deathrun-Freerun",
-      "description": "adds the ability for Death to activate a freerun in TF2 Deathrun"
+      "description": "adds the ability for Death to activate a freerun in Team Fortress 2 Deathrun"
     },
     {
       "name": "TF2-NoRefunds",
