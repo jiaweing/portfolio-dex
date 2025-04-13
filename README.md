@@ -7,6 +7,19 @@
 
 </div>
 
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/desktop.png" alt="Portfolio Desktop View" width="100%" />
+      <p align="center"><em>Desktop View</em></p>
+    </td>
+    <td width="50%">
+      <img src="docs/mobile.PNG" alt="Portfolio Mobile View" width="60%" style="display: block; margin: 0 auto;" />
+      <p align="center"><em>Mobile View</em></p>
+    </td>
+  </tr>
+</table>
+
 ## About Me
 
 I'm a 25-year-old designer & software engineer based in Singapore (you can call me Jay), currently pursuing a BSc in Computer Science at the University of Glasgow and Singapore Institute of Technology. I create digital experiences with expertise in artificial intelligence, blockchain, non-fungible tokens, business intelligence, and game development.

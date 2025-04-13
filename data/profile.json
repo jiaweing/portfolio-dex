@@ -378,6 +378,11 @@
       "icon": "/logos/linkedin.svg"
     },
     {
+      "name": "GitHub",
+      "url": "https://github.com/jiaweing",
+      "icon": "/logos/github_light.svg"
+    },
+    {
       "name": "Threads",
       "url": "https://www.threads.net/@j14.wei",
       "icon": "/logos/threads.svg"
