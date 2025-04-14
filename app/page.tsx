@@ -5,9 +5,15 @@ import { ProfileBio } from "@/components/ProfileBio";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { FeatherEffect } from "@/components/ui/feather-effect";
 
+// Import structured data component
+import JsonLd from "./jsonld";
+
 export default function Home() {
   return (
     <>
+      {/* Add structured data for SEO */}
+      <JsonLd />
+
       {/* Top feather effect with medium blur */}
       <FeatherEffect position="top" />
 

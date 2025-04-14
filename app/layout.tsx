@@ -1,3 +1,5 @@
+import { PlausibleWrapper } from "@/components/PlausibleWrapper";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -15,8 +17,64 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Jia Wei Ng — Software Engineer & Designer",
   description:
-    "Personal portfolio of Jia Wei Ng, a software engineer and designer based in Singapore with expertise in AI, blockchain, and game development.",
-  manifest: "/manifest.json",
+    "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
+  keywords: [
+    "Jia Wei Ng",
+    "Software Engineer",
+    "Designer",
+    "Singapore",
+    "Portfolio",
+    "AI",
+    "Blockchain",
+    "Game Development",
+    "Web Developer",
+    "Full Stack Developer",
+  ],
+  authors: [{ name: "Jia Wei Ng", url: "https://jiaweing.com" }],
+  creator: "Jia Wei Ng",
+  publisher: "Jia Wei Ng",
+  manifest: "/manifest.webmanifest",
+  metadataBase: new URL("https://jiaweing.com"),
+  alternates: {
+    canonical: "https://jiaweing.com",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://jiaweing.com",
+    title: "Jia Wei Ng — Software Engineer & Designer",
+    description:
+      "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
+    siteName: "Jia Wei Ng",
+    images: [
+      {
+        url: "https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
+        width: 1200,
+        height: 630,
+        alt: "Jia Wei Ng",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jia Wei Ng — Software Engineer & Designer",
+    description:
+      "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
+    creator: "@j14wei",
+    images: [
+      "https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
+    ],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -44,17 +102,45 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Performance optimizations */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://github.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://quasarite.com" />
+
+        {/* Preload critical fonts */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap"
+          as="style"
+        />
+
+        {/* PWA and app metadata */}
         <meta name="application-name" content="Jia Wei Ng" />
         <meta name="apple-mobile-web-app-title" content="Jia Wei Ng" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/ios/1024.png" />
+        <link rel="author" href="/humans.txt" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="llms" href="/.well-known/llms.txt" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <PlausibleWrapper>{children}</PlausibleWrapper>
+        <GoogleAnalytics gaId="G-MJ0F694R8J" />
       </body>
     </html>
   );
