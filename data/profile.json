@@ -4,7 +4,7 @@
       "title": "Business Director",
       "organization": "base07.com",
       "url": "https://base07.com",
-      "description": "singapore-based software holding company"
+      "description": "singapore-based software development & holding company"
     },
     {
       "title": "Founder",
@@ -52,13 +52,13 @@
       "title": "Computer Science",
       "organization": "University of Glasgow",
       "url": "https://www.gla.ac.uk",
-      "description": "(sophomore, 2026)"
+      "description": "(junior, 2026)"
     },
     {
       "title": "Computer Science",
       "organization": "Singapore Institute of Technology",
       "url": "https://www.singaporetech.edu.sg",
-      "description": "(sophomore, 2026)"
+      "description": "(junior, 2026)"
     },
     {
       "title": "",
@@ -67,7 +67,7 @@
       "description": "(360k views and 3k downloads)"
     },
     {
-      "title": "Software Engineer",
+      "title": "Lead Mobile Developer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
       "description": "streamlined medicine delivery processes for Singapore's public hospitals"
@@ -86,6 +86,18 @@
     }
   ],
   "past": [
+    {
+      "title": "",
+      "organization": "University of Glasgow Design Innovation",
+      "url": "https://www.linkedin.com/posts/jiaweing_my-team-and-i-just-won-best-poster-at-our-activity-7368311623792394240-FZ5o",
+      "description": "(best poster)"
+    },
+    {
+      "title": "",
+      "organization": "Google APAC Solution Challenge 2025",
+      "url": "https://vision.hack2skill.com/event/apacsolutionchallenge",
+      "description": "(top 10)"
+    },
     {
       "title": "",
       "organization": "Dell Cloud Native Award",
@@ -130,6 +142,11 @@
     }
   ],
   "opensource": [
+    {
+      "name": "dropdrawer - 150 ⭐",
+      "url": "https://github.com/jiaweing/DropDrawer",
+      "description": "responsive component that automatically switches between a dropdown menu on desktop and a drawer on mobile devices for shadcn/ui. "
+    },
     {
       "name": "base7-landing",
       "url": "https://github.com/jiaweing/base7-landing",
@@ -316,24 +333,9 @@
       "description": "community project to fix subtitles for Machine Attacks in TF2"
     },
     {
-      "name": "Docs",
-      "url": "https://github.com/titantf/Docs",
-      "description": "documentation for titan.tf projects and services"
-    },
-    {
       "name": "titantf-ufw",
       "url": "https://github.com/titantf/titantf-ufw",
       "description": "script to update UFW with titan.tf IPs"
-    },
-    {
-      "name": "Issue-Tracking",
-      "url": "https://github.com/titantf/Issue-Tracking",
-      "description": "tracking all titan.tf development, bugs and feature requests"
-    },
-    {
-      "name": "API-Docs",
-      "url": "https://github.com/titantf/API-Docs",
-      "description": "documentation on how to interact with Titan APIs"
     },
     {
       "name": "dotnet8-jwt-api-boilerplate",
@@ -570,11 +572,15 @@
   ],
   "books": [
     {
+      "title": "Thinking, Fast and Slow",
+      "author": "Daniel Kahneman",
+      "status": "in-progress",
+      "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow"
+    },
+    {
       "title": "Atomic Habits",
       "author": "James Clear",
-      "lastHighlighted": "recently",
-      "highlights": 0,
-      "status": "in-progress",
+      "status": "completed",
       "url": "https://jamesclear.com/atomic-habits"
     },
     {
