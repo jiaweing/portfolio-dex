@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Page Not Found - Jia Wei Ng",
-  description: "The page you're looking for doesn't exist or has been moved.",
+  description: "The page you&apos;re looking for doesn&apos;t exist or has been moved.",
   robots: {
     index: false,
     follow: true,
@@ -16,7 +16,7 @@ export default function NotFound() {
       <h1 className="text-6xl font-bold mb-4">404</h1>
       <h2 className="text-2xl font-semibold mb-6">Page Not Found</h2>
       <p className="mb-8 text-muted-foreground max-w-md">
-        The page you're looking for doesn't exist or has been moved.
+        The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
       <Link
         href="/"
