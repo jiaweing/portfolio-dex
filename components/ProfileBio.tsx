@@ -5,7 +5,7 @@ export function ProfileBio() {
   const bioLines = [
     "i create unique and original digital experiences.",
     "a designer & software engineer with experience in artificial intelligence, blockchain, non-fungible tokens, business intelligence, and game development.",
-    "i am really interested in space, quantum mechanics, strange anomalies and mysteries of the universe.",
+    "i am really interested in psychology, space, quantum mechanics, strange anomalies and mysteries of the universe.",
   ];
 
   return (
