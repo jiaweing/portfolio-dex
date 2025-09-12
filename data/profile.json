@@ -534,6 +534,18 @@
       "category": "audio"
     },
     {
+      "name": "Fujifilm X-T50",
+      "description": "mirrorless camera for photography and video",
+      "url": "https://fujifilm-x.com/en-us/products/cameras/x-t50/",
+      "category": "camera"
+    },
+    {
+      "name": "Sigma 18-50mm F2.8 DC DN Contemporary",
+      "description": "versatile zoom lens for Fujifilm X-T50",
+      "url": "https://www.sigma-global.com/en/lenses/c019_18_50_28/",
+      "category": "camera"
+    },
+    {
       "name": "DJI Pocket 3",
       "description": "portable camera for content creation",
       "url": "https://www.dji.com/pocket-3",
