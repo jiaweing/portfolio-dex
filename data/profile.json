@@ -67,6 +67,18 @@
       "description": "(junior, 2026)"
     },
     {
+      "title": "Founder",
+      "organization": "quest.tf",
+      "url": "https://quest.tf",
+      "description": "team fortress 2 adventure-based platform"
+    },
+    {
+      "title": "Founder",
+      "organization": "ryu",
+      "url": "",
+      "description": "local and private desktop assistant that runs proactively in the background"
+    },
+    {
       "title": "Campus Lead",
       "organization": "Notion",
       "url": "https://notion.so",
@@ -133,6 +145,30 @@
       "organization": "GovTech x OpenAI Hackathon 2024",
       "url": "https://www.tech.gov.sg",
       "description": "(top 10% 25/250)"
+    },
+    {
+      "title": "Founder",
+      "organization": "vephius",
+      "url": "https://vephius.com",
+      "description": "productivity app using psychology principles to boost performance through accountability"
+    },
+    {
+      "title": "Founder",
+      "organization": "dojo q",
+      "url": "",
+      "description": "free local quiz app for testing knowledge on any document"
+    },
+    {
+      "title": "Founder",
+      "organization": "best before",
+      "url": "https://github.com/jiaweing/best-before",
+      "description": "simple expiry date tracking app for managing food and items"
+    },
+    {
+      "title": "Founder",
+      "organization": "casigned",
+      "url": "https://tally.so/r/m6QO4O",
+      "description": "personalized NFC business card service"
     },
     {
       "title": "Software Engineer",
@@ -516,9 +552,21 @@
       "category": "keyboard"
     },
     {
+      "name": "3x Aula F75 Pro",
+      "description": "75% mechanical keyboard",
+      "url": "https://aula.tech/products/f75",
+      "category": "keyboard"
+    },
+    {
       "name": "Logitech MX Master 3",
       "description": "wireless productivity mouse",
       "url": "https://www.logitech.com/en-us/products/mice/mx-master-3.html",
+      "category": "mouse"
+    },
+    {
+      "name": "2x Logitech G502 LIGHTSPEED",
+      "description": "wireless mouse",
+      "url": "https://www.logitechg.com/en-us/products/gaming-mice/g502-lightspeed.html",
       "category": "mouse"
     },
     {

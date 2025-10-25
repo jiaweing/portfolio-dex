@@ -3,9 +3,9 @@ import { InView } from "@/components/core/in-view";
 
 export function ProfileBio() {
   const bioLines = [
-    "i create unique and original digital experiences.",
+    "just an ordinary guy who makes software with unique and original digital experiences.",
     "a designer & software engineer with experience in artificial intelligence, blockchain, non-fungible tokens, business intelligence, and game development.",
-    "i am really interested in psychology, space, quantum mechanics, strange anomalies and mysteries of the universe.",
+    "i love psychology, space, quantum mechanics, strange anomalies and mysteries of the universe.",
   ];
 
   return (

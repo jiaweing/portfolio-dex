@@ -3,7 +3,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProfileBio } from "@/components/ProfileBio";
 import { ProfileHeader } from "@/components/ProfileHeader";
-import { FeatherEffect } from "@/components/ui/feather-effect";
+import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
 
 // Import structured data component
 import JsonLd from "./jsonld";
@@ -14,8 +14,8 @@ export default function Home() {
       {/* Add structured data for SEO */}
       <JsonLd />
 
-      {/* Top feather effect with medium blur */}
-      <FeatherEffect position="top" />
+      {/* Top progressive blur effect */}
+      <ProgressiveBlur position="top" height="100px" />
 
       <main>
         <section className="overflow-hidden bg-white dark:bg-transparent">
@@ -30,8 +30,8 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Bottom feather effect with medium blur */}
-      <FeatherEffect position="bottom" />
+      {/* Bottom progressive blur effect */}
+      <ProgressiveBlur position="bottom" height="100px" />
     </>
   );
 }
