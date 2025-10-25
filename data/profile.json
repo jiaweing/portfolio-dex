@@ -102,7 +102,7 @@
       "title": "",
       "organization": "Dell Innovatefest 2025",
       "url": "https://www.businesstimes.com.sg/lifestyle/dell-innovatefest-2025-uses-ai-address-mental-health-issues",
-      "description": "(finalist)"
+      "description": "(finalist → featured on business times)"
     },
     {
       "title": "",
@@ -114,7 +114,7 @@
       "title": "",
       "organization": "Google APAC Solution Challenge 2025",
       "url": "https://vision.hack2skill.com/event/apacsolutionchallenge",
-      "description": "(top 10)"
+      "description": "(top 10 apac → top 1 singapore)"
     },
     {
       "title": "",
@@ -167,7 +167,7 @@
   ],
   "opensource": [
     {
-      "name": "dropdrawer - 150 ⭐",
+      "name": "dropdrawer - 160 stars",
       "url": "https://github.com/jiaweing/DropDrawer",
       "description": "responsive component that automatically switches between a dropdown menu on desktop and a drawer on mobile devices for shadcn/ui. "
     },
