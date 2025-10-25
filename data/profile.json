@@ -8,6 +8,18 @@
     },
     {
       "title": "Founder",
+      "organization": "ryu",
+      "url": "",
+      "description": "local and private desktop assistant that runs proactively in the background"
+    },
+    {
+      "title": "Founder",
+      "organization": "quest.tf",
+      "url": "https://quest.tf",
+      "description": "team fortress 2 adventure-based platform"
+    },
+    {
+      "title": "Founder",
       "organization": "supply.tf",
       "url": "https://supply.tf",
       "description": "boldness, individuality, and the creation of opportunities through streetwear"
@@ -65,18 +77,6 @@
       "organization": "Singapore Institute of Technology",
       "url": "https://www.singaporetech.edu.sg",
       "description": "(junior, 2026)"
-    },
-    {
-      "title": "Founder",
-      "organization": "quest.tf",
-      "url": "https://quest.tf",
-      "description": "team fortress 2 adventure-based platform"
-    },
-    {
-      "title": "Founder",
-      "organization": "ryu",
-      "url": "",
-      "description": "local and private desktop assistant that runs proactively in the background"
     },
     {
       "title": "Campus Lead",
