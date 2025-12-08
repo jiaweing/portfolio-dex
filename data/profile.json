@@ -4,7 +4,8 @@
       "title": "Business Director",
       "organization": "base07.com",
       "url": "https://base07.com",
-      "description": "singapore-based software development & holding company"
+      "description": "singapore-based software development & holding company",
+      "invertFavicon": "light"
     },
     {
       "title": "Founder",
@@ -16,7 +17,8 @@
       "title": "Founder",
       "organization": "quest.tf",
       "url": "https://quest.tf",
-      "description": "team fortress 2 adventure-based platform"
+      "description": "team fortress 2 adventure-based platform",
+      "hideFavicon": true
     },
     {
       "title": "Founder",
@@ -49,22 +51,10 @@
       "description": "sharing my life as a tech startup founder in Singapore (860+ subscribers, 100k views)"
     },
     {
-      "title": "Founder",
-      "organization": "decosmic.com",
-      "url": "https://decosmic.com",
-      "description": "build and deploy AI agents grounded on your own trusted data sources"
-    },
-    {
       "title": "Affiliate & Seller",
       "organization": "Shopee",
       "url": "https://shopee.sg",
       "description": "showcasing curated tech gear and collectibles"
-    },
-    {
-      "title": "Founder",
-      "organization": "been.place",
-      "url": "https://been.place",
-      "description": "track, remember, and share places you've visited and want to visit"
     },
     {
       "title": "Computer Science",
@@ -88,25 +78,14 @@
       "title": "",
       "organization": "Unsplash",
       "url": "https://unsplash.com/@jiaweing",
-      "description": "(top 25%, 460k views and 4.3k downloads)"
+      "description": "(top 25%, 460k views and 4.3k downloads)",
+      "invertFavicon": "dark"
     },
     {
       "title": "Lead Mobile Developer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
       "description": "streamlined medicine delivery processes for Singapore's public hospitals"
-    },
-    {
-      "title": "Founder",
-      "organization": "titan.tf",
-      "url": "https://titan.tf",
-      "description": "(450k unique players, 10k monthly active users)"
-    },
-    {
-      "title": "",
-      "organization": "+6 upcoming",
-      "url": "",
-      "description": ""
     }
   ],
   "past": [
@@ -169,6 +148,25 @@
       "organization": "casigned",
       "url": "https://tally.so/r/m6QO4O",
       "description": "personalized NFC business card service"
+    },
+    {
+      "title": "Founder",
+      "organization": "decosmic.com",
+      "url": "https://decosmic.com",
+      "description": "build and deploy AI agents grounded on your own trusted data sources"
+    },
+    {
+      "title": "Founder",
+      "organization": "been.place",
+      "url": "https://been.place",
+      "description": "track, remember, and share places you've visited and want to visit",
+      "hideFavicon": true
+    },
+        {
+      "title": "Founder",
+      "organization": "titan.tf",
+      "url": "https://titan.tf",
+      "description": "(450k unique players, 10k monthly active users)"
     },
     {
       "title": "Software Engineer",
@@ -543,13 +541,15 @@
       "name": "Ducky One 2 Mini",
       "description": "60% mechanical keyboard",
       "url": "https://www.duckychannel.com.tw/en/Ducky-One2-Mini-Pure-White-RGB",
-      "category": "keyboard"
+      "category": "keyboard",
+      "invertFavicon": "dark"
     },
     {
       "name": "Ducky One 3",
       "description": "mechanical keyboard",
       "url": "https://www.duckychannel.com.tw/en/Ducky-One3",
-      "category": "keyboard"
+      "category": "keyboard",
+      "invertFavicon": "dark"
     },
     {
       "name": "3x Aula F75 Pro",
@@ -609,13 +609,15 @@
       "name": "DJI Pocket 3",
       "description": "portable camera for content creation",
       "url": "https://www.dji.com/pocket-3",
-      "category": "camera"
+      "category": "camera",
+      "invertFavicon": "dark"
     },
     {
       "name": "DJI Mic 2",
       "description": "wireless microphone system",
       "url": "https://www.dji.com/dji-mic-2",
-      "category": "audio"
+      "category": "audio",
+      "invertFavicon": "dark"
     },
     {
       "name": "Nintendo Switch OLED",
@@ -659,79 +661,79 @@
       "title": "Rich Dad Poor Dad",
       "author": "Robert Kiyosaki",
       "status": "in-progress",
-      "url": "https://www.richdad.com/products/rich-dad-poor-dad"
+      "url": "https://www.goodreads.com/book/show/69571.Rich_Dad_Poor_Dad"
     },
     {
-      "title": "Zero to Hero",
+      "title": "Zero to One",
       "author": "Peter Thiel",
       "status": "completed",
-      "url": "https://en.wikipedia.org/wiki/Zero_to_One"
+      "url": "https://www.goodreads.com/book/show/18050143-zero-to-one"
     },
     {
       "title": "Thinking, Fast and Slow",
       "author": "Daniel Kahneman",
       "status": "in-progress",
-      "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow"
+      "url": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow"
     },
     {
       "title": "The Subtle Art of Not Giving a F*ck",
       "author": "Mark Manson",
       "status": "completed",
-      "url": "https://markmanson.net/books/subtle-art-of-not-giving-a-fuck"
+      "url": "https://www.goodreads.com/book/show/28257707-the-subtle-art-of-not-giving-a-f-ck"
     },
     {
       "title": "Atomic Habits",
       "author": "James Clear",
       "status": "completed",
-      "url": "https://jamesclear.com/atomic-habits"
+      "url": "https://www.goodreads.com/book/show/40121378-atomic-habits"
     },
     {
       "title": "The Almanack of Naval Ravikant",
       "author": "Eric Jorgenson",
       "status": "completed",
-      "url": "https://www.navalmanack.com"
+      "url": "https://www.goodreads.com/book/show/54366650-the-almanack-of-naval-ravikant"
     },
     {
       "title": "The Woke Salaryman Crash Course on Capitalism",
       "author": "The Woke Salaryman",
       "status": "completed",
-      "url": "https://thewokesalaryman.com/book"
+      "url": "https://www.goodreads.com/book/show/203920958-the-woke-salaryman-crash-course-on-capitalism-money"
     },
     {
       "title": "100M Leads: How to Get Strangers To Want To Buy Your Stuff",
       "author": "Alex Hormozi",
       "status": "completed",
-      "url": "https://www.amazon.com/100M-Leads-Strangers-Want-Stuff/dp/B0C2SD1HSP"
+      "url": "https://www.goodreads.com/book/show/150267593-100m-leads"
     },
     {
       "title": "Start Marketing the Day You Start Coding",
       "author": "Rob Walling",
       "status": "completed",
-      "url": "https://startmarketingtheday.com"
+      "url": "https://www.goodreads.com/book/show/17696774-start-marketing-the-day-you-start-coding"
     },
     {
       "title": "Eat That Frog: 21 Great Ways to Stop Procrastinating",
-      "author": "Brain Tracy",
+      "author": "Brian Tracy",
       "status": "completed",
-      "url": "https://www.briantracy.com/catalog/eat-that-frog"
+      "url": "https://www.goodreads.com/book/show/15392.Eat_That_Frog"
     },
     {
       "title": "The SaaS Playbook: Build a Multimillion-Dollar Startup",
       "author": "Rob Walling",
       "status": "completed",
-      "url": "https://saasplaybook.com"
+      "url": "https://www.goodreads.com/book/show/60690022-the-saas-playbook"
     },
     {
       "title": "The Psychology of Money",
       "author": "Morgan Housel",
       "status": "completed",
-      "url": "https://www.morganhousel.com/book"
+      "url": "https://www.goodreads.com/book/show/50143831-the-psychology-of-money"
     },
     {
       "title": "Million Dollar Weekend: The Surprising Secrets to Starting Your Business",
       "author": "Noah Kagan",
       "status": "completed",
-      "url": "https://milliondollarweekend.co"
+      "url": "https://www.goodreads.com/book/show/62925482-million-dollar-weekend"
     }
   ]
 }

@@ -20,7 +20,7 @@ export default function Home() {
       <main>
         <section className="overflow-hidden bg-white dark:bg-transparent">
           <div className="relative mx-auto max-w-5xl px-6 py-20 lg:py-24">
-            <div className="relative z-10 mx-auto max-w-2xl space-y-4">
+            <div className="relative z-10 mx-auto max-w-2xl space-y-4 leading-relaxed">
               <ProfileHeader />
               <ProfileBio />
               <ExperienceSection />

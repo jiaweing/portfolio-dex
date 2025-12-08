@@ -1,5 +1,5 @@
 "use client";
-import { InView } from "@/components/core/in-view";
+import { Favicon } from "@/components/ui/Favicon";
 import profileData from "@/data/profile.json";
 import Link from "next/link";
 
@@ -8,39 +8,18 @@ type GearItem = {
   description: string;
   url: string;
   category: string;
+  invertFavicon?: boolean | "light" | "dark" | "always";
+  hideFavicon?: boolean;
 };
 
 export function GearSection() {
   return (
     <div>
-      <InView
-        variants={{
-          hidden: { opacity: 0, x: -30, y: 10, filter: "blur(4px)" },
-          visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)" },
-        }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        viewOptions={{ once: true, amount: 0.1 }}
-      >
-        <h3 className="font-semibold mb-2">setup & gear</h3>
-      </InView>
-      <div className="space-y-1 text-sm">
+      <h3 className="font-semibold mb-2">setup & gear</h3>
+      <div className="space-y-1 text-sm leading-relaxed">
         {profileData.gear &&
           profileData.gear.map((item: GearItem, index: number) => (
-            <InView
-              key={index}
-              variants={{
-                hidden: { opacity: 0, x: -20, y: 10, filter: "blur(3px)" },
-                visible: { opacity: 1, x: 0, y: 0, filter: "blur(0px)" },
-              }}
-              transition={{
-                duration: 0.4,
-                ease: "easeOut",
-                delay: 0.1 + index * 0.08,
-              }}
-              viewOptions={{ once: true, amount: 0.1 }}
-            >
-              <GearListItem item={item} />
-            </InView>
+            <GearListItem key={index} item={item} />
           ))}
       </div>
     </div>
@@ -49,15 +28,20 @@ export function GearSection() {
 
 function GearListItem({ item }: { item: GearItem }) {
   return (
-    <p>
+    <p className="leading-relaxed">
       {item.url && item.url !== "#" ? (
         <Link href={item.url} className="text-blue-500" target="_blank">
+          <Favicon
+            url={item.url}
+            invert={item.invertFavicon}
+            hide={item.hideFavicon}
+          />
           {item.name}
         </Link>
       ) : (
         <span className="text-muted-foreground">{item.name}</span>
       )}{" "}
-      <span className="text-muted-foreground">- {item.description}</span>
+      <span className="text-muted-foreground">· {item.description}</span>
     </p>
   );
 }
