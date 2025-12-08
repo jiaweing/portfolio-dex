@@ -656,6 +656,18 @@
   ],
   "books": [
     {
+      "title": "Rich Dad Poor Dad",
+      "author": "Robert Kiyosaki",
+      "status": "in-progress",
+      "url": "https://www.richdad.com/products/rich-dad-poor-dad"
+    },
+    {
+      "title": "Zero to Hero",
+      "author": "Peter Thiel",
+      "status": "completed",
+      "url": "https://en.wikipedia.org/wiki/Zero_to_One"
+    },
+    {
       "title": "Thinking, Fast and Slow",
       "author": "Daniel Kahneman",
       "status": "in-progress",
@@ -664,7 +676,7 @@
     {
       "title": "The Subtle Art of Not Giving a F*ck",
       "author": "Mark Manson",
-      "status": "in-progress",
+      "status": "completed",
       "url": "https://markmanson.net/books/subtle-art-of-not-giving-a-fuck"
     },
     {

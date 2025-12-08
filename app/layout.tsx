@@ -1,4 +1,6 @@
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -139,8 +141,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PlausibleWrapper>{children}</PlausibleWrapper>
-        <GoogleAnalytics gaId="G-MJ0F694R8J" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <PlausibleWrapper>{children}</PlausibleWrapper>
+          <ThemeToggle />
+          <GoogleAnalytics gaId="G-MJ0F694R8J" />
+        </ThemeProvider>
       </body>
     </html>
   );

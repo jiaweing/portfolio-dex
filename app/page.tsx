@@ -15,7 +15,7 @@ export default function Home() {
       <JsonLd />
 
       {/* Top progressive blur effect */}
-      <ProgressiveBlur position="top" height="100px" />
+      <ProgressiveBlur position="top" height="100px" useThemeBackground />
 
       <main>
         <section className="overflow-hidden bg-white dark:bg-transparent">
@@ -31,7 +31,7 @@ export default function Home() {
       </main>
 
       {/* Bottom progressive blur effect */}
-      <ProgressiveBlur position="bottom" height="100px" />
+      <ProgressiveBlur position="bottom" height="100px" useThemeBackground />
     </>
   );
 }
