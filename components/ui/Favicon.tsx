@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 type FaviconProps = {
   url: string;
@@ -15,9 +16,15 @@ export function Favicon({
   invert = false,
   hide = false,
 }: FaviconProps) {
-  const { resolvedTheme } = useTheme(); // Use resolvedTheme to handle 'system' preference
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (hide || !url || url === "#" || url.startsWith("/")) return null;
+  if (!mounted) return null;
 
   const shouldInvert =
     invert === "always" ||
