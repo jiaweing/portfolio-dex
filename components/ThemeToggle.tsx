@@ -55,7 +55,7 @@ export function ThemeToggle() {
       {/* Desktop: Top-right fixed button */}
       <Button
         onClick={cycleTheme}
-        className="fixed top-6 right-6 z-50 hidden lg:inline-flex"
+        className="fixed top-6 right-6 z-50 hidden md:inline-flex"
         variant="ghost"
         aria-label={`Current theme: ${getLabel()}. Click to change theme.`}
       >

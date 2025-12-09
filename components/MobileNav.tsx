@@ -6,9 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
-// Removed missing auth/subscription hooks
-// import { useSubscription } from "@/hooks/use-subscription"
-// import { authClient } from "@/lib/auth-client"
 import { useIsMobile } from "@/hooks/use-mobile"; // Fixed import path
 import { cn } from "@/lib/utils";
 
@@ -26,16 +23,12 @@ export function MobileNav({ className }: MobileNavProps) {
   const router = useRouter();
   const { setTheme } = useTheme();
 
-  // Auth and Subscription logic removed as dependencies are missing
-  // const { data: session } = authClient.useSession()
-  // const { hasProSubscription } = useSubscription()
-
   if (!isMobile) return null;
 
   return (
     <>
       {/* Floating Menu Button - Bottom Right */}
-      <div className={`fixed right-6 bottom-6 z-50 lg:hidden ${className}`}>
+      <div className={`fixed right-6 bottom-6 z-[100] md:hidden ${className}`}>
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
             <Button
@@ -54,7 +47,7 @@ export function MobileNav({ className }: MobileNavProps) {
               blurAmount="50px"
               useThemeBackground
             />
-            <div className="flex flex-col gap-12 overflow-auto px-6 py-6">
+            <div className="flex flex-col gap-12 overflow-auto px-6 py-6 pb-20">
               <div className="flex flex-col gap-4">
                 <div className="text-muted-foreground text-sm font-medium">
                   Menu
@@ -72,17 +65,8 @@ export function MobileNav({ className }: MobileNavProps) {
                   <MobileLink href="/books" onOpenChange={setOpen}>
                     Books
                   </MobileLink>
-                  {/* Kept some original links just in case, commented out if unlikely to exist */}
-                  {/* <MobileLink href="/marketplace" onOpenChange={setOpen}>
-                    Marketplace
-                  </MobileLink> */}
-                  {/* <MobileLink href="https://cal.com/jiaweing/ryu-demo" onOpenChange={setOpen} target="_blank" rel="noreferrer">
-                    Book a Demo
-                  </MobileLink> */}
                 </div>
               </div>
-
-              {/* Auth Section Removed */}
 
               <div className="flex flex-col gap-4">
                 <div className="text-muted-foreground text-sm font-medium">

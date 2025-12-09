@@ -8,7 +8,7 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-3 right-18 z-[100] hidden lg:block">
+    <header className="fixed top-3 right-18 z-[100] hidden md:block">
       <div className="container flex h-14 max-w-screen-2xl items-center justify-right">
         <nav className="flex items-center gap-1">
           <Button asChild variant="ghost" size="sm">
