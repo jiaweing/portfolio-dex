@@ -55,19 +55,8 @@ export function ThemeToggle() {
       {/* Desktop: Top-right fixed button */}
       <Button
         onClick={cycleTheme}
-        className="hidden md:flex fixed top-6 right-6 z-50"
+        className="fixed top-6 right-6 z-50 hidden lg:inline-flex"
         variant="ghost"
-        aria-label={`Current theme: ${getLabel()}. Click to change theme.`}
-      >
-        {getIcon()}
-      </Button>
-
-      {/* Mobile: Bottom-right floating button */}
-      <Button
-        onClick={cycleTheme}
-        variant="secondary"
-        className="flex md:hidden fixed bottom-6 right-6 z-50 items-center justify-center 
-          w-12 h-12 rounded-full"
         aria-label={`Current theme: ${getLabel()}. Click to change theme.`}
       >
         {getIcon()}

@@ -1,6 +1,9 @@
+import { MobileNav } from "@/components/MobileNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -17,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jia Wei Ng — Software Engineer & Designer",
+  title: "Jia Wei Ng",
   description:
     "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
   keywords: [
@@ -54,7 +57,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://jiaweing.com",
-    title: "Jia Wei Ng — Software Engineer & Designer",
+    title: "Jia Wei Ng",
     description:
       "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
     siteName: "Jia Wei Ng",
@@ -69,7 +72,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jia Wei Ng — Software Engineer & Designer",
+    title: "Jia Wei Ng",
     description:
       "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
     creator: "@j14wei",
@@ -147,7 +150,31 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PlausibleWrapper>{children}</PlausibleWrapper>
+          <PlausibleWrapper>
+            <div className="relative flex min-h-screen flex-col">
+              <div>
+                <section className="overflow-hidden bg-white dark:bg-transparent">
+                  <div className="relative mx-auto max-w-2xl px-6 py-6 pb-16">
+                    <div className="relative mx-auto max-w-2xl space-y-4 leading-relaxed z-[100]">
+                      <SiteHeader />
+                      <MobileNav />
+                    </div>
+                    <ProgressiveBlur
+                      position="top"
+                      height="100px"
+                      useThemeBackground
+                    />
+                    <div className="flex-1 pt-14">{children}</div>
+                    <ProgressiveBlur
+                      position="bottom"
+                      height="100px"
+                      useThemeBackground
+                    />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </PlausibleWrapper>
           <ThemeToggle />
           <GoogleAnalytics gaId="G-MJ0F694R8J" />
         </ThemeProvider>

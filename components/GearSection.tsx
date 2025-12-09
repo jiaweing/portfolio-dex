@@ -18,7 +18,7 @@ export function GearSection() {
       <h3 className="font-semibold mb-2">setup & gear</h3>
       <div className="space-y-1 text-sm leading-relaxed">
         {profileData.gear &&
-          profileData.gear.map((item: GearItem, index: number) => (
+          (profileData.gear as unknown as GearItem[]).map((item, index) => (
             <GearListItem key={index} item={item} />
           ))}
       </div>
@@ -30,7 +30,11 @@ function GearListItem({ item }: { item: GearItem }) {
   return (
     <p className="leading-relaxed">
       {item.url && item.url !== "#" ? (
-        <Link href={item.url} className="text-blue-500" target="_blank">
+        <Link
+          href={item.url}
+          className="text-blue-500 dark:text-sky-500"
+          target="_blank"
+        >
           <Favicon
             url={item.url}
             invert={item.invertFavicon}

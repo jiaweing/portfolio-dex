@@ -4,57 +4,57 @@
       "title": "Business Director",
       "organization": "base07.com",
       "url": "https://base07.com",
-      "description": "singapore-based software development & holding company",
+      "description": "a company creating companies",
       "invertFavicon": "light"
     },
     {
       "title": "Founder",
       "organization": "ryu",
       "url": "",
-      "description": "local and private desktop assistant that runs proactively in the background"
+      "description": "coming jan 2026"
     },
     {
       "title": "Founder",
       "organization": "quest.tf",
       "url": "https://quest.tf",
-      "description": "team fortress 2 adventure-based platform",
+      "description": "wip",
       "hideFavicon": true
     },
     {
       "title": "Founder",
       "organization": "supply.tf",
       "url": "https://supply.tf",
-      "description": "boldness, individuality, and the creation of opportunities through streetwear"
+      "description": "clothing brand, streetwear"
     },
     {
-      "title": "Founder, Podcast Host & News Writer",
+      "title": "Podcast Host & Writer",
       "organization": "updatenight.com",
       "url": "https://updatenight.com",
-      "description": "newsletter delivering unique business and tech insights that rarely make headlines (1k+ views)"
+      "description": "tech news that matter (1k+ views)"
     },
     {
       "title": "Founder",
       "organization": "Division Null ∅",
       "url": "https://discord.com/invite/KTCGWC7bZn",
-      "description": "discord server for tech enthusiasts to discover and share the latest in technology (80+ members)"
+      "description": "a space to share the latest in tech (80+ members)"
     },
     {
       "title": "Co-Founder",
       "organization": "paoverse.com",
       "url": "https://paoverse.com",
-      "description": "universe of original characters and merchandise (400+ followers)"
+      "description": "(400+ followers)"
     },
     {
       "title": "",
       "organization": "YouTube Partner",
       "url": "https://www.youtube.com/@j14wei",
-      "description": "sharing my life as a tech startup founder in Singapore (860+ subscribers, 100k views)"
+      "description": "(860+ subscribers, 100k views)"
     },
     {
       "title": "Affiliate & Seller",
       "organization": "Shopee",
       "url": "https://shopee.sg",
-      "description": "showcasing curated tech gear and collectibles"
+      "description": ""
     },
     {
       "title": "Computer Science",
@@ -85,7 +85,7 @@
       "title": "Lead Mobile Developer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
-      "description": "streamlined medicine delivery processes for Singapore's public hospitals"
+      "description": "streamlined medicine delivery for Singapore's public hospitals"
     }
   ],
   "past": [
@@ -129,40 +129,41 @@
       "title": "Founder",
       "organization": "vephius",
       "url": "https://vephius.com",
-      "description": "productivity app using psychology principles to boost performance through accountability"
+      "description": "social productivity app"
     },
     {
       "title": "Founder",
       "organization": "dojo q",
       "url": "",
-      "description": "free local quiz app for testing knowledge on any document"
+      "description": "free local quiz app"
     },
     {
       "title": "Founder",
       "organization": "best before",
       "url": "https://github.com/jiaweing/best-before",
-      "description": "simple expiry date tracking app for managing food and items"
+      "description": "simple expiry date tracking app"
     },
     {
       "title": "Founder",
       "organization": "casigned",
       "url": "https://tally.so/r/m6QO4O",
-      "description": "personalized NFC business card service"
+      "description": "personalized NFC business card service",
+      "invertFavicon": "dark"
     },
     {
       "title": "Founder",
       "organization": "decosmic.com",
       "url": "https://decosmic.com",
-      "description": "build and deploy AI agents grounded on your own trusted data sources"
+      "description": "build and deploy AI agents"
     },
     {
       "title": "Founder",
       "organization": "been.place",
       "url": "https://been.place",
-      "description": "track, remember, and share places you've visited and want to visit",
+      "description": "track, remember, and share places",
       "hideFavicon": true
     },
-        {
+    {
       "title": "Founder",
       "organization": "titan.tf",
       "url": "https://titan.tf",
@@ -172,13 +173,13 @@
       "title": "Software Engineer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
-      "description": "streamlined medicine delivery processes for Singapore's public hospitals"
+      "description": "streamlined medicine delivery for Singapore's public hospitals"
     },
     {
       "title": "Administrative Assistant",
       "organization": "mindef.gov.sg",
       "url": "https://mindef.gov.sg",
-      "description": "predictive models and machine-assisted analysis for large datasets"
+      "description": "predictive models for large datasets"
     },
     {
       "title": "Software Developer",

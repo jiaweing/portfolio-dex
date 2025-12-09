@@ -31,7 +31,7 @@ function BookListItem({ book }: { book: BookItem }) {
     book.status === "in-progress" ? (
       <span className="inline-flex items-center ml-1">
         <svg
-          className="w-3 h-3 animate-spin text-blue-500"
+          className="w-3 h-3 animate-spin text-blue-500 dark:text-sky-500"
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"
@@ -52,7 +52,11 @@ function BookListItem({ book }: { book: BookItem }) {
   return (
     <p className="leading-relaxed">
       {book.url && book.url !== "#" ? (
-        <Link href={book.url} className="text-blue-500" target="_blank">
+        <Link
+          href={book.url}
+          className="text-blue-500 dark:text-sky-500"
+          target="_blank"
+        >
           <Favicon
             url={book.url}
             invert={book.invertFavicon}

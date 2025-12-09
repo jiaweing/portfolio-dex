@@ -1,4 +1,5 @@
 import profileData from "@/data/profile.json";
+import { getBlogPosts } from "@/lib/notion";
 import { MetadataRoute } from "next";
 
 interface OpenSourceProject {
@@ -7,7 +8,7 @@ interface OpenSourceProject {
   description: string;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://jiaweing.com";
   const currentDate = new Date();
 
@@ -70,6 +71,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: "monthly" as const,
       priority: 0.5,
+    });
+  });
+
+  // Add blog posts
+  const posts = await getBlogPosts();
+  posts.forEach((post) => {
+    routes.push({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
     });
   });
 
