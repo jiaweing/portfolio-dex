@@ -31,7 +31,7 @@ function GearListItem({ item }: { item: GearItem }) {
     <p className="leading-relaxed">
       {item.url && item.url !== "#" ? (
         <Link
-          href={item.url}
+          href={item.url as any}
           className="text-blue-500 dark:text-sky-500"
           target="_blank"
         >

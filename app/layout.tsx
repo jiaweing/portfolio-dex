@@ -1,6 +1,7 @@
 import { MobileNav } from "@/components/MobileNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
 import { SiteHeader } from "@/components/SiteHeader";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
@@ -176,6 +177,7 @@ export default function RootLayout({
             </div>
           </PlausibleWrapper>
           <ThemeToggle />
+          <TailwindIndicator />
           <GoogleAnalytics gaId="G-MJ0F694R8J" />
         </ThemeProvider>
       </body>

@@ -39,7 +39,7 @@ function ProjectListItem({ project }: { project: Project | any }) {
     <p className="leading-relaxed">
       {href !== "#" ? (
         <Link
-          href={href}
+          href={href as any}
           className="text-blue-500 dark:text-sky-500"
           target="_blank"
         >

@@ -143,3 +143,42 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom scrollbar styling. Thanks @pranathiperii. */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+/* Show scrollbar on hover */
+*:hover::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+/* Show scrollbar when actively scrolling */
+*:active::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+* {
+  scrollbar-width: thin; /* Keep scrollbar track for Firefox */
+  scrollbar-color: transparent transparent;
+}
+
+/* Show scrollbar thumb on hover for Firefox */
+*:hover {
+  scrollbar-color: var(--border) transparent;
+}

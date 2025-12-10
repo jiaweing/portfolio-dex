@@ -20,7 +20,7 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
         )}
         {item.url ? (
           <Link
-            href={item.url}
+            href={item.url as any}
             className="text-blue-500 dark:text-sky-500 truncate"
             target={item.url.startsWith("http") ? "_blank" : "_self"}
           >

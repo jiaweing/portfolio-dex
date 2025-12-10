@@ -35,7 +35,7 @@ type SocialLinkProps = {
 function SocialLink({ href, ariaLabel, imgSrc, alt }: SocialLinkProps) {
   return (
     <Link
-      href={href}
+      href={href as any}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel}

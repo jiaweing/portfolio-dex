@@ -53,7 +53,7 @@ function BookListItem({ book }: { book: BookItem }) {
     <p className="leading-relaxed">
       {book.url && book.url !== "#" ? (
         <Link
-          href={book.url}
+          href={book.url as any}
           className="text-blue-500 dark:text-sky-500"
           target="_blank"
         >
