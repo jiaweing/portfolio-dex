@@ -8,7 +8,7 @@ const withPWA = require("next-pwa")({
 });
 
 const nextConfig: NextConfig = {
-  typedRoutes: true,
+  typedRoutes: false,
   transpilePackages: ["shiki"],
   images: {
     remotePatterns: [

@@ -28,7 +28,7 @@ export function MobileNav({ className }: MobileNavProps) {
   return (
     <>
       {/* Floating Menu Button - Bottom Right */}
-      <div className={`fixed right-6 bottom-6 z-[100] md:hidden ${className}`}>
+      <div className={`fixed right-6 bottom-6 z-[100] lg:hidden ${className}`}>
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
             <Button

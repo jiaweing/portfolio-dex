@@ -1,3 +1,4 @@
+import { LayoutWidthWrapper } from "@/components/LayoutWidthWrapper";
 import { MobileNav } from "@/components/MobileNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -154,8 +155,8 @@ export default function RootLayout({
           <PlausibleWrapper>
             <div className="relative flex min-h-screen flex-col">
               <div>
-                <section className="overflow-hidden bg-white dark:bg-transparent">
-                  <div className="relative mx-auto max-w-2xl px-6 py-6 pb-20">
+                <section className="bg-white dark:bg-transparent">
+                  <LayoutWidthWrapper>
                     <div className="relative mx-auto max-w-2xl space-y-4 leading-relaxed z-[100]">
                       <SiteHeader />
                       <MobileNav />
@@ -171,7 +172,7 @@ export default function RootLayout({
                       height="100px"
                       useThemeBackground
                     />
-                  </div>
+                  </LayoutWidthWrapper>
                 </section>
               </div>
             </div>

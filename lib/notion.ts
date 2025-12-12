@@ -53,6 +53,7 @@ export interface Project {
   github?: string;
   techStack: string[];
   cover?: string;
+  logo?: string;
   year: string;
   screenshots: string[];
 }
@@ -126,7 +127,7 @@ const getProperty = (
 // Robust Title Getter
 const getTitle = (page: any) => {
   if (!page.properties) return "Untitled";
-  
+
   // 1. Try "Title" property
   if (page.properties["Title"]?.type === "title") {
     return getRichText(page.properties["Title"].title);
@@ -135,14 +136,14 @@ const getTitle = (page: any) => {
   if (page.properties["Name"]?.type === "title") {
     return getRichText(page.properties["Name"].title);
   }
-  
+
   // 3. Scan for ANY property of type 'title'
   for (const key in page.properties) {
     if (page.properties[key].type === "title") {
       return getRichText(page.properties[key].title);
     }
   }
-  
+
   return "Untitled";
 };
 
@@ -414,7 +415,7 @@ export const getProjects = unstable_cache(
       let response;
       const sorts = [
         {
-          property: "Year", 
+          property: "Year",
           direction: "descending" as const,
         },
       ];
@@ -441,6 +442,10 @@ export const getProjects = unstable_cache(
           github: getProperty(page, "GitHub", "url") || "",
           techStack: getProperty(page, "Tech Stack", "multi_select") || [],
           year: getProperty(page, "Year", "rich_text") || "",
+          logo:
+            page.properties?.Logo?.files?.[0]?.file?.url ||
+            page.properties?.Logo?.files?.[0]?.external?.url ||
+            undefined,
           cover:
             page.properties?.Banner?.files?.[0]?.file?.url ||
             page.properties?.Banner?.files?.[0]?.external?.url ||
@@ -504,6 +509,10 @@ export const getProject = unstable_cache(
         github: getProperty(page, "GitHub", "url") || "",
         techStack: getProperty(page, "Tech Stack", "multi_select") || [],
         year: getProperty(page, "Year", "rich_text") || "",
+        logo:
+          page.properties?.Logo?.files?.[0]?.file?.url ||
+          page.properties?.Logo?.files?.[0]?.external?.url ||
+          undefined,
         cover:
           page.properties?.Banner?.files?.[0]?.file?.url ||
           page.properties?.Banner?.files?.[0]?.external?.url ||
