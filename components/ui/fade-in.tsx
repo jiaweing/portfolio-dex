@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, UseInViewOptions } from "framer-motion";
 import { useRef } from "react";
 
 type Direction = "up" | "down" | "left" | "right";
@@ -12,6 +12,7 @@ interface FadeInProps {
   duration?: number;
   direction?: Direction;
   fullWidth?: boolean;
+  viewOptions?: UseInViewOptions;
 }
 
 export function FadeIn({
@@ -21,9 +22,14 @@ export function FadeIn({
   duration = 0.5,
   direction = "up",
   fullWidth = false,
+  viewOptions,
 }: FadeInProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "-10% 0px",
+    ...viewOptions,
+  });
 
   const directionOffset = {
     up: { y: 20, x: 0 },

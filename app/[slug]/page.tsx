@@ -1,15 +1,10 @@
-import { NotionRenderer } from "@/components/NotionRenderer";
+import { NotionRenderer } from "@/components/markdown-renderer";
+import { FadeIn } from "@/components/ui/fade-in";
 import { getPage, getPages } from "@/lib/notion";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
-
-interface PageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-}
 
 export async function generateStaticParams() {
   const pages = await getPages();
@@ -18,7 +13,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const { page } = await getPage(slug);
 
@@ -30,10 +29,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: page.title,
+    description: page.description,
   };
 }
 
-export default async function DynamicPage({ params }: PageProps) {
+export default async function GenericPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const { page, blocks } = await getPage(slug);
 
@@ -42,17 +46,22 @@ export default async function DynamicPage({ params }: PageProps) {
   }
 
   return (
-    <article className="container py-12 md:py-24 max-w-3xl mx-auto">
-      <div className="flex flex-col space-y-4 mb-8 text-center items-center">
-        <h1 className="text-3xl font-extrabold tracking-tight lg:text-5xl">
-          {page.title}
-        </h1>
-      </div>
-       
-      {/* Separator */}
-      <div className="my-8 w-full border-t" />
+    <>
+      <FadeIn>
+        <header className="mb-12">
+          <h1 className="text-3xl md:text-4xl font-medium tracking-tight">
+            {page.title}
+          </h1>
+        </header>
+      </FadeIn>
 
-      <NotionRenderer blocks={blocks} />
-    </article>
+      {blocks && blocks.length > 0 && (
+        <FadeIn delay={0.2} duration={0.5}>
+          <div className="mb-16">
+            <NotionRenderer blocks={blocks} />
+          </div>
+        </FadeIn>
+      )}
+    </>
   );
 }

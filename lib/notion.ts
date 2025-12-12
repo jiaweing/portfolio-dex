@@ -2,7 +2,7 @@ import { Client } from "@notionhq/client";
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { unstable_cache } from "next/cache";
 
-let notion: any = null; // Typing as any to support dataSources
+let notion: any = null;
 
 export const getNotionClient = () => {
   if (!process.env.NOTION_API_KEY) {
@@ -29,7 +29,7 @@ export interface BlogPost {
   title: string;
   date: string;
   description: string;
-  authors: string[];
+  authors: { name: string; avatar?: string }[];
   tags: string[];
   cover?: string;
 }
@@ -41,6 +41,7 @@ export interface Page {
   content?: string;
   cover?: string;
   lastEdited: string;
+  description?: string;
 }
 
 export interface Project {
@@ -52,16 +53,15 @@ export interface Project {
   github?: string;
   techStack: string[];
   cover?: string;
-  date: string;
+  year: string;
+  screenshots: string[];
 }
 
 // Helper: Block to Plain Text
 export function blockToPlainText(block: any): string {
   if (!block) return "";
-
   const type = block.type;
   const blockData = block[type];
-
   if (!blockData) return "";
 
   switch (type) {
@@ -87,7 +87,6 @@ export function blockToPlainText(block: any): string {
 
 // --- Fetching Logic ---
 
-// Transform Helper
 const getRichText = (richText: any[]) =>
   richText?.map((t) => t.plain_text).join("") || "";
 
@@ -114,11 +113,40 @@ const getProperty = (
   if (type === "select") return p.select?.name || "";
   if (type === "url") return p.url || "";
   if (type === "people")
-    return p.people?.map((person: any) => person.name).filter(Boolean) || [];
+    return (
+      p.people?.map((person: any) => ({
+        name: person.name,
+        avatar: person.avatar_url,
+      })) || []
+    );
 
   return "";
 };
 
+// Robust Title Getter
+const getTitle = (page: any) => {
+  if (!page.properties) return "Untitled";
+  
+  // 1. Try "Title" property
+  if (page.properties["Title"]?.type === "title") {
+    return getRichText(page.properties["Title"].title);
+  }
+  // 2. Try "Name" property
+  if (page.properties["Name"]?.type === "title") {
+    return getRichText(page.properties["Name"].title);
+  }
+  
+  // 3. Scan for ANY property of type 'title'
+  for (const key in page.properties) {
+    if (page.properties[key].type === "title") {
+      return getRichText(page.properties[key].title);
+    }
+  }
+  
+  return "Untitled";
+};
+
+// --- Blog Posts ---
 export const getBlogPosts = unstable_cache(
   async (): Promise<BlogPost[]> => {
     const notion = getNotionClient();
@@ -167,20 +195,12 @@ export const getBlogPosts = unstable_cache(
 
       return response.results
         .map((page: any) => {
-          // robust title extraction
-          const title =
-            getProperty(page, "Name", "title") ||
-            getProperty(page, "Page", "title") ||
-            getProperty(page, "Title", "title") ||
-            "Untitled";
-
-          const tags = getProperty(page, "Tag", "select")
-            ? [getProperty(page, "Tag", "select")]
-            : getProperty(page, "Tags", "multi_select") || [];
-
+          const tags = getProperty(page, "Tags", "multi_select") || [];
           const banner =
             page.properties?.Banner?.files?.[0]?.file?.url ||
             page.properties?.Banner?.files?.[0]?.external?.url ||
+            page.properties?.Cover?.files?.[0]?.file?.url ||
+            page.properties?.Cover?.files?.[0]?.external?.url ||
             page.cover?.external?.url ||
             page.cover?.file?.url ||
             undefined;
@@ -188,10 +208,10 @@ export const getBlogPosts = unstable_cache(
           return {
             id: page.id,
             slug: getProperty(page, "Slug", "rich_text") || "",
-            title: title,
+            title: getTitle(page),
             date: getProperty(page, "Date", "date") || page.created_time,
-            description: getProperty(page, "Description", "rich_text") || "",
-            authors: getProperty(page, "Authors", "people") || [],
+            description: getProperty(page, "Excerpt", "rich_text") || "",
+            authors: getProperty(page, "Author", "people") || [],
             tags: tags,
             cover: banner,
           } as BlogPost;
@@ -211,31 +231,29 @@ export const getBlogPost = unstable_cache(
     slug: string
   ): Promise<{ post: BlogPost | null; blocks: BlockObjectResponse[] }> => {
     const notion = getNotionClient();
-    const databaseId = process.env.NOTION_BLOG_DATABASE_ID;
+    const databaseId =
+      process.env.NOTION_DATABASE_ID || process.env.NOTION_BLOG_DATABASE_ID;
 
     if (!databaseId) return { post: null, blocks: [] };
 
     try {
       let response;
+      const queryFilter = {
+        property: "Slug",
+        rich_text: {
+          equals: slug,
+        },
+      };
+
       if (notion.dataSources) {
         response = await notion.dataSources.query({
           data_source_id: databaseId,
-          filter: {
-            property: "Slug",
-            rich_text: {
-              equals: slug,
-            },
-          },
+          filter: queryFilter,
         });
       } else {
         response = await notion.databases.query({
           database_id: databaseId,
-          filter: {
-            property: "Slug",
-            rich_text: {
-              equals: slug,
-            },
-          },
+          filter: queryFilter,
         });
       }
 
@@ -243,20 +261,12 @@ export const getBlogPost = unstable_cache(
 
       const page: any = response.results[0];
 
-      // robust title extraction
-      const title =
-        getProperty(page, "Name", "title") ||
-        getProperty(page, "Page", "title") ||
-        getProperty(page, "Title", "title") ||
-        "Untitled";
-
-      const tags = getProperty(page, "Tag", "select")
-        ? [getProperty(page, "Tag", "select")]
-        : getProperty(page, "Tags", "multi_select") || [];
-
+      const tags = getProperty(page, "Tags", "multi_select") || [];
       const banner =
         page.properties?.Banner?.files?.[0]?.file?.url ||
         page.properties?.Banner?.files?.[0]?.external?.url ||
+        page.properties?.Cover?.files?.[0]?.file?.url ||
+        page.properties?.Cover?.files?.[0]?.external?.url ||
         page.cover?.external?.url ||
         page.cover?.file?.url ||
         undefined;
@@ -264,10 +274,10 @@ export const getBlogPost = unstable_cache(
       const post: BlogPost = {
         id: page.id,
         slug: getProperty(page, "Slug", "rich_text") || "",
-        title: title,
+        title: getTitle(page),
         date: getProperty(page, "Date", "date") || page.created_time,
-        description: getProperty(page, "Description", "rich_text") || "",
-        authors: getProperty(page, "Authors", "people") || [],
+        description: getProperty(page, "Excerpt", "rich_text") || "",
+        authors: getProperty(page, "Author", "people") || [],
         tags: tags,
         cover: banner,
       };
@@ -286,6 +296,7 @@ export const getBlogPost = unstable_cache(
   { revalidate: 3600 }
 );
 
+// --- Generic Pages ---
 export const getPages = unstable_cache(
   async (): Promise<Page[]> => {
     const notion = getNotionClient();
@@ -294,25 +305,22 @@ export const getPages = unstable_cache(
 
     try {
       let response;
+      const filter = {
+        property: "Status",
+        status: {
+          equals: "Published",
+        },
+      };
+
       if (notion.dataSources) {
         response = await notion.dataSources.query({
           data_source_id: databaseId,
-          filter: {
-            property: "Status",
-            status: {
-              equals: "Published",
-            },
-          },
+          filter,
         });
       } else {
         response = await notion.databases.query({
           database_id: databaseId,
-          filter: {
-            property: "Status",
-            status: {
-              equals: "Published",
-            },
-          },
+          filter,
         });
       }
 
@@ -320,10 +328,11 @@ export const getPages = unstable_cache(
         .map((page: any) => ({
           id: page.id,
           slug: getProperty(page, "Slug", "rich_text") || "",
-          title: getProperty(page, "Name", "title") || "Untitled",
+          title: getTitle(page),
           lastEdited: page.last_edited_time,
           cover:
             page.cover?.external?.url || page.cover?.file?.url || undefined,
+          description: getProperty(page, "Description", "rich_text") || "",
         }))
         .filter((p: Page) => p.slug);
     } catch (e) {
@@ -346,25 +355,22 @@ export const getPage = unstable_cache(
 
     try {
       let response;
+      const filter = {
+        property: "Slug",
+        rich_text: {
+          equals: slug,
+        },
+      };
+
       if (notion.dataSources) {
         response = await notion.dataSources.query({
           data_source_id: databaseId,
-          filter: {
-            property: "Slug",
-            rich_text: {
-              equals: slug,
-            },
-          },
+          filter,
         });
       } else {
         response = await notion.databases.query({
           database_id: databaseId,
-          filter: {
-            property: "Slug",
-            rich_text: {
-              equals: slug,
-            },
-          },
+          filter,
         });
       }
 
@@ -374,12 +380,13 @@ export const getPage = unstable_cache(
       const page: Page = {
         id: pageData.id,
         slug: getProperty(pageData, "Slug", "rich_text") || "",
-        title: getProperty(pageData, "Name", "title") || "Untitled",
+        title: getTitle(pageData),
         lastEdited: pageData.last_edited_time,
         cover:
           pageData.cover?.external?.url ||
           pageData.cover?.file?.url ||
           undefined,
+        description: getProperty(pageData, "Description", "rich_text") || "",
       };
 
       const blocks = await notion.blocks.children.list({
@@ -395,6 +402,7 @@ export const getPage = unstable_cache(
   { revalidate: 3600 }
 );
 
+// --- Projects ---
 export const getProjects = unstable_cache(
   async (): Promise<Project[]> => {
     const notion = getNotionClient();
@@ -404,25 +412,22 @@ export const getProjects = unstable_cache(
 
     try {
       let response;
+      const sorts = [
+        {
+          property: "Year", 
+          direction: "descending" as const,
+        },
+      ];
+
       if (notion.dataSources) {
         response = await notion.dataSources.query({
           data_source_id: databaseId,
-          sorts: [
-            {
-              property: "Date",
-              direction: "descending",
-            },
-          ],
+          sorts,
         });
       } else {
         response = await notion.databases.query({
           database_id: databaseId,
-          sorts: [
-            {
-              property: "Date",
-              direction: "descending",
-            },
-          ],
+          sorts,
         });
       }
 
@@ -430,14 +435,21 @@ export const getProjects = unstable_cache(
         .map((page: any) => ({
           id: page.id,
           slug: getProperty(page, "Slug", "rich_text") || "",
-          title: getProperty(page, "Name", "title") || "Untitled",
+          title: getTitle(page),
           description: getProperty(page, "Description", "rich_text") || "",
-          url: getProperty(page, "URL", "url") || "",
+          url: getProperty(page, "Link", "url") || "",
           github: getProperty(page, "GitHub", "url") || "",
           techStack: getProperty(page, "Tech Stack", "multi_select") || [],
-          date: getProperty(page, "Date", "date") || page.created_time,
+          year: getProperty(page, "Year", "rich_text") || "",
           cover:
-            page.cover?.external?.url || page.cover?.file?.url || undefined,
+            page.properties?.Banner?.files?.[0]?.file?.url ||
+            page.properties?.Banner?.files?.[0]?.external?.url ||
+            page.properties?.Image?.files?.[0]?.file?.url ||
+            page.properties?.Image?.files?.[0]?.external?.url ||
+            page.cover?.external?.url ||
+            page.cover?.file?.url ||
+            undefined,
+          screenshots: [],
         }))
         .filter((p: Project) => p.title);
     } catch (e) {
@@ -446,5 +458,76 @@ export const getProjects = unstable_cache(
     }
   },
   ["projects"],
+  { revalidate: 3600 }
+);
+
+export const getProject = unstable_cache(
+  async (
+    slug: string
+  ): Promise<{ project: Project | null; blocks: BlockObjectResponse[] }> => {
+    const notion = getNotionClient();
+    const databaseId = process.env.NOTION_PROJECTS_DATABASE_ID;
+
+    if (!databaseId) return { project: null, blocks: [] };
+
+    try {
+      let response;
+      const filter = {
+        property: "Slug",
+        rich_text: {
+          equals: slug,
+        },
+      };
+
+      if (notion.dataSources) {
+        response = await notion.dataSources.query({
+          data_source_id: databaseId,
+          filter,
+        });
+      } else {
+        response = await notion.databases.query({
+          database_id: databaseId,
+          filter,
+        });
+      }
+
+      if (response.results.length === 0) return { project: null, blocks: [] };
+
+      const page: any = response.results[0];
+
+      const project: Project = {
+        id: page.id,
+        slug: getProperty(page, "Slug", "rich_text") || "",
+        title: getTitle(page),
+        description: getProperty(page, "Description", "rich_text") || "",
+        url: getProperty(page, "Link", "url") || "",
+        github: getProperty(page, "GitHub", "url") || "",
+        techStack: getProperty(page, "Tech Stack", "multi_select") || [],
+        year: getProperty(page, "Year", "rich_text") || "",
+        cover:
+          page.properties?.Banner?.files?.[0]?.file?.url ||
+          page.properties?.Banner?.files?.[0]?.external?.url ||
+          page.properties?.Image?.files?.[0]?.file?.url ||
+          page.properties?.Image?.files?.[0]?.external?.url ||
+          page.cover?.external?.url ||
+          page.cover?.file?.url ||
+          undefined,
+        screenshots:
+          page.properties?.Screenshots?.files?.map(
+            (file: any) => file.file?.url || file.external?.url
+          ) || [],
+      };
+
+      const blocks = await notion.blocks.children.list({
+        block_id: page.id,
+      });
+
+      return { project, blocks: blocks.results as BlockObjectResponse[] };
+    } catch (e) {
+      console.error(`Failed to fetch project ${slug}`, e);
+      return { project: null, blocks: [] };
+    }
+  },
+  ["project"],
   { revalidate: 3600 }
 );

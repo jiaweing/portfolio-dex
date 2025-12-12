@@ -15,7 +15,16 @@ export function SiteHeader() {
             <Link href="/">home</Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
+            <Link href="/about">about</Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
             <Link href="/blog">blog</Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/projects">projects</Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/oss">oss</Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link href="/setup">setup</Link>

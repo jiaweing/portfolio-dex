@@ -1,31 +1,18 @@
 import { Favicon } from "@/components/ui/Favicon";
 import profileData from "@/data/profile.json";
-import { Project } from "@/lib/notion";
 import Link from "next/link";
 
-export function OpenSourceSection({ projects }: { projects?: Project[] }) {
+export function OpenSourceSection() {
   return (
-    <div>
-      <h3 className="font-semibold mb-2">projects</h3>
-      <div className="space-y-1.5 text-sm leading-relaxed">
-        {projects && projects.length > 0
-          ? projects.map((project) => (
-              <ProjectListItem key={project.id} project={project} />
-            ))
-          : // Fallback to local data if no projects fetched (or during dev without keys)
-            profileData.opensource.map((project: any, index: number) => (
-              <ProjectListItem
-                key={index}
-                project={{ ...project, title: project.name, techStack: [] }}
-              />
-            ))}
-      </div>
+    <div className="space-y-1.5 text-sm leading-relaxed">
+      {profileData.opensource.map((project: any, index: number) => (
+        <ProjectListItem key={index} project={project} />
+      ))}
     </div>
   );
 }
 
-function ProjectListItem({ project }: { project: Project | any }) {
-  // Check if description already starts with a dash, hyphen, or parenthesis
+function ProjectListItem({ project }: { project: any }) {
   const formattedDescription =
     project.description.startsWith("-") ||
     project.description.startsWith("–") ||
@@ -33,23 +20,19 @@ function ProjectListItem({ project }: { project: Project | any }) {
       ? project.description.trim()
       : `· ${project.description}`;
 
-  const href = project.url || project.github || "#";
-
   return (
     <p className="leading-relaxed">
-      {href !== "#" ? (
-        <Link
-          href={href as any}
-          className="text-blue-500 dark:text-sky-500"
-          target="_blank"
-        >
-          <Favicon url={href} />
-          {project.title}
-        </Link>
-      ) : (
-        <span className="text-muted-foreground">{project.title}</span>
-      )}{" "}
-      <span className="text-muted-foreground">{formattedDescription}</span>
+      <Link
+        href={project.url}
+        className="text-blue-500 dark:text-sky-500 hover:underline"
+        target="_blank"
+      >
+        <Favicon url={project.url} />
+        {project.name}
+      </Link>{" "}
+      <span className="text-muted-foreground text-xs">
+        {formattedDescription}
+      </span>
     </p>
   );
 }

@@ -56,8 +56,17 @@ export function MobileNav({ className }: MobileNavProps) {
                   <MobileLink href="/" onOpenChange={setOpen}>
                     Home
                   </MobileLink>
+                  <MobileLink href="/about" onOpenChange={setOpen}>
+                    About
+                  </MobileLink>
                   <MobileLink href="/blog" onOpenChange={setOpen}>
                     Blog
+                  </MobileLink>
+                  <MobileLink href="/projects" onOpenChange={setOpen}>
+                    Projects
+                  </MobileLink>
+                  <MobileLink href="/oss" onOpenChange={setOpen}>
+                    OSS
                   </MobileLink>
                   <MobileLink href="/setup" onOpenChange={setOpen}>
                     Setup

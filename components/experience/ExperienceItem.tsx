@@ -13,8 +13,8 @@ export type ExperienceItemType = {
 
 export function ExperienceItem({ item }: { item: ExperienceItemType }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-start md:justify-between md:gap-2 leading-relaxed">
-      <div className="flex items-center gap-1 min-w-0">
+    <div className="flex flex-col md:flex-row md:items-center md:gap-2 leading-relaxed">
+      <div className="flex items-center gap-1 min-w-0 shrink-0">
         {item.title && (
           <span className="whitespace-nowrap">{item.title} @</span>
         )}
@@ -37,7 +37,7 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
           </span>
         )}
       </div>
-      <span className="text-muted-foreground text-sm md:text-right md:max-w-xs shrink-0">
+      <span className="text-muted-foreground text-xs md:max-w-md">
         {item.description}
       </span>
     </div>

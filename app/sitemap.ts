@@ -1,89 +1,32 @@
-import profileData from "@/data/profile.json";
-import { getBlogPosts } from "@/lib/notion";
+import { getPages, getProjects } from "@/lib/notion";
 import { MetadataRoute } from "next";
 
-interface OpenSourceProject {
-  name: string;
-  url: string;
-  description: string;
-}
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://jiaweing.com";
-  const currentDate = new Date();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";
 
-  // Main page
-  const routes: MetadataRoute.Sitemap = [
+  const pages = await getPages();
+  const projects = await getProjects();
+
+  const pageUrls = pages.map((page) => ({
+    url: `${baseUrl}/${page.slug}`,
+    lastModified: new Date(page.lastEdited),
+  }));
+
+  const projectUrls = projects.map((project) => ({
+    url: `${baseUrl}/projects/${project.slug}`,
+    lastModified: new Date(),
+  }));
+
+  return [
     {
       url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 1,
-    },
-    // Add potential future pages
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
+      lastModified: new Date(),
     },
     {
       url: `${baseUrl}/projects`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
+      lastModified: new Date(),
     },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    },
+    ...pageUrls,
+    ...projectUrls,
   ];
-
-  // Add all project URLs from profile data
-  if (profileData.opensource) {
-    profileData.opensource.forEach((project: OpenSourceProject) => {
-      if (
-        project.url &&
-        project.url.startsWith("https://github.com/jiaweing")
-      ) {
-        routes.push({
-          url: project.url,
-          lastModified: currentDate,
-          changeFrequency: "monthly" as const,
-          priority: 0.7,
-        });
-      }
-    });
-  }
-
-  // Add social profiles for better discoverability
-  const socialProfiles = [
-    "https://github.com/jiaweing",
-    "https://www.linkedin.com/in/jiaweing/",
-    "https://x.com/j14wei",
-  ];
-
-  socialProfiles.forEach((profile) => {
-    routes.push({
-      url: profile,
-      lastModified: currentDate,
-      changeFrequency: "monthly" as const,
-      priority: 0.5,
-    });
-  });
-
-  // Add blog posts
-  const posts = await getBlogPosts();
-  posts.forEach((post) => {
-    routes.push({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: new Date(post.date),
-      changeFrequency: "weekly" as const,
-      priority: 0.8,
-    });
-  });
-
-  return routes;
 }

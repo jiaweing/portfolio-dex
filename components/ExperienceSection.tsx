@@ -1,4 +1,3 @@
-import { OpenSourceSection } from "@/components/experience/OpenSourceSection";
 import { PastSection } from "@/components/experience/PastSection";
 import { PresentSection } from "@/components/experience/PresentSection";
 import { Project } from "@/lib/notion";
@@ -18,11 +17,6 @@ export function ExperienceSection({ projects }: ExperienceSectionProps) {
       {/* Past section appears when scrolled into view */}
       <div className="mb-6">
         <PastSection />
-      </div>
-
-      {/* Open source section appears when scrolled into view */}
-      <div className="mb-6">
-        <OpenSourceSection projects={projects} />
       </div>
     </div>
   );

@@ -155,7 +155,7 @@ export default function RootLayout({
             <div className="relative flex min-h-screen flex-col">
               <div>
                 <section className="overflow-hidden bg-white dark:bg-transparent">
-                  <div className="relative mx-auto max-w-2xl px-6 py-6 pb-16">
+                  <div className="relative mx-auto max-w-2xl px-6 py-6 pb-20">
                     <div className="relative mx-auto max-w-2xl space-y-4 leading-relaxed z-[100]">
                       <SiteHeader />
                       <MobileNav />
@@ -165,7 +165,7 @@ export default function RootLayout({
                       height="100px"
                       useThemeBackground
                     />
-                    <div className="flex-1 pt-14">{children}</div>
+                    <div className="flex-1 pt-20">{children}</div>
                     <ProgressiveBlur
                       position="bottom"
                       height="100px"
