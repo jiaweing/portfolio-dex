@@ -10,7 +10,7 @@
     {
       "title": "Founder",
       "organization": "ryu",
-      "url": "",
+      "url": "https://ryuhq.com",
       "description": "coming jan 2026"
     },
     {
@@ -55,6 +55,12 @@
       "organization": "Shopee",
       "url": "https://shopee.sg",
       "description": ""
+    },
+    {
+      "title": "Founder",
+      "organization": "decosmic.com",
+      "url": "https://decosmic.com",
+      "description": "build and deploy AI agents"
     },
     {
       "title": "Computer Science",
@@ -149,12 +155,6 @@
       "url": "https://tally.so/r/m6QO4O",
       "description": "personalized NFC business card service",
       "invertFavicon": "dark"
-    },
-    {
-      "title": "Founder",
-      "organization": "decosmic.com",
-      "url": "https://decosmic.com",
-      "description": "build and deploy AI agents"
     },
     {
       "title": "Founder",

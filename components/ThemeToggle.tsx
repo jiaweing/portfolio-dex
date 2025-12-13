@@ -1,6 +1,10 @@
 "use client";
 
-import { Monitor, Moon, Sun } from "lucide-react";
+import {
+  ComputerIcon as Monitor,
+  Moon01Icon as Moon,
+  Sun01Icon as Sun,
+} from "hugeicons-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";

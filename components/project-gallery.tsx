@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { ZoomIn } from "lucide-react";
+import { ZoomInAreaIcon as ZoomIn } from "hugeicons-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

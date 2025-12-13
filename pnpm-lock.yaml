@@ -147,6 +147,9 @@ importers:
       react:
         specifier: latest
         version: 19.2.3
+      react-confetti:
+        specifier: ^6.4.0
+        version: 6.4.0(react@19.2.3)
       react-day-picker:
         specifier: 8.10.1
         version: 8.10.1(date-fns@4.1.0)(react@19.2.3)
@@ -159,9 +162,6 @@ importers:
       react-resizable-panels:
         specifier: ^2.1.7
         version: 2.1.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react-snowfall:
-        specifier: ^2.4.0
-        version: 2.4.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       recharts:
         specifier: ^2.15.2
         version: 2.15.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -3528,6 +3528,12 @@ packages:
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
 
+  react-confetti@6.4.0:
+    resolution: {integrity: sha512-5MdGUcqxrTU26I2EU7ltkWPwxvucQTuqMm8dUz72z2YMqTD6s9vMcDUysk7n9jnC+lXuCPeJJ7Knf98VEYE9Rg==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      react: ^16.3.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
+
   react-day-picker@8.10.1:
     resolution: {integrity: sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA==}
     peerDependencies:
@@ -3538,9 +3544,6 @@ packages:
     resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
     peerDependencies:
       react: ^19.2.3
-
-  react-fast-compare@3.2.2:
-    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
 
   react-hook-form@7.55.0:
     resolution: {integrity: sha512-XRnjsH3GVMQz1moZTW53MxfoWN7aDpUg/GpVNc4A3eXRVNdGXfbzJ4vM4aLQ8g6XCUh1nIbx70aaNCl7kxnjog==}
@@ -3585,12 +3588,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  react-snowfall@2.4.0:
-    resolution: {integrity: sha512-KAPMiGnxt11PEgC2pTVrTQsvk5jt1kLUtG+ZamiKLphTZ7GiYT1Aa5kX6jp4jKWq1kqJHchnGT9CDm4g86A5Gg==}
-    peerDependencies:
-      react: "^16.8 ||\_17.x || 18.x || 19.x"
-      react-dom: ^16.8 || 17.x || 18.x || 19.x
 
   react-style-singleton@2.2.3:
     resolution: {integrity: sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ==}
@@ -3959,6 +3956,9 @@ packages:
 
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
+
+  tween-functions@1.2.0:
+    resolution: {integrity: sha512-PZBtLYcCLtEcjL14Fzb1gSxPBeL7nWvGhO5ZFPGqziCcr8uvHp0NDmdjBchp6KHL+tExcg0m3NISmKxhU394dA==}
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -7868,6 +7868,11 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
+  react-confetti@6.4.0(react@19.2.3):
+    dependencies:
+      react: 19.2.3
+      tween-functions: 1.2.0
+
   react-day-picker@8.10.1(date-fns@4.1.0)(react@19.2.3):
     dependencies:
       date-fns: 4.1.0
@@ -7877,8 +7882,6 @@ snapshots:
     dependencies:
       react: 19.2.3
       scheduler: 0.27.0
-
-  react-fast-compare@3.2.2: {}
 
   react-hook-form@7.55.0(react@19.2.3):
     dependencies:
@@ -7919,12 +7922,6 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       react-transition-group: 4.4.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-
-  react-snowfall@2.4.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
-    dependencies:
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-      react-fast-compare: 3.2.2
 
   react-style-singleton@2.2.3(@types/react@19.2.7)(react@19.2.3):
     dependencies:
@@ -8361,6 +8358,8 @@ snapshots:
       strip-bom: 3.0.0
 
   tslib@2.8.1: {}
+
+  tween-functions@1.2.0: {}
 
   type-check@0.4.0:
     dependencies:

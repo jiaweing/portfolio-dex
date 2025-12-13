@@ -4,13 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Bookmark,
-  GalleryHorizontalEnd,
-  Globe,
-  Heart,
-  Search,
-  User,
-} from "lucide-react";
+  Bookmark02Icon as Book,
+  BookOpen02Icon as GalleryHorizontalEnd,
+  Globe02Icon as Globe,
+  FavouriteIcon as Heart,
+  Search01Icon as Search,
+  UserIcon as User,
+} from "hugeicons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -27,7 +27,7 @@ export function SiteHeader() {
     { href: "/blog", icon: GalleryHorizontalEnd, label: "Blog" },
     { href: "/projects", icon: Search, label: "Projects" },
     { href: "/oss", icon: Globe, label: "Open Source" },
-    { href: "/books", icon: Bookmark, label: "Books" },
+    { href: "/books", icon: Book, label: "Books" },
     { href: "/setup", icon: Heart, label: "Setup" },
   ];
 
@@ -42,14 +42,14 @@ export function SiteHeader() {
 
       <header className="fixed left-6 top-1/2 z-[100] hidden -translate-y-1/2 lg:block">
         <nav
-          className="flex flex-col items-start gap-6 rounded-3xl bg-transparent p-2 transition-all duration-300"
+          className="flex flex-col items-start gap-8 rounded-3xl bg-transparent p-2 transition-all duration-300"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           {items.map((item) => (
             <Link
               key={item.href}
-              href={item.href}
+              href={item.href as any}
               className={cn(
                 "group flex items-center gap-3 rounded-full px-3 py-2 transition-all duration-300",
                 isActive(item.href)

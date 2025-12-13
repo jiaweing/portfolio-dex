@@ -4,7 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FadeIn } from "@/components/ui/fade-in";
 import { Project } from "@/lib/notion";
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import {
+  ArrowRight01Icon as ArrowRight,
+  LinkSquare02Icon as ExternalLink,
+} from "hugeicons-react";
 import Link from "next/link";
 
 interface ProjectContentProps {

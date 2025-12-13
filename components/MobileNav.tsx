@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu01Icon as Menu } from "hugeicons-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -56,7 +56,7 @@ export function MobileNav({ className }: MobileNavProps) {
                   <MobileLink href="/" onOpenChange={setOpen}>
                     Home
                   </MobileLink>
-                  <MobileLink href="/about" onOpenChange={setOpen}>
+                  <MobileLink href={"/about" as any} onOpenChange={setOpen}>
                     About
                   </MobileLink>
                   <MobileLink href="/blog" onOpenChange={setOpen}>

@@ -3,6 +3,7 @@ import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProfileBio } from "@/components/ProfileBio";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { FadeIn } from "@/components/ui/fade-in";
+import { PhotoGallery } from "@/components/ui/gallery";
 import { getProjects } from "@/lib/notion";
 
 import JsonLd from "./jsonld";
@@ -22,6 +23,9 @@ export default async function Home() {
       </FadeIn>
       <FadeIn delay={0.2}>
         <ContactSection />
+        <div className="mt-16">
+          <PhotoGallery />
+        </div>
       </FadeIn>
       <FadeIn delay={0.3}>
         <ExperienceSection projects={projects} />
