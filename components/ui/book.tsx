@@ -2,7 +2,6 @@
 
 import { useResponsive } from "@/hooks/use-responsive";
 import clsx from "clsx";
-import { Loading03Icon } from "hugeicons-react";
 import React from "react";
 
 const DefaultIllustration = (
@@ -50,7 +49,6 @@ interface BookProps {
   textColor?: string;
   illustration?: React.ReactNode;
   textured?: boolean;
-  loading?: boolean;
 }
 
 export const Book = ({
@@ -62,7 +60,6 @@ export const Book = ({
   textColor = "var(--ds-gray-1000)",
   illustration,
   textured = false,
-  loading = false,
 }: BookProps) => {
   const _width = useResponsive(width);
   const _color = color
@@ -142,18 +139,7 @@ export const Book = ({
                   {author}
                 </span>
               </span>
-              {variant === "stripe" ? (
-                loading ? (
-                  <Loading03Icon
-                    className="scale-75 -ml-1 -mb-1 animate-spin"
-                    height="24"
-                    width="24"
-                    style={{ color: textColor }}
-                  />
-                ) : null
-              ) : (
-                _illustration
-              )}
+              {variant === "stripe" ? null : _illustration}
             </div>
           </div>
           {textured && (

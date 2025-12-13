@@ -66,7 +66,7 @@ export function MobileNav({ className }: MobileNavProps) {
                     Projects
                   </MobileLink>
                   <MobileLink href="/oss" onOpenChange={setOpen}>
-                    OSS
+                    Open Source
                   </MobileLink>
                   <MobileLink href="/setup" onOpenChange={setOpen}>
                     Setup
