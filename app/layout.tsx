@@ -2,6 +2,7 @@ import { LayoutWidthWrapper } from "@/components/LayoutWidthWrapper";
 import { MobileNav } from "@/components/MobileNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SnowfallWrapper } from "@/components/snowfall-wrapper";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -179,6 +180,7 @@ export default function RootLayout({
           </PlausibleWrapper>
           <ThemeToggle />
           <TailwindIndicator />
+          <SnowfallWrapper />
           <GoogleAnalytics gaId="G-MJ0F694R8J" />
         </ThemeProvider>
       </body>

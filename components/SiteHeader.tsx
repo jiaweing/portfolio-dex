@@ -42,7 +42,7 @@ export function SiteHeader() {
 
       <header className="fixed left-6 top-1/2 z-[100] hidden -translate-y-1/2 lg:block">
         <nav
-          className="flex flex-col items-start gap-5.5 rounded-3xl bg-transparent p-2 transition-all duration-300"
+          className="flex flex-col items-start gap-6 rounded-3xl bg-transparent p-2 transition-all duration-300"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >

@@ -454,7 +454,10 @@ export const getProjects = unstable_cache(
             page.cover?.external?.url ||
             page.cover?.file?.url ||
             undefined,
-          screenshots: [],
+          screenshots:
+            page.properties?.Screenshots?.files?.map(
+              (file: any) => file.file?.url || file.external?.url
+            ) || [],
         }))
         .filter((p: Project) => p.title);
     } catch (e) {

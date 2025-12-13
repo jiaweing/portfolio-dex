@@ -1,10 +1,10 @@
 import { NotionRenderer } from "@/components/markdown-renderer";
 import ProjectGallery from "@/components/project-gallery";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FadeIn } from "@/components/ui/fade-in";
 import { Project } from "@/lib/notion";
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface ProjectContentProps {
@@ -29,19 +29,19 @@ export function ProjectContent({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  {project.logo && (
-                    <div className="relative w-12 h-12 overflow-hidden rounded-xl shrink-0 border border-white/10 bg-zinc-900/50 grayscale opacity-90">
-                      <Image
-                        src={project.logo}
-                        alt={project.title}
-                        fill
-                        className="object-cover p-1.5"
-                      />
-                    </div>
-                  )}
                   <h1 className="text-3xl font-medium tracking-tight md:text-4xl">
                     {project.title}
                   </h1>
+                  {project.logo && (
+                    <Avatar className="size-12 rounded-xl border border-white/10 bg-zinc-900/50">
+                      <AvatarImage
+                        src={project.logo}
+                        alt={project.title}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{project.title[0]}</AvatarFallback>
+                    </Avatar>
+                  )}
                 </div>
                 <span className="text-muted-foreground">{project.year}</span>
               </div>

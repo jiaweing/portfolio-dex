@@ -1,6 +1,7 @@
 "use client";
 
 import { ProjectContent } from "@/components/ProjectContent";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Project } from "@/lib/notion";
 import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { AnimatePresence, motion } from "framer-motion";
@@ -53,7 +54,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                 speed={100}
                 modules={[EffectCards, Keyboard, Mousewheel]}
                 keyboard={{ enabled: true }}
-                mousewheel={{ sensitivity: 1.5, forceToAxis: true }}
+                mousewheel={{ sensitivity: 1.5 }}
                 className="w-full h-full"
                 onSlideChange={(s) => setActiveIndex(s.realIndex)}
               >
@@ -90,9 +91,21 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                     {activeProject.year}
                   </span>
                 )}
-                <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                  {activeProject.title}
-                </h2>
+                <div className="flex items-center gap-3 justify-center">
+                  <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                    {activeProject.title}
+                  </h2>
+                  {activeProject.logo && (
+                    <Avatar className="size-8 rounded-lg border border-white/10 bg-zinc-900/50">
+                      <AvatarImage
+                        src={activeProject.logo}
+                        alt={activeProject.title}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
               </div>
               <p className="text-sm text-muted-foreground/90 leading-relaxed max-w-sm line-clamp-2">
                 {activeProject.description}
@@ -118,7 +131,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                 speed={100}
                 modules={[EffectCards, Keyboard, Mousewheel]}
                 keyboard={{ enabled: true }}
-                mousewheel={{ sensitivity: 1.5, forceToAxis: true }}
+                mousewheel={{ sensitivity: 1.5 }}
                 className="w-full h-full"
                 onSlideChange={(s) => setActiveIndex(s.realIndex)}
               >
@@ -154,9 +167,21 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                     {activeProject.year}
                   </span>
                 )}
-                <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                  {activeProject.title}
-                </h2>
+                <div className="flex items-center gap-3 justify-center">
+                  <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                    {activeProject.title}
+                  </h2>
+                  {activeProject.logo && (
+                    <Avatar className="size-8 rounded-lg border border-white/10 bg-zinc-900/50">
+                      <AvatarImage
+                        src={activeProject.logo}
+                        alt={activeProject.title}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
               </div>
               <p className="text-sm text-muted-foreground/90 leading-relaxed max-w-sm line-clamp-2">
                 {activeProject.description}
