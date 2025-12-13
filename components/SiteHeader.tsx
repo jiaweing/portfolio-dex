@@ -24,10 +24,10 @@ export function SiteHeader() {
 
   const items = [
     { href: "/about", icon: User, label: "About" },
-    { href: "/blog", icon: GalleryHorizontalEnd, label: "Blog" },
+    { href: "/blog", icon: Book, label: "Blog" },
     { href: "/projects", icon: Search, label: "Projects" },
     { href: "/oss", icon: Globe, label: "Open Source" },
-    { href: "/books", icon: Book, label: "Books" },
+    { href: "/books", icon: GalleryHorizontalEnd, label: "Books" },
     { href: "/setup", icon: Heart, label: "Setup" },
   ];
 

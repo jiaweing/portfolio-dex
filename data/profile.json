@@ -661,79 +661,92 @@
       "title": "Rich Dad Poor Dad",
       "author": "Robert Kiyosaki",
       "status": "in-progress",
-      "url": "https://www.goodreads.com/book/show/69571.Rich_Dad_Poor_Dad"
+      "url": "https://www.goodreads.com/book/show/69571.Rich_Dad_Poor_Dad",
+      "color": "#7c3aed"
     },
     {
       "title": "Zero to One",
       "author": "Peter Thiel",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/18050143-zero-to-one"
+      "url": "https://www.goodreads.com/book/show/18050143-zero-to-one",
+      "color": "#2563eb"
     },
     {
       "title": "Thinking, Fast and Slow",
       "author": "Daniel Kahneman",
       "status": "in-progress",
-      "url": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow"
+      "url": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow",
+      "color": "#4f46e5"
     },
     {
       "title": "The Subtle Art of Not Giving a F*ck",
       "author": "Mark Manson",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/28257707-the-subtle-art-of-not-giving-a-f-ck"
+      "url": "https://www.goodreads.com/book/show/28257707-the-subtle-art-of-not-giving-a-f-ck",
+      "color": "#ea580c"
     },
     {
       "title": "Atomic Habits",
       "author": "James Clear",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/40121378-atomic-habits"
+      "url": "https://www.goodreads.com/book/show/40121378-atomic-habits",
+      "color": "#eab308"
     },
     {
       "title": "The Almanack of Naval Ravikant",
       "author": "Eric Jorgenson",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/54366650-the-almanack-of-naval-ravikant"
+      "url": "https://www.goodreads.com/book/show/54366650-the-almanack-of-naval-ravikant",
+      "color": "#0f172a"
     },
     {
       "title": "The Woke Salaryman Crash Course on Capitalism",
       "author": "The Woke Salaryman",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/203920958-the-woke-salaryman-crash-course-on-capitalism-money"
+      "url": "https://www.goodreads.com/book/show/203920958-the-woke-salaryman-crash-course-on-capitalism-money",
+      "color": "#16a34a"
     },
     {
       "title": "100M Leads: How to Get Strangers To Want To Buy Your Stuff",
       "author": "Alex Hormozi",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/150267593-100m-leads"
+      "url": "https://www.goodreads.com/book/show/150267593-100m-leads",
+      "color": "#0d9488"
     },
     {
       "title": "Start Marketing the Day You Start Coding",
       "author": "Rob Walling",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/17696774-start-marketing-the-day-you-start-coding"
+      "url": "https://www.goodreads.com/book/show/17696774-start-marketing-the-day-you-start-coding",
+      "color": "#e11d48"
     },
     {
       "title": "Eat That Frog: 21 Great Ways to Stop Procrastinating",
       "author": "Brian Tracy",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/15392.Eat_That_Frog"
+      "url": "https://www.goodreads.com/book/show/15392.Eat_That_Frog",
+      "color": "#65a30d"
     },
     {
       "title": "The SaaS Playbook: Build a Multimillion-Dollar Startup",
       "author": "Rob Walling",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/60690022-the-saas-playbook"
+      "url": "https://www.goodreads.com/book/show/60690022-the-saas-playbook",
+      "color": "#0284c7"
     },
     {
       "title": "The Psychology of Money",
       "author": "Morgan Housel",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/50143831-the-psychology-of-money"
+      "url": "https://www.goodreads.com/book/show/50143831-the-psychology-of-money",
+      "color": "#059669"
     },
     {
       "title": "Million Dollar Weekend: The Surprising Secrets to Starting Your Business",
       "author": "Noah Kagan",
       "status": "completed",
-      "url": "https://www.goodreads.com/book/show/62925482-million-dollar-weekend"
+      "url": "https://www.goodreads.com/book/show/62925482-million-dollar-weekend",
+      "color": "#84cc16"
     }
   ]
 }
