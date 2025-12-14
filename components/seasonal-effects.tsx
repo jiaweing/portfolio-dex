@@ -50,7 +50,7 @@ export function SeasonalEffects() {
           left: 0,
           pointerEvents: "none",
         }}
-        snowflakeCount={100}
+        snowflakeCount={50}
       />
     );
   }
