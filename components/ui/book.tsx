@@ -49,6 +49,7 @@ interface BookProps {
   textColor?: string;
   illustration?: React.ReactNode;
   textured?: boolean;
+  coverImage?: string;
 }
 
 export const Book = ({
@@ -60,6 +61,7 @@ export const Book = ({
   textColor = "var(--ds-gray-1000)",
   illustration,
   textured = false,
+  coverImage,
 }: BookProps) => {
   const _width = useResponsive(width);
   const _color = color
@@ -72,7 +74,10 @@ export const Book = ({
   return (
     <div className="inline-block w-fit" style={{ perspective: 900 }}>
       <div
-        className="aspect-[49/60] w-fit relative rotate-0 duration-[250ms] book-rotate"
+        className={clsx(
+          "w-fit relative rotate-0 duration-[250ms] book-rotate",
+          !coverImage && "aspect-[49/60]"
+        )}
         style={{
           transformStyle: "preserve-3d",
           minWidth: _width,
@@ -86,12 +91,22 @@ export const Book = ({
           <div
             className={clsx(
               "w-full relative overflow-hidden",
-              variant === "stripe" && "flex-1"
+              variant === "stripe" && "flex-1",
+              coverImage && "h-full" // Ensure full height if cover image is present
             )}
             style={{ background: _color }}
           >
-            {variant === "stripe" && illustration && (
+            {variant === "stripe" && illustration && !coverImage && (
               <div className="absolute h-full w-full">{_illustration}</div>
+            )}
+            {variant === "stripe" && coverImage && (
+              <div className="w-full">
+                <img
+                  src={coverImage}
+                  alt={title}
+                  className="object-cover w-full h-auto block"
+                />
+              </div>
             )}
             <div
               className="absolute h-full w-[8.2%] mix-blend-overlay"
@@ -103,7 +118,8 @@ export const Book = ({
               "relative flex-1",
               (variant === "stripe" ||
                 (variant === "simple" && color === undefined)) &&
-                "bg-book-gradient"
+                "bg-book-gradient",
+              coverImage && "hidden" // Hide bottom part if cover image is present
             )}
             style={{
               background:
@@ -129,7 +145,8 @@ export const Book = ({
               <span
                 className={clsx(
                   "leading-[1.25em] tracking-[-.02em] text-balance font-semibold",
-                  variant === "simple" ? "text-[12cqw]" : "text-[10.5cqw]"
+                  variant === "simple" ? "text-[12cqw]" : "text-[10.5cqw]",
+                  coverImage && "hidden" // Hide text if cover image is present
                 )}
                 style={{ color: textColor }}
               >

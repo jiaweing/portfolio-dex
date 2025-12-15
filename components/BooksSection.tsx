@@ -12,15 +12,17 @@ type BookItem = {
   invertFavicon?: boolean | "light" | "dark" | "always";
   hideFavicon?: boolean;
   color?: string;
+  coverImage?: string;
 };
 
-export function BooksSection() {
-  const inProgressBooks = profileData.books.filter(
-    (book) => book.status === "in-progress"
-  );
-  const readBooks = profileData.books.filter(
-    (book) => book.status !== "in-progress"
-  );
+interface BooksSectionProps {
+  books?: BookItem[];
+}
+
+export function BooksSection({ books }: BooksSectionProps) {
+  const data = books || profileData.books;
+  const inProgressBooks = data.filter((book) => book.status === "in-progress");
+  const readBooks = data.filter((book) => book.status !== "in-progress");
 
   const renderBooks = (books: BookItem[]) => (
     <div className="flex flex-wrap gap-8 justify-center sm:justify-start">
@@ -33,6 +35,7 @@ export function BooksSection() {
             width={160}
             textured={true}
             color={book.color}
+            coverImage={book.coverImage}
           />
         );
 
