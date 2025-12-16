@@ -19,7 +19,7 @@ export default async function BlogPage() {
       <FadeIn>
         <h3 className="font-semibold mb-2">blog</h3>
       </FadeIn>
-      <div className="grid gap-10 space-y-1 text-sm leading-relaxed">
+      <div className="grid gap-1 space-y-1 text-sm leading-relaxed">
         {posts.map((post, index) => (
           <FadeIn key={post.id} delay={index * 0.1}>
             <article className="group relative flex flex-col sm:flex-row sm:items-center sm:justify-between border-b last:border-0 gap-2">
