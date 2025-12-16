@@ -22,7 +22,7 @@ export default async function BlogPage() {
       <div className="grid gap-10 space-y-1 text-sm leading-relaxed">
         {posts.map((post, index) => (
           <FadeIn key={post.id} delay={index * 0.1}>
-            <article className="group relative flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-8 last:border-0 gap-2">
+            <article className="group relative flex flex-col sm:flex-row sm:items-center sm:justify-between border-b last:border-0 gap-2">
               <Link
                 href={`/blog/${post.slug}`}
                 className="hover:underline font-medium text-foreground truncate min-w-0 max-w-sm"
