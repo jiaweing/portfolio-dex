@@ -1,13 +1,11 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { SantaAvatar } from "@/components/SantaAvatar";
 
 export function ProfileHeader() {
   return (
     <div className="space-y-4">
-      <Avatar className="size-10 rounded-xl">
-        <AvatarImage src="/images/avatars/shadcn.png" alt="logo" />
-        <AvatarFallback>JW</AvatarFallback>
-      </Avatar>
+      <SantaAvatar className="size-10" />
 
       <div>
         <h1 className="text-2xl font-medium tracking-tighter">

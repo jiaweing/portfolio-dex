@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SantaAvatar } from "@/components/SantaAvatar";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -33,11 +33,8 @@ export function SiteHeader() {
 
   return (
     <>
-      <Link href="/" className="fixed left-9 top-6 z-[200] hidden lg:block">
-        <Avatar className="size-10 rounded-xl border border-white/10 shadow-xl hover:scale-110 transition-transform duration-300">
-          <AvatarImage src="/images/avatars/shadcn.png" alt="Jia Wei Ng" />
-          <AvatarFallback>JW</AvatarFallback>
-        </Avatar>
+      <Link href="/" className="fixed left-9 top-6 z-[200] hidden lg:block group">
+        <SantaAvatar className="size-10" />
       </Link>
 
       <header className="fixed left-6 top-1/2 z-[100] hidden -translate-y-1/2 lg:block">
