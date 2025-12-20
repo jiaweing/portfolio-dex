@@ -1,6 +1,6 @@
 "use client";
 
-import { GiftIcon } from "hugeicons-react";
+import { Gift } from "lucide-react";
 
 export function WrappedGiftIcon({
 	className,
@@ -10,15 +10,22 @@ export function WrappedGiftIcon({
 	strokeWidth?: number;
 }) {
 	return (
-		<>
-			<svg width="0" height="0" className="absolute pointer-events-none" aria-hidden="true">
+		<div className={`relative ${className || ""}`}>
+			<svg
+				width="100%"
+				height="100%"
+				viewBox="0 0 24 24"
+				className="overflow-visible"
+			>
 				<defs>
 					<linearGradient
 						id="wrapped-icon-gradient"
+						gradientUnits="userSpaceOnUse"
 						x1="0"
 						y1="0"
-						x2="1"
+						x2="48"
 						y2="0"
+						gradientTransform="rotate(30 12 12)"
 						spreadMethod="repeat"
 					>
 						<stop offset="0" stopColor="rgb(59, 130, 246)" />
@@ -29,23 +36,34 @@ export function WrappedGiftIcon({
 						<animateTransform
 							attributeName="gradientTransform"
 							type="translate"
-							from="-1 0"
-							to="0 0"
+							from="0 0"
+							to="-48 0"
 							dur="4s"
 							repeatCount="indefinite"
+							additive="sum"
 						/>
 					</linearGradient>
+					<mask id="icon-mask" maskUnits="userSpaceOnUse">
+						<Gift
+							className="h-full w-full"
+							stroke="white"
+							strokeWidth={strokeWidth}
+							/* Ensure the inner SVG scales to fit our parent SVG viewBox */
+							width="24"
+							height="24"
+						/>
+					</mask>
 				</defs>
+				{/* The Gradient Rect, revealed only where the Icon Mask is white (the strokes) */}
+				<rect
+					x="-50%"
+					y="-50%"
+					width="200%"
+					height="200%"
+					fill="url(#wrapped-icon-gradient)"
+					mask="url(#icon-mask)"
+				/>
 			</svg>
-			<style dangerouslySetInnerHTML={{__html: `
-				.wrapped-gift-icon, .wrapped-gift-icon path {
-					stroke: url(#wrapped-icon-gradient) !important;
-				}
-			`}} />
-			<GiftIcon
-				className={`wrapped-gift-icon ${className || ""}`}
-				strokeWidth={strokeWidth}
-			/>
-		</>
+		</div>
 	);
 }

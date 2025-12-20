@@ -12,7 +12,7 @@ export default function WrappedPage() {
 	return (
 		<div className="space-y-12 px-20 2xl:px-0">
 			<div className="flex flex-col items-center text-center space-y-4">
-				<h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+				<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
 					2025 Wrapped
 				</h1>
 				<p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
