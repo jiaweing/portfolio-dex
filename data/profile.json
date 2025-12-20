@@ -663,7 +663,7 @@
       "status": "in-progress",
       "url": "https://www.goodreads.com/book/show/69571.Rich_Dad_Poor_Dad",
       "color": "#7c3aed",
-      "coverImage": "/books/rich-dad-poor-dad.jpg"
+      "coverImage": "/images/books/rich-dad-poor-dad.jpg"
     },
     {
       "title": "Zero to One",
@@ -671,7 +671,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/18050143-zero-to-one",
       "color": "#2563eb",
-      "coverImage": "/books/zero-to-one.jpg"
+      "coverImage": "/images/books/zero-to-one.jpg"
     },
     {
       "title": "Thinking, Fast and Slow",
@@ -679,7 +679,7 @@
       "status": "in-progress",
       "url": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow",
       "color": "#4f46e5",
-      "coverImage": "/books/thinking-fast-and-slow.jpg"
+      "coverImage": "/images/books/thinking-fast-and-slow.jpg"
     },
     {
       "title": "The Subtle Art of Not Giving a F*ck",
@@ -687,7 +687,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/28257707-the-subtle-art-of-not-giving-a-f-ck",
       "color": "#ea580c",
-      "coverImage": "/books/the-subtle-art-of-not-giving-a-f-ck.jpg"
+      "coverImage": "/images/books/the-subtle-art-of-not-giving-a-f-ck.jpg"
     },
     {
       "title": "Atomic Habits",
@@ -695,7 +695,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/40121378-atomic-habits",
       "color": "#eab308",
-      "coverImage": "/books/atomic-habits.jpg"
+      "coverImage": "/images/books/atomic-habits.jpg"
     },
     {
       "title": "The Almanack of Naval Ravikant",
@@ -703,7 +703,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/54366650-the-almanack-of-naval-ravikant",
       "color": "#0f172a",
-      "coverImage": "/books/the-almanack-of-naval-ravikant.jpg"
+      "coverImage": "/images/books/the-almanack-of-naval-ravikant.jpg"
     },
     {
       "title": "The Woke Salaryman Crash Course on Capitalism",
@@ -711,7 +711,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/123267562-the-woke-salaryman-crash-course-on-capitalism-money",
       "color": "#16a34a",
-      "coverImage": "/books/the-woke-salaryman-crash-course-on-capitalism.jpg"
+      "coverImage": "/images/books/the-woke-salaryman-crash-course-on-capitalism.jpg"
     },
     {
       "title": "100M Leads: How to Get Strangers To Want To Buy Your Stuff",
@@ -719,7 +719,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/150267593-100m-leads",
       "color": "#0d9488",
-      "coverImage": "/books/100m-leads-how-to-get-strangers-to-want-to-buy-your-stuff.jpg"
+      "coverImage": "/images/books/100m-leads-how-to-get-strangers-to-want-to-buy-your-stuff.jpg"
     },
     {
       "title": "Start Marketing the Day You Start Coding",
@@ -727,7 +727,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/52545626-start-marketing-the-day-you-start-coding",
       "color": "#e11d48",
-      "coverImage": "/books/start-marketing-the-day-you-start-coding.jpg"
+      "coverImage": "/images/books/start-marketing-the-day-you-start-coding.jpg"
     },
     {
       "title": "Eat That Frog: 21 Great Ways to Stop Procrastinating",
@@ -735,7 +735,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/95887.Eat_That_Frog_",
       "color": "#65a30d",
-      "coverImage": "/books/eat-that-frog-21-great-ways-to-stop-procrastinating.jpg"
+      "coverImage": "/images/books/eat-that-frog-21-great-ways-to-stop-procrastinating.jpg"
     },
     {
       "title": "The SaaS Playbook: Build a Multimillion-Dollar Startup",
@@ -743,7 +743,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/178816351-the-saas-playbook",
       "color": "#0284c7",
-      "coverImage": "/books/the-saas-playbook-build-a-multimillion-dollar-startup.jpg"
+      "coverImage": "/images/books/the-saas-playbook-build-a-multimillion-dollar-startup.jpg"
     },
     {
       "title": "The Psychology of Money",
@@ -751,7 +751,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/41881472-the-psychology-of-money",
       "color": "#059669",
-      "coverImage": "/books/the-psychology-of-money.jpg"
+      "coverImage": "/images/books/the-psychology-of-money.jpg"
     },
     {
       "title": "Million Dollar Weekend: The Surprising Secrets to Starting Your Business",
@@ -759,7 +759,7 @@
       "status": "completed",
       "url": "https://www.goodreads.com/book/show/145624504-million-dollar-weekend",
       "color": "#84cc16",
-      "coverImage": "/books/million-dollar-weekend-the-surprising-secrets-to-starting-your-business.jpg"
+      "coverImage": "/images/books/million-dollar-weekend-the-surprising-secrets-to-starting-your-business.jpg"
     }
   ]
 }
