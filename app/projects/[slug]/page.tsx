@@ -1,5 +1,6 @@
 import { ProjectContent } from "@/components/ProjectContent";
 import { FadeIn } from "@/components/ui/fade-in";
+import { generateProjectMetadata } from "@/lib/metadata";
 import { getProject, getProjects } from "@/lib/notion";
 import { ChevronLeft } from "lucide-react";
 import { Metadata } from "next";
@@ -33,10 +34,7 @@ export async function generateMetadata({
     };
   }
 
-  return {
-    title: project.title,
-    description: project.description,
-  };
+  return generateProjectMetadata(project);
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {

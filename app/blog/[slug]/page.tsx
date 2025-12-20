@@ -3,6 +3,7 @@ import { PostTags } from "@/components/blog/PostTags";
 import { NotionRenderer } from "@/components/NotionRenderer";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
+import { generateBlogMetadata } from "@/lib/metadata";
 import { getBlogPost, getBlogPosts } from "@/lib/notion";
 import { ArrowLeft } from "lucide-react";
 import { Metadata } from "next";
@@ -36,10 +37,7 @@ export async function generateMetadata({
     };
   }
 
-  return {
-    title: post.title,
-    description: post.description,
-  };
+  return generateBlogMetadata(post);
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {

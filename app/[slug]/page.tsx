@@ -1,5 +1,6 @@
 import { NotionRenderer } from "@/components/markdown-renderer";
 import { FadeIn } from "@/components/ui/fade-in";
+import { generatePageMetadata } from "@/lib/metadata";
 import { getPage, getPages } from "@/lib/notion";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -27,10 +28,7 @@ export async function generateMetadata({
     };
   }
 
-  return {
-    title: page.title,
-    description: page.description,
-  };
+  return generatePageMetadata(page);
 }
 
 export default async function GenericPage({

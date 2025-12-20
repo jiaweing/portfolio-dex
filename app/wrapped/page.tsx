@@ -1,13 +1,13 @@
 import { AnimatedGradientText } from "@/components/wrapped/animated-gradient-text";
 import { BentoCard } from "@/components/wrapped/bento-card";
 import { BentoGrid } from "@/components/wrapped/bento-grid";
+import { generateMetadata } from "@/lib/metadata";
 import { wrappedData } from "@/lib/wrapped-data";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-	title: "2025 Wrapped | Jia Wei Ng",
-	description: "A look back at my 2025 - milestones, travels, and creations.",
-};
+export const metadata = generateMetadata({
+  title: "2025 Wrapped",
+  description: "A look back at my 2025 - milestones, travels, and creations.",
+});
 
 export default function WrappedPage() {
 	return (

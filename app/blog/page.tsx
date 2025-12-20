@@ -1,15 +1,16 @@
 import { PostDate } from "@/components/blog/PostDate";
 import { PostTags } from "@/components/blog/PostTags";
 import { FadeIn } from "@/components/ui/fade-in";
+import { generateMetadata } from "@/lib/metadata";
 import { getBlogPosts } from "@/lib/notion";
 import Link from "next/link";
 
 export const revalidate = 3600; // Update every hour
 
-export const metadata = {
+export const metadata = generateMetadata({
   title: "Blog",
   description: "Thoughts on software engineering, design, and technology.",
-};
+});
 
 export default async function BlogPage() {
   const posts = await getBlogPosts();

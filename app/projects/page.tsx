@@ -1,12 +1,12 @@
 import { ProjectsCardStack } from "@/components/ProjectsCardStack";
 import { FadeIn } from "@/components/ui/fade-in";
+import { generateMetadata } from "@/lib/metadata";
 import { getProject, getProjects } from "@/lib/notion";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = generateMetadata({
   title: "Projects",
   description: "A showcase of my recent work and projects.",
-};
+});
 
 export const revalidate = 60;
 

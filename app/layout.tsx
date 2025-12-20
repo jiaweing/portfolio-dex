@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { SeasonalEffects } from "@/components/seasonal-effects";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import {
-  ProgressiveBlur
+	ProgressiveBlur
 } from "@/components/ui/skiper-ui/progressive-blur";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
@@ -24,10 +24,14 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
+import { siteConfig } from "@/lib/metadata";
+
 export const metadata: Metadata = {
-	title: "Jia Wei Ng",
-	description:
-		"Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
+	title: {
+		default: siteConfig.name,
+		template: `%s \u00A0·\u00A0 ${siteConfig.name}`,
+	},
+	description: siteConfig.description,
 	keywords: [
 		"Jia Wei Ng",
 		"Software Engineer",
@@ -62,33 +66,29 @@ export const metadata: Metadata = {
 		type: "website",
 		locale: "en_US",
 		url: "https://jiaweing.com",
-		title: "Jia Wei Ng",
-		description:
-			"Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
-		siteName: "Jia Wei Ng",
+		title: siteConfig.name,
+		description: siteConfig.description,
+		siteName: siteConfig.name,
 		images: [
 			{
-				url: "https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
+				url: siteConfig.ogImage,
 				width: 1200,
 				height: 630,
-				alt: "Jia Wei Ng",
+				alt: siteConfig.name,
 			},
 		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Jia Wei Ng",
-		description:
-			"Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
-		creator: "@j14wei",
-		images: [
-			"https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
-		],
+		title: siteConfig.name,
+		description: siteConfig.description,
+		creator: siteConfig.links.twitter.replace("https://twitter.com/", "@"),
+		images: [siteConfig.ogImage],
 	},
 	appleWebApp: {
 		capable: true,
 		statusBarStyle: "default",
-		title: "Jia Wei Ng",
+		title: siteConfig.name,
 	},
 	formatDetection: {
 		telephone: false,
