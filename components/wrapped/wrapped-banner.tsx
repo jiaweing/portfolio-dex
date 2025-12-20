@@ -75,6 +75,9 @@ export function WrappedBanner({
                                 </defs>
                             </svg>
                             
+							<span className="text-zinc-600 dark:text-zinc-400">
+								My
+							</span>
 							<motion.div
 								className="font-semibold"
 								style={{
@@ -94,10 +97,10 @@ export function WrappedBanner({
 									repeat: Infinity,
 								}}
 							>
-								<span>My 2025 Wrapped is here!</span>
+								<span>2025 Wrapped</span>
 							</motion.div>
 							<span className="text-zinc-600 dark:text-zinc-400">
-								Happy holidays!
+								 is here! Happy holidays!
 							</span>
 						</div>
 
