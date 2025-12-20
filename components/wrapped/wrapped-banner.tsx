@@ -1,0 +1,148 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { XIcon } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+export function WrappedBanner() {
+	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		// Check if the banner has been dismissed previously
+		const isDismissed = localStorage.getItem("wrapped-banner-dismissed-2025");
+		if (!isDismissed) {
+			setIsVisible(true);
+		}
+	}, []);
+
+	const handleDismiss = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setIsVisible(false);
+		localStorage.setItem("wrapped-banner-dismissed-2025", "true");
+	};
+
+	if (!isVisible) return null;
+
+	const gradientStyle = {
+		background:
+			"linear-gradient(174.024deg, rgb(59, 130, 246), rgb(168, 85, 247), rgb(239, 68, 68), rgb(249, 115, 22))",
+	};
+
+	return (
+		<AnimatePresence>
+			<motion.div
+				initial={{ height: 0, opacity: 0 }}
+				animate={{ height: "auto", opacity: 1 }}
+				exit={{ height: 0, opacity: 0 }}
+				className="relative overflow-hidden pb-10"
+			>
+				<Link
+					href="/wrapped"
+					className="group relative block w-full rounded-xl"
+				>
+					{/* Border Container */}
+					<div className="relative overflow-hidden rounded-xl">
+
+
+						{/* Inner Content */}
+						<div className="relative flex items-center justify-center gap-2 rounded-xl bg-white dark:bg-zinc-950 px-4 py-3 text-sm font-medium transition-colors">
+                            {/* Icon Shimmer Gradient Definition */}
+                            <svg className="absolute w-0 h-0">
+                                <defs>
+                                    <linearGradient id="icon-shimmer" x1="0" y1="0" x2="1" y2="0" spreadMethod="repeat">
+                                        <stop offset="0" stopColor="rgb(59, 130, 246)" />
+                                        <stop offset="0.25" stopColor="rgb(168, 85, 247)" />
+                                        <stop offset="0.5" stopColor="rgb(239, 68, 68)" />
+                                        <stop offset="0.75" stopColor="rgb(249, 115, 22)" />
+                                        <stop offset="1" stopColor="rgb(59, 130, 246)" />
+                                        <animateTransform
+                                            attributeName="gradientTransform"
+                                            type="translate"
+                                            from="-1 0"
+                                            to="0 0"
+                                            dur="4s"
+                                            repeatCount="indefinite"
+                                        />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            
+                            {/* SVG Gradient Inner Glow */}
+                            <svg 
+                                className="absolute inset-0 h-full w-full pointer-events-none opacity-80 group-hover:opacity-100 blur-[4px] group-hover:blur-[8px] transition-all duration-500" 
+                            >
+                                <defs>
+                                    <linearGradient id="banner-glow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stopColor="rgb(59, 130, 246)" />
+                                        <stop offset="33%" stopColor="rgb(168, 85, 247)" />
+                                        <stop offset="66%" stopColor="rgb(239, 68, 68)" />
+                                        <stop offset="100%" stopColor="rgb(249, 115, 22)" />
+                                        <animateTransform
+                                            attributeName="gradientTransform"
+                                            type="rotate"
+                                            from="0 .5 .5"
+                                            to="360 .5 .5"
+                                            dur="4s"
+                                            repeatCount="indefinite"
+                                        />
+                                    </linearGradient>
+                                </defs>
+                                <rect 
+                                    x="0" 
+                                    y="0" 
+                                    width="100%" 
+                                    height="100%" 
+                                    rx="12" 
+                                    ry="12" 
+                                    fill="none" 
+                                    stroke="url(#banner-glow-grad-2)" 
+                                    className="stroke-[6px] group-hover:stroke-[10px] transition-all duration-500"
+                                />
+                            </svg>
+
+							<motion.div
+								className="font-semibold"
+								style={{
+									backgroundImage:
+										"linear-gradient(120deg, rgb(59, 130, 246) 0%, rgb(168, 85, 247) 25%, rgb(239, 68, 68) 50%, rgb(249, 115, 22) 75%, rgb(59, 130, 246) 100%)",
+									backgroundSize: "200% auto",
+									backgroundClip: "text",
+									WebkitBackgroundClip: "text",
+									color: "transparent",
+								}}
+								animate={{
+									backgroundPosition: ["0% center", "200% center"],
+								}}
+								transition={{
+									duration: 4,
+									ease: "linear",
+									repeat: Infinity,
+								}}
+							>
+								<span>My 2025 Wrapped is here!</span>
+							</motion.div>
+							<span className="text-zinc-600 dark:text-zinc-400">
+								Check out my year in review
+							</span>
+							<span className="block transition-transform group-hover:translate-x-1 text-zinc-400">
+								→
+							</span>
+						</div>
+
+						{/* Dismiss Button */}
+						<button
+							type="button"
+							onClick={handleDismiss}
+							className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors z-20"
+							aria-label="Dismiss banner"
+						>
+							<XIcon className="h-4 w-4" />
+						</button>
+					</div>
+				</Link>
+			</motion.div>
+		</AnimatePresence>
+	);
+}
