@@ -10,7 +10,7 @@ export type IconName =
   | "BulbIcon"
   | "Car01Icon"
   | "CodeIcon"
-  | "CommandIcon"
+  | "Search01Icon"
   | "ConferenceIcon"
   | "CpuIcon"
   | "DentalToothIcon"
@@ -24,14 +24,14 @@ export type IconName =
   | "GithubIcon"
   | "Globe02Icon"
   | "HappyIcon"
-  | "Link01Icon"
+  | "LaurelWreathFirst02Icon"
   | "Mail01Icon"
   | "MailAtSign01Icon"
   | "MapsCircle01Icon"
   | "Mic01Icon"
   | "News01Icon"
   | "Notion02Icon"
-  | "Rocket01Icon"
+  | "Ghost"
   | "ShoppingBag01Icon"
   | "SkullIcon"
   | "SparklesIcon"
@@ -45,11 +45,12 @@ export interface WrappedItem {
   title: string;
   description?: string;
   category: "milestone" | "creation" | "travel" | "personal" | "social";
-  highlight?: boolean;
+
   stat?: string;
   iconName?: IconName;
   color?: string; // Tailwind color name (e.g., "blue", "rose", "amber")
   className?: string; // For custom grid positioning
+  href?: string;
 }
 
 export const wrappedData: WrappedItem[] = [
@@ -58,7 +59,8 @@ export const wrappedData: WrappedItem[] = [
     id: "company",
     title: "Incorporated a company in Singapore",
     category: "milestone",
-    highlight: true,
+    description: "Base 7",
+    href: "https://base07.com",
     iconName: "Building02Icon",
     color: "amber",
     className: "md:col-span-2 md:row-span-2",
@@ -68,6 +70,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Repos on GitHub",
     stat: "182",
     category: "milestone",
+    href: "https://github.com/jiaweing",
     iconName: "GithubIcon",
     color: "slate",
     className: "md:col-span-1 md:row-span-1",
@@ -77,7 +80,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Commits Pushed",
     stat: "2.1k",
     category: "milestone",
-    highlight: true,
+    href: "https://github.com/jiaweing",
     iconName: "GitCommitIcon",
     color: "emerald",
     className: "md:col-span-2 md:row-span-1",
@@ -88,8 +91,19 @@ export const wrappedData: WrappedItem[] = [
     stat: "182",
     description: "DropDrawer",
     category: "milestone",
+    href: "https://github.com/jiaweing/DropDrawer",
     iconName: "StarIcon",
     color: "yellow",
+  },
+    {
+    id: "newspaper",
+    title: "Featured on a local newspaper",
+    description: "Business Times",
+    category: "milestone",
+    href: "https://www.businesstimes.com.sg/lifestyle/dell-innovatefest-2025-uses-ai-address-mental-health-issues",
+    iconName: "News01Icon",
+    color: "purple",
+    className: "md:col-span-2 md:row-span-2",
   },
   {
     id: "google-hackathon",
@@ -97,29 +111,24 @@ export const wrappedData: WrappedItem[] = [
     stat: "Top 10",
     description: "Flown to Philippines",
     category: "milestone",
+    href: "https://vision.hack2skill.com/event/apacsolutionchallenge",
     iconName: "Award01Icon",
     color: "blue",
-    className: "md:col-span-2 md:row-span-1",
+    className: "md:col-span-2 md:row-span-2",
   },
   {
     id: "license",
     title: "Got my driver's license",
     category: "milestone",
+    href: "https://www.youtube.com/watch?v=ZmDBbnmKpqQ&list=RDZmDBbnmKpqQ",
     iconName: "Car01Icon",
     color: "red",
-  },
-  {
-    id: "newspaper",
-    title: "Featured on a local newspaper",
-    category: "milestone",
-    highlight: true,
-    iconName: "News01Icon",
-    color: "slate",
   },
   {
     id: "notion",
     title: "Became a Notion Campus Lead",
     category: "milestone",
+    href: "https://www.linkedin.com/posts/jiaweing_notion-campusleader-sit-activity-7371477567754911745-6vXi",
     iconName: "Notion02Icon",
     color: "zinc",
   },
@@ -130,56 +139,53 @@ export const wrappedData: WrappedItem[] = [
     description: "2 gave up, 3 in progress",
     stat: "5",
     category: "creation",
-    highlight: true,
+    href: "https://jiaweing.com/projects",
     iconName: "Rocket01Icon",
-    color: "indigo",
+    color: "pink",
     className: "md:col-span-2 md:row-span-2",
   },
   {
     id: "clothing",
     title: "Launched a clothing brand",
-    description: "Dropped 2 series",
+    description: "2 series drops",
     category: "creation",
+    href: "https://supply.tf",
     iconName: "TShirtIcon",
-    color: "rose",
+    color: "blue",
+    className: "md:col-span-1 md:row-span-1",
+  },
+    {
+    id: "newsletter",
+    title: "Launched a newsletter",
+    category: "creation",
+    href: "https://updatenight.com",
+    iconName: "Mail01Icon",
+    color: "yellow",
     className: "md:col-span-1 md:row-span-1",
   },
   {
     id: "podcast",
     title: "Started a podcast on Spotify",
     category: "creation",
+    href: "https://updatenight.com/p/podcast",
     iconName: "Mic01Icon",
-    color: "purple",
+    color: "emerald",
     className: "md:col-span-1 md:row-span-1",
   },
-  {
-    id: "newsletter",
-    title: "Launched a newsletter",
-    category: "creation",
-    iconName: "Mail01Icon",
-    color: "orange",
-    className: "md:col-span-1 md:row-span-1",
-  },
-
   {
     id: "shopee",
     title: "Launched a shop on Shopee",
     category: "creation",
+    href: "https://shopee.sg/supplythefuture",
     iconName: "ShoppingBag01Icon",
     color: "orange",
   },
   {
-    id: "rust",
-    title: "Coded my first Rust app",
-    category: "creation",
-    iconName: "CpuIcon",
-    color: "orange",
-  },
-  {
     id: "blockchain-tshirt",
-    title: "World's 1st Blockchained T-shirts",
+    title: "World's 1st blockchained T-shirts",
     category: "creation",
-    iconName: "Link01Icon",
+    href: "https://supply.tf",
+    iconName: "LaurelWreathFirst02Icon",
     color: "cyan",
     className: "md:col-span-1 md:row-span-1",
   },
@@ -188,9 +194,18 @@ export const wrappedData: WrappedItem[] = [
     title: "Launching my 18th startup",
     stat: "2026",
     category: "creation",
-    iconName: "Rocket01Icon",
+    href: "https://jiaweing.com/projects",
+    iconName: "Ghost",
     color: "violet",
     className: "md:col-span-2 md:row-span-1",
+  },
+    {
+    id: "rust",
+    title: "My next startup build in Rust",
+    category: "creation",
+    href: "#",
+    iconName: "CpuIcon",
+    color: "slate",
   },
 
   // --- Travel ---
@@ -200,23 +215,25 @@ export const wrappedData: WrappedItem[] = [
     description: "Spent $23k",
     stat: "26",
     category: "travel",
-    highlight: true,
+    href: "#",
     iconName: "MapsCircle01Icon",
     color: "emerald",
     className: "md:col-span-2 md:row-span-2",
   },
-  {
-    id: "solo-travel",
-    title: "Solo traveled for the first time",
+    {
+    id: "europe-uk",
+    title: "Went Europe and UK for the first time",
     category: "travel",
-    iconName: "Briefcase01Icon",
-    color: "sky",
+    href: "#",
+    iconName: "EuroIcon",
+    color: "indigo",
     className: "md:col-span-2 md:row-span-1",
   },
   {
     id: "eiffel",
     title: "Saw the Eiffel Tower",
     category: "travel",
+    href: "#",
     iconName: "EiffelTowerIcon",
     color: "yellow",
   },
@@ -224,6 +241,7 @@ export const wrappedData: WrappedItem[] = [
     id: "catacombs",
     title: "Walked the Paris Catacombs",
     category: "travel",
+    href: "#",
     iconName: "SkullIcon",
     color: "stone",
   },
@@ -232,58 +250,65 @@ export const wrappedData: WrappedItem[] = [
     title: "Wonders of the World",
     stat: "1/7",
     category: "travel",
+    description: "The Colosseum",
+    href: "#",
     iconName: "SparklesIcon",
     color: "amber",
   },
   {
     id: "long-flight",
-    title: "Longest Flight",
+    title: "Took my longest flight",
     stat: "18h",
     category: "travel",
+    href: "#",
     iconName: "Airplane01Icon",
     color: "blue",
     className: "md:col-span-2 md:row-span-1",
   },
   {
     id: "disneyland",
-    title: "Visited Disneyland",
+    title: "Visited Disneyland for the first time",
     category: "travel",
+    href: "#",
     iconName: "SparklesIcon",
     color: "pink",
   },
-  {
-    id: "europe-uk",
-    title: "Went Europe and UK",
+    {
+    id: "solo-travel",
+    title: "Solo traveled for the first time",
     category: "travel",
-    iconName: "EuroIcon",
-    color: "indigo",
+    href: "#",
+    iconName: "Briefcase01Icon",
+    color: "sky",
     className: "md:col-span-2 md:row-span-1",
   },
 
   // --- Personal ---
-  {
-    id: "books",
-    title: "Books Read",
-    stat: "4",
-    category: "personal",
-    iconName: "Book01Icon",
-    color: "stone",
-  },
   {
     id: "girlfriend",
     title: "Days with my girlfriend",
     stat: "1000+",
     description: "3 years",
     category: "personal",
-    highlight: true,
+    href: "#",
     iconName: "FavouriteIcon",
     color: "red",
-    className: "md:col-span-2 md:row-span-1",
+    className: "md:col-span-2 md:row-span-2",
+  },
+  {
+    id: "books",
+    title: "Books Read",
+    stat: "4",
+    category: "personal",
+    href: "https://jiaweing.com/books",
+    iconName: "Book01Icon",
+    color: "stone",
   },
   {
     id: "cycling",
     title: "Started cycling everyday",
     category: "personal",
+    href: "#",
     iconName: "Bicycle01Icon",
     color: "lime",
   },
@@ -292,6 +317,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Wisdom Teeth Out",
     stat: "2/4",
     category: "personal",
+    href: "#",
     iconName: "DentalToothIcon",
     color: "teal",
   },
@@ -302,47 +328,54 @@ export const wrappedData: WrappedItem[] = [
     title: "Conferences Attended",
     stat: "5",
     category: "social",
+    href: "#",
     iconName: "ConferenceIcon",
-    color: "sky",
+    color: "blue",
   },
   {
     id: "hackathons",
     title: "Hackathons Joined",
     stat: "4",
     category: "social",
-    iconName: "CommandIcon",
-    color: "emerald",
+    href: "#",
+    iconName: "Search01Icon",
+    color: "violet",
   },
   {
     id: "github-stars-given",
     title: "Starred Repos",
     stat: "1.5k",
     category: "social",
+    href: "https://github.com/jiaweing",
     iconName: "StarIcon",
     color: "yellow",
+    className: "md:col-span-2 md:row-span-2",
   },
   {
     id: "threads-followers",
     title: "Followers on Threads",
     stat: "160",
     category: "social",
+    href: "https://threads.com/@j14.wei",
     iconName: "ThreadsIcon",
     color: "zinc",
+    className: "md:col-span-1 md:row-span-2",
   },
   {
     id: "threads-views",
     title: "Views on Threads",
     stat: "170k",
     category: "social",
+    href: "https://threads.com/@j14.wei",
     iconName: "ThreadsIcon",
     color: "zinc",
-    highlight: true,
   },
   {
     id: "friends",
     title: "Made friends across Asia",
     description: "Korea, Pakistan, Indonesia, Japan, Philippines",
     category: "social",
+    href: "#",
     iconName: "EarthIcon",
     color: "teal",
     className: "md:col-span-2 md:row-span-1",

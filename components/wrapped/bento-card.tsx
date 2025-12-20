@@ -14,7 +14,6 @@ import {
 	BulbIcon,
 	Car01Icon,
 	CodeIcon,
-	CommandIcon,
 	ConferenceIcon,
 	CpuIcon,
 	DentalToothIcon,
@@ -28,22 +27,24 @@ import {
 	GithubIcon,
 	Globe02Icon,
 	HappyIcon,
-	Link01Icon,
+	LaurelWreathFirst02Icon,
 	Mail01Icon,
 	MailAtSign01Icon,
 	MapsCircle01Icon,
 	Mic01Icon,
 	News01Icon,
 	Notion02Icon,
-	Rocket01Icon,
+	Search01Icon,
 	ShoppingBag01Icon,
 	SkullIcon,
 	SparklesIcon,
 	StarIcon,
 	ThreadsIcon,
 	TShirtIcon,
-	UserGroupIcon,
+	UserGroupIcon
 } from "hugeicons-react";
+import { Ghost } from "lucide-react";
+import Link from "next/link";
 
 interface BentoCardProps {
 	item: WrappedItem;
@@ -62,7 +63,7 @@ const iconMap: Record<IconName, any> = {
 	BulbIcon,
 	Car01Icon,
 	CodeIcon,
-	CommandIcon,
+	Search01Icon,
 	ConferenceIcon,
 	CpuIcon,
 	DentalToothIcon,
@@ -76,14 +77,14 @@ const iconMap: Record<IconName, any> = {
 	GithubIcon,
 	Globe02Icon,
 	HappyIcon,
-	Link01Icon,
+	LaurelWreathFirst02Icon,
 	Mail01Icon,
 	MailAtSign01Icon,
 	MapsCircle01Icon,
 	Mic01Icon,
 	News01Icon,
 	Notion02Icon,
-	Rocket01Icon,
+	Ghost,
 	ShoppingBag01Icon,
 	SkullIcon,
 	SparklesIcon,
@@ -101,6 +102,8 @@ const categoryDefaultIcons: Record<string, any> = {
 	personal: FavouriteIcon,
 	social: UserGroupIcon,
 };
+
+const MotionLink = motion(Link);
 
 export function BentoCard({ item, className, index }: BentoCardProps) {
 	const Icon =
@@ -231,7 +234,9 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 	const styles = getThemeClasses(color);
 
 	return (
-		<motion.div
+		<MotionLink
+			href={item.href || "#"}
+			target="_blank"
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5, delay: index * 0.05 }}
@@ -249,7 +254,8 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 				{item.stat && (
 					<span
 						className={cn(
-							"font-mono text-4xl font-bold tracking-tighter opacity-20 group-hover:opacity-100 transition-opacity duration-300",
+							"font-mono font-bold tracking-tighter opacity-20 group-hover:opacity-100 transition-opacity duration-300",
+							item.className?.includes("row-span-2") ? "text-5xl" : "text-4xl",
 							styles.text,
 						)}
 					>
@@ -276,6 +282,6 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 					item.color ? `bg-${item.color}-500` : "bg-zinc-500",
 				)}
 			/>
-		</motion.div>
+		</MotionLink>
 	);
 }

@@ -23,7 +23,7 @@ export function WrappedPageBorder() {
 					
 					{/* Filter to blur the mask (creating the feathering) */}
 					<filter id="mask-blur">
-						<feGaussianBlur stdDeviation="20" />
+						<feGaussianBlur stdDeviation="15" />
 					</filter>
 					
 					{/* The Mask: White = visible, Black = hidden */}
@@ -36,7 +36,7 @@ export function WrappedPageBorder() {
 							height="100%"
 							fill="none"
 							stroke="white"
-							strokeWidth="20"
+							strokeWidth="25"
 							filter="url(#mask-blur)"
 						/>
 					</mask>
