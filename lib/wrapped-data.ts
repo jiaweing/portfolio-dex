@@ -32,12 +32,15 @@ export type IconName =
   | "News01Icon"
   | "Notion02Icon"
   | "Ghost"
+  | "Rocket01Icon"
   | "ShoppingBag01Icon"
   | "SkullIcon"
   | "SparklesIcon"
+  | "SpotifyIcon"
   | "StarIcon"
   | "ThreadsIcon"
   | "TShirtIcon"
+  | "LocationUser03Icon"
   | "UserGroupIcon";
 
 export interface WrappedItem {
@@ -106,6 +109,8 @@ export const wrappedData: WrappedItem[] = [
     iconName: "News01Icon",
     color: "purple",
     className: "md:col-span-2 md:row-span-2",
+    backgroundImage: "/images/wrapped/dell.jpg",
+    backgroundPosition: "40% 50%"
   },
   {
     id: "google-hackathon",
@@ -117,6 +122,8 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Award01Icon",
     color: "blue",
     className: "md:col-span-2 md:row-span-2",
+    backgroundImage: "/images/wrapped/google.jpg",
+    backgroundPosition: "top"
   },
   {
     id: "license",
@@ -173,7 +180,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Started a podcast on Spotify",
     category: "creation",
     href: "https://updatenight.com/p/podcast",
-    iconName: "Mic01Icon",
+    iconName: "SpotifyIcon",
     color: "emerald",
     className: "md:col-span-1 md:row-span-1",
   },
@@ -223,9 +230,10 @@ export const wrappedData: WrappedItem[] = [
     stat: "28",
     category: "travel",
     href: "#",
-    iconName: "MapsCircle01Icon",
+    iconName: "LocationUser03Icon",
     color: "emerald",
     className: "md:col-span-2 md:row-span-2",
+    backgroundImage: "/images/wrapped/cities.jpg",
   },
     {
     id: "europe-uk",
@@ -293,7 +301,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Solo traveled for the first time",
     category: "travel",
     href: "#",
-    iconName: "Briefcase01Icon",
+    iconName: "Airplane01Icon",
     color: "sky",
     className: "md:col-span-2 md:row-span-1",
     backgroundImage: "/images/wrapped/skye.jpg",
@@ -386,7 +394,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "threads-views",
     title: "Views on Threads",
-    stat: "170k",
+    stat: "192k",
     category: "social",
     href: "https://threads.com/@j14.wei",
     iconName: "ThreadsIcon",
