@@ -323,7 +323,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "books",
     title: "Books Read",
-    stat: "4",
+    stat: "5",
     category: "personal",
     href: "https://jiaweing.com/books",
     iconName: "Book01Icon",

@@ -1,3 +1,4 @@
+import { AnimatedGradientText } from "@/components/wrapped/animated-gradient-text";
 import { BentoCard } from "@/components/wrapped/bento-card";
 import { BentoGrid } from "@/components/wrapped/bento-grid";
 import { wrappedData } from "@/lib/wrapped-data";
@@ -13,7 +14,7 @@ export default function WrappedPage() {
 		<div className="space-y-12 px-20 2xl:px-0">
 			<div className="flex flex-col items-center text-center space-y-4">
 				<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-					2025 Wrapped
+					<AnimatedGradientText>2025</AnimatedGradientText> Wrapped
 				</h1>
 				<p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
 					It always has been the journey, not the destination.
