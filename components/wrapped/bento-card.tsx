@@ -41,7 +41,7 @@ import {
 	StarIcon,
 	ThreadsIcon,
 	TShirtIcon,
-	UserGroupIcon
+	UserGroupIcon,
 } from "hugeicons-react";
 import { Ghost } from "lucide-react";
 import Link from "next/link";
@@ -247,9 +247,29 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 				className,
 			)}
 		>
-			<div className="flex items-start justify-between">
+			{item.backgroundImage && (
+				<>
+					<div className="absolute inset-0 z-0">
+						<img
+							src={item.backgroundImage}
+							alt={item.title}
+							className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+							style={{ objectPosition: item.backgroundPosition || "center" }}
+						/>
+						<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+					</div>
+				</>
+			)}
+
+			<div className="relative z-10 flex items-start justify-between">
 				<div className="p-2">
-					<Icon className={cn("h-6 w-6", styles.text)} />
+					<Icon
+						className={cn(
+							"h-6 w-6",
+							styles.text,
+							item.backgroundImage && "text-white",
+						)}
+					/>
 				</div>
 				{item.stat && (
 					<span
@@ -257,6 +277,8 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 							"font-mono font-bold tracking-tighter opacity-20 group-hover:opacity-100 transition-opacity duration-300",
 							item.className?.includes("row-span-2") ? "text-5xl" : "text-4xl",
 							styles.text,
+							item.backgroundImage &&
+								"text-white/80 opacity-50 group-hover:opacity-100",
 						)}
 					>
 						{item.stat}
@@ -264,12 +286,24 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 				)}
 			</div>
 
-			<div className="mt-4">
-				<h3 className={cn("text-xl font-semibold leading-tight", styles.text)}>
+			<div className="relative z-10 mt-4">
+				<h3
+					className={cn(
+						"text-xl font-semibold leading-tight",
+						styles.text,
+						item.backgroundImage && "text-white",
+					)}
+				>
 					{item.title}
 				</h3>
 				{item.description && (
-					<p className={cn("mt-2 text-sm", styles.subtext)}>
+					<p
+						className={cn(
+							"mt-2 text-sm",
+							styles.subtext,
+							item.backgroundImage && "text-neutral-200/90",
+						)}
+					>
 						{item.description}
 					</p>
 				)}

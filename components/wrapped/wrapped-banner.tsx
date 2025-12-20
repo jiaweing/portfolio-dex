@@ -97,7 +97,7 @@ export function WrappedBanner({
 								<span>My 2025 Wrapped is here!</span>
 							</motion.div>
 							<span className="text-zinc-600 dark:text-zinc-400">
-								Check out my year in review
+								Happy holidays!
 							</span>
 						</div>
 

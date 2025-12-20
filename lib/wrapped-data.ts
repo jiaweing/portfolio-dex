@@ -51,6 +51,8 @@ export interface WrappedItem {
   color?: string; // Tailwind color name (e.g., "blue", "rose", "amber")
   className?: string; // For custom grid positioning
   href?: string;
+  backgroundImage?: string;
+  backgroundPosition?: string; // CSS object-position value (e.g., "center", "top", "bottom")
 }
 
 export const wrappedData: WrappedItem[] = [
@@ -123,6 +125,8 @@ export const wrappedData: WrappedItem[] = [
     href: "https://www.youtube.com/watch?v=ZmDBbnmKpqQ&list=RDZmDBbnmKpqQ",
     iconName: "Car01Icon",
     color: "red",
+    backgroundImage: "/images/wrapped/drive.jpg",
+    backgroundPosition: "top"
   },
   {
     id: "notion",
@@ -153,6 +157,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "TShirtIcon",
     color: "blue",
     className: "md:col-span-1 md:row-span-1",
+    backgroundImage: "/images/wrapped/supply.jpg",
   },
     {
     id: "newsletter",
@@ -198,6 +203,8 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Ghost",
     color: "violet",
     className: "md:col-span-2 md:row-span-1",
+    backgroundImage: "/images/wrapped/ryu.png",
+    backgroundPosition: "50% 65%"
   },
     {
     id: "rust",
@@ -213,7 +220,7 @@ export const wrappedData: WrappedItem[] = [
     id: "travel-spend",
     title: "Cities Visited",
     description: "Spent $23k",
-    stat: "26",
+    stat: "28",
     category: "travel",
     href: "#",
     iconName: "MapsCircle01Icon",
@@ -228,6 +235,8 @@ export const wrappedData: WrappedItem[] = [
     iconName: "EuroIcon",
     color: "indigo",
     className: "md:col-span-2 md:row-span-1",
+    backgroundImage: "/images/wrapped/uk.jpg",
+    backgroundPosition: "50% 65%"
   },
   {
     id: "eiffel",
@@ -236,6 +245,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "EiffelTowerIcon",
     color: "yellow",
+    backgroundImage: "/images/wrapped/eiffel.jpg",
   },
   {
     id: "catacombs",
@@ -244,6 +254,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "SkullIcon",
     color: "stone",
+    backgroundImage: "/images/wrapped/catacombs.jpg",
   },
   {
     id: "wonders",
@@ -254,6 +265,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "SparklesIcon",
     color: "amber",
+    backgroundImage: "/images/wrapped/colosseum.jpg",
   },
   {
     id: "long-flight",
@@ -264,6 +276,8 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Airplane01Icon",
     color: "blue",
     className: "md:col-span-2 md:row-span-1",
+    backgroundImage: "/images/wrapped/flight.jpg",
+    backgroundPosition: "50% 65%"
   },
   {
     id: "disneyland",
@@ -272,6 +286,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "SparklesIcon",
     color: "pink",
+    backgroundImage: "/images/wrapped/disneyland.jpg",
   },
     {
     id: "solo-travel",
@@ -281,6 +296,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Briefcase01Icon",
     color: "sky",
     className: "md:col-span-2 md:row-span-1",
+    backgroundImage: "/images/wrapped/skye.jpg",
   },
 
   // --- Personal ---
@@ -294,6 +310,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "FavouriteIcon",
     color: "red",
     className: "md:col-span-2 md:row-span-2",
+    backgroundImage: "/images/wrapped/1000.jpg",
   },
   {
     id: "books",
@@ -311,6 +328,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "Bicycle01Icon",
     color: "lime",
+    backgroundImage: "/images/wrapped/bike.jpg",
   },
   {
     id: "wisdom-tooth",
@@ -320,6 +338,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "DentalToothIcon",
     color: "teal",
+    backgroundImage: "/images/wrapped/tooth.jpg",
   },
 
   // --- Social ---
@@ -331,15 +350,18 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "ConferenceIcon",
     color: "blue",
+    backgroundImage: "/images/wrapped/conference.jpg",
+    backgroundPosition: "bottom"
   },
   {
     id: "hackathons",
     title: "Hackathons Joined",
     stat: "4",
     category: "social",
-    href: "#",
+    href: "https://linkedin.com/in/jiaweing",
     iconName: "Search01Icon",
     color: "violet",
+    backgroundImage: "/images/wrapped/hackathon.png",
   },
   {
     id: "github-stars-given",
@@ -379,5 +401,6 @@ export const wrappedData: WrappedItem[] = [
     iconName: "EarthIcon",
     color: "teal",
     className: "md:col-span-2 md:row-span-1",
+    backgroundImage: "/images/wrapped/apac.jpg",
   },
 ];
