@@ -56,6 +56,7 @@ export interface WrappedItem {
   href?: string;
   backgroundImage?: string;
   backgroundPosition?: string; // CSS object-position value (e.g., "center", "top", "bottom")
+  detailList?: string[];
 }
 
 export const wrappedData: WrappedItem[] = [
@@ -186,7 +187,7 @@ export const wrappedData: WrappedItem[] = [
   },
   {
     id: "shopee",
-    title: "Launched a shop on Shopee",
+    title: "Opened a shop on Shopee",
     category: "creation",
     href: "https://shopee.sg/supplythefuture",
     iconName: "ShoppingBag01Icon",
@@ -234,6 +235,36 @@ export const wrappedData: WrappedItem[] = [
     color: "emerald",
     className: "md:col-span-2 md:row-span-2",
     backgroundImage: "/images/wrapped/cities.jpg",
+    detailList: [
+      "Glasgow",
+      "Edinburgh",
+      "Inverness",
+      "Isle of Skye",
+      "Glen Coe",
+      "Loch Lomond",
+      "Portree",
+      "Loch Ness",
+      "Isle of May",
+      "Isle of Arran",
+      "Holy Island",
+      "London",
+      "Paris",
+      "Milan",
+      "Bellagio",
+      "Lugano",
+      "Venice",
+      "Murano",
+      "Burano",
+      "Florence",
+      "Pisa",
+      "La Spezia",
+      "Cinque Terre",
+      "Chianti",
+      "Rome",
+      "Vatican City",
+      "Batam",
+      "Johor Bahru",
+    ],
   },
     {
     id: "europe-uk",
@@ -254,6 +285,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "EiffelTowerIcon",
     color: "yellow",
     backgroundImage: "/images/wrapped/eiffel.jpg",
+    backgroundPosition: "50% 10%"
   },
   {
     id: "catacombs",
@@ -295,6 +327,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "SparklesIcon",
     color: "pink",
     backgroundImage: "/images/wrapped/disneyland.jpg",
+    backgroundPosition: "50% 95%"
   },
     {
     id: "solo-travel",

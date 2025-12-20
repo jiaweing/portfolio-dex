@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @plugin "@toolwind/corner-shape";
+@plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 

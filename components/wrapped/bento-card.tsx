@@ -46,8 +46,15 @@ import {
 	TShirtIcon,
 	UserGroupIcon,
 } from "hugeicons-react";
-import { Ghost } from "lucide-react";
+import { Ghost, Plus } from "lucide-react";
 import Link from "next/link";
+import {
+	Credenza,
+	CredenzaContent,
+	CredenzaHeader,
+	CredenzaTitle,
+	CredenzaTrigger,
+} from "../ui/credenza";
 
 interface BentoCardProps {
 	item: WrappedItem;
@@ -239,58 +246,48 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 
 	const styles = getThemeClasses(color);
 
-	return (
-		<MotionLink
-			href={item.href || "#"}
-			target="_blank"
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.5, delay: index * 0.05 }}
-			className={cn(
-				"group relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 transition-colors duration-300 border-none ring-0 shadow-none",
-				styles.card,
-				item.className,
-				className,
+	const CardContent = (
+		<div className="relative z-10 flex items-start justify-between">
+			<div className="p-2">
+				<Icon
+					className={cn(
+						"h-6 w-6",
+						styles.text,
+						item.backgroundImage && "text-white",
+					)}
+				/>
+			</div>
+			{item.stat && (
+				<span
+					className={cn(
+						"font-mono font-bold tracking-tighter opacity-20 group-hover:opacity-100 transition-opacity duration-300",
+						item.className?.includes("row-span-2") ? "text-5xl" : "text-4xl",
+						styles.text,
+						item.backgroundImage &&
+							"text-white/80 opacity-50 group-hover:opacity-100",
+					)}
+				>
+					{item.stat}
+				</span>
 			)}
-		>
+		</div>
+	);
+
+	const CardBody = (
+		<>
 			{item.backgroundImage && (
-				<>
-					<div className="absolute inset-0 z-0">
-						<img
-							src={item.backgroundImage}
-							alt={item.title}
-							className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-							style={{ objectPosition: item.backgroundPosition || "center" }}
-						/>
-						<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-					</div>
-				</>
+				<div className="absolute inset-0 z-0">
+					<img
+						src={item.backgroundImage}
+						alt={item.title}
+						className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+						style={{ objectPosition: item.backgroundPosition || "center" }}
+					/>
+					<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
+				</div>
 			)}
 
-			<div className="relative z-10 flex items-start justify-between">
-				<div className="p-2">
-					<Icon
-						className={cn(
-							"h-6 w-6",
-							styles.text,
-							item.backgroundImage && "text-white",
-						)}
-					/>
-				</div>
-				{item.stat && (
-					<span
-						className={cn(
-							"font-mono font-bold tracking-tighter opacity-20 group-hover:opacity-100 transition-opacity duration-300",
-							item.className?.includes("row-span-2") ? "text-5xl" : "text-4xl",
-							styles.text,
-							item.backgroundImage &&
-								"text-white/80 opacity-50 group-hover:opacity-100",
-						)}
-					>
-						{item.stat}
-					</span>
-				)}
-			</div>
+			{CardContent}
 
 			<div className="relative z-10 mt-4">
 				<h3
@@ -322,6 +319,62 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
 					item.color ? `bg-${item.color}-500` : "bg-zinc-500",
 				)}
 			/>
+		</>
+	);
+
+	const containerClasses = cn(
+		"group relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 transition-colors duration-300 border-none ring-0 shadow-none text-left",
+		styles.card,
+		item.className,
+		className,
+	);
+
+	if (item.detailList) {
+		return (
+			<Credenza>
+				<CredenzaTrigger asChild>
+					<motion.button
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: index * 0.05 }}
+						className={containerClasses}
+					>
+						{CardBody}
+					</motion.button>
+				</CredenzaTrigger>
+				<CredenzaContent className="sm:max-w-md max-h-[80vh] flex flex-col">
+					<CredenzaHeader>
+						<CredenzaTitle>{item.title}</CredenzaTitle>
+					</CredenzaHeader>
+					<div className="flex-1 overflow-y-auto min-h-0 pr-4 -mr-4">
+						<div className="grid grid-cols-2 gap-2 mt-4">
+							{item.detailList.map((detail, i) => (
+								<div
+									// biome-ignore lint/suspicious/noArrayIndexKey: List is static
+									key={i}
+									className="flex items-center gap-2 rounded-lg bg-secondary/50 p-2 text-sm"
+								>
+									<Plus className="h-4 w-4 text-muted-foreground" />
+									{detail}
+								</div>
+							))}
+						</div>
+					</div>
+				</CredenzaContent>
+			</Credenza>
+		);
+	}
+
+	return (
+		<MotionLink
+			href={item.href || "#"}
+			target="_blank"
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.5, delay: index * 0.05 }}
+			className={containerClasses}
+		>
+			{CardBody}
 		</MotionLink>
 	);
 }
