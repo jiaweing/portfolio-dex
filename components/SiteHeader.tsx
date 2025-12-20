@@ -1,6 +1,9 @@
 "use client";
 
 import { SantaAvatar } from "@/components/SantaAvatar";
+import { WrappedBanner } from "@/components/wrapped/wrapped-banner";
+import { WrappedGiftIcon } from "@/components/wrapped/wrapped-gift-icon";
+import { WrappedPageBorder } from "@/components/wrapped/wrapped-page-border";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -18,11 +21,13 @@ import * as React from "react";
 export function SiteHeader() {
 	const pathname = usePathname();
 	const [isHovered, setIsHovered] = React.useState(false);
+	const [isBannerHovered, setIsBannerHovered] = React.useState(false);
 
 	const isActive = (path: string) =>
 		path === "/" ? pathname === "/" : pathname.startsWith(path);
 
 	const items = [
+		{ href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
 		{ href: "/about", icon: User, label: "About" },
 		{ href: "/blog", icon: Book, label: "Blog" },
 		{ href: "/projects", icon: Search, label: "Projects" },
@@ -39,6 +44,29 @@ export function SiteHeader() {
 			>
 				<SantaAvatar className="size-10" />
 			</Link>
+
+			<div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] hidden md:block">
+				<WrappedBanner onHoverChange={setIsBannerHovered} />
+			</div>
+
+			<AnimatePresence>
+				{(isBannerHovered || pathname === "/wrapped") && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.5 }}
+						style={{
+							position: "fixed",
+							inset: 0,
+							zIndex: 50,
+							pointerEvents: "none",
+						}}
+					>
+						<WrappedPageBorder />
+					</motion.div>
+				)}
+			</AnimatePresence>
 
 			<header className="fixed left-6 top-1/2 z-[100] hidden -translate-y-1/2 lg:block">
 				<nav
@@ -67,7 +95,30 @@ export function SiteHeader() {
 										transition={{ duration: 0.2, ease: "easeInOut" }}
 										className="whitespace-nowrap text-sm font-medium overflow-hidden"
 									>
-										{item.label}
+										{item.label === "2025 Wrapped!" ? (
+											<motion.span
+												style={{
+													backgroundImage:
+														"linear-gradient(120deg, rgb(59, 130, 246) 0%, rgb(168, 85, 247) 25%, rgb(239, 68, 68) 50%, rgb(249, 115, 22) 75%, rgb(59, 130, 246) 100%)",
+													backgroundSize: "200% auto",
+													backgroundClip: "text",
+													WebkitBackgroundClip: "text",
+													color: "transparent",
+												}}
+												animate={{
+													backgroundPosition: ["0% center", "200% center"],
+												}}
+												transition={{
+													duration: 4,
+													ease: "linear",
+													repeat: Infinity,
+												}}
+											>
+												{item.label}
+											</motion.span>
+										) : (
+											item.label
+										)}
 									</motion.span>
 								)}
 							</AnimatePresence>

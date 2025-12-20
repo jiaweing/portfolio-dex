@@ -4,7 +4,6 @@ import { ProfileBio } from "@/components/ProfileBio";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { FadeIn } from "@/components/ui/fade-in";
 import { PhotoGallery } from "@/components/ui/gallery";
-import { WrappedBanner } from "@/components/wrapped/wrapped-banner";
 import { getProjects } from "@/lib/notion";
 import JsonLd from "./jsonld";
 
@@ -16,7 +15,6 @@ export default async function Home() {
 			<JsonLd />
 
 			<FadeIn>
-			<WrappedBanner />
 				<ProfileHeader />
 			</FadeIn>
 			<FadeIn delay={0.1}>

@@ -5,7 +5,11 @@ import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function WrappedBanner() {
+export function WrappedBanner({
+	onHoverChange,
+}: {
+	onHoverChange?: (isHovered: boolean) => void;
+}) {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
@@ -36,18 +40,20 @@ export function WrappedBanner() {
 				initial={{ height: 0, opacity: 0 }}
 				animate={{ height: "auto", opacity: 1 }}
 				exit={{ height: 0, opacity: 0 }}
-				className="relative overflow-hidden pb-10"
+				className="relative overflow-hidden"
 			>
 				<Link
 					href="/wrapped"
-					className="group relative block w-full rounded-xl"
+					className="group relative block w-fit rounded-xl"
 				>
 					{/* Border Container */}
 					<div className="relative overflow-hidden rounded-xl">
 
-
-						{/* Inner Content */}
-						<div className="relative flex items-center justify-center gap-2 rounded-xl bg-white dark:bg-zinc-950 px-4 py-3 text-sm font-medium transition-colors">
+						<div 
+							className="relative flex items-center justify-center gap-2 rounded-xl px-4 py-3 pr-10 text-sm font-medium transition-colors"
+							onMouseEnter={() => onHoverChange?.(true)}
+							onMouseLeave={() => onHoverChange?.(false)}
+						>
                             {/* Icon Shimmer Gradient Definition */}
                             <svg className="absolute w-0 h-0">
                                 <defs>
@@ -69,39 +75,6 @@ export function WrappedBanner() {
                                 </defs>
                             </svg>
                             
-                            {/* SVG Gradient Inner Glow */}
-                            <svg 
-                                className="absolute inset-0 h-full w-full pointer-events-none opacity-80 group-hover:opacity-100 blur-[4px] group-hover:blur-[8px] transition-all duration-500" 
-                            >
-                                <defs>
-                                    <linearGradient id="banner-glow-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" stopColor="rgb(59, 130, 246)" />
-                                        <stop offset="33%" stopColor="rgb(168, 85, 247)" />
-                                        <stop offset="66%" stopColor="rgb(239, 68, 68)" />
-                                        <stop offset="100%" stopColor="rgb(249, 115, 22)" />
-                                        <animateTransform
-                                            attributeName="gradientTransform"
-                                            type="rotate"
-                                            from="0 .5 .5"
-                                            to="360 .5 .5"
-                                            dur="4s"
-                                            repeatCount="indefinite"
-                                        />
-                                    </linearGradient>
-                                </defs>
-                                <rect 
-                                    x="0" 
-                                    y="0" 
-                                    width="100%" 
-                                    height="100%" 
-                                    rx="12" 
-                                    ry="12" 
-                                    fill="none" 
-                                    stroke="url(#banner-glow-grad-2)" 
-                                    className="stroke-[6px] group-hover:stroke-[10px] transition-all duration-500"
-                                />
-                            </svg>
-
 							<motion.div
 								className="font-semibold"
 								style={{
@@ -125,9 +98,6 @@ export function WrappedBanner() {
 							</motion.div>
 							<span className="text-zinc-600 dark:text-zinc-400">
 								Check out my year in review
-							</span>
-							<span className="block transition-transform group-hover:translate-x-1 text-zinc-400">
-								→
 							</span>
 						</div>
 

@@ -6,8 +6,9 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SeasonalEffects } from "@/components/seasonal-effects";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
-import { WrappedBanner } from "@/components/wrapped/wrapped-banner";
+import {
+  ProgressiveBlur
+} from "@/components/ui/skiper-ui/progressive-blur";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -179,7 +180,7 @@ export default function RootLayout({
 							</div>
 						</div>
 					</PlausibleWrapper>
-					<WrappedBanner />
+
 					<ThemeToggle />
 					<TailwindIndicator />
 					<SeasonalEffects />

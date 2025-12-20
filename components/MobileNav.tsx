@@ -2,12 +2,12 @@
 
 import { useIsMobile } from "@/hooks/use-mobile"; // Fixed import path
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { Menu01Icon as Menu } from "hugeicons-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
-
 import { Button } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { ProgressiveBlur } from "./ui/skiper-ui/progressive-blur";
@@ -54,7 +54,6 @@ export function MobileNav({ className }: MobileNavProps) {
 								<div className="flex flex-col gap-3">
 									<MobileLink href="/wrapped" onOpenChange={setOpen}>
 										<span className="flex items-center gap-3">
-											<WrappedIcon className="size-6" />
 											<motion.span
 												style={{
 													backgroundImage:
@@ -73,7 +72,7 @@ export function MobileNav({ className }: MobileNavProps) {
 													repeat: Infinity,
 												}}
 											>
-												2025 Wrapped
+												2025 Wrapped!
 											</motion.span>
 										</span>
 									</MobileLink>
