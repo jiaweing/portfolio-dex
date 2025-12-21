@@ -451,7 +451,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://github.com/jiaweing",
     iconName: "GithubIcon",
     color: "slate",
-    className: "col-span-1 row-span-1",
+    className: "col-span-2 row-span-1",
   },
   {
     id: "youtube-subscribers",
@@ -461,7 +461,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://youtube.com/@jiaweing",
     iconName: "YoutubeIcon",
     color: "red",
-    className: "col-span-1 row-span-1",
+    className: "col-span-2 row-span-1",
   },
   {
     id: "youtube-views",
@@ -471,6 +471,6 @@ export const wrappedData: WrappedItem[] = [
     href: "https://youtube.com/@jiaweing",
     iconName: "YoutubeIcon",
     color: "red",
-    className: "col-span-1 row-span-1",
+    className: "col-span-2 row-span-1",
   },
 ];
