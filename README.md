@@ -1,11 +1,14 @@
-<div align="center">
-
-# Jia Wei Ng — Portfolio (Dex)
-
-  <img src="public/images/avatars/jiawei.png" alt="Jia Wei Ng" width="120" />
-  <p><em>Software engineer, entrepreneur, and tech enthusiast based in Singapore</em></p>
-
-</div>
+<table width="100%">
+  <tr>
+    <td align="center" width="120">
+      <img src="public/images/avatars/shadcn.png" alt="Logo" width="100" style="border-radius: 20%;"/>
+    </td>
+    <td align="right">
+      <h1>Portfolio (Codename Dex)</h1>
+      <h3 style="margin-top: -10px;">just an ordinary guy who makes software, with unique and original digital experiences.</h3>
+    </td>
+  </tr>
+</table>
 
 <table>
   <tr>
@@ -20,25 +23,7 @@
   </tr>
 </table>
 
-## Tech Stack
-
-- [Next.js 15](https://nextjs.org/) - React framework with App Router
-- [React 19](https://react.dev/) - UI library
-- [Tailwind CSS 4](https://tailwindcss.com/) - Utility-first CSS framework
-- [shadcn/ui](https://ui.shadcn.com/) - Beautifully designed components
-- [Radix UI](https://www.radix-ui.com/) - Headless UI components
-- [Lucide React](https://lucide.dev/) - Beautiful & consistent icons
-- [Motion](https://motion.dev/) - Animation library
-- [next-pwa](https://github.com/shadowwalker/next-pwa) - Progressive Web App support
-
-## Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or newer)
-- [pnpm](https://pnpm.io/) (v9.15.0 or newer)
-
-### Installation
+### Local Development
 
 1. Clone the repository
 
@@ -50,11 +35,11 @@
 2. Install dependencies
 
    ```bash
-   pnpm install
+   bun install
    ```
 
 3. Start the development server
 
    ```bash
-   pnpm dev
+   bun dev
    ```
