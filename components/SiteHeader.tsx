@@ -7,12 +7,12 @@ import { WrappedPageBorder } from "@/components/wrapped/wrapped-page-border";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Bookmark02Icon as Book,
-  BookOpen02Icon as GalleryHorizontalEnd,
-  Globe02Icon as Globe,
-  FavouriteIcon as Heart,
-  Search01Icon as Search,
-  UserIcon as User,
+	Bookmark02Icon as Book,
+	BookOpen02Icon as GalleryHorizontalEnd,
+	Globe02Icon as Globe,
+	FavouriteIcon as Heart,
+	Search01Icon as Search,
+	UserIcon as User,
 } from "hugeicons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -45,7 +45,7 @@ export function SiteHeader() {
 				<SantaAvatar className="size-10" />
 			</Link>
 
-			<div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] hidden md:block">
+			<div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100]">
 				<WrappedBanner onHoverChange={setIsBannerHovered} />
 			</div>
 
