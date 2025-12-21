@@ -45,7 +45,7 @@ export function SiteHeader() {
 				<SantaAvatar className="size-10" />
 			</Link>
 
-			<div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100]">
+			<div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] md:w-auto">
 				<WrappedBanner onHoverChange={setIsBannerHovered} />
 			</div>
 

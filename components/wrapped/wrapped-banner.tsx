@@ -44,13 +44,13 @@ export function WrappedBanner({
 			>
 				<Link
 					href="/wrapped"
-					className="group relative block w-fit rounded-xl"
+					className="group relative block w-full md:w-fit rounded-xl"
 				>
 					{/* Border Container */}
 					<div className="relative overflow-hidden rounded-xl">
 
 						<div 
-							className="relative flex items-center justify-center gap-2 rounded-xl px-4 py-3 pr-10 text-sm font-medium transition-colors"
+							className="relative flex items-center justify-center gap-2 rounded-xl px-4 py-3 pr-10 text-sm font-medium transition-colors w-full md:w-fit"
 							onMouseEnter={() => onHoverChange?.(true)}
 							onMouseLeave={() => onHoverChange?.(false)}
 						>
