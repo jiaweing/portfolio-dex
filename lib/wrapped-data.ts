@@ -41,7 +41,8 @@ export type IconName =
   | "ThreadsIcon"
   | "TShirtIcon"
   | "LocationUser03Icon"
-  | "UserGroupIcon";
+  | "UserGroupIcon"
+  | "YoutubeIcon";
 
 export interface WrappedItem {
   id: string;
@@ -370,6 +371,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Bicycle01Icon",
     color: "lime",
     backgroundImage: "/images/wrapped/bike.jpg",
+    backgroundPosition: "50% 80%"
   },
   {
     id: "wisdom-tooth",
@@ -443,5 +445,35 @@ export const wrappedData: WrappedItem[] = [
     color: "teal",
     className: "md:col-span-2 md:row-span-1",
     backgroundImage: "/images/wrapped/apac.jpg",
+  },
+  {
+    id: "github-followers",
+    title: "Followers on GitHub",
+    stat: "38",
+    category: "social",
+    href: "https://github.com/jiaweing",
+    iconName: "GithubIcon",
+    color: "slate",
+    className: "md:col-span-2 md:row-span-1",
+  },
+  {
+    id: "youtube-subscribers",
+    title: "Subscribers on YouTube",
+    stat: "865",
+    category: "social",
+    href: "https://youtube.com/@jiaweing",
+    iconName: "YoutubeIcon",
+    color: "red",
+    className: "md:col-span-2 md:row-span-1",
+  },
+  {
+    id: "youtube-views",
+    title: "Views on YouTube",
+    stat: "82k",
+    category: "social",
+    href: "https://youtube.com/@jiaweing",
+    iconName: "YoutubeIcon",
+    color: "red",
+    className: "md:col-span-2 md:row-span-1",
   },
 ];

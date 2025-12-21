@@ -11,7 +11,7 @@ export const metadata = generateMetadata({
 
 export default function WrappedPage() {
 	return (
-		<div className="space-y-12 px-20 2xl:px-0">
+		<div className="space-y-12 md:px-20 2xl:px-0">
 			<div className="flex flex-col items-center text-center space-y-4">
 				<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
 					<AnimatedGradientText>2025</AnimatedGradientText> Wrapped
