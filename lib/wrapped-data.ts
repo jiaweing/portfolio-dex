@@ -70,7 +70,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://base07.com",
     iconName: "Building02Icon",
     color: "amber",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
   },
   {
     id: "github-repos",
@@ -80,7 +80,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://github.com/jiaweing",
     iconName: "GithubIcon",
     color: "slate",
-    className: "md:col-span-1 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
   {
     id: "commits",
@@ -90,7 +90,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://github.com/jiaweing",
     iconName: "GitCommitIcon",
     color: "emerald",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-2 row-span-1",
   },
   {
     id: "repo-stars",
@@ -110,7 +110,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://www.businesstimes.com.sg/lifestyle/dell-innovatefest-2025-uses-ai-address-mental-health-issues",
     iconName: "News01Icon",
     color: "purple",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
     backgroundImage: "/images/wrapped/dell.jpg",
     backgroundPosition: "40% 50%"
   },
@@ -123,7 +123,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://vision.hack2skill.com/event/apacsolutionchallenge",
     iconName: "Award01Icon",
     color: "blue",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
     backgroundImage: "/images/wrapped/google.jpg",
     backgroundPosition: "top"
   },
@@ -155,7 +155,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://jiaweing.com/projects",
     iconName: "Rocket01Icon",
     color: "pink",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
   },
   {
     id: "clothing",
@@ -165,7 +165,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://supply.tf",
     iconName: "TShirtIcon",
     color: "blue",
-    className: "md:col-span-1 md:row-span-1",
+    className: "col-span-1 row-span-1",
     backgroundImage: "/images/wrapped/supply.jpg",
   },
     {
@@ -175,7 +175,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://updatenight.com",
     iconName: "Mail01Icon",
     color: "yellow",
-    className: "md:col-span-1 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
   {
     id: "podcast",
@@ -184,7 +184,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://updatenight.com/p/podcast",
     iconName: "SpotifyIcon",
     color: "emerald",
-    className: "md:col-span-1 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
   {
     id: "shopee",
@@ -201,7 +201,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://supply.tf",
     iconName: "LaurelWreathFirst02Icon",
     color: "cyan",
-    className: "md:col-span-1 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
   {
     id: "startup-18",
@@ -211,7 +211,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://jiaweing.com/projects",
     iconName: "Ghost",
     color: "violet",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/ryu.png",
     backgroundPosition: "50% 65%"
   },
@@ -234,7 +234,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "LocationUser03Icon",
     color: "emerald",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
     backgroundImage: "/images/wrapped/cities.jpg",
     detailList: [
       "Glasgow",
@@ -274,7 +274,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "EuroIcon",
     color: "indigo",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/uk.jpg",
     backgroundPosition: "50% 65%"
   },
@@ -316,7 +316,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "Airplane01Icon",
     color: "blue",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/flight.jpg",
     backgroundPosition: "50% 65%"
   },
@@ -337,7 +337,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "Airplane01Icon",
     color: "sky",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/skye.jpg",
   },
 
@@ -351,7 +351,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "FavouriteIcon",
     color: "red",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
     backgroundImage: "/images/wrapped/1000.jpg",
   },
   {
@@ -414,7 +414,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://github.com/jiaweing",
     iconName: "StarIcon",
     color: "yellow",
-    className: "md:col-span-2 md:row-span-2",
+    className: "col-span-2 row-span-2",
   },
   {
     id: "threads-views",
@@ -424,7 +424,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://threads.com/@j14.wei",
     iconName: "ThreadsIcon",
     color: "zinc",
-    className: "md:col-span-1 md:row-span-2",
+    className: "col-span-1 row-span-2",
   },
   {
     id: "threads-followers",
@@ -443,7 +443,7 @@ export const wrappedData: WrappedItem[] = [
     href: "#",
     iconName: "EarthIcon",
     color: "teal",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/apac.jpg",
   },
   {
@@ -454,7 +454,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://github.com/jiaweing",
     iconName: "GithubIcon",
     color: "slate",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
   {
     id: "youtube-subscribers",
@@ -464,7 +464,7 @@ export const wrappedData: WrappedItem[] = [
     href: "https://youtube.com/@jiaweing",
     iconName: "YoutubeIcon",
     color: "red",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
   {
     id: "youtube-views",
@@ -474,6 +474,6 @@ export const wrappedData: WrappedItem[] = [
     href: "https://youtube.com/@jiaweing",
     iconName: "YoutubeIcon",
     color: "red",
-    className: "md:col-span-2 md:row-span-1",
+    className: "col-span-1 row-span-1",
   },
 ];

@@ -25,10 +25,25 @@ export function WrappedPageBorder() {
 					<filter id="mask-blur">
 						<feGaussianBlur stdDeviation="15" />
 					</filter>
+					<filter id="mask-blur-mobile">
+						<feGaussianBlur stdDeviation="10" />
+					</filter>
 					
 					{/* The Mask: White = visible, Black = hidden */}
 					<mask id="glow-mask">
-						{/* Thick stroke at the edge, blurred to fade inwards */}
+						{/* Mobile: Thinner stroke, less blur */}
+						<rect
+							x="0"
+							y="0"
+							width="100%"
+							height="100%"
+							fill="none"
+							stroke="white"
+							strokeWidth="5"
+							filter="url(#mask-blur-mobile)"
+							className="block md:hidden"
+						/>
+						{/* Desktop: Thicker stroke, more blur */}
 						<rect
 							x="0"
 							y="0"
@@ -38,6 +53,7 @@ export function WrappedPageBorder() {
 							stroke="white"
 							strokeWidth="25"
 							filter="url(#mask-blur)"
+							className="hidden md:block"
 						/>
 					</mask>
 				</defs>
