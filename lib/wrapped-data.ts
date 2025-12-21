@@ -48,7 +48,7 @@ export interface WrappedItem {
   id: string;
   title: string;
   description?: string;
-  category: "milestone" | "creation" | "travel" | "personal" | "social";
+  category: "milestones" | "builds" | "travel" | "life" | "social";
 
   stat?: string;
   iconName?: IconName;
@@ -65,7 +65,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "company",
     title: "Incorporated a company in Singapore",
-    category: "milestone",
+    category: "milestones",
     description: "Base 7",
     href: "https://base07.com",
     iconName: "Building02Icon",
@@ -76,7 +76,7 @@ export const wrappedData: WrappedItem[] = [
     id: "github-repos",
     title: "Repos on GitHub",
     stat: "182",
-    category: "milestone",
+    category: "milestones",
     href: "https://github.com/jiaweing",
     iconName: "GithubIcon",
     color: "slate",
@@ -86,7 +86,7 @@ export const wrappedData: WrappedItem[] = [
     id: "commits",
     title: "Commits Pushed",
     stat: "2.1k",
-    category: "milestone",
+    category: "milestones",
     href: "https://github.com/jiaweing",
     iconName: "GitCommitIcon",
     color: "emerald",
@@ -97,7 +97,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Repo Stars",
     stat: "182",
     description: "DropDrawer",
-    category: "milestone",
+    category: "milestones",
     href: "https://github.com/jiaweing/DropDrawer",
     iconName: "StarIcon",
     color: "yellow",
@@ -106,7 +106,7 @@ export const wrappedData: WrappedItem[] = [
     id: "newspaper",
     title: "Featured on a local newspaper",
     description: "Business Times",
-    category: "milestone",
+    category: "milestones",
     href: "https://www.businesstimes.com.sg/lifestyle/dell-innovatefest-2025-uses-ai-address-mental-health-issues",
     iconName: "News01Icon",
     color: "purple",
@@ -119,7 +119,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Google Hackathon",
     stat: "Top 10",
     description: "Flown to Philippines",
-    category: "milestone",
+    category: "milestones",
     href: "https://vision.hack2skill.com/event/apacsolutionchallenge",
     iconName: "Award01Icon",
     color: "blue",
@@ -130,7 +130,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "license",
     title: "Got my driver's license",
-    category: "milestone",
+    category: "milestones",
     href: "https://www.youtube.com/watch?v=ZmDBbnmKpqQ&list=RDZmDBbnmKpqQ",
     iconName: "Car01Icon",
     color: "red",
@@ -140,7 +140,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "notion",
     title: "Became a Notion Campus Lead",
-    category: "milestone",
+    category: "milestones",
     href: "https://www.linkedin.com/posts/jiaweing_notion-campusleader-sit-activity-7371477567754911745-6vXi",
     iconName: "Notion02Icon",
     color: "zinc",
@@ -151,7 +151,7 @@ export const wrappedData: WrappedItem[] = [
     title: "New Startups Built",
     description: "2 gave up, 3 in progress",
     stat: "5",
-    category: "creation",
+    category: "builds",
     href: "https://jiaweing.com/projects",
     iconName: "Rocket01Icon",
     color: "pink",
@@ -161,7 +161,7 @@ export const wrappedData: WrappedItem[] = [
     id: "clothing",
     title: "Launched a clothing brand",
     description: "2 series drops",
-    category: "creation",
+    category: "builds",
     href: "https://supply.tf",
     iconName: "TShirtIcon",
     color: "blue",
@@ -171,7 +171,7 @@ export const wrappedData: WrappedItem[] = [
     {
     id: "newsletter",
     title: "Launched a newsletter",
-    category: "creation",
+    category: "builds",
     href: "https://updatenight.com",
     iconName: "Mail01Icon",
     color: "yellow",
@@ -180,7 +180,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "podcast",
     title: "Started a podcast on Spotify",
-    category: "creation",
+    category: "builds",
     href: "https://updatenight.com/p/podcast",
     iconName: "SpotifyIcon",
     color: "emerald",
@@ -189,7 +189,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "shopee",
     title: "Opened a shop on Shopee",
-    category: "creation",
+    category: "builds",
     href: "https://shopee.sg/supplythefuture",
     iconName: "ShoppingBag01Icon",
     color: "orange",
@@ -197,7 +197,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "blockchain-tshirt",
     title: "World's 1st blockchained T-shirts",
-    category: "creation",
+    category: "builds",
     href: "https://supply.tf",
     iconName: "LaurelWreathFirst02Icon",
     color: "cyan",
@@ -207,7 +207,7 @@ export const wrappedData: WrappedItem[] = [
     id: "startup-18",
     title: "Launching my 18th startup",
     stat: "2026",
-    category: "creation",
+    category: "builds",
     href: "https://jiaweing.com/projects",
     iconName: "Ghost",
     color: "violet",
@@ -218,7 +218,7 @@ export const wrappedData: WrappedItem[] = [
     {
     id: "rust",
     title: "My next startup build in Rust",
-    category: "creation",
+    category: "builds",
     href: "#",
     iconName: "CpuIcon",
     color: "slate",
@@ -344,7 +344,7 @@ export const wrappedData: WrappedItem[] = [
     title: "Days with my girlfriend",
     stat: "1000+",
     description: "3 years",
-    category: "personal",
+    category: "life",
     href: "#",
     iconName: "FavouriteIcon",
     color: "red",
@@ -355,7 +355,7 @@ export const wrappedData: WrappedItem[] = [
     id: "books",
     title: "Books Read",
     stat: "5",
-    category: "personal",
+    category: "life",
     href: "https://jiaweing.com/books",
     iconName: "Book01Icon",
     color: "stone",
@@ -363,7 +363,7 @@ export const wrappedData: WrappedItem[] = [
   {
     id: "cycling",
     title: "Started cycling everyday",
-    category: "personal",
+    category: "life",
     href: "#",
     iconName: "Bicycle01Icon",
     color: "lime",
@@ -374,7 +374,7 @@ export const wrappedData: WrappedItem[] = [
     id: "wisdom-tooth",
     title: "Wisdom Teeth Out",
     stat: "2/4",
-    category: "personal",
+    category: "life",
     href: "#",
     iconName: "DentalToothIcon",
     color: "teal",
