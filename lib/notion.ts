@@ -150,81 +150,83 @@ const getTitle = (page: any) => {
 };
 
 // --- Blog Posts ---
-export const getBlogPosts = unstable_cache(
-	async (): Promise<BlogPost[]> => {
-		const notion = getNotionClient();
-		const databaseId = process.env.NOTION_BLOG_DATABASE_ID;
+export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
+	const notion = getNotionClient();
+	const databaseId = process.env.NOTION_BLOG_DATABASE_ID;
 
-		if (!databaseId) return [];
+	if (!databaseId) return [];
 
-		try {
-			// Attempting dataSources.query based on user feedback
-			let response;
+	try {
+        // Attempting dataSources.query based on user feedback
+		let response;
 
-			if (notion.dataSources) {
-				response = await notion.dataSources.query({
-					data_source_id: databaseId,
-					filter: {
-						property: "Status",
-						status: {
-							equals: "Published",
-						},
+		if (notion.dataSources) {
+			response = await notion.dataSources.query({
+				data_source_id: databaseId,
+				filter: {
+					property: "Status",
+					status: {
+						equals: "Published",
 					},
-					sorts: [
-						{
-							property: "Date",
-							direction: "descending",
-						},
-					],
-				});
-			} else {
-				// Fallback for standard client
-				response = await notion.databases.query({
-					database_id: databaseId,
-					filter: {
-						property: "Status",
-						status: {
-							equals: "Published",
-						},
+				},
+				sorts: [
+					{
+						property: "Date",
+						direction: "descending",
 					},
-					sorts: [
-						{
-							property: "Date",
-							direction: "descending",
-						},
-					],
-				});
-			}
-
-			return response.results
-				.map((page: any) => {
-					const tags = getProperty(page, "Tags", "multi_select") || [];
-					const banner =
-						page.properties?.Banner?.files?.[0]?.file?.url ||
-						page.properties?.Banner?.files?.[0]?.external?.url ||
-						page.properties?.Cover?.files?.[0]?.file?.url ||
-						page.properties?.Cover?.files?.[0]?.external?.url ||
-						page.cover?.external?.url ||
-						page.cover?.file?.url ||
-						undefined;
-
-					return {
-						id: page.id,
-						slug: getProperty(page, "Slug", "rich_text") || "",
-						title: getTitle(page),
-						date: getProperty(page, "Date", "date") || page.created_time,
-						description: getProperty(page, "Excerpt", "rich_text") || "",
-						authors: getProperty(page, "Author", "people") || [],
-						tags: tags,
-						cover: banner,
-					} as BlogPost;
-				})
-				.filter((post: BlogPost) => post.slug);
-		} catch (error) {
-			console.error("Failed to fetch blog posts:", error);
-			return [];
+				],
+			});
+		} else {
+            // Fallback for standard client
+			response = await notion.databases.query({
+				database_id: databaseId,
+				filter: {
+					property: "Status",
+					status: {
+						equals: "Published",
+					},
+				},
+				sorts: [
+					{
+						property: "Date",
+						direction: "descending",
+					},
+				],
+			});
 		}
-	},
+
+		return response.results
+			.map((page: any) => {
+				const tags = getProperty(page, "Tags", "multi_select") || [];
+				const banner =
+					page.properties?.Banner?.files?.[0]?.file?.url ||
+					page.properties?.Banner?.files?.[0]?.external?.url ||
+					page.properties?.Cover?.files?.[0]?.file?.url ||
+					page.properties?.Cover?.files?.[0]?.external?.url ||
+					page.cover?.external?.url ||
+					page.cover?.file?.url ||
+					undefined;
+
+				return {
+					id: page.id,
+					slug: getProperty(page, "Slug", "rich_text") || "",
+					title: getTitle(page),
+					date: getProperty(page, "Date", "date") || page.created_time,
+					description: getProperty(page, "Excerpt", "rich_text") || "",
+					authors: getProperty(page, "Author", "people") || [],
+					tags: tags,
+					cover: banner,
+				} as BlogPost;
+			})
+			.filter((post: BlogPost) => post.slug);
+	} catch (error) {
+		console.error("Failed to fetch blog posts:", error);
+		return [];
+	}
+};
+
+export const getBlogPosts = unstable_cache(
+	fetchBlogPosts,
 	["blog-posts"],
 	{ revalidate: REVALIDATE_TIME },
 );
@@ -300,49 +302,51 @@ export const getBlogPost = unstable_cache(
 );
 
 // --- Generic Pages ---
-export const getPages = unstable_cache(
-	async (): Promise<Page[]> => {
-		const notion = getNotionClient();
-		const databaseId = process.env.NOTION_PAGES_DATABASE_ID;
-		if (!databaseId) return [];
+export const fetchPages = async (): Promise<Page[]> => {
+	const notion = getNotionClient();
+	const databaseId = process.env.NOTION_PAGES_DATABASE_ID;
+	if (!databaseId) return [];
 
-		try {
-			let response;
-			const filter = {
-				property: "Status",
-				status: {
-					equals: "Published",
-				},
-			};
+	try {
+		let response;
+		const filter = {
+			property: "Status",
+			status: {
+				equals: "Published",
+			},
+		};
 
-			if (notion.dataSources) {
-				response = await notion.dataSources.query({
-					data_source_id: databaseId,
-					filter,
-				});
-			} else {
-				response = await notion.databases.query({
-					database_id: databaseId,
-					filter,
-				});
-			}
-
-			return response.results
-				.map((page: any) => ({
-					id: page.id,
-					slug: getProperty(page, "Slug", "rich_text") || "",
-					title: getTitle(page),
-					lastEdited: page.last_edited_time,
-					cover:
-						page.cover?.external?.url || page.cover?.file?.url || undefined,
-					description: getProperty(page, "Description", "rich_text") || "",
-				}))
-				.filter((p: Page) => p.slug);
-		} catch (e) {
-			console.error("Failed to fetch pages", e);
-			return [];
+		if (notion.dataSources) {
+			response = await notion.dataSources.query({
+				data_source_id: databaseId,
+				filter,
+			});
+		} else {
+			response = await notion.databases.query({
+				database_id: databaseId,
+				filter,
+			});
 		}
-	},
+
+		return response.results
+			.map((page: any) => ({
+				id: page.id,
+				slug: getProperty(page, "Slug", "rich_text") || "",
+				title: getTitle(page),
+				lastEdited: page.last_edited_time,
+				cover:
+					page.cover?.external?.url || page.cover?.file?.url || undefined,
+				description: getProperty(page, "Description", "rich_text") || "",
+			}))
+			.filter((p: Page) => p.slug);
+	} catch (e) {
+		console.error("Failed to fetch pages", e);
+		return [];
+	}
+};
+
+export const getPages = unstable_cache(
+	fetchPages,
 	["pages"],
 	{ revalidate: REVALIDATE_TIME },
 );
@@ -406,67 +410,69 @@ export const getPage = unstable_cache(
 );
 
 // --- Projects ---
-export const getProjects = unstable_cache(
-	async (): Promise<Project[]> => {
-		const notion = getNotionClient();
-		const databaseId = process.env.NOTION_PROJECTS_DATABASE_ID;
+export const fetchProjects = async (): Promise<Project[]> => {
+	const notion = getNotionClient();
+	const databaseId = process.env.NOTION_PROJECTS_DATABASE_ID;
 
-		if (!databaseId) return [];
+	if (!databaseId) return [];
 
-		try {
-			let response;
-			const sorts = [
-				{
-					property: "Year",
-					direction: "descending" as const,
-				},
-			];
+	try {
+		let response;
+		const sorts = [
+			{
+				property: "Year",
+				direction: "descending" as const,
+			},
+		];
 
-			if (notion.dataSources) {
-				response = await notion.dataSources.query({
-					data_source_id: databaseId,
-					sorts,
-				});
-			} else {
-				response = await notion.databases.query({
-					database_id: databaseId,
-					sorts,
-				});
-			}
-
-			return response.results
-				.map((page: any) => ({
-					id: page.id,
-					slug: getProperty(page, "Slug", "rich_text") || "",
-					title: getTitle(page),
-					description: getProperty(page, "Description", "rich_text") || "",
-					url: getProperty(page, "Link", "url") || "",
-					github: getProperty(page, "GitHub", "url") || "",
-					techStack: getProperty(page, "Tech Stack", "multi_select") || [],
-					year: getProperty(page, "Year", "rich_text") || "",
-					logo:
-						page.properties?.Logo?.files?.[0]?.file?.url ||
-						page.properties?.Logo?.files?.[0]?.external?.url ||
-						undefined,
-					cover:
-						page.properties?.Banner?.files?.[0]?.file?.url ||
-						page.properties?.Banner?.files?.[0]?.external?.url ||
-						page.properties?.Image?.files?.[0]?.file?.url ||
-						page.properties?.Image?.files?.[0]?.external?.url ||
-						page.cover?.external?.url ||
-						page.cover?.file?.url ||
-						undefined,
-					screenshots:
-						page.properties?.Screenshots?.files?.map(
-							(file: any) => file.file?.url || file.external?.url,
-						) || [],
-				}))
-				.filter((p: Project) => p.title);
-		} catch (e) {
-			console.error("Failed to fetch projects", e);
-			return [];
+		if (notion.dataSources) {
+			response = await notion.dataSources.query({
+				data_source_id: databaseId,
+				sorts,
+			});
+		} else {
+			response = await notion.databases.query({
+				database_id: databaseId,
+				sorts,
+			});
 		}
-	},
+
+		return response.results
+			.map((page: any) => ({
+				id: page.id,
+				slug: getProperty(page, "Slug", "rich_text") || "",
+				title: getTitle(page),
+				description: getProperty(page, "Description", "rich_text") || "",
+				url: getProperty(page, "Link", "url") || "",
+				github: getProperty(page, "GitHub", "url") || "",
+				techStack: getProperty(page, "Tech Stack", "multi_select") || [],
+				year: getProperty(page, "Year", "rich_text") || "",
+				logo:
+					page.properties?.Logo?.files?.[0]?.file?.url ||
+					page.properties?.Logo?.files?.[0]?.external?.url ||
+					undefined,
+				cover:
+					page.properties?.Banner?.files?.[0]?.file?.url ||
+					page.properties?.Banner?.files?.[0]?.external?.url ||
+					page.properties?.Image?.files?.[0]?.file?.url ||
+					page.properties?.Image?.files?.[0]?.external?.url ||
+					page.cover?.external?.url ||
+					page.cover?.file?.url ||
+					undefined,
+				screenshots:
+					page.properties?.Screenshots?.files?.map(
+						(file: any) => file.file?.url || file.external?.url,
+					) || [],
+			}))
+			.filter((p: Project) => p.title);
+	} catch (e) {
+		console.error("Failed to fetch projects", e);
+		return [];
+	}
+};
+
+export const getProjects = unstable_cache(
+	fetchProjects,
 	["projects"],
 	{ revalidate: REVALIDATE_TIME },
 );

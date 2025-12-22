@@ -7,6 +7,12 @@ import { PhotoGallery } from "@/components/ui/gallery";
 import { getProjects } from "@/lib/notion";
 import JsonLd from "./jsonld";
 
+import { generateMetadata } from "@/lib/metadata";
+
+export const metadata = generateMetadata({
+  url: "/",
+});
+
 export default async function Home() {
 	const projects = await getProjects();
 

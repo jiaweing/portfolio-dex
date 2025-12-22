@@ -64,7 +64,25 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
   const pageImage = image || siteConfig.ogImage;
   const pageUrl = url ? new URL(url, siteConfig.url) : siteConfig.url;
 
+  // Construct static OG image URL
+  // Matches logic in scripts/generate-og.ts: / -> index, /foo/bar -> foo-bar
+  let staticOgUrl: string | null = null;
+  if (url) {
+    const cleanPath = url === "/" ? "index" : url.replace(/^\//, "").replace(/\//g, "-");
+    staticOgUrl = new URL(`/og/${cleanPath}.png`, siteConfig.url).toString();
+  }
+
   const openGraphImages = [
+    ...(staticOgUrl
+      ? [
+          {
+            url: staticOgUrl,
+            width: 1200,
+            height: 630,
+            alt: title || siteConfig.name,
+          },
+        ]
+      : []),
     {
       url: pageImage,
       width: 1200,
