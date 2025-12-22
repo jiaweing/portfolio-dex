@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:og": "bun scripts/generate-og.ts",
+    "build:og": "bun run build && bun scripts/generate-og.ts",
     "start": "next start",
     "lint": "next lint"
   },

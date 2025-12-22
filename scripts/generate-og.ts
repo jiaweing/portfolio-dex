@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
 
-const PORT = 3000;
+const PORT = 3456;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${PORT}`;
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -19,10 +19,15 @@ async function isServerRunning(url: string): Promise<boolean> {
 }
 
 async function startServer(): Promise<ChildProcess> {
-  console.log("Starting local server for OG generation...");
-  const server = spawn("bun", ["dev"], {
+  console.log(`Starting local reproduction server for OG generation on port ${PORT}...`);
+  const server = spawn("bun", ["start", "--", "-p", String(PORT)], {
     stdio: "inherit",
     shell: true,
+    env: {
+      ...process.env,
+      NODE_ENV: "production",
+      PORT: String(PORT),
+    },
   });
 
   // Wait for server to be ready
