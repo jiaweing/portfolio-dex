@@ -6,9 +6,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { SeasonalEffects } from "@/components/seasonal-effects";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import {
-	ProgressiveBlur
-} from "@/components/ui/skiper-ui/progressive-blur";
+import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -24,6 +22,8 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
+import { OpenSourceToast } from "@/components/open-source-toast";
+import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -184,6 +184,8 @@ export default function RootLayout({
 					<ThemeToggle />
 					<TailwindIndicator />
 					<SeasonalEffects />
+					<Toaster />
+					<OpenSourceToast />
 					<GoogleAnalytics gaId="G-MJ0F694R8J" />
 				</ThemeProvider>
 			</body>
