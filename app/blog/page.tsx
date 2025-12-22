@@ -10,6 +10,7 @@ export const revalidate = 3600; // Update every hour
 export const metadata = generateMetadata({
   title: "Blog",
   description: "Thoughts on software engineering, design, and technology.",
+  url: "/blog",
 });
 
 export default async function BlogPage() {

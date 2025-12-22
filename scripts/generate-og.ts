@@ -60,8 +60,12 @@ async function main() {
 
     const routes = [
       "/",
+      "/wrapped",
       "/blog",
       "/projects",
+      "/oss",
+      "/books",
+      "/setup",
       ...pages.map((p) => `/${p.slug}`),
       ...projects.map((p) => `/projects/${p.slug}`),
       ...blogPosts.map((p) => `/blog/${p.slug}`),

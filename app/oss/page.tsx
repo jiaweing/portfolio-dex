@@ -1,11 +1,12 @@
 import { OpenSourceSection } from "@/components/experience/OpenSourceSection";
 import { FadeIn } from "@/components/ui/fade-in";
-import { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = generateMetadata({
   title: "Open Source",
   description: "My contributions to open source projects.",
-};
+  url: "/oss",
+});
 
 export const revalidate = 3600;
 

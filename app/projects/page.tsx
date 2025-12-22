@@ -6,6 +6,7 @@ import { getProject, getProjects } from "@/lib/notion";
 export const metadata = generateMetadata({
   title: "Projects",
   description: "A showcase of my recent work and projects.",
+  url: "/projects",
 });
 
 export const revalidate = 60;

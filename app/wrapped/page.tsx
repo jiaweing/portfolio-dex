@@ -8,6 +8,7 @@ import { wrappedData } from "@/lib/wrapped-data";
 export const metadata = generateMetadata({
 	title: "2025 Wrapped",
 	description: "A look back at my 2025 - milestones, travels, and creations.",
+	url: "/wrapped",
 });
 
 export default function WrappedPage() {
