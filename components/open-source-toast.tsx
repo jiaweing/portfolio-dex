@@ -10,7 +10,8 @@ export function OpenSourceToast() {
 	useEffect(() => {
 		// Small delay to ensure the Toaster is mounted
 		const timer = setTimeout(() => {
-			toast("Like my website? It's open source and you can freely use the code for whatever you want, just star it!", {
+			toast("Like my website? 🩷", {
+				description: "It's open source and you can freely use the code for whatever you want, just give it a star ⭐",
 				duration: Infinity,
 				dismissible: true,
 				action: {
