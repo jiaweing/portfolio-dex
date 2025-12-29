@@ -1,4 +1,4 @@
-import { ProjectsCardStack } from "@/components/ProjectsCardStack";
+import { ProjectsView } from "@/components/ProjectsView";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateMetadata } from "@/lib/metadata";
 import { getProject, getProjects } from "@/lib/notion";
@@ -28,13 +28,10 @@ export default async function ProjectsPage() {
         <h3 className="mb-8 hidden text-center font-semibold opacity-0 md:block">
           projects
         </h3>
-        {/* Hide default header since we have card stack, or keep it? User said "main ui". 
-            I'll keep the section header but maybe center it or styled differently. 
-            Actually, let's keep it simple. */}
       </FadeIn>
 
       <FadeIn delay={0.1}>
-        <ProjectsCardStack projects={projectsWithBlocks} />
+        <ProjectsView projects={projectsWithBlocks} />
       </FadeIn>
     </div>
   );

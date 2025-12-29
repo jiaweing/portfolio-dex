@@ -43,7 +43,12 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
   return (
     <>
       {/* Desktop Fixed Card Stack - Visible 2xl+ */}
-      <div className="pointer-events-none fixed inset-0 z-30 hidden items-center justify-center 2xl:flex">
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="pointer-events-none fixed inset-0 z-30 hidden items-center justify-center 2xl:flex"
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         <div className="grid h-full w-full max-w-7xl grid-cols-2 gap-24 px-6">
           <div className="pointer-events-auto flex h-full max-h-[100vh] flex-col items-center justify-center">
             <div className="relative h-[420px] w-[320px]">
@@ -116,10 +121,15 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main Content & Mobile Stack */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12">
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="relative z-10 mx-auto w-full max-w-7xl px-6 py-12"
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         <div className="grid grid-cols-1 items-start gap-12 2xl:grid-cols-2 2xl:gap-24">
           {/* Mobile Stack (Visible < 2xl) */}
           <div className="order-1 flex flex-col items-center gap-6 2xl:hidden">
@@ -215,7 +225,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
             </AnimatePresence>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }
