@@ -1,3 +1,7 @@
+import { ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { PostDate } from "@/components/blog/PostDate";
 import { PostTags } from "@/components/blog/PostTags";
 import { NotionRenderer } from "@/components/NotionRenderer";
@@ -5,10 +9,6 @@ import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateBlogMetadata } from "@/lib/metadata";
 import { getBlogPost, getBlogPosts } from "@/lib/notion";
-import { ArrowLeft } from "lucide-react";
-import { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
 
@@ -51,20 +51,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <article>
       <FadeIn>
-        <div className="flex flex-col mb-8">
+        <div className="mb-8 flex flex-col">
           <div className="flex flex-col items-start gap-4">
             <Button
               asChild
-              variant="link"
               className="!p-0 text-muted-foreground"
+              variant="link"
             >
-              <Link href={`/blog`}>
+              <Link href={"/blog"}>
                 <ArrowLeft /> back to blog
               </Link>
             </Button>
-            <h3 className="font-semibold mb-2">{post.title}</h3>
+            <h3 className="mb-2 font-semibold">{post.title}</h3>
             {post.description && (
-              <p className="text-xl text-muted-foreground">
+              <p className="text-muted-foreground text-xl">
                 {post.description}
               </p>
             )}
@@ -78,11 +78,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {post.cover && (
         <FadeIn delay={0.1}>
-          <div className="mb-8 rounded-lg overflow-hidden aspect-video relative bg-muted">
+          <div className="relative mb-8 aspect-video overflow-hidden rounded-lg bg-muted">
             <img
-              src={post.cover}
               alt={post.title}
-              className="object-cover w-full h-full"
+              className="h-full w-full object-cover"
+              src={post.cover}
             />
           </div>
         </FadeIn>
@@ -93,7 +93,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </FadeIn>
 
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
@@ -112,6 +111,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             image: post.cover ? [post.cover] : undefined,
           }),
         }}
+        type="application/ld+json"
       />
     </article>
   );

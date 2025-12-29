@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, UseInViewOptions } from "framer-motion";
+import { motion, type UseInViewOptions, useInView } from "framer-motion";
 import { useRef } from "react";
 
 type Direction = "up" | "down" | "left" | "right";
@@ -58,10 +58,10 @@ export function FadeIn({
 
   return (
     <motion.div
-      ref={ref}
-      initial={initial}
       animate={animate}
       className={`${className} ${fullWidth ? "w-full" : ""}`}
+      initial={initial}
+      ref={ref}
     >
       {children}
     </motion.div>

@@ -1,5 +1,5 @@
-import { BlogPost, Page, Project } from "@/lib/notion";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import type { BlogPost, Page, Project } from "@/lib/notion";
 
 interface SiteConfig {
   name: string;
@@ -17,7 +17,8 @@ export const siteConfig: SiteConfig = {
   description:
     "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://jiaweing.com",
-  ogImage: "https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
+  ogImage:
+    "https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
   links: {
     twitter: "https://twitter.com/j14wei",
     github: "https://github.com/jiaweing",
@@ -59,7 +60,7 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
 
   // When using a template in layout.tsx, we should pass the raw title
   const pageTitle = title || siteConfig.name;
-  
+
   const pageDescription = description || siteConfig.description;
   const pageImage = image || siteConfig.ogImage;
   const pageUrl = url ? new URL(url, siteConfig.url) : siteConfig.url;
@@ -68,7 +69,8 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
   // Matches logic in scripts/generate-og.ts: / -> index, /foo/bar -> foo-bar
   let staticOgUrl: string | null = null;
   if (url) {
-    const cleanPath = url === "/" ? "index" : url.replace(/^\//, "").replace(/\//g, "-");
+    const cleanPath =
+      url === "/" ? "index" : url.replace(/^\//, "").replace(/\//g, "-");
     staticOgUrl = new URL(`/og/${cleanPath}.png`, siteConfig.url).toString();
   }
 
@@ -92,7 +94,7 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
   ];
 
   return {
-    title: title, // Next.js will apply the template from layout.tsx
+    title, // Next.js will apply the template from layout.tsx
     description: pageDescription,
     metadataBase: new URL(siteConfig.url),
     alternates: {
@@ -139,7 +141,9 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
 }
 
 export function generateBlogMetadata(post: BlogPost): Metadata {
-  const authorNames = post.authors?.map((author) => author.name) || [siteConfig.name];
+  const authorNames = post.authors?.map((author) => author.name) || [
+    siteConfig.name,
+  ];
 
   return generateMetadata({
     title: post.title,

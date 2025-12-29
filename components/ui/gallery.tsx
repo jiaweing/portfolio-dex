@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, useMotionValue } from "framer-motion";
-import Image, { ImageProps } from "next/image";
-import { Ref, forwardRef, useEffect, useState } from "react";
+import Image, { type ImageProps } from "next/image";
+import { forwardRef, type Ref, useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -94,9 +94,12 @@ export const PhotoGallery = ({
     }, animationDelay * 1000);
 
     // Then start the photo animations after a short delay
-    const animationTimer = setTimeout(() => {
-      setIsLoaded(true);
-    }, (animationDelay + 0.4) * 1000); // Add 0.4s for the opacity transition
+    const animationTimer = setTimeout(
+      () => {
+        setIsLoaded(true);
+      },
+      (animationDelay + 0.4) * 1000
+    ); // Add 0.4s for the opacity transition
 
     return () => {
       clearTimeout(visibilityTimer);
@@ -143,40 +146,40 @@ export const PhotoGallery = ({
   if (photos.length === 0) return null; // Wait for hydration/shuffle
 
   return (
-    <div className="mt-4 relative">
+    <div className="relative mt-4">
       <div className="relative mb-8 h-[350px] w-full items-center justify-center lg:flex">
         <motion.div
+          animate={{ opacity: isVisible ? 1 : 0 }}
           className="relative mx-auto flex w-full max-w-7xl justify-center"
           initial={{ opacity: 0 }}
-          animate={{ opacity: isVisible ? 1 : 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <motion.div
-            className="relative flex w-full justify-center"
-            variants={containerVariants}
-            initial="hidden"
             animate={isLoaded ? "visible" : "hidden"}
+            className="relative flex w-full justify-center"
+            initial="hidden"
+            variants={containerVariants}
           >
             <div className="relative h-[220px] w-[220px]">
               {/* Render photos in reverse order so that higher z-index photos are rendered later in the DOM */}
               {[...photos].reverse().map((photo) => (
                 <motion.div
-                  key={photo.id}
-                  className="absolute left-0 top-0"
-                  style={{ zIndex: photo.zIndex }} // Apply z-index directly in style
-                  variants={photoVariants}
+                  className="absolute top-0 left-0"
                   custom={{
                     x: photo.x,
                     y: photo.y,
                     order: photo.order,
                   }}
+                  key={photo.id} // Apply z-index directly in style
+                  style={{ zIndex: photo.zIndex }}
+                  variants={photoVariants}
                 >
                   <Photo
-                    width={220}
-                    height={220}
-                    src={photo.src}
                     alt="Gallery photo"
                     direction={photo.direction}
+                    height={220}
+                    src={photo.src}
+                    width={220}
                   />
                 </motion.div>
               ))}
@@ -249,46 +252,46 @@ export const Photo = ({
 
   return (
     <motion.div
+      animate={{ rotate: rotation }}
+      className={cn(
+        className,
+        "relative mx-auto shrink-0 cursor-grab active:cursor-grabbing"
+      )}
       drag
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      whileTap={{ scale: 1.2, zIndex: 9999 }}
-      whileHover={{
-        scale: 1.1,
-        rotateZ: 2 * (direction === "left" ? -1 : 1),
-        zIndex: 9999,
-      }}
-      whileDrag={{
-        scale: 1.1,
-        zIndex: 9999,
-      }}
+      draggable={false}
       initial={{ rotate: 0 }}
-      animate={{ rotate: rotation }}
+      onMouseLeave={resetMouse}
+      onMouseMove={handleMouse}
       style={{
         width,
         height,
         perspective: 400,
-        transform: `rotate(0deg) rotateX(0deg) rotateY(0deg)`,
+        transform: "rotate(0deg) rotateX(0deg) rotateY(0deg)",
         zIndex: 1,
         WebkitTouchCallout: "none",
         WebkitUserSelect: "none",
         userSelect: "none",
         touchAction: "none",
       }}
-      className={cn(
-        className,
-        "relative mx-auto shrink-0 cursor-grab active:cursor-grabbing"
-      )}
-      onMouseMove={handleMouse}
-      onMouseLeave={resetMouse}
-      draggable={false}
       tabIndex={0}
+      whileDrag={{
+        scale: 1.1,
+        zIndex: 9999,
+      }}
+      whileHover={{
+        scale: 1.1,
+        rotateZ: 2 * (direction === "left" ? -1 : 1),
+        zIndex: 9999,
+      }}
+      whileTap={{ scale: 1.2, zIndex: 9999 }}
     >
       <div className="relative h-full w-full overflow-hidden rounded-3xl shadow-sm">
         <MotionImage
-          className={cn("rounded-3xl  object-cover")}
+          alt={alt}
+          className={cn("rounded-3xl object-cover")}
           fill
           src={src}
-          alt={alt}
           {...props}
           draggable={false}
         />

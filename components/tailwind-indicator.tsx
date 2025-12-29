@@ -25,7 +25,7 @@ export function TailwindIndicator() {
   const { width, height } = dimensions;
 
   return (
-    <div className="fixed right-3 top-3 z-50 flex items-center space-x-2 rounded-full bg-black px-2.5 py-1 font-mono text-xs font-medium text-white">
+    <div className="fixed top-3 right-3 z-50 flex items-center space-x-2 rounded-full bg-black px-2.5 py-1 font-medium font-mono text-white text-xs">
       <span>
         {width.toLocaleString()} x {height.toLocaleString()}
       </span>

@@ -6,83 +6,83 @@ import { generateMetadata } from "@/lib/metadata";
 import { wrappedData } from "@/lib/wrapped-data";
 
 export const metadata = generateMetadata({
-	title: "2025 Wrapped",
-	description: "A look back at my 2025 - milestones, travels, and creations.",
-	url: "/wrapped",
+  title: "2025 Wrapped",
+  description: "A look back at my 2025 - milestones, travels, and creations.",
+  url: "/wrapped",
 });
 
 export default function WrappedPage() {
-	return (
-		<div className="space-y-12 md:px-20 2xl:px-0">
-			<div className="flex flex-col items-center text-center space-y-8">
-				<div className="flex flex-col items-center text-center space-y-4">
-				<h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-					<AnimatedGradientText>2025</AnimatedGradientText> Wrapped
-				</h1>
-				<p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-					It always has been the journey, not the destination.
-				</p>
-				</div>
-				<WrappedStoryTrigger data={wrappedData} />
-			</div>
+  return (
+    <div className="space-y-12 md:px-20 2xl:px-0">
+      <div className="flex flex-col items-center space-y-8 text-center">
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <h1 className="font-bold text-3xl tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
+            <AnimatedGradientText>2025</AnimatedGradientText> Wrapped
+          </h1>
+          <p className="max-w-[42rem] text-muted-foreground leading-normal sm:text-xl sm:leading-8">
+            It always has been the journey, not the destination.
+          </p>
+        </div>
+        <WrappedStoryTrigger data={wrappedData} />
+      </div>
 
-			<div className="flex flex-col gap-24">
-				{/* Milestones */}
-				<section className="space-y-6">
-					<h2 className="text-2xl font-medium tracking-tight text-muted-foreground">
-						Milestones
-					</h2>
-					<BentoGrid>
-						{wrappedData
-							.filter((item) => item.category === "milestones")
-							.map((item, index) => (
-								<BentoCard key={item.id} item={item} index={index} />
-							))}
-					</BentoGrid>
-				</section>
+      <div className="flex flex-col gap-24">
+        {/* Milestones */}
+        <section className="space-y-6">
+          <h2 className="font-medium text-2xl text-muted-foreground tracking-tight">
+            Milestones
+          </h2>
+          <BentoGrid>
+            {wrappedData
+              .filter((item) => item.category === "milestones")
+              .map((item, index) => (
+                <BentoCard index={index} item={item} key={item.id} />
+              ))}
+          </BentoGrid>
+        </section>
 
-				{/* Creations */}
-				<section className="space-y-6">
-					<h2 className="text-2xl font-medium tracking-tight text-muted-foreground">
-						Builds
-					</h2>
-					<BentoGrid>
-						{wrappedData
-							.filter((item) => item.category === "builds")
-							.map((item, index) => (
-								<BentoCard key={item.id} item={item} index={index} />
-							))}
-					</BentoGrid>
-				</section>
+        {/* Creations */}
+        <section className="space-y-6">
+          <h2 className="font-medium text-2xl text-muted-foreground tracking-tight">
+            Builds
+          </h2>
+          <BentoGrid>
+            {wrappedData
+              .filter((item) => item.category === "builds")
+              .map((item, index) => (
+                <BentoCard index={index} item={item} key={item.id} />
+              ))}
+          </BentoGrid>
+        </section>
 
-				{/* Travel */}
-				<section className="space-y-6">
-					<h2 className="text-2xl font-medium tracking-tight text-muted-foreground">
-						Travel
-					</h2>
-					<BentoGrid>
-						{wrappedData
-							.filter((item) => item.category === "travel")
-							.map((item, index) => (
-								<BentoCard key={item.id} item={item} index={index} />
-							))}
-					</BentoGrid>
-				</section>
+        {/* Travel */}
+        <section className="space-y-6">
+          <h2 className="font-medium text-2xl text-muted-foreground tracking-tight">
+            Travel
+          </h2>
+          <BentoGrid>
+            {wrappedData
+              .filter((item) => item.category === "travel")
+              .map((item, index) => (
+                <BentoCard index={index} item={item} key={item.id} />
+              ))}
+          </BentoGrid>
+        </section>
 
-				{/* Life & Social */}
-				<section className="space-y-6">
-					<h2 className="text-2xl font-medium tracking-tight text-muted-foreground">
-						Life
-					</h2>
-					<BentoGrid>
-						{wrappedData
-							.filter((item) => ["life", "social"].includes(item.category))
-							.map((item, index) => (
-								<BentoCard key={item.id} item={item} index={index} />
-							))}
-					</BentoGrid>
-				</section>
-			</div>
-		</div>
-	);
+        {/* Life & Social */}
+        <section className="space-y-6">
+          <h2 className="font-medium text-2xl text-muted-foreground tracking-tight">
+            Life
+          </h2>
+          <BentoGrid>
+            {wrappedData
+              .filter((item) => ["life", "social"].includes(item.category))
+              .map((item, index) => (
+                <BentoCard index={index} item={item} key={item.id} />
+              ))}
+          </BentoGrid>
+        </section>
+      </div>
+    </div>
+  );
 }

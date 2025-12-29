@@ -1,7 +1,7 @@
 "use client";
 
+import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { NotionBlock } from "@/components/notion/NotionBlock";
-import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 
 interface NotionRendererProps {
   blocks: BlockObjectResponse[];

@@ -41,6 +41,7 @@ export function SeasonalEffects() {
   if (effect === "snow") {
     return (
       <Snowfall
+        snowflakeCount={50}
         style={{
           position: "fixed",
           width: "100vw",
@@ -50,7 +51,6 @@ export function SeasonalEffects() {
           left: 0,
           pointerEvents: "none",
         }}
-        snowflakeCount={50}
       />
     );
   }
@@ -66,11 +66,11 @@ export function SeasonalEffects() {
         }}
       >
         <Confetti
-          width={windowSize.width}
-          height={windowSize.height}
-          recycle={true}
-          numberOfPieces={50}
           colors={["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]}
+          height={windowSize.height}
+          numberOfPieces={50}
+          recycle={true}
+          width={windowSize.width}
         />
       </div>
     );

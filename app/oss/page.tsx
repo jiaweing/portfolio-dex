@@ -14,7 +14,7 @@ export default async function OpenSourcePage() {
   return (
     <div className="space-y-8">
       <FadeIn>
-        <h3 className="font-semibold mb-2">open source</h3>
+        <h3 className="mb-2 font-semibold">open source</h3>
       </FadeIn>
 
       <FadeIn delay={0.1}>

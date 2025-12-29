@@ -1,5 +1,5 @@
+import type { MetadataRoute } from "next";
 import { getPages, getProjects } from "@/lib/notion";
-import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://example.com";

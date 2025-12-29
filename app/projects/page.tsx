@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
   return (
     <div className="min-h-screen">
       <FadeIn>
-        <h3 className="font-semibold mb-8 text-center hidden md:block opacity-0">
+        <h3 className="mb-8 hidden text-center font-semibold opacity-0 md:block">
           projects
         </h3>
         {/* Hide default header since we have card stack, or keep it? User said "main ui". 

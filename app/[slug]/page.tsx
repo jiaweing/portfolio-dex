@@ -1,9 +1,9 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { NotionRenderer } from "@/components/markdown-renderer";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generatePageMetadata } from "@/lib/metadata";
 import { getPage, getPages } from "@/lib/notion";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
 
@@ -47,7 +47,7 @@ export default async function GenericPage({
     <>
       <FadeIn>
         <header className="mb-12">
-          <h1 className="text-3xl md:text-4xl font-medium tracking-tight">
+          <h1 className="font-medium text-3xl tracking-tight md:text-4xl">
             {page.title}
           </h1>
         </header>

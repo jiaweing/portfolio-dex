@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { Book } from "@/components/ui/book";
 import profileData from "@/data/profile.json";
-import Link from "next/link";
 
 type BookItem = {
   title: string;
@@ -25,27 +25,27 @@ export function BooksSection({ books }: BooksSectionProps) {
   const readBooks = data.filter((book) => book.status !== "in-progress");
 
   const renderBooks = (books: BookItem[]) => (
-    <div className="flex flex-wrap gap-8 justify-center sm:justify-start">
+    <div className="flex flex-wrap justify-center gap-8 sm:justify-start">
       {books.map((book: BookItem, index: number) => {
         const BookComponent = (
           <Book
-            title={book.title}
             author={book.author}
-            variant="stripe"
-            width={160}
-            textured={true}
             color={book.color}
             coverImage={book.coverImage}
+            textured={true}
+            title={book.title}
+            variant="stripe"
+            width={160}
           />
         );
 
         if (book.url && book.url !== "#") {
           return (
             <Link
-              key={index}
+              className="group no-underline"
               href={book.url as any}
+              key={index}
               target="_blank"
-              className="no-underline group"
             >
               {BookComponent}
             </Link>
@@ -61,14 +61,14 @@ export function BooksSection({ books }: BooksSectionProps) {
     <div className="space-y-16">
       {inProgressBooks.length > 0 && (
         <div>
-          <h3 className="font-semibold mb-8">currently reading</h3>
+          <h3 className="mb-8 font-semibold">currently reading</h3>
           {renderBooks(inProgressBooks)}
         </div>
       )}
 
       {readBooks.length > 0 && (
         <div>
-          <h3 className="font-semibold mb-8">books read</h3>
+          <h3 className="mb-8 font-semibold">books read</h3>
           {renderBooks(readBooks)}
         </div>
       )}

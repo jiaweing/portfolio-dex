@@ -7,7 +7,8 @@
     "build": "next build",
     "build:og": "bun run build && bun scripts/generate-og.ts",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -70,6 +71,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.10",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
@@ -78,19 +80,21 @@
     "@types/react-dom": "latest",
     "eslint": "^9",
     "eslint-config-next": "latest",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "puppeteer": "^24.34.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "ultracite": "6.5.0"
   },
-  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c",
+  "packageManager": "bun@1.1.0",
   "overrides": {
     "brace-expansion": "1.1.12",
     "serialize-javascript": "6.0.2"
   },
-  "pnpm": {
-    "overrides": {
-      "brace-expansion": "1.1.12",
-      "serialize-javascript": "6.0.2"
-    }
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "bun x ultracite fix"
+    ]
   }
 }

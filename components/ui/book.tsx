@@ -1,8 +1,8 @@
 "use client";
 
-import { useResponsive } from "@/hooks/use-responsive";
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
+import { useResponsive } from "@/hooks/use-responsive";
 
 const DefaultIllustration = (
   <svg
@@ -67,15 +67,15 @@ export const Book = ({
   const _color = color
     ? color
     : variant === "simple"
-    ? "var(--ds-background-200)"
-    : "var(--ds-amber-600)";
+      ? "var(--ds-background-200)"
+      : "var(--ds-amber-600)";
   const _illustration = illustration ? illustration : DefaultIllustration;
 
   return (
     <div className="inline-block w-fit" style={{ perspective: 900 }}>
       <div
         className={clsx(
-          "w-fit relative rotate-0 duration-[250ms] book-rotate",
+          "book-rotate relative w-fit rotate-0 duration-[250ms]",
           !coverImage && "aspect-[49/60]"
         )}
         style={{
@@ -85,12 +85,12 @@ export const Book = ({
         }}
       >
         <div
-          className="flex flex-col h-full rounded-l-md rounded-r overflow-hidden bg-background-200 shadow-book translate-x-0 relative after:absolute after:border after:border-gray-alpha-400 after:w-full after:h-full after:shadow-book-border after:rounded-l-md after:rounded-r"
+          className="relative flex h-full translate-x-0 flex-col overflow-hidden rounded-r rounded-l-md bg-background-200 shadow-book after:absolute after:h-full after:w-full after:rounded-r after:rounded-l-md after:border after:border-gray-alpha-400 after:shadow-book-border"
           style={{ width: _width }}
         >
           <div
             className={clsx(
-              "w-full relative overflow-hidden",
+              "relative w-full overflow-hidden",
               variant === "stripe" && "flex-1",
               coverImage && "h-full" // Ensure full height if cover image is present
             )}
@@ -102,9 +102,9 @@ export const Book = ({
             {variant === "stripe" && coverImage && (
               <div className="w-full">
                 <img
-                  src={coverImage}
                   alt={title}
-                  className="object-cover w-full h-auto block"
+                  className="block h-auto w-full object-cover"
+                  src={coverImage}
                 />
               </div>
             )}
@@ -134,7 +134,7 @@ export const Book = ({
             />
             <div
               className={clsx(
-                "flex flex-col w-full p-[6.1%] pl-[14.3%]",
+                "flex w-full flex-col p-[6.1%] pl-[14.3%]",
                 variant === "simple" ? "gap-4" : "justify-between"
               )}
               style={{
@@ -144,7 +144,7 @@ export const Book = ({
             >
               <span
                 className={clsx(
-                  "leading-[1.25em] tracking-[-.02em] text-balance font-semibold",
+                  "text-balance font-semibold leading-[1.25em] tracking-[-.02em]",
                   variant === "simple" ? "text-[12cqw]" : "text-[10.5cqw]",
                   coverImage && "hidden" // Hide text if cover image is present
                 )}
@@ -152,7 +152,7 @@ export const Book = ({
               >
                 {title}
                 <br />
-                <span className="text-xs opacity-75 font-normal block mt-1">
+                <span className="mt-1 block font-normal text-xs opacity-75">
                   {author}
                 </span>
               </span>
@@ -160,12 +160,12 @@ export const Book = ({
             </div>
           </div>
           {textured && (
-            <div className="absolute top-0 left-0 inset-0 rotate-180 rounded-l-md rounded-r mix-blend-hard-light pointer-events-none bg-cover bg-no-repeat opacity-50 brightness-110 bg-[url('https://assets.vercel.com/image/upload/v1720554484/front/design/book-texture.avif')]" />
+            <div className="pointer-events-none absolute inset-0 top-0 left-0 rotate-180 rounded-r rounded-l-md bg-[url('https://assets.vercel.com/image/upload/v1720554484/front/design/book-texture.avif')] bg-cover bg-no-repeat opacity-50 mix-blend-hard-light brightness-110" />
           )}
         </div>
 
         <div
-          className="h-[calc(100%_-_2_*_3px)] w-[calc(29cqw_-_2px)] absolute top-[3px]"
+          className="absolute top-[3px] h-[calc(100%_-_2_*_3px)] w-[calc(29cqw_-_2px)]"
           style={{
             background:
               "linear-gradient(90deg, #eaeaea, transparent 70%), linear-gradient(#fff, #fafafa)",
@@ -173,7 +173,7 @@ export const Book = ({
           }}
         />
         <div
-          className="bg-gray-200 absolute left-0 top-0 rounded-l-md rounded-r h-full"
+          className="absolute top-0 left-0 h-full rounded-r rounded-l-md bg-gray-200"
           style={{ width: _width, transform: "translateZ(calc(-1 * 29cqw))" }}
         />
       </div>

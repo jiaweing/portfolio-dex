@@ -1,6 +1,6 @@
 import { PastSection } from "@/components/experience/PastSection";
 import { PresentSection } from "@/components/experience/PresentSection";
-import { Project } from "@/lib/notion";
+import type { Project } from "@/lib/notion";
 
 interface ExperienceSectionProps {
   projects?: Project[];

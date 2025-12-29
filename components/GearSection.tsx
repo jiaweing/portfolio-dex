@@ -1,7 +1,7 @@
 "use client";
+import Link from "next/link";
 import { Favicon } from "@/components/ui/Favicon";
 import profileData from "@/data/profile.json";
-import Link from "next/link";
 
 type GearItem = {
   name: string;
@@ -15,11 +15,11 @@ type GearItem = {
 export function GearSection() {
   return (
     <div>
-      <h3 className="font-semibold mb-2">setup & gear</h3>
+      <h3 className="mb-2 font-semibold">setup & gear</h3>
       <div className="space-y-1 text-sm leading-relaxed">
         {profileData.gear &&
           (profileData.gear as unknown as GearItem[]).map((item, index) => (
-            <GearListItem key={index} item={item} />
+            <GearListItem item={item} key={index} />
           ))}
       </div>
     </div>
@@ -31,14 +31,14 @@ function GearListItem({ item }: { item: GearItem }) {
     <p className="leading-relaxed">
       {item.url && item.url !== "#" ? (
         <Link
-          href={item.url as any}
           className="text-blue-500 dark:text-sky-500"
+          href={item.url as any}
           target="_blank"
         >
           <Favicon
-            url={item.url}
-            invert={item.invertFavicon}
             hide={item.hideFavicon}
+            invert={item.invertFavicon}
+            url={item.url}
           />
           {item.name}
         </Link>

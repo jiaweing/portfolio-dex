@@ -108,10 +108,10 @@ export default function JsonLd() {
     <>
       {schemas.map((schema, index) => (
         <Script
-          key={`json-ld-${index}`}
-          id={`json-ld-${index}`}
-          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          id={`json-ld-${index}`}
+          key={`json-ld-${index}`}
+          type="application/ld+json"
         />
       ))}
     </>

@@ -1,8 +1,8 @@
-import { fetchBlogPosts, fetchPages, fetchProjects } from "@/lib/notion";
-import { spawn, type ChildProcess } from "child_process";
+import { type ChildProcess, spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
+import { fetchBlogPosts, fetchPages, fetchProjects } from "@/lib/notion";
 
 const PORT = 3456;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${PORT}`;
@@ -19,7 +19,9 @@ async function isServerRunning(url: string): Promise<boolean> {
 }
 
 async function startServer(): Promise<ChildProcess> {
-  console.log(`Starting local reproduction server for OG generation on port ${PORT}...`);
+  console.log(
+    `Starting local reproduction server for OG generation on port ${PORT}...`
+  );
   const server = spawn("bun", ["start", "--", "-p", String(PORT)], {
     stdio: "inherit",
     shell: true,
@@ -46,14 +48,14 @@ async function startServer(): Promise<ChildProcess> {
 
 async function main() {
   console.log("Starting OG generation...");
-  
+
   let serverProcess: ChildProcess | null = null;
   const isRunning = await isServerRunning(BASE_URL);
-  
-  if (!isRunning) {
-    serverProcess = await startServer();
-  } else {
+
+  if (isRunning) {
     console.log("Using existing server instance.");
+  } else {
+    serverProcess = await startServer();
   }
 
   try {
@@ -81,7 +83,7 @@ async function main() {
     // 2. Launch Puppeteer
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 630 });
@@ -95,15 +97,14 @@ async function main() {
     for (const route of routes) {
       const url = `${BASE_URL}${route}`;
       // Clean filename: remove leading slash, replace others with dash
-      const fileName = route === "/" 
-        ? "index" 
-        : route.replace(/^\//, "").replace(/\//g, "-"); // e.g. "projects/foo" -> "projects-foo"
-      
+      const fileName =
+        route === "/" ? "index" : route.replace(/^\//, "").replace(/\//g, "-"); // e.g. "projects/foo" -> "projects-foo"
+
       const filePath = path.join(ogDir, `${fileName}.png`);
 
       console.log(`Screenshotting ${route} -> ${fileName}.png`);
       try {
-        await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
+        await page.goto(url, { waitUntil: "networkidle0", timeout: 60_000 });
         await page.screenshot({ path: filePath });
       } catch (e) {
         console.error(`Failed to screenshot ${route}:`, e);
@@ -112,7 +113,6 @@ async function main() {
 
     await browser.close();
     console.log("OG generation complete.");
-
   } catch (error) {
     console.error("Error generating OG images:", error);
     process.exit(1);

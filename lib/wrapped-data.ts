@@ -1,5 +1,4 @@
-
-export type IconName = 
+export type IconName =
   | "Airplane01Icon"
   | "Award01Icon"
   | "BankIcon"
@@ -102,7 +101,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "StarIcon",
     color: "yellow",
   },
-    {
+  {
     id: "newspaper",
     title: "Featured on a local newspaper",
     description: "Business Times",
@@ -112,7 +111,7 @@ export const wrappedData: WrappedItem[] = [
     color: "purple",
     className: "col-span-2 row-span-2",
     backgroundImage: "/images/wrapped/dell.jpg",
-    backgroundPosition: "40% 50%"
+    backgroundPosition: "40% 50%",
   },
   {
     id: "google-hackathon",
@@ -125,7 +124,7 @@ export const wrappedData: WrappedItem[] = [
     color: "blue",
     className: "col-span-2 row-span-2",
     backgroundImage: "/images/wrapped/google.jpg",
-    backgroundPosition: "top"
+    backgroundPosition: "top",
   },
   {
     id: "license",
@@ -135,7 +134,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Car01Icon",
     color: "red",
     backgroundImage: "/images/wrapped/drive.jpg",
-    backgroundPosition: "top"
+    backgroundPosition: "top",
   },
   {
     id: "notion",
@@ -168,7 +167,7 @@ export const wrappedData: WrappedItem[] = [
     className: "col-span-1 row-span-1",
     backgroundImage: "/images/wrapped/supply.jpg",
   },
-    {
+  {
     id: "newsletter",
     title: "Launched a newsletter",
     category: "builds",
@@ -213,9 +212,9 @@ export const wrappedData: WrappedItem[] = [
     color: "violet",
     className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/ryu.png",
-    backgroundPosition: "50% 65%"
+    backgroundPosition: "50% 65%",
   },
-    {
+  {
     id: "rust",
     title: "My next startup build in Rust",
     category: "builds",
@@ -264,7 +263,7 @@ export const wrappedData: WrappedItem[] = [
       "Johor Bahru",
     ],
   },
-    {
+  {
     id: "europe-uk",
     title: "Went Europe and UK for the first time",
     category: "travel",
@@ -273,7 +272,7 @@ export const wrappedData: WrappedItem[] = [
     color: "indigo",
     className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/uk.jpg",
-    backgroundPosition: "50% 65%"
+    backgroundPosition: "50% 65%",
   },
   {
     id: "eiffel",
@@ -283,7 +282,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "EiffelTowerIcon",
     color: "yellow",
     backgroundImage: "/images/wrapped/eiffel.jpg",
-    backgroundPosition: "50% 10%"
+    backgroundPosition: "50% 10%",
   },
   {
     id: "catacombs",
@@ -315,7 +314,7 @@ export const wrappedData: WrappedItem[] = [
     color: "blue",
     className: "col-span-2 row-span-1",
     backgroundImage: "/images/wrapped/flight.jpg",
-    backgroundPosition: "50% 65%"
+    backgroundPosition: "50% 65%",
   },
   {
     id: "disneyland",
@@ -325,9 +324,9 @@ export const wrappedData: WrappedItem[] = [
     iconName: "SparklesIcon",
     color: "pink",
     backgroundImage: "/images/wrapped/disneyland.jpg",
-    backgroundPosition: "50% 95%"
+    backgroundPosition: "50% 95%",
   },
-    {
+  {
     id: "solo-travel",
     title: "Solo traveled for the first time",
     category: "travel",
@@ -368,7 +367,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "Bicycle01Icon",
     color: "lime",
     backgroundImage: "/images/wrapped/bike.jpg",
-    backgroundPosition: "50% 80%"
+    backgroundPosition: "50% 80%",
   },
   {
     id: "wisdom-tooth",
@@ -391,7 +390,7 @@ export const wrappedData: WrappedItem[] = [
     iconName: "ConferenceIcon",
     color: "blue",
     backgroundImage: "/images/wrapped/conference.jpg",
-    backgroundPosition: "bottom"
+    backgroundPosition: "bottom",
   },
   {
     id: "hackathons",

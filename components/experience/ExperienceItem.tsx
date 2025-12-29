@@ -1,5 +1,5 @@
-import { Favicon } from "@/components/ui/Favicon";
 import Link from "next/link";
+import { Favicon } from "@/components/ui/Favicon";
 
 export type ExperienceItemType = {
   title: string;
@@ -13,26 +13,26 @@ export type ExperienceItemType = {
 
 export function ExperienceItem({ item }: { item: ExperienceItemType }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:gap-2 leading-relaxed">
-      <div className="flex items-center gap-1 min-w-0 shrink-0">
+    <div className="flex flex-col leading-relaxed md:flex-row md:items-center md:gap-2">
+      <div className="flex min-w-0 shrink-0 items-center gap-1">
         {item.title && (
           <span className="whitespace-nowrap">{item.title} @</span>
         )}
         {item.url ? (
           <Link
+            className="truncate text-blue-500 dark:text-sky-500"
             href={item.url as any}
-            className="text-blue-500 dark:text-sky-500 truncate"
             target={item.url.startsWith("http") ? "_blank" : "_self"}
           >
             <Favicon
-              url={item.url}
-              invert={item.invertFavicon}
               hide={item.hideFavicon}
+              invert={item.invertFavicon}
+              url={item.url}
             />
             {item.organization}
           </Link>
         ) : (
-          <span className="text-muted-foreground truncate">
+          <span className="truncate text-muted-foreground">
             {item.organization}
           </span>
         )}

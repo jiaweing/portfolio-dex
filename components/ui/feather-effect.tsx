@@ -1,6 +1,6 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface FeatherEffectProps {
   position: "top" | "bottom";
@@ -25,15 +25,14 @@ export function FeatherEffect({
 
   return (
     <motion.div
+      animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "fixed left-0 right-0 pointer-events-none",
+        "pointer-events-none fixed right-0 left-0",
         isTop ? "top-0 h-20 md:h-24" : "bottom-0 h-20 md:h-24",
         "w-full",
         className
       )}
       initial={{ opacity: 0, y: isTop ? -15 : 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
       style={{
         zIndex: 50,
         background: isTop
@@ -41,18 +40,19 @@ export function FeatherEffect({
           : "linear-gradient(to top, var(--background) 0%, var(--background) 30%, rgba(var(--background-rgb), 0.9) 50%, rgba(var(--background-rgb), 0.6) 70%, rgba(var(--background-rgb), 0.3) 85%, transparent 100%)",
         backdropFilter: blurAmount,
       }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
       {/* Subtle decorative elements */}
       <motion.div
+        animate={{ opacity: 0.05 }}
         className="absolute w-full opacity-5"
+        initial={{ opacity: 0 }}
         style={{
           height: "100%",
           background: `radial-gradient(ellipse at ${
             isTop ? "bottom" : "top"
           }, rgba(var(--background-rgb), 0.1) 0%, transparent 70%)`,
         }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.05 }}
         transition={{ duration: 1.5 }}
       />
 
@@ -70,10 +70,10 @@ export function FeatherEffect({
 
       {/* Very subtle border line */}
       {isTop && (
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-border/20 opacity-30" />
+        <div className="absolute right-0 bottom-0 left-0 h-px bg-border/20 opacity-30" />
       )}
       {!isTop && (
-        <div className="absolute top-0 left-0 right-0 h-px bg-border/20 opacity-30" />
+        <div className="absolute top-0 right-0 left-0 h-px bg-border/20 opacity-30" />
       )}
     </motion.div>
   );

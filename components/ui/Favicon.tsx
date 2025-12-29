@@ -39,15 +39,15 @@ export function Favicon({
 
     return (
       <img
-        src={faviconUrl}
         alt=""
-        className={`inline-block w-4 h-4 mr-1 rounded-sm align-text-bottom ${className} ${
+        className={`mr-1 inline-block h-4 w-4 rounded-sm align-text-bottom ${className} ${
           resolvedTheme === "dark" ? "opacity-90" : ""
         } ${shouldInvert ? "invert" : ""}`}
         loading="lazy"
         onError={(e) => {
           e.currentTarget.style.display = "none";
         }}
+        src={faviconUrl}
       />
     );
   } catch (e) {

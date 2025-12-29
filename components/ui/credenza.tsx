@@ -1,29 +1,29 @@
 "use client";
 
+import type * as React from "react";
 import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import type * as React from "react";
 
 interface BaseProps {
   children: React.ReactNode;
@@ -76,10 +76,8 @@ const CredenzaContent = ({ className, children, ...props }: CredenzaProps) => {
       {children}
     </DialogContent>
   ) : (
-    <DrawerContent className="max-h-[85vh] flex flex-col fixed bottom-0 left-0 right-0 z-50 mt-24 h-[96%] rounded-t-[10px] bg-background">
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
-        {children}
-      </div>
+    <DrawerContent className="fixed right-0 bottom-0 left-0 z-50 mt-24 flex h-[96%] max-h-[85vh] flex-col rounded-t-[10px] bg-background">
+      <div className="flex-1 overflow-y-auto px-4 pb-4">{children}</div>
     </DrawerContent>
   );
 };
@@ -139,14 +137,13 @@ const CredenzaFooter = ({ className, children, ...props }: CredenzaProps) => {
 };
 
 export {
-	Credenza,
-	CredenzaBody,
-	CredenzaClose,
-	CredenzaContent,
-	CredenzaDescription,
-	CredenzaFooter,
-	CredenzaHeader,
-	CredenzaTitle,
-	CredenzaTrigger
+  Credenza,
+  CredenzaBody,
+  CredenzaClose,
+  CredenzaContent,
+  CredenzaDescription,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+  CredenzaTrigger,
 };
-

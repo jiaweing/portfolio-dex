@@ -1,7 +1,7 @@
 "use client";
-import profileData from "@/data/profile.json";
 import Image from "next/image";
 import Link from "next/link";
+import profileData from "@/data/profile.json";
 
 type SocialItem = {
   name: string;
@@ -11,14 +11,14 @@ type SocialItem = {
 
 export function SocialLinks() {
   return (
-    <div className="flex flex-row flex-wrap justify-start items-center gap-6 mt-4">
+    <div className="mt-4 flex flex-row flex-wrap items-center justify-start gap-6">
       {profileData.social.map((item: SocialItem, index: number) => (
         <SocialLink
-          key={index}
-          href={item.url}
-          ariaLabel={item.name}
-          imgSrc={item.icon}
           alt={`${item.name} Logo`}
+          ariaLabel={item.name}
+          href={item.url}
+          imgSrc={item.icon}
+          key={index}
         />
       ))}
     </div>
@@ -35,17 +35,17 @@ type SocialLinkProps = {
 function SocialLink({ href, ariaLabel, imgSrc, alt }: SocialLinkProps) {
   return (
     <Link
-      href={href as any}
-      target="_blank"
-      rel="noopener noreferrer"
       aria-label={ariaLabel}
-      className="text-muted-foreground hover:text-primary text-center w-6 h-6 flex items-center justify-center"
+      className="flex h-6 w-6 items-center justify-center text-center text-muted-foreground hover:text-primary"
+      href={href as any}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <Image
-        className="h-5 w-5 dark:invert hover:opacity-100 opacity-50 transition-colors duration-300 grayscale"
-        src={imgSrc}
         alt={alt}
+        className="h-5 w-5 opacity-50 grayscale transition-colors duration-300 hover:opacity-100 dark:invert"
         height={16}
+        src={imgSrc}
         width={16}
       />
     </Link>

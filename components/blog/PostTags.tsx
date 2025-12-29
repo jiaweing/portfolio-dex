@@ -10,7 +10,7 @@ export function PostTags({ tags }: PostTagsProps) {
       <span>•</span>
       <div className="flex gap-1">
         {tags.map((tag) => (
-          <span key={tag} className="capitalize">
+          <span className="capitalize" key={tag}>
             {tag}
           </span>
         ))}

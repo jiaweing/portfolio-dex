@@ -32,19 +32,17 @@ export function OptimizedImage({
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <Image
-        src={src}
         alt={alt}
-        width={width}
+        className={`duration-700 ease-in-out ${isLoading ? "scale-110 blur-sm" : "scale-100 blur-0"}
+        `}
         height={height}
+        loading={priority ? "eager" : "lazy"}
+        onLoadingComplete={() => setIsLoading(false)}
         priority={priority}
         quality={90}
-        loading={priority ? "eager" : "lazy"}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className={`
-          duration-700 ease-in-out
-          ${isLoading ? "scale-110 blur-sm" : "scale-100 blur-0"}
-        `}
-        onLoadingComplete={() => setIsLoading(false)}
+        src={src}
+        width={width}
       />
     </div>
   );

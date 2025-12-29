@@ -1,14 +1,14 @@
-import { NotionRenderer } from "@/components/markdown-renderer";
-import ProjectGallery from "@/components/project-gallery";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FadeIn } from "@/components/ui/fade-in";
-import { Project } from "@/lib/notion";
-import { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import {
   ArrowRight01Icon as ArrowRight,
   LinkSquare02Icon as ExternalLink,
 } from "hugeicons-react";
 import Link from "next/link";
+import { NotionRenderer } from "@/components/markdown-renderer";
+import ProjectGallery from "@/components/project-gallery";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FadeIn } from "@/components/ui/fade-in";
+import type { Project } from "@/lib/notion";
 
 interface ProjectContentProps {
   project: Project;
@@ -32,15 +32,15 @@ export function ProjectContent({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <h1 className="text-3xl font-medium tracking-tight md:text-4xl">
+                  <h1 className="font-medium text-3xl tracking-tight md:text-4xl">
                     {project.title}
                   </h1>
                   {project.logo && (
                     <Avatar className="size-12 rounded-xl border border-white/10 bg-zinc-900/50">
                       <AvatarImage
-                        src={project.logo}
                         alt={project.title}
                         className="object-cover"
+                        src={project.logo}
                       />
                       <AvatarFallback>{project.title[0]}</AvatarFallback>
                     </Avatar>
@@ -53,23 +53,23 @@ export function ProjectContent({
 
           {/* Description */}
           <FadeIn delay={0.2}>
-            <div className="leading-relaxed text-foreground/90">
+            <div className="text-foreground/90 leading-relaxed">
               {project.description}
             </div>
           </FadeIn>
         </div>
       )}
 
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row items-center justify-between">
         {/* Links */}
         <FadeIn delay={0.45}>
           <div className="flex items-center gap-4 pt-2">
             {project.url && (
               <a
+                className="inline-flex items-center gap-2 font-medium text-primary text-sm hover:underline"
                 href={project.url}
-                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                target="_blank"
               >
                 <ExternalLink className="h-4 w-4" />
                 Website
@@ -78,10 +78,10 @@ export function ProjectContent({
 
             {project.github && (
               <a
+                className="inline-flex items-center gap-2 font-medium text-primary text-sm hover:underline"
                 href={project.github}
-                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+                target="_blank"
               >
                 <ExternalLink className="h-4 w-4" />
                 GitHub
@@ -90,8 +90,8 @@ export function ProjectContent({
 
             {showLink && project.slug && (
               <Link
+                className="inline-flex items-center gap-2 font-medium text-primary text-sm hover:underline"
                 href={`/projects/${project.slug}`}
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
               >
                 <ArrowRight className="h-4 w-4" />
                 View Project
@@ -107,8 +107,8 @@ export function ProjectContent({
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech) => (
                   <span
+                    className="inline-flex items-center rounded-full bg-secondary px-3 py-1 font-medium text-secondary-foreground text-sm"
                     key={tech}
-                    className="inline-flex items-center rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground"
                   >
                     {tech}
                   </span>

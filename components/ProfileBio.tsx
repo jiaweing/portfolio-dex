@@ -10,7 +10,7 @@ export function ProfileBio() {
   return (
     <div className="space-y-6">
       {bioLines.map((line, index) => (
-        <p key={index} className="mx-auto my-8 max-w-2xl">
+        <p className="mx-auto my-8 max-w-2xl" key={index}>
           {line}
         </p>
       ))}

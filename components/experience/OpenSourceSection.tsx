@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { Favicon } from "@/components/ui/Favicon";
 import profileData from "@/data/profile.json";
-import Link from "next/link";
 
 export function OpenSourceSection() {
   return (
@@ -23,8 +23,8 @@ function ProjectListItem({ project }: { project: any }) {
   return (
     <p className="leading-relaxed">
       <Link
+        className="text-blue-500 hover:underline dark:text-sky-500"
         href={project.url}
-        className="text-blue-500 dark:text-sky-500 hover:underline"
         target="_blank"
       >
         <Favicon url={project.url} />
