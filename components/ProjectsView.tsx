@@ -14,9 +14,9 @@ interface ProjectsViewProps {
 export function ProjectsView({ projects }: ProjectsViewProps) {
   return (
     <div className="relative min-h-screen w-full">
-      <Tabs className="w-full" defaultValue="gallery" variant="pills">
+      <Tabs className="w-full" defaultValue="gallery">
         <div className="container mx-auto flex justify-center">
-          <TabsList>
+          <TabsList variant="pills">
             <TabsTrigger value="gallery" variant="pills">
               <Layers className="h-4 w-4" />
             </TabsTrigger>

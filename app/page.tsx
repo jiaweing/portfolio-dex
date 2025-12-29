@@ -9,9 +9,9 @@ import { getProjects } from "@/lib/notion";
 import JsonLd from "./jsonld";
 
 export const metadata = generateMetadata({
-  title: "Jiawei Ng - Design Engineer",
+  title: "Jia Wei Ng",
   description:
-    "Design Engineer who cares about the details. Building polished, high-performance web applications.",
+    "Just an ordinary guy who makes software, with unique and original digital experiences.",
   url: "/",
 });
 
