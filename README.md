@@ -10,18 +10,7 @@
   </tr>
 </table>
 
-<table>
-  <tr>
-    <td width="50%">
-      <img src="docs/desktop.png" alt="Portfolio Desktop View" width="100%" />
-      <p align="center"><em>Desktop View</em></p>
-    </td>
-    <td width="50%">
-      <img src="docs/mobile.PNG" alt="Portfolio Mobile View" width="60%" style="display: block; margin: 0 auto;" />
-      <p align="center"><em>Mobile View</em></p>
-    </td>
-  </tr>
-</table>
+<img src="public/og/index.png" alt="Portfolio Desktop View" width="100%" />
 
 ### Local Development
 
