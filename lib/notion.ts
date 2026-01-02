@@ -54,6 +54,7 @@ export interface Project {
   url?: string;
   github?: string;
   techStack: string[];
+  badges: { name: string; color: string }[];
   cover?: string;
   logo?: string;
   year: string;
@@ -101,6 +102,7 @@ const getProperty = (
     | "rich_text"
     | "date"
     | "multi_select"
+    | "multi_select_colored"
     | "select"
     | "url"
     | "people" = "rich_text"
@@ -113,6 +115,10 @@ const getProperty = (
   if (type === "date") return p.date?.start || "";
   if (type === "multi_select")
     return p.multi_select?.map((o: any) => o.name) || [];
+  if (type === "multi_select_colored")
+    return (
+      p.multi_select?.map((o: any) => ({ name: o.name, color: o.color })) || []
+    );
   if (type === "select") return p.select?.name || "";
   if (type === "url") return p.url || "";
   if (type === "people")
@@ -441,6 +447,7 @@ export const fetchProjects = async (): Promise<Project[]> => {
         url: getProperty(page, "Link", "url") || "",
         github: getProperty(page, "GitHub", "url") || "",
         techStack: getProperty(page, "Tech Stack", "multi_select") || [],
+        badges: getProperty(page, "Badges", "multi_select_colored") || [],
         year: getProperty(page, "Year", "rich_text") || "",
         logo:
           page.properties?.Logo?.files?.[0]?.file?.url ||
@@ -512,6 +519,7 @@ export const getProject = unstable_cache(
         url: getProperty(page, "Link", "url") || "",
         github: getProperty(page, "GitHub", "url") || "",
         techStack: getProperty(page, "Tech Stack", "multi_select") || [],
+        badges: getProperty(page, "Badges", "multi_select_colored") || [],
         year: getProperty(page, "Year", "rich_text") || "",
         logo:
           page.properties?.Logo?.files?.[0]?.file?.url ||

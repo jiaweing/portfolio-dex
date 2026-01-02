@@ -34,7 +34,7 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
                 className="group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-zinc-900/50 transition-all hover:bg-zinc-900"
                 whileTap={{ scale: 0.98 }}
               >
-                {/* Image */}
+                {/* Background Image */}
                 <div className="absolute inset-0">
                   {project.cover ? (
                     <Image
@@ -49,36 +49,85 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
                       {project.title}
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 transition-opacity group-hover:opacity-80" />
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 opacity-60 transition-opacity group-hover:opacity-80" />
                 </div>
 
-                {/* Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-                  <p className="font-medium text-lg text-white tracking-tight">
-                    {project.title}
-                  </p>
-                  {project.year && (
-                    <p className="font-mono text-[10px] text-white/50">
-                      {project.year}
-                    </p>
+                {/* Top Content: Logo, Title, Year, Link */}
+                <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4">
+                  <div className="flex items-center gap-3">
+                    {project.logo && (
+                      <div className="relative h-10 w-10 overflow-hidden rounded-lg backdrop-blur-sm">
+                        <Image
+                          alt={`${project.title} logo`}
+                          className="h-full w-full object-cover"
+                          fill
+                          sizes="40px"
+                          src={project.logo}
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-col">
+                      <h3 className="font-medium text-lg text-white leading-tight">
+                        {project.title}
+                      </h3>
+                      {project.year && (
+                        <p className="font-mono text-white/70 text-xs">
+                          {project.year}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {project.url && (
+                    <a
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
+                      href={project.url}
+                      onClick={(e) => e.stopPropagation()}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <svg
+                        fill="none"
+                        height="16"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2.5"
+                        viewBox="0 0 24 24"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line x1="7" x2="17" y1="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </a>
                   )}
-                  <p className="mt-1 line-clamp-2 text-white/70 text-xs">
+                </div>
+
+                {/* Bottom Content: Description & Badges */}
+                <div className="absolute inset-x-0 bottom-0 z-10 p-4 text-left">
+                  <p className="mb-3 line-clamp-3 font-medium text-sm text-white/90 leading-relaxed">
                     {project.description}
                   </p>
-                  <div className="mt-3 flex hidden flex-wrap gap-1.5 group-hover:flex">
-                    {project.techStack?.slice(0, 3).map((tech) => (
-                      <span
-                        className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm"
-                        key={tech}
-                      >
-                        {tech}
-                      </span>
+
+                  <div className="flex flex-wrap gap-2">
+                    {project.badges?.map((badge, i) => (
+                      <BadgePill
+                        color={badge.color}
+                        key={i}
+                        name={badge.name}
+                      />
                     ))}
-                    {project.techStack && project.techStack.length > 3 && (
-                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm">
-                        +{project.techStack.length - 3}
-                      </span>
-                    )}
+                    {!project.badges?.length &&
+                      project.techStack?.slice(0, 3).map((tech) => (
+                        <span
+                          className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white backdrop-blur-sm"
+                          key={tech}
+                        >
+                          {tech}
+                        </span>
+                      ))}
                   </div>
                 </div>
               </motion.div>
@@ -100,5 +149,30 @@ export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
         </FadeIn>
       ))}
     </div>
+  );
+}
+
+function BadgePill({ name, color }: { name: string; color: string }) {
+  const colorMap: Record<string, string> = {
+    default: "bg-white/20 text-white",
+    gray: "bg-zinc-500/20 text-zinc-200",
+    brown: "bg-orange-900/40 text-orange-200",
+    orange: "bg-orange-500/20 text-orange-200",
+    yellow: "bg-yellow-500/20 text-yellow-200",
+    green: "bg-green-500/20 text-green-200",
+    blue: "bg-blue-500/20 text-blue-200",
+    purple: "bg-purple-500/20 text-purple-200",
+    pink: "bg-pink-500/20 text-pink-200",
+    red: "bg-red-500/20 text-red-200",
+  };
+
+  const colorClass = colorMap[color] || colorMap.default;
+
+  return (
+    <span
+      className={`flex items-center gap-1 rounded-full px-2.5 py-1 font-medium text-xs backdrop-blur-sm ${colorClass}`}
+    >
+      {name}
+    </span>
   );
 }
