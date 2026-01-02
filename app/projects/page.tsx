@@ -24,12 +24,6 @@ export default async function ProjectsPage() {
 
   return (
     <div className="min-h-screen">
-      <FadeIn>
-        <h3 className="mb-8 hidden text-center font-semibold opacity-0 md:block">
-          projects
-        </h3>
-      </FadeIn>
-
       <FadeIn delay={0.1}>
         <ProjectsView projects={projectsWithBlocks} />
       </FadeIn>
