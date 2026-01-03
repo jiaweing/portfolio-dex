@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   Bookmark02Icon as Book,
   BookOpen02Icon as GalleryHorizontalEnd,
-  Globe02Icon as Globe,
   FavouriteIcon as Heart,
   Search01Icon as Search,
   UserIcon as User,
@@ -31,7 +30,7 @@ export function SiteHeader() {
     { href: "/about", icon: User, label: "About" },
     { href: "/blog", icon: Book, label: "Blog" },
     { href: "/projects", icon: Search, label: "Projects" },
-    { href: "/oss", icon: Globe, label: "Open Source" },
+
     { href: "/books", icon: GalleryHorizontalEnd, label: "Books" },
     { href: "/setup", icon: Heart, label: "Setup" },
   ];

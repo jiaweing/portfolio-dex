@@ -88,9 +88,7 @@ export function MobileNav({ className }: MobileNavProps) {
                   <MobileLink href="/projects" onOpenChange={setOpen}>
                     Projects
                   </MobileLink>
-                  <MobileLink href="/oss" onOpenChange={setOpen}>
-                    Open Source
-                  </MobileLink>
+
                   <MobileLink href="/setup" onOpenChange={setOpen}>
                     Setup
                   </MobileLink>

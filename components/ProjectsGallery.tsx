@@ -3,6 +3,7 @@
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { ProjectContent } from "@/components/ProjectContent";
 import {
   Credenza,
@@ -116,9 +117,7 @@ function ProjectCard({
                   src={project.cover}
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-muted font-medium text-muted-foreground">
-                  {project.title}
-                </div>
+                <GenerativeGradient title={project.title} />
               )}
               {/* Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 opacity-60 transition-opacity group-hover:opacity-80" />
@@ -199,7 +198,7 @@ function ProjectCard({
             </div>
           </motion.div>
         </CredenzaTrigger>
-        <CredenzaContent className="min-w-[90vw] bg-background/80 backdrop-blur-md md:min-w-[700px] lg:min-w-[900px]">
+        <CredenzaContent className="min-w-[90vw] rounded-3xl bg-background/80 backdrop-blur-md md:min-w-[700px] lg:min-w-[900px]">
           <CredenzaHeader className="hidden">
             <CredenzaTitle>{project.title}</CredenzaTitle>
           </CredenzaHeader>

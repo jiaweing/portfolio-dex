@@ -4,6 +4,7 @@ import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoin
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { ProjectContent } from "@/components/ProjectContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Project } from "@/lib/notion";
@@ -78,9 +79,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           src={project.cover}
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-muted font-medium text-muted-foreground text-xl">
-                          {project.title}
-                        </div>
+                        <GenerativeGradient title={project.title} />
                       )}
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     </div>
@@ -160,9 +159,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           src={project.cover}
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-muted font-medium text-muted-foreground text-xl">
-                          {project.title}
-                        </div>
+                        <GenerativeGradient title={project.title} />
                       )}
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     </div>
