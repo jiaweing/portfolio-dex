@@ -35,6 +35,16 @@ const nextConfig: NextConfig = {
         hostname: "*.s3.*.amazonaws.com",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "www.google.com",
+        pathname: "/s2/favicons",
+      },
+      {
+        protocol: "https",
+        hostname: "unavatar.io",
+        pathname: "/**",
+      },
     ],
   },
   turbopack: {},

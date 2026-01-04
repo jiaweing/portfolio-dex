@@ -163,7 +163,13 @@ export function GenerativeGradient({
       >
         <defs>
           {/* Heavy blur for soft blending */}
-          <filter id={`blur-${idSuffix}`}>
+          <filter
+            height="300%"
+            id={`blur-${idSuffix}`}
+            width="300%"
+            x="-100%"
+            y="-100%"
+          >
             <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
           </filter>
 

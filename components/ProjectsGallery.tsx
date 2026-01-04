@@ -3,6 +3,7 @@
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { ProjectContent } from "@/components/ProjectContent";
 import {
@@ -13,6 +14,7 @@ import {
   CredenzaTrigger,
 } from "@/components/ui/credenza";
 import { FadeIn } from "@/components/ui/fade-in";
+import { GithubDark } from "@/components/ui/svgs/githubDark";
 import type { Project } from "@/lib/notion";
 
 interface ProjectsGalleryProps {
@@ -102,6 +104,9 @@ function ProjectCard({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
+  // Favicon error state
+  const [faviconError, setFaviconError] = useState(false);
+
   // Spring configuration for smooth animation
   const springConfig = { stiffness: 300, damping: 30 };
   const rotateX = useSpring(
@@ -132,7 +137,7 @@ function ProjectCard({
         <CredenzaTrigger asChild>
           <div style={{ perspective: 1000 }}>
             <motion.div
-              className="group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-zinc-900/50 transition-colors hover:bg-zinc-900"
+              className="group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900/50 transition-colors hover:bg-zinc-900 dark:border-white/10"
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
               style={{
@@ -162,7 +167,7 @@ function ProjectCard({
               {/* Top Content: Logo, Title, Year, Link */}
               <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4">
                 <div className="flex items-center gap-3">
-                  {project.logo && (
+                  {project.logo ? (
                     <div className="relative h-10 w-10 overflow-hidden rounded-lg backdrop-blur-sm">
                       <Image
                         alt={`${project.title} logo`}
@@ -172,7 +177,24 @@ function ProjectCard({
                         src={project.logo}
                       />
                     </div>
-                  )}
+                  ) : project.github ? (
+                    <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
+                      <GithubDark className="h-6 w-6" />
+                    </div>
+                  ) : project.url && !faviconError ? (
+                    <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
+                      <div className="relative h-6 w-6">
+                        <Image
+                          alt={`${project.title} favicon`}
+                          className="object-cover"
+                          fill
+                          onError={() => setFaviconError(true)}
+                          sizes="24px"
+                          src={`https://unavatar.io/${new URL(project.url).hostname}?fallback=false`}
+                        />
+                      </div>
+                    </div>
+                  ) : null}
                   <div className="flex flex-col">
                     <h3 className="font-medium text-lg text-white leading-tight">
                       {project.title}

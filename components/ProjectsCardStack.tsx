@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { ProjectContent } from "@/components/ProjectContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { GithubDark } from "@/components/ui/svgs/githubDark";
 import type { Project } from "@/lib/notion";
 import "swiper/css";
 import "swiper/css/effect-cards";
@@ -34,6 +35,14 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
       setDebouncedActiveIndex(activeIndex);
     }, 100);
     return () => clearTimeout(timer);
+  }, [activeIndex]);
+
+  // Favicon error state
+  const [faviconError, setFaviconError] = useState(false);
+
+  // Reset error when active project changes
+  useEffect(() => {
+    setFaviconError(false);
   }, [activeIndex]);
 
   if (!sortedProjects || sortedProjects.length === 0) return null;
@@ -99,7 +108,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                   <h2 className="font-semibold text-2xl text-foreground tracking-tight">
                     {activeProject.title}
                   </h2>
-                  {activeProject.logo && (
+                  {activeProject.logo ? (
                     <Avatar className="size-8 rounded-lg border border-white/10 bg-zinc-900/50">
                       <AvatarImage
                         alt={activeProject.title}
@@ -108,7 +117,24 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                       />
                       <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
                     </Avatar>
-                  )}
+                  ) : activeProject.github ? (
+                    <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
+                      <GithubDark className="h-5 w-5" />
+                    </div>
+                  ) : activeProject.url && !faviconError ? (
+                    <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
+                      <div className="relative h-5 w-5">
+                        <Image
+                          alt={`${activeProject.title} favicon`}
+                          className="object-cover"
+                          fill
+                          onError={() => setFaviconError(true)}
+                          sizes="20px"
+                          src={`https://unavatar.io/${new URL(activeProject.url).hostname}?fallback=false`}
+                        />
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <p className="line-clamp-2 max-w-sm text-muted-foreground/90 text-sm leading-relaxed">
@@ -178,7 +204,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                   <h2 className="font-semibold text-2xl text-foreground tracking-tight">
                     {activeProject.title}
                   </h2>
-                  {activeProject.logo && (
+                  {activeProject.logo ? (
                     <Avatar className="size-8 rounded-lg border border-white/10 bg-zinc-900/50">
                       <AvatarImage
                         alt={activeProject.title}
@@ -187,7 +213,24 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                       />
                       <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
                     </Avatar>
-                  )}
+                  ) : activeProject.github ? (
+                    <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
+                      <GithubDark className="h-5 w-5" />
+                    </div>
+                  ) : activeProject.url && !faviconError ? (
+                    <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
+                      <div className="relative h-5 w-5">
+                        <Image
+                          alt={`${activeProject.title} favicon`}
+                          className="object-cover"
+                          fill
+                          onError={() => setFaviconError(true)}
+                          sizes="20px"
+                          src={`https://unavatar.io/${new URL(activeProject.url).hostname}?fallback=false`}
+                        />
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </div>
               <p className="line-clamp-2 max-w-sm text-muted-foreground/90 text-sm leading-relaxed">
