@@ -1,4 +1,3 @@
-import { OpenSourceSection } from "@/components/experience/OpenSourceSection";
 import { ProjectsView } from "@/components/ProjectsView";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateMetadata } from "@/lib/metadata";
@@ -27,15 +26,6 @@ export default async function ProjectsPage() {
     <div className="min-h-screen">
       <FadeIn delay={0.1}>
         <ProjectsView projects={projectsWithBlocks} />
-      </FadeIn>
-
-      <FadeIn delay={0.2}>
-        <div className="container mx-auto px-4 pb-20">
-          <h2 className="mb-8 font-semibold text-2xl tracking-tight">
-            Open Source
-          </h2>
-          <OpenSourceSection />
-        </div>
       </FadeIn>
     </div>
   );
