@@ -41,8 +41,8 @@ export function Favicon({
       <img
         alt=""
         className={`mr-1 inline-block h-4 w-4 rounded-sm align-text-bottom ${className} ${
-          resolvedTheme === "dark" ? "opacity-90" : ""
-        } ${shouldInvert ? "invert" : ""}`}
+          shouldInvert ? "invert" : ""
+        }`}
         loading="lazy"
         onError={(e) => {
           e.currentTarget.style.display = "none";

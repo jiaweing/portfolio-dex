@@ -43,7 +43,7 @@ function SocialLink({ href, ariaLabel, imgSrc, alt }: SocialLinkProps) {
     >
       <Image
         alt={alt}
-        className="h-5 w-5 opacity-50 grayscale transition-colors duration-300 hover:opacity-100 dark:invert"
+        className="h-5 w-5 transition-colors duration-300 dark:invert"
         height={16}
         src={imgSrc}
         width={16}
