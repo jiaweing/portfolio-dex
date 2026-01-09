@@ -203,7 +203,11 @@ export function ProfileBio() {
         <span className="font-normal text-muted-foreground">Hi, I&apos;m </span>
         <SantaAvatar className="corner-squircle mr-2 inline-block size-5 align-middle md:size-6.5" />
         <span className="font-medium text-black text-foreground dark:text-white">
-          <TextShimmer className="inline-block" duration={1.2}>
+          <TextShimmer
+            className="inline-block"
+            duration={1.2}
+            hoverDuration={0.5}
+          >
             Jia Wei Ng
           </TextShimmer>
         </span>{" "}

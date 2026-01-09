@@ -103,9 +103,7 @@ export function WrappedBanner({
               >
                 <span>2025 Wrapped</span>
               </motion.div>
-              <span className="text-zinc-600 dark:text-zinc-400">
-                is here! Happy holidays!
-              </span>
+              <span className="text-zinc-600 dark:text-zinc-400">is here!</span>
             </div>
 
             {/* Dismiss Button */}
