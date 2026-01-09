@@ -15,10 +15,9 @@ interface SiteConfig {
 export const siteConfig: SiteConfig = {
   name: "Jia Wei Ng",
   description:
-    "Software engineer and designer from Singapore specializing in AI, blockchain, and game development.",
+    "a serial entrepreneur, designer & software engineer who loves building cool shit",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://jiaweing.com",
-  ogImage:
-    "https://jiaweing.com/api/og?title=Jia%20Wei%20Ng&subtitle=Software%20Engineer%20%26%20Designer",
+  ogImage: "https://jiaweing.com/og/index.png",
   links: {
     twitter: "https://twitter.com/j14wei",
     github: "https://github.com/jiaweing",
@@ -65,28 +64,24 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
   const pageImage = image || siteConfig.ogImage;
   const pageUrl = url ? new URL(url, siteConfig.url) : siteConfig.url;
 
-  // Construct static OG image URL
+  // Construct static OG image URL from public/og folder
   // Matches logic in scripts/generate-og.ts: / -> index, /foo/bar -> foo-bar
-  let staticOgUrl: string | null = null;
-  if (url) {
-    const cleanPath =
-      url === "/" ? "index" : url.replace(/^\//, "").replace(/\//g, "-");
-    staticOgUrl = new URL(`/og/${cleanPath}.png`, siteConfig.url).toString();
-  }
+  const staticOgPath = url
+    ? url === "/"
+      ? "index"
+      : url.replace(/^\//, "").replace(/\//g, "-")
+    : "index";
+  const staticOgUrl = new URL(
+    `/og/${staticOgPath}.png`,
+    siteConfig.url
+  ).toString();
+
+  // Use static OG image, fallback to pageImage if custom image provided
+  const ogImageUrl = image || staticOgUrl;
 
   const openGraphImages = [
-    ...(staticOgUrl
-      ? [
-          {
-            url: staticOgUrl,
-            width: 1200,
-            height: 630,
-            alt: title || siteConfig.name,
-          },
-        ]
-      : []),
     {
-      url: pageImage,
+      url: ogImageUrl,
       width: 1200,
       height: 630,
       alt: title || siteConfig.name,
@@ -118,7 +113,7 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [pageImage],
+      images: [ogImageUrl],
       creator: siteConfig.links.twitter.replace("https://twitter.com/", "@"),
     },
     robots: {

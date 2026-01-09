@@ -75,7 +75,7 @@ export default function JsonLd() {
       addressCountry: "Singapore",
     },
     description:
-      "Software Engineer & Designer based in Singapore with expertise in AI, blockchain, and game development.",
+      "a serial entrepreneur, designer & software engineer who loves building cool shit",
   };
 
   // Website schema for better site representation
@@ -90,7 +90,7 @@ export default function JsonLd() {
       url: "https://jiaweing.com",
     },
     description:
-      "Personal portfolio of Jia Wei Ng, a software engineer and designer based in Singapore with expertise in AI, blockchain, and game development.",
+      "a serial entrepreneur, designer & software engineer who loves building cool shit",
     publisher: {
       "@type": "Person",
       name: "Jia Wei Ng",
