@@ -233,7 +233,7 @@ export function ProfileBio() {
       <motion.p variants={itemVariants}>
         I currently build and scale products at{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted font-medium text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://base07.com"
           rel="noopener noreferrer"
           target="_blank"
@@ -242,7 +242,7 @@ export function ProfileBio() {
         </Link>
         ,{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted font-medium text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://updatenight.com"
           rel="noopener noreferrer"
           target="_blank"
@@ -251,7 +251,7 @@ export function ProfileBio() {
         </Link>
         ,{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted font-medium text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://supply.tf"
           rel="noopener noreferrer"
           target="_blank"
@@ -260,7 +260,7 @@ export function ProfileBio() {
         </Link>
         , and{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted font-medium text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://decosmic.com"
           rel="noopener noreferrer"
           target="_blank"
@@ -281,7 +281,7 @@ export function ProfileBio() {
       <motion.p variants={itemVariants}>
         Previously, I scaled{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted font-medium text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://titan.tf"
           rel="noopener noreferrer"
           target="_blank"
@@ -316,7 +316,7 @@ export function ProfileBio() {
       <motion.p variants={itemVariants}>
         I love{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://en.wikipedia.org/wiki/Psychology"
           rel="noopener noreferrer"
           target="_blank"
@@ -325,7 +325,7 @@ export function ProfileBio() {
         </Link>
         ,{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://en.wikipedia.org/wiki/Outer_space"
           rel="noopener noreferrer"
           target="_blank"
@@ -334,7 +334,7 @@ export function ProfileBio() {
         </Link>
         ,{" "}
         <Link
-          className="border-muted-foreground/30 border-b border-dotted text-black text-foreground transition-colors hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://en.wikipedia.org/wiki/Quantum_mechanics"
           rel="noopener noreferrer"
           target="_blank"
