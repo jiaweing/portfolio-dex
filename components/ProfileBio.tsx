@@ -63,8 +63,8 @@ function StackedFavicons({
     <TooltipProvider delayDuration={0}>
       <motion.span
         className={cn(
-          "inline-flex items-center transition-all duration-300",
-          isProject ? "-space-x-2" : "-space-x-1"
+          "mx-1 inline-flex items-center transition-all duration-900",
+          isProject ? "-space-x-2 hover:space-x-2" : "space-x-1 hover:space-x-2"
         )}
         initial="rest"
         whileHover="hover"
@@ -95,10 +95,7 @@ function StackedFavicons({
                 {item.src ? (
                   <div
                     className={cn(
-                      "corner-squircle flex h-7 w-7 items-center justify-center overflow-hidden p-1.5 shadow-sm",
-                      isProject
-                        ? "border border-border bg-background"
-                        : "bg-transparent"
+                      "corner-squircle flex h-5 w-5 items-center justify-center overflow-hidden"
                     )}
                   >
                     <Image
@@ -118,12 +115,7 @@ function StackedFavicons({
                   </div>
                 ) : (
                   <Favicon
-                    className={cn(
-                      "corner-squircle h-7 w-7 p-1 shadow-sm",
-                      isProject
-                        ? "border border-border bg-background"
-                        : "bg-transparent"
-                    )}
+                    className={cn("corner-squircle h-7 w-7")}
                     url={item.url!}
                   />
                 )}
@@ -220,7 +212,7 @@ export function ProfileBio() {
           , from {weatherAdjective}
           <Image
             alt="Singapore Weather Icon"
-            className="corner-squircle mx-1 inline-block border border-white/10 align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
+            className="corner-squircle mx-1 inline-block align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
             height={30}
             src={singaporeIcon}
             width={30}
@@ -231,7 +223,7 @@ export function ProfileBio() {
         cool shit
         <Image
           alt="Fire"
-          className="corner-squircle mx-1 inline-block border border-white/10 align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
+          className="corner-squircle mx-1 inline-block align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
           height={30}
           src="/images/icons/Fire.png"
           width={30}
@@ -352,7 +344,7 @@ export function ProfileBio() {
         , strange anomalies and mysteries of the universe
         <Image
           alt="Milky Way"
-          className="corner-squircle mx-1 inline-block border border-white/10 align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
+          className="corner-squircle mx-1 inline-block align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
           height={30}
           src="/images/icons/Milky Way.png"
           width={30}
