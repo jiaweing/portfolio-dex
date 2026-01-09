@@ -23,10 +23,10 @@ export function SantaAvatar({
   }, []);
 
   return (
-    <div className="group relative inline-flex">
+    <span className="group relative inline-flex">
       {showHat && (
         <svg
-          alt="Santa Hat"
+          aria-label="Santa Hat"
           className={cn(
             "absolute -top-6 -left-2 z-10 size-12 -rotate-[22deg] transform",
             className
@@ -35,6 +35,7 @@ export function SantaAvatar({
           viewBox="0 0 28 28"
           xmlns="http://www.w3.org/2000/svg"
         >
+          <title>Santa Hat</title>
           {/* Pom-pom - moved to the drooping tip */}
           <circle className="fill-white" cx="3" cy="11" r="2.5" />
           {/* Hat Body - Drooping to the left */}
@@ -59,6 +60,6 @@ export function SantaAvatar({
         <AvatarImage alt="Jia Wei Ng" src="/images/avatars/shadcn.png" />
         <AvatarFallback>JW</AvatarFallback>
       </Avatar>
-    </div>
+    </span>
   );
 }

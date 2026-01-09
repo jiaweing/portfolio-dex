@@ -13,14 +13,12 @@ export type AnimatedNumberProps = {
   value: number;
   className?: string;
   springOptions?: SpringOptions;
-  as?: React.ElementType;
 };
 
 export function AnimatedNumber({
   value,
   className,
   springOptions,
-  as = "span",
 }: AnimatedNumberProps) {
   const spring = useSpring(value, springOptions);
   const display = useTransform(spring, (current) =>
@@ -31,9 +29,9 @@ export function AnimatedNumber({
     spring.set(value);
   }, [spring, value]);
 
-  const Component = motion[as as keyof typeof motion] || motion.span;
-
   return (
-    <Component className={cn("inline-block", className)}>{display}</Component>
+    <motion.span className={cn("inline-block", className)}>
+      {display}
+    </motion.span>
   );
 }
