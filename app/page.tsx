@@ -1,7 +1,5 @@
-import { ContactSection } from "@/components/ContactSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProfileBio } from "@/components/ProfileBio";
-import { ProfileHeader } from "@/components/ProfileHeader";
 import { FadeIn } from "@/components/ui/fade-in";
 import { PhotoGallery } from "@/components/ui/gallery";
 import { generateMetadata } from "@/lib/metadata";
@@ -21,15 +19,8 @@ export default async function Home() {
   return (
     <>
       <JsonLd />
-
-      <FadeIn>
-        <ProfileHeader />
-      </FadeIn>
-      <FadeIn delay={0.1}>
-        <ProfileBio />
-      </FadeIn>
+      <ProfileBio />
       <FadeIn delay={0.2}>
-        <ContactSection />
         <div className="mt-16">
           <PhotoGallery />
         </div>

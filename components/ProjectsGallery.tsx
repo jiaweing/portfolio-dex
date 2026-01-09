@@ -16,6 +16,7 @@ import {
 import { FadeIn } from "@/components/ui/fade-in";
 import { GithubDark } from "@/components/ui/svgs/githubDark";
 import type { Project } from "@/lib/notion";
+import { cn } from "@/lib/utils";
 
 interface ProjectsGalleryProps {
   projects: (Project & { blocks: BlockObjectResponse[] })[];
@@ -137,7 +138,7 @@ function ProjectCard({
         <CredenzaTrigger asChild>
           <div style={{ perspective: 1000 }}>
             <motion.div
-              className="group relative aspect-[4/5] cursor-pointer overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900/50 transition-colors hover:bg-zinc-900 dark:border-white/10"
+              className="group corner-squircle relative aspect-[4/5] cursor-pointer overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900/50 transition-colors hover:bg-zinc-900 dark:border-white/10"
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
               style={{
@@ -171,7 +172,9 @@ function ProjectCard({
                     <div className="relative h-10 w-10 overflow-hidden rounded-lg backdrop-blur-sm">
                       <Image
                         alt={`${project.title} logo`}
-                        className="h-full w-full object-cover"
+                        className={cn(
+                          "corner-squircle h-full w-full object-cover"
+                        )}
                         fill
                         sizes="40px"
                         src={project.logo}

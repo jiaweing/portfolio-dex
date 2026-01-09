@@ -147,7 +147,7 @@ export default function RootLayout({
         <link href="/.well-known/llms.txt" rel="llms" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
       >
         <ThemeProvider
           attribute="class"

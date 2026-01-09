@@ -75,7 +75,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
               >
                 {sortedProjects.map((project, index) => (
                   <SwiperSlide
-                    className="overflow-hidden rounded-2xl border border-white/10 bg-white shadow-xl dark:bg-zinc-900"
+                    className="corner-squircle overflow-hidden border border-white/10 bg-white shadow-xl dark:bg-zinc-900"
                     key={`desktop-${project.id}`}
                   >
                     <div className="relative h-full w-full">
@@ -172,7 +172,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
               >
                 {sortedProjects.map((project, index) => (
                   <SwiperSlide
-                    className="overflow-hidden rounded-2xl border border-white/10 bg-white shadow-xl dark:bg-zinc-900"
+                    className="corner-squircle overflow-hidden border border-white/10 bg-white shadow-xl dark:bg-zinc-900"
                     key={`mobile-${project.id}`}
                   >
                     <div className="relative h-full w-full">

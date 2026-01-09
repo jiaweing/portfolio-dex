@@ -26,7 +26,11 @@ export function SantaAvatar({
     <div className="group relative inline-flex">
       {showHat && (
         <svg
-          className="absolute -top-6 -left-2 z-10 size-12 -rotate-[22deg] transform"
+          alt="Santa Hat"
+          className={cn(
+            "absolute -top-6 -left-2 z-10 size-12 -rotate-[22deg] transform",
+            className
+          )}
           fill="none"
           viewBox="0 0 28 28"
           xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +51,7 @@ export function SantaAvatar({
       )}
       <Avatar
         className={cn(
-          "rounded-xl border border-white/10 shadow-xl transition-transform duration-300 group-hover:scale-110",
+          "corner-squircle border border-white/10 shadow-xl transition-transform duration-300 group-hover:scale-110",
           className
         )}
         {...props}
