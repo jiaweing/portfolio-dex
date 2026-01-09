@@ -64,6 +64,20 @@
     }
   }
 
+  @keyframes cosmic-pulse {
+    0%,
+    100% {
+      opacity: 0.8;
+      filter: contrast(1.05) brightness(1.05) blur(0.5px);
+    }
+    50% {
+      opacity: 1;
+      filter: contrast(1.1) brightness(1.1) blur(0.5px);
+    }
+  }
+
+  --animate-cosmic-pulse: cosmic-pulse 5s ease-in-out infinite;
+
   --color-context-card-border: var(--context-card-border);
   --color-amber-600: var(--ds-amber-600);
   --color-gray-200: var(--ds-gray-200);

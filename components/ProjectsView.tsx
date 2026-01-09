@@ -1,7 +1,8 @@
 "use client";
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { Layers, WalletCards } from "lucide-react";
+import { Gamepad2, Layers, WalletCards } from "lucide-react";
+import { MemoryGame } from "@/components/MemoryGame";
 import { ProjectsCardStack } from "@/components/ProjectsCardStack";
 import { ProjectsGallery } from "@/components/ProjectsGallery";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,6 +24,9 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
             <TabsTrigger value="stack" variant="pills">
               <WalletCards className="h-4 w-4" />
             </TabsTrigger>
+            <TabsTrigger value="game" variant="pills">
+              <Gamepad2 className="h-4 w-4" />
+            </TabsTrigger>
           </TabsList>
         </div>
 
@@ -34,6 +38,12 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
 
         <TabsContent className="outline-none" value="stack">
           <ProjectsCardStack projects={projects} />
+        </TabsContent>
+
+        <TabsContent className="outline-none" value="game">
+          <div className="container mx-auto flex min-h-[calc(100vh-200px)] flex-col items-center justify-center px-4 pb-12">
+            <MemoryGame projects={projects} />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
