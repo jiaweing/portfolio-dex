@@ -27,7 +27,7 @@ interface GameCard {
   type: "cover" | "logo";
 }
 
-type Difficulty = 6 | 8 | 12;
+type Difficulty = 6 | 8 | 12 | 16;
 type ScoreMode = "time" | "moves" | "combo";
 type CardType = "cover" | "logo";
 type GameStatus = "setup" | "playing" | "won";
@@ -176,7 +176,7 @@ function MemoryCard({
           )}
           style={{ backfaceVisibility: "hidden" }}
         >
-          <span className="font-bold text-4xl text-muted-foreground">?</span>
+          <span className="font-medium text-4xl text-muted-foreground">?</span>
         </div>
 
         {/* Front of card (project cover) */}
@@ -193,7 +193,7 @@ function MemoryCard({
             alt={card.title}
             className={cn(
               "object-cover",
-              card.type === "logo" ? "object-contain p-4" : ""
+              card.type === "logo" ? "object-contain" : ""
             )}
             fill
             sizes="(max-width: 768px) 25vw, 15vw"
@@ -240,6 +240,7 @@ function GameSetup({
     { value: 6, label: "Easy (6 pairs)" },
     { value: 8, label: "Medium (8 pairs)" },
     { value: 12, label: "Hard (12 pairs)" },
+    { value: 16, label: "Expert (16 pairs)" },
   ];
 
   const scoreModes: {
@@ -527,6 +528,7 @@ export function MemoryGame({ projects }: MemoryGameProps) {
   const [showConfetti, setShowConfetti] = useState(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const matchTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize game
   const initGame = useCallback(() => {
@@ -561,8 +563,7 @@ export function MemoryGame({ projects }: MemoryGameProps) {
     setStatus("playing");
     setShowConfetti(false);
     setIsNewHighScore(false);
-    setShowConfetti(false);
-    setIsNewHighScore(false);
+    if (matchTimerRef.current) clearTimeout(matchTimerRef.current);
   }, [difficulty, availableProjects, cardType]);
 
   // Timer effect
@@ -574,18 +575,32 @@ export function MemoryGame({ projects }: MemoryGameProps) {
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (matchTimerRef.current) clearTimeout(matchTimerRef.current);
     };
   }, [status]);
 
-  // Handle card click
   const handleCardClick = useCallback(
     (cardId: string) => {
-      if (isProcessing || flippedIds.length >= 2) return;
-
       const card = cards.find((c) => c.id === cardId);
       if (!card || card.isMatched || card.isFlipped) return;
 
-      // Flip the card
+      if (flippedIds.length >= 2) {
+        if (matchTimerRef.current) clearTimeout(matchTimerRef.current);
+
+        setCards((prev) =>
+          prev.map((c) =>
+            flippedIds.includes(c.id) ? { ...c, isFlipped: false } : c
+          )
+        );
+        setFlippedIds([]);
+
+        setCards((prev) =>
+          prev.map((c) => (c.id === cardId ? { ...c, isFlipped: true } : c))
+        );
+        setFlippedIds([cardId]);
+        return;
+      }
+
       setCards((prev) =>
         prev.map((c) => (c.id === cardId ? { ...c, isFlipped: true } : c))
       );
@@ -593,18 +608,15 @@ export function MemoryGame({ projects }: MemoryGameProps) {
       const newFlipped = [...flippedIds, cardId];
       setFlippedIds(newFlipped);
 
-      // If two cards are flipped, check for match
       if (newFlipped.length === 2) {
         setMoves((m) => m + 1);
-        setIsProcessing(true);
 
         const [first, second] = newFlipped;
         const card1 = cards.find((c) => c.id === first)!;
         const card2 = cards.find((c) => c.id === second)!;
 
         if (card1.projectId === card2.projectId) {
-          // Match! Mark both as matched
-          setTimeout(() => {
+          matchTimerRef.current = setTimeout(() => {
             setCards((prev) =>
               prev.map((c) =>
                 c.projectId === card1.projectId
@@ -613,23 +625,20 @@ export function MemoryGame({ projects }: MemoryGameProps) {
               )
             );
             setFlippedIds([]);
-            setIsProcessing(false);
-          }, 500);
+          }, 300);
         } else {
-          // No match, flip back after delay
-          setTimeout(() => {
+          matchTimerRef.current = setTimeout(() => {
             setCards((prev) =>
               prev.map((c) =>
                 newFlipped.includes(c.id) ? { ...c, isFlipped: false } : c
               )
             );
             setFlippedIds([]);
-            setIsProcessing(false);
           }, 1000);
         }
       }
     },
-    [cards, flippedIds, isProcessing]
+    [cards, flippedIds]
   );
 
   // Check for win
@@ -657,7 +666,9 @@ export function MemoryGame({ projects }: MemoryGameProps) {
       ? "grid-cols-4"
       : difficulty <= 8
         ? "grid-cols-4"
-        : "grid-cols-6";
+        : difficulty <= 12
+          ? "grid-cols-6"
+          : "grid-cols-8";
 
   if (availablePairs < 6) {
     return (
