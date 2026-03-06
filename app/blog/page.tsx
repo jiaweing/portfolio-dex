@@ -48,7 +48,7 @@ export default async function BlogPage() {
               <div className="grid gap-1 space-y-1">
                 {group.posts.map((post) => (
                   <article
-                    className="group relative flex flex-col gap-2 border-b last:border-0 sm:flex-row sm:items-center sm:justify-between"
+                    className="group relative flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
                     key={post.id}
                   >
                     <div className="flex min-w-0 items-center gap-2">

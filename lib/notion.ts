@@ -166,7 +166,7 @@ async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
 
   const enriched = await Promise.all(
     blocks.map(async (block: any) => {
-      if (block.type === "table" && block.has_children) {
+      if (block.has_children) {
         const children = await notion.blocks.children.list({
           block_id: block.id,
         });
