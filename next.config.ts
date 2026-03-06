@@ -5,11 +5,29 @@ const withPWA = require("next-pwa")({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
+  runtimeCaching: [
+    {
+      // Use NetworkFirst for HTML navigation so new content is always fetched
+      urlPattern: ({ request }: { request: Request }) =>
+        request.mode === "navigate",
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "pages",
+        networkTimeoutSeconds: 10,
+      },
+    },
+  ],
 });
 
 const nextConfig: NextConfig = {
   typedRoutes: false,
   transpilePackages: ["shiki"],
+  experimental: {
+    staleTimes: {
+      dynamic: 0,
+      static: 60, // seconds; re-fetch static pages after 60s instead of 5min
+    },
+  },
   images: {
     remotePatterns: [
       {

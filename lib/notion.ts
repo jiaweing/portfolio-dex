@@ -244,8 +244,8 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
       });
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
     return response.results
       .map((page: any) => {
@@ -273,7 +273,7 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
       .filter((post: BlogPost) => {
         if (!post.slug) return false;
         if (!post.date) return true;
-        return new Date(post.date) <= today;
+        return post.date.slice(0, 10) <= todayStr;
       });
   } catch (error) {
     console.error("Failed to fetch blog posts:", error);

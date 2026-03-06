@@ -1,1 +1,0 @@
-bun run build:og && git add -A && git commit -m "chore: update og images" --no-verify
