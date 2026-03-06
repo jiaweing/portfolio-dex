@@ -41,8 +41,7 @@ export async function generateMetadata({
     };
   }
 
-  const description =
-    post.description || extractDescriptionFromBlocks(blocks);
+  const description = post.description || extractDescriptionFromBlocks(blocks);
   return generateBlogMetadata({ ...post, description });
 }
 

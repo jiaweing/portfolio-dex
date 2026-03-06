@@ -244,6 +244,9 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
       });
     }
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     return response.results
       .map((page: any) => {
         const tags = getProperty(page, "Tags", "multi_select") || [];
@@ -267,7 +270,11 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
           cover: banner,
         } as BlogPost;
       })
-      .filter((post: BlogPost) => post.slug);
+      .filter((post: BlogPost) => {
+        if (!post.slug) return false;
+        if (!post.date) return true;
+        return new Date(post.date) <= today;
+      });
   } catch (error) {
     console.error("Failed to fetch blog posts:", error);
     return [];

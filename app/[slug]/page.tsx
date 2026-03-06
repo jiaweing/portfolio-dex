@@ -3,11 +3,7 @@ import { notFound } from "next/navigation";
 import { NotionRenderer } from "@/components/markdown-renderer";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generatePageMetadata } from "@/lib/metadata";
-import {
-  extractDescriptionFromBlocks,
-  getPage,
-  getPages,
-} from "@/lib/notion";
+import { extractDescriptionFromBlocks, getPage, getPages } from "@/lib/notion";
 
 export const revalidate = 3600;
 
@@ -32,8 +28,7 @@ export async function generateMetadata({
     };
   }
 
-  const description =
-    page.description || extractDescriptionFromBlocks(blocks);
+  const description = page.description || extractDescriptionFromBlocks(blocks);
   return generatePageMetadata({ ...page, description });
 }
 
