@@ -149,7 +149,7 @@ export function ProfileBio() {
   useEffect(() => {
     if (isInView) {
       setCurrentAge(getAge("2000-08-11"));
-      setPlayers(460);
+      setPlayers(470);
       setMau(10);
 
       // Singapore Icon Logic
