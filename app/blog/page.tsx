@@ -38,7 +38,7 @@ export default async function BlogPage() {
       {posts.length === 0 && (
         <p className="text-muted-foreground text-sm">No posts found.</p>
       )}
-      <div className="space-y-6 text-sm leading-relaxed">
+      <div className="space-y-6 pb-28 text-sm leading-relaxed">
         {groups.map((group, groupIndex) => (
           <FadeIn delay={groupIndex * 0.05} key={group.label}>
             <div>

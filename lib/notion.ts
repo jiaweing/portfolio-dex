@@ -34,6 +34,7 @@ export interface BlogPost {
   authors: { name: string; avatar?: string }[];
   tags: string[];
   cover?: string;
+  readingTime: number; // in minutes
 }
 
 export interface Page {
@@ -107,6 +108,31 @@ export function extractDescriptionFromBlocks(
   return combined.length > maxLength
     ? `${combined.slice(0, maxLength).trimEnd()}…`
     : combined;
+}
+
+// Helper: Calculate reading time from blocks (in minutes)
+export function calculateReadingTime(blocks: BlockObjectResponse[]): number {
+  const wordsPerMinute = 200;
+  let wordCount = 0;
+
+  function countWordsInBlock(block: any): void {
+    const text = blockToPlainText(block).trim();
+    if (text) {
+      wordCount += text.split(/\s+/).filter(Boolean).length;
+    }
+    // Count words in nested children
+    if (block.children) {
+      for (const child of block.children) {
+        countWordsInBlock(child);
+      }
+    }
+  }
+
+  for (const block of blocks) {
+    countWordsInBlock(block);
+  }
+
+  return Math.max(1, Math.ceil(wordCount / wordsPerMinute));
 }
 
 // --- Fetching Logic ---
@@ -280,6 +306,7 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
           authors: getProperty(page, "Author", "people") || [],
           tags,
           cover: banner,
+          readingTime: 0, // calculated on individual post page
         } as BlogPost;
       })
       .filter((post: BlogPost) => {
@@ -351,9 +378,11 @@ export const getBlogPost = unstable_cache(
         authors: getProperty(page, "Author", "people") || [],
         tags,
         cover: banner,
+        readingTime: 0, // placeholder, will be set after fetching blocks
       };
 
       const blocks = await fetchPageBlocks(page.id);
+      post.readingTime = calculateReadingTime(blocks);
 
       return { post, blocks };
     } catch (error) {

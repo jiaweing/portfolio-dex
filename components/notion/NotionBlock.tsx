@@ -1,14 +1,61 @@
 "use client";
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import Image from "next/image";
 import React from "react";
+import { useSpeechHighlight } from "./SpeechHighlightContext";
 
-function renderRichText(richText: any[]): React.ReactNode {
+interface HighlightTracker {
+  currentOffset: number;
+}
+
+function renderRichText(
+  richText: any[],
+  tracker: HighlightTracker,
+  highlightIndex: number
+): React.ReactNode {
   return richText.map((t, i) => {
     const { bold, italic, strikethrough, underline, code } =
       t.annotations || {};
-    let content: React.ReactNode = t.plain_text;
+    const plainText = t.plain_text;
+    const startIndex = tracker.currentOffset;
+    const endIndex = startIndex + plainText.length;
+    tracker.currentOffset = endIndex;
+
+    let content: React.ReactNode;
+
+    // Check if we need to highlight within this text segment
+    if (
+      highlightIndex >= startIndex &&
+      highlightIndex < endIndex &&
+      highlightIndex >= 0
+    ) {
+      // Find word boundaries around the highlight position
+      const localIndex = highlightIndex - startIndex;
+      const beforeHighlight = plainText.slice(0, localIndex);
+      const remaining = plainText.slice(localIndex);
+
+      // Find start of current word
+      const wordStartInRemaining = remaining.search(/\S/);
+      if (wordStartInRemaining === -1) {
+        content = plainText;
+      } else {
+        const wordStart = localIndex + wordStartInRemaining;
+        const wordEndMatch = plainText.slice(wordStart).match(/^(\S+)/);
+        const wordEnd = wordStart + (wordEndMatch ? wordEndMatch[1].length : 0);
+
+        content = (
+          <>
+            {plainText.slice(0, wordStart)}
+            <mark className="animate-pulse rounded bg-primary/20 px-0.5 text-foreground">
+              {plainText.slice(wordStart, wordEnd)}
+            </mark>
+            {plainText.slice(wordEnd)}
+          </>
+        );
+      }
+    } else {
+      content = plainText;
+    }
 
     if (code)
       content = (
@@ -38,13 +85,160 @@ function renderRichText(richText: any[]): React.ReactNode {
   });
 }
 
-export function NotionBlock({ block }: { block: BlockObjectResponse }) {
+function useBlockCharOffset(
+  blocks: BlockObjectResponse[],
+  targetBlockId: string
+): number {
+  return React.useMemo(() => {
+    let offset = 0;
+    for (const block of blocks) {
+      if (block.id === targetBlockId) break;
+      offset += getBlockTextLength(block);
+    }
+    return offset;
+  }, [blocks, targetBlockId]);
+}
+
+function getBlockTextLength(block: BlockObjectResponse): number {
+  switch (block.type) {
+    case "paragraph":
+      return (
+        block.paragraph.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) + 2
+      );
+    case "heading_1":
+      return (
+        block.heading_1.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) + 2
+      );
+    case "heading_2":
+      return (
+        block.heading_2.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) + 2
+      );
+    case "heading_3":
+      return (
+        block.heading_3.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) + 2
+      );
+    case "bulleted_list_item":
+      return (
+        2 +
+        block.bulleted_list_item.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) +
+        2
+      ); // +2 for "- "
+    case "numbered_list_item":
+      return (
+        block.numbered_list_item.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) + 2
+      );
+    case "quote":
+      return (
+        2 +
+        block.quote.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
+        2
+      ); // +2 for quotes
+    case "callout":
+      return (
+        block.callout.rich_text.reduce(
+          (sum, t) => sum + t.plain_text.length,
+          0
+        ) + 2
+      );
+    case "to_do":
+      return (
+        4 +
+        block.to_do.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
+        2
+      ); // +4 for "[ ] "
+    case "code":
+      return (
+        block.code.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
+        2
+      );
+    case "table": {
+      // Calculate text length for table cells
+      const rows: any[] = (block as any).children || [];
+      let tableLength = 0;
+      for (const row of rows) {
+        if (row.type === "table_row") {
+          const cells = row.table_row.cells as any[][];
+          const cellsTextLength = cells.reduce(
+            (sum, cell) =>
+              sum +
+              cell.reduce((s: number, t: any) => s + t.plain_text.length, 0),
+            0
+          );
+          const separatorLength = Math.max(0, cells.length - 1) * 3; // " | " between cells only
+          tableLength += cellsTextLength + separatorLength + 1; // +1 for "\n"
+        }
+      }
+      return tableLength + 1; // +1 for extra "\n" after all rows
+    }
+    case "column_list": {
+      const columns: any[] = (block as any).children || [];
+      let columnLength = 0;
+      for (const col of columns) {
+        const children: any[] = (col as any).children || [];
+        for (const child of children) {
+          columnLength += getBlockTextLength(child);
+        }
+      }
+      return columnLength;
+    }
+    default:
+      return 0;
+  }
+}
+
+export function NotionBlock({
+  block,
+  allBlocks,
+}: {
+  block: BlockObjectResponse;
+  allBlocks?: BlockObjectResponse[];
+}) {
+  const { currentCharIndex, isSpeaking, autoScroll } = useSpeechHighlight();
+  const blockOffset = allBlocks ? useBlockCharOffset(allBlocks, block.id) : 0;
+
+  // Calculate the highlight position relative to this block
+  const localHighlightIndex = isSpeaking ? currentCharIndex - blockOffset : -1;
+
+  // Auto-scroll: scroll this block into view when it becomes the active block
+  const blockLength = getBlockTextLength(block);
+  const isActive =
+    isSpeaking && localHighlightIndex >= 0 && localHighlightIndex < blockLength;
+
+  React.useEffect(() => {
+    if (!(isActive && autoScroll)) return;
+    const el = document.querySelector(`[data-block-id="${block.id}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [isActive, autoScroll, block.id]);
+
+  // Create a tracker for this block's rendering
+  const tracker: HighlightTracker = { currentOffset: 0 };
+
   switch (block.type) {
     case "paragraph": {
       const rt = block.paragraph.rich_text;
       return (
         <p className="mb-4 text-muted-foreground leading-7">
-          {renderRichText(rt)}
+          {renderRichText(rt, tracker, localHighlightIndex)}
         </p>
       );
     }
@@ -52,21 +246,27 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
     case "heading_1": {
       const rt = block.heading_1.rich_text;
       return (
-        <h1 className="mt-8 mb-4 font-medium text-2xl">{renderRichText(rt)}</h1>
+        <h1 className="mt-8 mb-4 font-medium text-2xl">
+          {renderRichText(rt, tracker, localHighlightIndex)}
+        </h1>
       );
     }
 
     case "heading_2": {
       const rt = block.heading_2.rich_text;
       return (
-        <h2 className="mt-6 mb-3 font-medium text-xl">{renderRichText(rt)}</h2>
+        <h2 className="mt-6 mb-3 font-medium text-xl">
+          {renderRichText(rt, tracker, localHighlightIndex)}
+        </h2>
       );
     }
 
     case "heading_3": {
       const rt = block.heading_3.rich_text;
       return (
-        <h3 className="mt-4 mb-2 font-medium text-lg">{renderRichText(rt)}</h3>
+        <h3 className="mt-4 mb-2 font-medium text-lg">
+          {renderRichText(rt, tracker, localHighlightIndex)}
+        </h3>
       );
     }
 
@@ -74,7 +274,7 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
       const rt = block.bulleted_list_item.rich_text;
       return (
         <li className="mt-2 ml-6 list-disc text-muted-foreground">
-          {renderRichText(rt)}
+          {renderRichText(rt, tracker, localHighlightIndex)}
         </li>
       );
     }
@@ -83,7 +283,7 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
       const rt = block.numbered_list_item.rich_text;
       return (
         <li className="mt-2 ml-4 list-decimal text-muted-foreground">
-          {renderRichText(rt)}
+          {renderRichText(rt, tracker, localHighlightIndex)}
         </li>
       );
     }
@@ -92,7 +292,7 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
       const rt = block.quote.rich_text;
       return (
         <blockquote className="my-4 border-primary border-l-4 pl-4 italic">
-          {renderRichText(rt)}
+          {renderRichText(rt, tracker, localHighlightIndex)}
         </blockquote>
       );
     }
@@ -106,7 +306,9 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
             <span className="mr-3 text-xl">{block.callout.icon.emoji}</span>
           )}
           <div className="flex-1">
-            {rt.length > 0 && <div>{renderRichText(rt)}</div>}
+            {rt.length > 0 && (
+              <div>{renderRichText(rt, tracker, localHighlightIndex)}</div>
+            )}
             {children.length > 0 && (
               <div>
                 {children.map((child: any) => (
@@ -141,13 +343,10 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
 
       return (
         <figure className="my-6">
-          <Image
+          <img
             alt={caption || "Notion Image"}
             className="h-auto w-full rounded-lg"
-            height={0}
-            sizes="100vw"
             src={imageUrl}
-            width={0}
           />
           {caption && (
             <figcaption className="mt-2 text-center text-muted-foreground text-sm">
@@ -170,7 +369,7 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
             type="checkbox"
           />
           <span className={checked ? "text-muted-foreground line-through" : ""}>
-            {renderRichText(rt)}
+            {renderRichText(rt, tracker, localHighlightIndex)}
           </span>
         </div>
       );
@@ -181,40 +380,63 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
       const hasRowHeader = block.table.has_row_header;
       const rows: any[] = (block as any).children || [];
 
-      const headerRow = hasColumnHeader ? rows[0] : null;
-      const bodyRows = hasColumnHeader ? rows.slice(1) : rows;
+      // Create a shared tracker for the entire table to maintain character offsets
+      const tableTracker: HighlightTracker = { currentOffset: 0 };
+
+      // Pre-render all rows in document order so the tracker advances correctly:
+      // cell text → " | " separator (3 chars) → next cell → ... → "\n" at row end
+      const allTableRows = rows.filter((row: any) => row.type === "table_row");
+      const preRendered: React.ReactNode[][] = allTableRows.map((row: any) => {
+        const cells = row.table_row.cells as any[][];
+        const renderedCells = cells.map((cell, cellIndex) => {
+          const content = renderRichText(
+            cell,
+            tableTracker,
+            localHighlightIndex
+          );
+          if (cellIndex < cells.length - 1) {
+            tableTracker.currentOffset += 3; // advance past " | "
+          }
+          return content;
+        });
+        tableTracker.currentOffset += 1; // advance past "\n"
+        return renderedCells;
+      });
+
+      const preRenderedHeader = hasColumnHeader ? preRendered[0] : null;
+      const preRenderedBody = hasColumnHeader
+        ? preRendered.slice(1)
+        : preRendered;
 
       return (
         <div className="overflow-x-auto [&>table]:mt-0 [&>table]:mb-2">
           <table className="w-full border-collapse text-sm">
-            {headerRow && (
+            {preRenderedHeader && (
               <thead>
                 <tr>
-                  {headerRow.table_row.cells.map(
-                    (cell: any[], cellIndex: number) => (
-                      <th
-                        className="border border-border bg-muted px-3 py-2 text-left font-medium"
-                        key={cellIndex}
-                      >
-                        {renderRichText(cell)}
-                      </th>
-                    )
-                  )}
+                  {preRenderedHeader.map((cellContent, cellIndex) => (
+                    <th
+                      className="border border-border bg-muted px-3 py-2 text-left font-medium"
+                      key={cellIndex}
+                    >
+                      {cellContent}
+                    </th>
+                  ))}
                 </tr>
               </thead>
             )}
             <tbody>
-              {bodyRows.map((row: any, rowIndex: number) => (
+              {preRenderedBody.map((rowCells, rowIndex) => (
                 <tr
                   className={rowIndex % 2 !== 0 ? "bg-muted/30" : ""}
                   key={rowIndex}
                 >
-                  {row.table_row.cells.map((cell: any[], cellIndex: number) => (
+                  {rowCells.map((cellContent, cellIndex) => (
                     <td
                       className={`border border-border px-3 py-2${hasRowHeader && cellIndex === 0 ? "bg-muted font-medium" : ""}`}
                       key={cellIndex}
                     >
-                      {renderRichText(cell)}
+                      {cellContent}
                     </td>
                   ))}
                 </tr>

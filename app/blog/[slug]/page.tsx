@@ -2,8 +2,10 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogTextToSpeech } from "@/components/blog/BlogTextToSpeech";
 import { PostDate } from "@/components/blog/PostDate";
 import { PostTags } from "@/components/blog/PostTags";
+import { ReadingTime } from "@/components/blog/ReadingTime";
 import { NotionRenderer } from "@/components/NotionRenderer";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
@@ -76,6 +78,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <PostDate date={post.date} />
+            <ReadingTime minutes={post.readingTime} />
             <PostTags tags={post.tags} />
           </div>
         </div>
@@ -93,9 +96,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </FadeIn>
       )}
 
-      <FadeIn delay={0.2}>
-        <NotionRenderer blocks={blocks} />
-      </FadeIn>
+      <BlogTextToSpeech blocks={blocks}>
+        <FadeIn delay={0.2}>
+          <NotionRenderer blocks={blocks} />
+        </FadeIn>
+      </BlogTextToSpeech>
 
       <script
         dangerouslySetInnerHTML={{
