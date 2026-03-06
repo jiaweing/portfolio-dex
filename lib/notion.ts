@@ -90,6 +90,25 @@ export function blockToPlainText(block: any): string {
   }
 }
 
+// Helper: Extract plain text description from blocks
+export function extractDescriptionFromBlocks(
+  blocks: BlockObjectResponse[],
+  maxLength = 160
+): string {
+  const texts: string[] = [];
+  for (const block of blocks) {
+    const text = blockToPlainText(block).trim();
+    if (text) {
+      texts.push(text);
+      if (texts.join(" ").length >= maxLength) break;
+    }
+  }
+  const combined = texts.join(" ");
+  return combined.length > maxLength
+    ? `${combined.slice(0, maxLength).trimEnd()}…`
+    : combined;
+}
+
 // --- Fetching Logic ---
 
 const getRichText = (richText: any[]) =>

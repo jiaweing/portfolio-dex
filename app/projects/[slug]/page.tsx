@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 import { ProjectContent } from "@/components/ProjectContent";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateProjectMetadata } from "@/lib/metadata";
-import { getProject, getProjects } from "@/lib/notion";
+import {
+  extractDescriptionFromBlocks,
+  getProject,
+  getProjects,
+} from "@/lib/notion";
 
 export const revalidate = 60; // Revalidate every minute
 
@@ -26,7 +30,7 @@ export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { project } = await getProject(slug);
+  const { project, blocks } = await getProject(slug);
 
   if (!project) {
     return {
@@ -34,7 +38,9 @@ export async function generateMetadata({
     };
   }
 
-  return generateProjectMetadata(project);
+  const description =
+    project.description || extractDescriptionFromBlocks(blocks);
+  return generateProjectMetadata({ ...project, description });
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {

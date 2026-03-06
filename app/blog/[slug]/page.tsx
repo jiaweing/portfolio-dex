@@ -8,7 +8,11 @@ import { NotionRenderer } from "@/components/NotionRenderer";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateBlogMetadata } from "@/lib/metadata";
-import { getBlogPost, getBlogPosts } from "@/lib/notion";
+import {
+  extractDescriptionFromBlocks,
+  getBlogPost,
+  getBlogPosts,
+} from "@/lib/notion";
 
 export const revalidate = 3600;
 
@@ -29,7 +33,7 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { post } = await getBlogPost(slug);
+  const { post, blocks } = await getBlogPost(slug);
 
   if (!post) {
     return {
@@ -37,7 +41,9 @@ export async function generateMetadata({
     };
   }
 
-  return generateBlogMetadata(post);
+  const description =
+    post.description || extractDescriptionFromBlocks(blocks);
+  return generateBlogMetadata({ ...post, description });
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
