@@ -141,14 +141,14 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
 
       return (
         <figure className="my-6">
-          <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-            <Image
-              alt={caption || "Notion Image"}
-              className="object-cover"
-              fill
-              src={imageUrl}
-            />
-          </div>
+          <Image
+            alt={caption || "Notion Image"}
+            className="h-auto w-full rounded-lg"
+            height={0}
+            sizes="100vw"
+            src={imageUrl}
+            width={0}
+          />
           {caption && (
             <figcaption className="mt-2 text-center text-muted-foreground text-sm">
               {caption}
@@ -221,6 +221,37 @@ export function NotionBlock({ block }: { block: BlockObjectResponse }) {
               ))}
             </tbody>
           </table>
+        </div>
+      );
+    }
+
+    case "column_list": {
+      const columns: any[] = (block as any).children || [];
+      return (
+        <div
+          className="my-4 grid gap-6"
+          style={{
+            gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
+          }}
+        >
+          {columns.map((col: any) => (
+            <div key={col.id}>
+              {(col.children || []).map((child: any) => (
+                <NotionBlock block={child} key={child.id} />
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    case "column": {
+      const children: any[] = (block as any).children || [];
+      return (
+        <div>
+          {children.map((child: any) => (
+            <NotionBlock block={child} key={child.id} />
+          ))}
         </div>
       );
     }

@@ -177,25 +177,37 @@ const getTitle = (page: any) => {
   return "Untitled";
 };
 
-// Helper: Fetch page blocks, with children pre-fetched for table blocks
-async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
+// Helper: Recursively fetch block children up to a given depth
+async function fetchBlockChildren(blockId: string): Promise<any[]> {
   const notion = getNotionClient();
-  const response = await notion.blocks.children.list({ block_id: pageId });
-  const blocks: any[] = response.results;
+  const allBlocks: any[] = [];
+  let cursor: string | undefined;
 
-  const enriched = await Promise.all(
-    blocks.map(async (block: any) => {
+  do {
+    const response: any = await notion.blocks.children.list({
+      block_id: blockId,
+      start_cursor: cursor,
+      page_size: 100,
+    });
+    allBlocks.push(...response.results);
+    cursor = response.has_more ? response.next_cursor : undefined;
+  } while (cursor);
+
+  return Promise.all(
+    allBlocks.map(async (block: any) => {
       if (block.has_children) {
-        const children = await notion.blocks.children.list({
-          block_id: block.id,
-        });
-        return { ...block, children: children.results };
+        const children = await fetchBlockChildren(block.id);
+        return { ...block, children };
       }
       return block;
     })
   );
+}
 
-  return enriched as BlockObjectResponse[];
+// Helper: Fetch page blocks with children pre-fetched for nested blocks (tables, columns, etc.)
+async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
+  const blocks = await fetchBlockChildren(pageId);
+  return blocks as BlockObjectResponse[];
 }
 
 // --- Blog Posts ---
