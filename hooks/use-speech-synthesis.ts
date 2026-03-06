@@ -243,7 +243,7 @@ export function useSpeechSynthesis(
   const seek = React.useCallback(
     (percent: number) => {
       const text = currentTextRef.current;
-      if (!text || !(speakingRef.current || pausedRef.current)) return;
+      if (!(text && (speakingRef.current || pausedRef.current))) return;
       const charIndex = Math.floor((percent / 100) * text.length);
       currentCharIndexRef.current = charIndex;
       setCurrentCharIndex(charIndex);
