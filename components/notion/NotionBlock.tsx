@@ -273,7 +273,7 @@ export function NotionBlock({
     case "bulleted_list_item": {
       const rt = block.bulleted_list_item.rich_text;
       return (
-        <li className="mt-2 ml-6 list-disc text-muted-foreground">
+        <li className="mt-2 text-muted-foreground">
           {renderRichText(rt, tracker, localHighlightIndex)}
         </li>
       );
@@ -282,7 +282,7 @@ export function NotionBlock({
     case "numbered_list_item": {
       const rt = block.numbered_list_item.rich_text;
       return (
-        <li className="mt-2 ml-4 list-decimal text-muted-foreground">
+        <li className="mt-2 text-muted-foreground">
           {renderRichText(rt, tracker, localHighlightIndex)}
         </li>
       );
