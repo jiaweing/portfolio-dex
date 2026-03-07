@@ -136,15 +136,15 @@ function getBlockTextLength(block: BlockObjectResponse): number {
           (sum, t) => sum + t.plain_text.length,
           0
         ) +
-        2
-      ); // +2 for "- "
+        1
+      ); // +2 for "- ", +1 for "\n"
     case "numbered_list_item":
       return (
         block.numbered_list_item.rich_text.reduce(
           (sum, t) => sum + t.plain_text.length,
           0
-        ) + 2
-      );
+        ) + 1
+      ); // +1 for "\n"
     case "quote":
       return (
         2 +
@@ -162,8 +162,8 @@ function getBlockTextLength(block: BlockObjectResponse): number {
       return (
         4 +
         block.to_do.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
-        2
-      ); // +4 for "[ ] "
+        1
+      ); // +4 for "[ ] ", +1 for "\n"
     case "code":
       return (
         block.code.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
