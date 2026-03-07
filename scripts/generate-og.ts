@@ -63,7 +63,7 @@ async function main() {
     console.log("Fetching routes...");
     const pages = await fetchPages();
     const projects = await fetchProjects();
-    const blogPosts = await fetchBlogPosts();
+    const blogPosts = await fetchBlogPosts({ includeAll: true });
 
     const routes = [
       "/",

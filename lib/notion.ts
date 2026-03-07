@@ -237,7 +237,9 @@ async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
 }
 
 // --- Blog Posts ---
-export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
+export const fetchBlogPosts = async (options?: {
+  includeAll?: boolean;
+}): Promise<BlogPost[]> => {
   const notion = getNotionClient();
   const databaseId = process.env.NOTION_BLOG_DATABASE_ID;
 
@@ -247,38 +249,25 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
     // Attempting dataSources.query based on user feedback
     let response;
 
+    const publishedFilter = {
+      property: "Status",
+      status: { equals: "Published" },
+    };
+
+    const sorts = [{ property: "Date", direction: "descending" }];
+
     if (notion.dataSources) {
       response = await notion.dataSources.query({
         data_source_id: databaseId,
-        filter: {
-          property: "Status",
-          status: {
-            equals: "Published",
-          },
-        },
-        sorts: [
-          {
-            property: "Date",
-            direction: "descending",
-          },
-        ],
+        ...(options?.includeAll ? {} : { filter: publishedFilter }),
+        sorts,
       });
     } else {
       // Fallback for standard client
       response = await notion.databases.query({
         database_id: databaseId,
-        filter: {
-          property: "Status",
-          status: {
-            equals: "Published",
-          },
-        },
-        sorts: [
-          {
-            property: "Date",
-            direction: "descending",
-          },
-        ],
+        ...(options?.includeAll ? {} : { filter: publishedFilter }),
+        sorts,
       });
     }
 
@@ -311,6 +300,7 @@ export const fetchBlogPosts = async (): Promise<BlogPost[]> => {
       })
       .filter((post: BlogPost) => {
         if (!post.slug) return false;
+        if (options?.includeAll) return true;
         if (!post.date) return true;
         return post.date.slice(0, 10) <= todayStr;
       });
