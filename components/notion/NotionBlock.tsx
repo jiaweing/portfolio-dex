@@ -301,7 +301,7 @@ export function NotionBlock({
       const rt = block.callout.rich_text;
       const children: any[] = (block as any).children || [];
       return (
-        <div className="my-4 flex items-start rounded-md border bg-muted/50 p-4 text-sm leading-7">
+        <div className="my-4 flex items-start rounded-md border bg-muted/50 p-4 text-sm leading-relaxed">
           {block.callout.icon?.type === "emoji" && (
             <span className="mr-3 text-base">{block.callout.icon.emoji}</span>
           )}

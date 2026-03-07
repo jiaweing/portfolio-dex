@@ -1,5 +1,5 @@
 import { formatDate } from "date-fns";
-import { Rss } from "lucide-react";
+import { Radio } from "lucide-react";
 import Link from "next/link";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { PostTags } from "@/components/blog/PostTags";
@@ -51,11 +51,11 @@ export default async function BlogPage() {
                   className="text-muted-foreground transition-colors hover:text-foreground"
                   href="/feed.xml"
                 >
-                  <Rss className="h-3.5 w-3.5" />
+                  <Radio className="h-3.5 w-3.5" />
                 </Link>
               </TooltipTrigger>
               <TooltipContent>
-                <p>RSS feed — subscribe to get new posts in your reader</p>
+                <p>Subscribe to my RSS feed to get new posts in your reader</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

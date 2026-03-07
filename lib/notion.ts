@@ -246,9 +246,6 @@ export const fetchBlogPosts = async (options?: {
   if (!databaseId) return [];
 
   try {
-    // Attempting dataSources.query based on user feedback
-    let response;
-
     const publishedFilter = {
       property: "Status",
       status: { equals: "Published" },
@@ -256,25 +253,38 @@ export const fetchBlogPosts = async (options?: {
 
     const sorts = [{ property: "Date", direction: "descending" }];
 
-    if (notion.dataSources) {
-      response = await notion.dataSources.query({
-        data_source_id: databaseId,
-        ...(options?.includeAll ? {} : { filter: publishedFilter }),
-        sorts,
-      });
-    } else {
-      // Fallback for standard client
-      response = await notion.databases.query({
-        database_id: databaseId,
-        ...(options?.includeAll ? {} : { filter: publishedFilter }),
-        sorts,
-      });
-    }
+    const allResults: any[] = [];
+    let cursor: string | undefined;
+
+    do {
+      let response: any;
+
+      if (notion.dataSources) {
+        response = await notion.dataSources.query({
+          data_source_id: databaseId,
+          ...(options?.includeAll ? {} : { filter: publishedFilter }),
+          sorts,
+          start_cursor: cursor,
+          page_size: 100,
+        });
+      } else {
+        response = await notion.databases.query({
+          database_id: databaseId,
+          ...(options?.includeAll ? {} : { filter: publishedFilter }),
+          sorts,
+          start_cursor: cursor,
+          page_size: 100,
+        });
+      }
+
+      allResults.push(...response.results);
+      cursor = response.has_more ? response.next_cursor : undefined;
+    } while (cursor);
 
     const now = new Date();
     const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
-    return response.results
+    return allResults
       .map((page: any) => {
         const tags = getProperty(page, "Tags", "multi_select") || [];
         const banner =
