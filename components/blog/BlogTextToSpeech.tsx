@@ -15,6 +15,20 @@ function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
   let text = "";
 
   for (const block of blocks) {
+    // Stop reading at the References section (and anything after it)
+    if (
+      block.type === "heading_1" ||
+      block.type === "heading_2" ||
+      block.type === "heading_3"
+    ) {
+      const headingText = (block as any)[block.type].rich_text
+        .map((t: any) => t.plain_text)
+        .join("")
+        .trim()
+        .toLowerCase();
+      if (headingText === "references") break;
+    }
+
     switch (block.type) {
       case "paragraph": {
         const rt = block.paragraph.rich_text;

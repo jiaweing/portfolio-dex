@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Bookmark02Icon as Book,
-  BookOpen02Icon as GalleryHorizontalEnd,
+  BookOpen02Icon as BookOpen,
+  FolderLibraryIcon,
   FavouriteIcon as Heart,
   Search01Icon as Search,
   UserIcon as User,
@@ -28,10 +28,10 @@ export function SiteHeader() {
   const items = [
     { href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
     { href: "/about", icon: User, label: "About" },
-    { href: "/blog", icon: Book, label: "Writing" },
+    { href: "/blog", icon: BookOpen, label: "Writing" },
     { href: "/projects", icon: Search, label: "Projects" },
 
-    { href: "/books", icon: GalleryHorizontalEnd, label: "Books" },
+    { href: "/books", icon: FolderLibraryIcon, label: "Books" },
     { href: "/setup", icon: Heart, label: "Setup" },
   ];
 

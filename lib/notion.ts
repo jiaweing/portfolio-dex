@@ -129,6 +129,14 @@ export function calculateReadingTime(blocks: BlockObjectResponse[]): number {
   }
 
   for (const block of blocks) {
+    // Stop at the References section
+    if (
+      (block.type === "heading_1" ||
+        block.type === "heading_2" ||
+        block.type === "heading_3") &&
+      blockToPlainText(block).trim().toLowerCase() === "references"
+    )
+      break;
     countWordsInBlock(block);
   }
 
