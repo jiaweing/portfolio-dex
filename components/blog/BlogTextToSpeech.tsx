@@ -146,6 +146,12 @@ export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
     currentCharIndex,
   } = useSpeechSynthesis();
 
+  React.useEffect(() => {
+    return () => {
+      cancel();
+    };
+  }, [cancel]);
+
   if (!isSupported) {
     return <>{children}</>;
   }
