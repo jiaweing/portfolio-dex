@@ -165,10 +165,7 @@ function getBlockTextLength(block: BlockObjectResponse): number {
         1
       ); // +4 for "[ ] ", +1 for "\n"
     case "code":
-      return (
-        block.code.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
-        2
-      );
+      return 0; // code blocks are skipped in extractTextFromBlocks
     case "table": {
       // Calculate text length for table cells
       const rows: any[] = (block as any).children || [];
