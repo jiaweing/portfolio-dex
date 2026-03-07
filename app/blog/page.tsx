@@ -41,24 +41,31 @@ export default async function BlogPage() {
   return (
     <>
       <FadeIn>
-        <div className="mb-4 flex items-center gap-2">
-          <h3 className="font-semibold">writing</h3>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  aria-label="RSS feed"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                  href="/feed.xml"
-                >
-                  <Radio className="h-3.5 w-3.5" />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Subscribe to my RSS feed to get new posts in your reader</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        <div className="mb-4 flex flex-col">
+          <div className="flex flex-row items-center gap-2">
+            <h3 className="font-semibold">writing</h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link
+                    aria-label="RSS feed"
+                    className="text-muted-foreground transition-colors hover:text-foreground"
+                    href="/feed.xml"
+                  >
+                    <Radio className="h-4 w-4" />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    Subscribe to my RSS feed to get new posts in your reader
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <h3 className="font-semibold text-muted-foreground">
+            about life, psychology, business, tech and AI
+          </h3>
         </div>
       </FadeIn>
       {posts.length === 0 && (
