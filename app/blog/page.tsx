@@ -4,6 +4,12 @@ import Link from "next/link";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { PostTags } from "@/components/blog/PostTags";
 import { FadeIn } from "@/components/ui/fade-in";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { generateMetadata } from "@/lib/metadata";
 import { getBlogPosts } from "@/lib/notion";
 
@@ -37,13 +43,22 @@ export default async function BlogPage() {
       <FadeIn>
         <div className="mb-4 flex items-center gap-2">
           <h3 className="font-semibold">blog</h3>
-          <Link
-            aria-label="RSS feed"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-            href="/feed.xml"
-          >
-            <Rss className="h-3.5 w-3.5" />
-          </Link>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  aria-label="RSS feed"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  href="/feed.xml"
+                >
+                  <Rss className="h-3.5 w-3.5" />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>RSS feed — subscribe to get new posts in your reader</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </FadeIn>
       {posts.length === 0 && (
