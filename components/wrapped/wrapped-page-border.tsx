@@ -55,14 +55,38 @@ export function WrappedPageBorder() {
               y="0"
             />
           </mask>
+
+          {/* Sharp edge mask — no blur */}
+          <mask id="sharp-mask">
+            <rect
+              fill="none"
+              height="100%"
+              stroke="white"
+              strokeWidth="5"
+              width="100%"
+              x="0"
+              y="0"
+            />
+          </mask>
         </defs>
 
-        {/* The Gradient Fill, revealed only by the mask */}
+        {/* Layer 1: Blurred glow */}
         <rect
           fill="url(#page-glow-grad)"
           height="100%"
           mask="url(#glow-mask)"
           opacity="0.8"
+          width="100%"
+          x="0"
+          y="0"
+        />
+
+        {/* Layer 2: Sharp crisp edge at the very border */}
+        <rect
+          fill="url(#page-glow-grad)"
+          height="100%"
+          mask="url(#sharp-mask)"
+          opacity="1"
           width="100%"
           x="0"
           y="0"
