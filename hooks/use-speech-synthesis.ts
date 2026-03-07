@@ -2,6 +2,26 @@
 
 import * as React from "react";
 
+const LS_RATE = "tts-rate";
+const LS_VOLUME = "tts-volume";
+const LS_VOICE = "tts-voice";
+
+function lsRead(key: string): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function lsWrite(key: string, value: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, value);
+  } catch {}
+}
+
 interface UseSpeechSynthesisOptions {
   onEnd?: () => void;
 }
@@ -42,9 +62,15 @@ export function useSpeechSynthesis(
   const [voices, setVoices] = React.useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoiceState] =
     React.useState<SpeechSynthesisVoice | null>(null);
-  const [rate, setRateState] = React.useState(1);
+  const [rate, setRateState] = React.useState(() => {
+    const saved = lsRead(LS_RATE);
+    return saved ? Number.parseFloat(saved) || 1 : 1;
+  });
   const [pitch, setPitchState] = React.useState(1);
-  const [volume, setVolumeState] = React.useState(1);
+  const [volume, setVolumeState] = React.useState(() => {
+    const saved = lsRead(LS_VOLUME);
+    return saved ? Number.parseFloat(saved) || 1 : 1;
+  });
   const [progress, setProgress] = React.useState(0);
   const [elapsedSeconds, setElapsedSeconds] = React.useState(0);
   const [totalSeconds, setTotalSeconds] = React.useState(0);
@@ -59,10 +85,21 @@ export function useSpeechSynthesis(
   const currentCharIndexRef = React.useRef(0);
   const speakingRef = React.useRef(false);
   const pausedRef = React.useRef(false);
-  const rateRef = React.useRef(1);
+  const rateRef = React.useRef(
+    (() => {
+      const saved = lsRead(LS_RATE);
+      return saved ? Number.parseFloat(saved) || 1 : 1;
+    })()
+  );
   const pitchRef = React.useRef(1);
-  const volumeRef = React.useRef(1);
+  const volumeRef = React.useRef(
+    (() => {
+      const saved = lsRead(LS_VOLUME);
+      return saved ? Number.parseFloat(saved) || 1 : 1;
+    })()
+  );
   const selectedVoiceRef = React.useRef<SpeechSynthesisVoice | null>(null);
+  const savedVoiceNameRef = React.useRef<string | null>(lsRead(LS_VOICE));
   const totalSecondsRef = React.useRef(0);
 
   const isSupported =
@@ -99,10 +136,13 @@ export function useSpeechSynthesis(
       setVoices(availableVoices);
 
       if (availableVoices.length > 0 && !selectedVoiceRef.current) {
+        const savedVoice = savedVoiceNameRef.current
+          ? availableVoices.find((v) => v.name === savedVoiceNameRef.current)
+          : null;
         const englishVoice = availableVoices.find(
           (v) => v.lang.startsWith("en") && v.localService
         );
-        const voice = englishVoice || availableVoices[0];
+        const voice = savedVoice ?? englishVoice ?? availableVoices[0];
         setSelectedVoiceState(voice);
         selectedVoiceRef.current = voice;
       }
@@ -258,6 +298,7 @@ export function useSpeechSynthesis(
     (newRate: number) => {
       rateRef.current = newRate;
       setRateState(newRate);
+      lsWrite(LS_RATE, String(newRate));
       if (speakingRef.current && !pausedRef.current) {
         startSpeech(currentTextRef.current, currentCharIndexRef.current);
       }
@@ -280,6 +321,7 @@ export function useSpeechSynthesis(
     (newVolume: number) => {
       volumeRef.current = newVolume;
       setVolumeState(newVolume);
+      lsWrite(LS_VOLUME, String(newVolume));
       if (speakingRef.current && !pausedRef.current) {
         startSpeech(currentTextRef.current, currentCharIndexRef.current);
       }
@@ -291,6 +333,7 @@ export function useSpeechSynthesis(
     (voice: SpeechSynthesisVoice) => {
       selectedVoiceRef.current = voice;
       setSelectedVoiceState(voice);
+      lsWrite(LS_VOICE, voice.name);
       if (speakingRef.current && !pausedRef.current) {
         startSpeech(currentTextRef.current, currentCharIndexRef.current);
       }

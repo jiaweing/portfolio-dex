@@ -93,7 +93,22 @@ function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
 
 export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
   const text = extractTextFromBlocks(blocks);
-  const [autoScroll, setAutoScroll] = React.useState(true);
+  const [autoScroll, setAutoScrollState] = React.useState(() => {
+    if (typeof window === "undefined") return true;
+    try {
+      const saved = localStorage.getItem("tts-autoscroll");
+      return saved === null ? true : saved === "true";
+    } catch {
+      return true;
+    }
+  });
+
+  const setAutoScroll = React.useCallback((v: boolean) => {
+    setAutoScrollState(v);
+    try {
+      localStorage.setItem("tts-autoscroll", String(v));
+    } catch {}
+  }, []);
 
   const {
     speak,
