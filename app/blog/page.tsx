@@ -1,5 +1,6 @@
 import { formatDate } from "date-fns";
 import Link from "next/link";
+import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { PostTags } from "@/components/blog/PostTags";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateMetadata } from "@/lib/metadata";
@@ -60,12 +61,14 @@ export default async function BlogPage() {
                           {formatDate(new Date(post.date), "d")}
                         </time>
                       )}
-                      <Link
-                        className="min-w-0 truncate font-medium text-foreground hover:underline"
-                        href={`/blog/${post.slug}`}
-                      >
-                        {post.title}
-                      </Link>
+                      <BlogPostHoverCard post={post}>
+                        <Link
+                          className="min-w-0 truncate font-medium text-foreground hover:underline"
+                          href={`/blog/${post.slug}`}
+                        >
+                          {post.title}
+                        </Link>
+                      </BlogPostHoverCard>
                     </div>
                     <div className="flex shrink-0 items-center gap-2 text-muted-foreground text-sm">
                       <PostTags tags={post.tags} />

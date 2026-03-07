@@ -50,7 +50,7 @@ export default async function Home() {
                 className="text-muted-foreground text-sm hover:text-foreground"
                 href="/blog"
               >
-                all posts →
+                all {allPosts.length} posts →
               </Link>
             </div>
             <div className="space-y-6 text-sm leading-relaxed">
