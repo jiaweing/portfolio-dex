@@ -66,7 +66,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               variant="link"
             >
               <Link href={"/blog"}>
-                <ArrowLeft /> back to blog
+                <ArrowLeft /> back to writing
               </Link>
             </Button>
             <h3 className="mb-2 font-semibold">{post.title}</h3>

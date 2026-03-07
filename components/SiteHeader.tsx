@@ -28,7 +28,7 @@ export function SiteHeader() {
   const items = [
     { href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
     { href: "/about", icon: User, label: "About" },
-    { href: "/blog", icon: Book, label: "Blog" },
+    { href: "/blog", icon: Book, label: "Writing" },
     { href: "/projects", icon: Search, label: "Projects" },
 
     { href: "/books", icon: GalleryHorizontalEnd, label: "Books" },

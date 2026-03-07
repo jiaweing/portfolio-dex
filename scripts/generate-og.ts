@@ -93,6 +93,11 @@ async function main() {
       fs.mkdirSync(ogDir, { recursive: true });
     }
 
+    const skipExisting =
+      process.argv.includes("--skip-existing") ||
+      process.argv.includes("--skip");
+    if (skipExisting) console.log("Skipping routes with existing OG images.");
+
     // 3. Screenshot
     for (const route of routes) {
       const url = `${BASE_URL}${route}`;
@@ -102,12 +107,26 @@ async function main() {
 
       const filePath = path.join(ogDir, `${fileName}.png`);
 
+      if (skipExisting && fs.existsSync(filePath)) {
+        console.log(`Skipping ${route} (already exists)`);
+        continue;
+      }
+
       console.log(`Screenshotting ${route} -> ${fileName}.png`);
-      try {
-        await page.goto(url, { waitUntil: "networkidle0", timeout: 60_000 });
-        await page.screenshot({ path: filePath });
-      } catch (e) {
-        console.error(`Failed to screenshot ${route}:`, e);
+      let success = false;
+      for (const waitUntil of ["networkidle2", "domcontentloaded"] as const) {
+        try {
+          await page.goto(url, { waitUntil, timeout: 60_000 });
+          await page.screenshot({ path: filePath });
+          success = true;
+          break;
+        } catch (e) {
+          if (waitUntil === "domcontentloaded") {
+            console.error(`Failed to screenshot ${route}:`, e);
+          } else {
+            console.warn(`Retrying ${route} with looser wait strategy...`);
+          }
+        }
       }
     }
 

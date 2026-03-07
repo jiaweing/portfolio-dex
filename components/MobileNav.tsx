@@ -83,7 +83,7 @@ export function MobileNav({ className }: MobileNavProps) {
                     About
                   </MobileLink>
                   <MobileLink href="/blog" onOpenChange={setOpen}>
-                    Blog
+                    Writing
                   </MobileLink>
                   <MobileLink href="/projects" onOpenChange={setOpen}>
                     Projects

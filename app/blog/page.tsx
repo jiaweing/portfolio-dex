@@ -42,7 +42,7 @@ export default async function BlogPage() {
     <>
       <FadeIn>
         <div className="mb-4 flex items-center gap-2">
-          <h3 className="font-semibold">blog</h3>
+          <h3 className="font-semibold">writing</h3>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
