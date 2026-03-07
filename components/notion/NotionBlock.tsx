@@ -272,6 +272,7 @@ export function NotionBlock({
 
     case "bulleted_list_item": {
       const rt = block.bulleted_list_item.rich_text;
+      tracker.currentOffset = 2; // skip "- " prefix in extracted text
       return (
         <li className="mt-2 text-muted-foreground">
           {renderRichText(rt, tracker, localHighlightIndex)}
@@ -290,6 +291,7 @@ export function NotionBlock({
 
     case "quote": {
       const rt = block.quote.rich_text;
+      tracker.currentOffset = 1; // skip opening `"` in extracted text
       return (
         <blockquote className="my-4 border-primary border-l-4 pl-4 italic">
           {renderRichText(rt, tracker, localHighlightIndex)}
@@ -360,6 +362,7 @@ export function NotionBlock({
     case "to_do": {
       const rt = block.to_do.rich_text;
       const checked = block.to_do.checked;
+      tracker.currentOffset = 4; // skip "[ ] " prefix in extracted text
       return (
         <div className="my-1 flex items-center space-x-2">
           <input
