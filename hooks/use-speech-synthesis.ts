@@ -202,6 +202,29 @@ export function useSpeechSynthesis(
           const absIndex = offset + event.charIndex;
           currentCharIndexRef.current = absIndex;
           setCurrentCharIndex(absIndex);
+
+          // Recalibrate total duration using actual speech rate so far
+          const actualElapsedSpeaking =
+            (Date.now() - startTimeRef.current) / 1000 - initialElapsed;
+          if (actualElapsedSpeaking > 1) {
+            const wordsSpokenInSegment = text
+              .slice(offset, absIndex)
+              .split(/\s+/)
+              .filter(Boolean).length;
+            if (wordsSpokenInSegment > 0) {
+              const actualRate = wordsSpokenInSegment / actualElapsedSpeaking;
+              const wordsRemaining = text
+                .slice(absIndex)
+                .split(/\s+/)
+                .filter(Boolean).length;
+              const calibratedTotal =
+                initialElapsed +
+                actualElapsedSpeaking +
+                wordsRemaining / actualRate;
+              setTotalSeconds(calibratedTotal);
+              totalSecondsRef.current = calibratedTotal;
+            }
+          }
         }
       };
 
