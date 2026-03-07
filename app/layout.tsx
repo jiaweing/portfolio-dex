@@ -51,6 +51,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://jiaweing.com"),
   alternates: {
     canonical: "https://jiaweing.com",
+    types: {
+      "application/rss+xml": "https://jiaweing.com/feed.xml",
+    },
   },
   robots: {
     index: true,

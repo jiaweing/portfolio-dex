@@ -1,4 +1,5 @@
 import { formatDate } from "date-fns";
+import { Rss } from "lucide-react";
 import Link from "next/link";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { PostTags } from "@/components/blog/PostTags";
@@ -34,7 +35,16 @@ export default async function BlogPage() {
   return (
     <>
       <FadeIn>
-        <h3 className="mb-4 font-semibold">blog</h3>
+        <div className="mb-4 flex items-center gap-2">
+          <h3 className="font-semibold">blog</h3>
+          <Link
+            aria-label="RSS feed"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+            href="/feed.xml"
+          >
+            <Rss className="h-3.5 w-3.5" />
+          </Link>
+        </div>
       </FadeIn>
       {posts.length === 0 && (
         <p className="text-muted-foreground text-sm">No posts found.</p>
