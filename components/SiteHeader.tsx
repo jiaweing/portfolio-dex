@@ -3,10 +3,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen02Icon as BookOpen,
+  Computer01Icon as Computer,
   FolderLibraryIcon,
-  FavouriteIcon as Heart,
-  Search01Icon as Search,
-  UserIcon as User,
+  Globe02Icon,
+  UserSquareIcon,
 } from "hugeicons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,12 +27,12 @@ export function SiteHeader() {
 
   const items = [
     { href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
-    { href: "/about", icon: User, label: "About" },
+    { href: "/about", icon: UserSquareIcon, label: "About" },
     { href: "/blog", icon: BookOpen, label: "Writing" },
-    { href: "/projects", icon: Search, label: "Projects" },
+    { href: "/projects", icon: Globe02Icon, label: "Projects" },
 
     { href: "/books", icon: FolderLibraryIcon, label: "Books" },
-    { href: "/setup", icon: Heart, label: "Setup" },
+    { href: "/setup", icon: Computer, label: "Setup" },
   ];
 
   return (
