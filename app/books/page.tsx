@@ -14,7 +14,9 @@ export default async function Home() {
     <>
       <JsonLd />
       <FadeIn>
-        <BooksSection />
+        <div className="flex h-[calc(100svh-12rem)] items-center">
+          <BooksSection />
+        </div>
       </FadeIn>
     </>
   );

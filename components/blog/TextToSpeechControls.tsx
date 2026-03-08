@@ -1,7 +1,20 @@
 "use client";
 
-import { AlignLeft, Pause, Play, Settings2, Square } from "lucide-react";
+import {
+  AlignLeft,
+  ChevronsLeft,
+  ChevronsRight,
+  Minus,
+  Pause,
+  Play,
+  Plus,
+  Settings2,
+  Square,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import * as React from "react";
+import ElasticSlider from "@/components/ElasticSlider";
 import { Button } from "@/components/ui/button";
 import { Frame, FramePanel } from "@/components/ui/frame";
 import {
@@ -11,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 
 interface TextToSpeechControlsProps {
@@ -66,8 +78,6 @@ export function TextToSpeechControls({
   totalSeconds,
 }: TextToSpeechControlsProps) {
   const [showSettings, setShowSettings] = React.useState(false);
-  // Tracks the thumb position while the user is scrubbing (before releasing)
-  const [seekingValue, setSeekingValue] = React.useState<number | null>(null);
 
   const handlePlayPause = () => {
     if (speaking && !paused) pause();
@@ -109,31 +119,28 @@ export function TextToSpeechControls({
           </Button>
         </div>
 
-        {/* Seek slider + timestamps */}
-        <div className="flex min-w-0 flex-1 flex-col gap-1 self-center pt-2.5">
-          <Slider
-            className="cursor-pointer"
-            disabled={!isActive}
-            max={100}
-            min={0}
-            onValueChange={([v]) => setSeekingValue(v)}
-            onValueCommit={([v]) => {
-              seek(v);
-              setSeekingValue(null);
-            }}
-            step={0.1}
-            value={[seekingValue ?? progress]}
+        {/* Seek slider — time shown on top via renderValue */}
+        <div className="min-w-0 flex-1 self-center">
+          <ElasticSlider
+            defaultValue={progress}
+            isStepped={false}
+            leftIcon={
+              <ChevronsLeft className="size-3.5 text-muted-foreground" />
+            }
+            maxValue={100}
+            onCommit={(v) => seek(v)}
+            renderValue={(v) => (
+              <span>
+                {formatTime((v / 100) * totalSeconds)} /{" "}
+                {formatTime(totalSeconds)}
+              </span>
+            )}
+            rightIcon={
+              <ChevronsRight className="size-3.5 text-muted-foreground" />
+            }
+            startingValue={0}
+            stepSize={0.1}
           />
-          <div className="flex justify-between text-[10px] text-muted-foreground tabular-nums">
-            <span>
-              {formatTime(
-                seekingValue !== null
-                  ? (seekingValue / 100) * totalSeconds
-                  : elapsedSeconds
-              )}
-            </span>
-            <span>{formatTime(totalSeconds)}</span>
-          </div>
         </div>
 
         {/* Settings toggle */}
@@ -177,39 +184,41 @@ export function TextToSpeechControls({
 
           {/* Volume + Speed */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-                  Volume
-                </p>
-                <span className="font-medium text-xs tabular-nums">
-                  {Math.round(volume * 100)}%
-                </span>
-              </div>
-              <Slider
-                max={1}
-                min={0}
-                onValueChange={([v]) => setVolume(v)}
-                step={0.05}
-                value={[volume]}
+            <div className="space-y-0.5">
+              <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+                Volume
+              </p>
+              <ElasticSlider
+                defaultValue={volume * 100}
+                isStepped={false}
+                leftIcon={
+                  <VolumeX className="size-3.5 text-muted-foreground" />
+                }
+                maxValue={100}
+                onCommit={(v) => setVolume(v / 100)}
+                renderValue={(v) => <span>{Math.round(v)}%</span>}
+                rightIcon={
+                  <Volume2 className="size-3.5 text-muted-foreground" />
+                }
+                startingValue={0}
+                stepSize={1}
               />
             </div>
 
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-                  Speed
-                </p>
-                <span className="font-medium text-xs tabular-nums">
-                  {rate.toFixed(1)}×
-                </span>
-              </div>
-              <Slider
-                max={2}
-                min={0.5}
-                onValueChange={([v]) => setRate(v)}
-                step={0.1}
-                value={[rate]}
+            <div className="space-y-0.5">
+              <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+                Speed
+              </p>
+              <ElasticSlider
+                defaultValue={rate}
+                isStepped={true}
+                leftIcon={<Minus className="size-3.5 text-muted-foreground" />}
+                maxValue={2}
+                onCommit={(v) => setRate(v)}
+                renderValue={(v) => <span>{v.toFixed(1)}×</span>}
+                rightIcon={<Plus className="size-3.5 text-muted-foreground" />}
+                startingValue={0.5}
+                stepSize={0.1}
               />
             </div>
           </div>

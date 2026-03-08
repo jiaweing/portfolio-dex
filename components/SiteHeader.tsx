@@ -12,6 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { SantaAvatar } from "@/components/SantaAvatar";
+import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
 import { WrappedBanner } from "@/components/wrapped/wrapped-banner";
 import { WrappedGiftIcon } from "@/components/wrapped/wrapped-gift-icon";
 import { WrappedPageBorder } from "@/components/wrapped/wrapped-page-border";
@@ -66,6 +67,14 @@ export function SiteHeader() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ProgressiveBlur
+        blurAmount="6px"
+        className="hidden lg:block"
+        position="left"
+        useThemeBackground
+        width="180px"
+      />
 
       <header className="fixed top-1/2 left-6 z-[100] hidden -translate-y-1/2 lg:block">
         <nav

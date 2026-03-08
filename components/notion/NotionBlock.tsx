@@ -1,7 +1,9 @@
 "use client";
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import { Link2 } from "lucide-react";
 import React from "react";
+import { sileo } from "sileo";
 import { Frame, FramePanel } from "@/components/ui/frame";
 import {
   Table,
@@ -249,6 +251,21 @@ const CALLOUT_COLORS: Record<string, { frame: string; panel: string }> = {
   },
 };
 
+function HeadingAnchor({ id }: { id: string }) {
+  return (
+    <Link2 className="h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100" />
+  );
+}
+
+function handleCopyHeadingLink(id: string) {
+  const url = `${window.location.origin}${window.location.pathname}#${id}`;
+  navigator.clipboard.writeText(url);
+  sileo.success({
+    title: "Copied to clipboard",
+    description: "Share this link to skip to this point of the document",
+  });
+}
+
 export function NotionBlock({
   block,
   allBlocks,
@@ -293,8 +310,13 @@ export function NotionBlock({
     case "heading_1": {
       const rt = block.heading_1.rich_text;
       return (
-        <h1 className="mt-8 mb-4 font-medium text-2xl">
+        <h1
+          className="group/heading mt-8 mb-4 flex cursor-pointer scroll-mt-44 items-center gap-2 font-medium text-2xl"
+          id={block.id}
+          onClick={() => handleCopyHeadingLink(block.id)}
+        >
           {renderRichText(rt, tracker, localHighlightIndex)}
+          <HeadingAnchor id={block.id} />
         </h1>
       );
     }
@@ -302,8 +324,13 @@ export function NotionBlock({
     case "heading_2": {
       const rt = block.heading_2.rich_text;
       return (
-        <h2 className="mt-6 mb-3 font-medium text-xl">
+        <h2
+          className="group/heading mt-6 mb-3 flex cursor-pointer scroll-mt-44 items-center gap-2 font-medium text-xl"
+          id={block.id}
+          onClick={() => handleCopyHeadingLink(block.id)}
+        >
           {renderRichText(rt, tracker, localHighlightIndex)}
+          <HeadingAnchor id={block.id} />
         </h2>
       );
     }
@@ -311,8 +338,13 @@ export function NotionBlock({
     case "heading_3": {
       const rt = block.heading_3.rich_text;
       return (
-        <h3 className="mt-4 mb-2 font-medium text-lg">
+        <h3
+          className="group/heading mt-4 mb-2 flex cursor-pointer scroll-mt-44 items-center gap-2 font-medium text-lg"
+          id={block.id}
+          onClick={() => handleCopyHeadingLink(block.id)}
+        >
           {renderRichText(rt, tracker, localHighlightIndex)}
+          <HeadingAnchor id={block.id} />
         </h3>
       );
     }

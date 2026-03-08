@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 type ProgressiveBlurProps = {
   className?: string;
   backgroundColor?: string;
-  position?: "top" | "bottom";
+  position?: "top" | "bottom" | "left" | "right";
   height?: string;
+  width?: string;
   blurAmount?: string;
   useThemeBackground?: boolean;
 };
@@ -17,10 +18,14 @@ const ProgressiveBlur = ({
   backgroundColor,
   position = "top",
   height = "150px",
+  width = "180px",
   blurAmount = "4px",
   useThemeBackground = false,
 }: ProgressiveBlurProps) => {
   const isTop = position === "top";
+  const isLeft = position === "left";
+  const isRight = position === "right";
+  const isHorizontal = isLeft || isRight;
 
   // Get theme context for theme detection
   const theme = useTheme();
@@ -55,11 +60,23 @@ const ProgressiveBlur = ({
 
   const bgColor = getBackgroundColor();
 
-  return (
-    <div
-      className={`pointer-events-none fixed left-0 w-full select-none ${className} z-50`}
-      style={{
+  const horizontalStyle = isHorizontal
+    ? {
+        top: 0,
+        [isLeft ? "left" : "right"]: 0,
+        width,
+        height: "100%",
+        background: isLeft
+          ? `linear-gradient(to right, ${bgColor}, transparent)`
+          : `linear-gradient(to left, ${bgColor}, transparent)`,
+        maskImage: isLeft
+          ? `linear-gradient(to right, ${bgColor} 50%, transparent)`
+          : `linear-gradient(to left, ${bgColor} 50%, transparent)`,
+      }
+    : {
         [isTop ? "top" : "bottom"]: 0,
+        left: 0,
+        width: "100%",
         height,
         background: isTop
           ? `linear-gradient(to top, transparent, ${bgColor})`
@@ -67,6 +84,13 @@ const ProgressiveBlur = ({
         maskImage: isTop
           ? `linear-gradient(to bottom, ${bgColor} 50%, transparent)`
           : `linear-gradient(to top, ${bgColor} 50%, transparent)`,
+      };
+
+  return (
+    <div
+      className={`pointer-events-none fixed select-none ${className} z-50`}
+      style={{
+        ...horizontalStyle,
         WebkitBackdropFilter: `blur(${blurAmount})`,
         backdropFilter: `blur(${blurAmount})`,
         WebkitUserSelect: "none",

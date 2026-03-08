@@ -23,8 +23,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { Toaster } from "sileo";
 import { OpenSourceToast } from "@/components/open-source-toast";
-import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -201,7 +201,7 @@ export default function RootLayout({
           <ThemeToggle />
           <TailwindIndicator />
           <SeasonalEffects />
-          <Toaster />
+          <Toaster position="bottom-right" theme="system" />
           <OpenSourceToast />
           <GoogleAnalytics gaId="G-MJ0F694R8J" />
         </ThemeProvider>
