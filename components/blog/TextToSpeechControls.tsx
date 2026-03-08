@@ -3,6 +3,7 @@
 import { AlignLeft, Pause, Play, Settings2, Square } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
+import { Frame, FramePanel } from "@/components/ui/frame";
 import {
   Select,
   SelectContent,
@@ -80,9 +81,9 @@ export function TextToSpeechControls({
   const isActive = speaking || progress > 0;
 
   return (
-    <div className="sticky top-20 z-10 mb-6 overflow-hidden rounded-xl border bg-background/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* ── Single controls row ── */}
-      <div className="flex items-center gap-2 px-3 py-2.5">
+    <Frame className="sticky top-20 z-10 mb-6 bg-muted/95 backdrop-blur supports-[backdrop-filter]:bg-muted/60">
+      {/* ── Controls row ── */}
+      <div className="flex items-center gap-2 px-2 py-1.5">
         {/* Play / Stop */}
         <div className="flex items-center gap-1 self-center">
           <Button
@@ -108,7 +109,7 @@ export function TextToSpeechControls({
           </Button>
         </div>
 
-        {/* Seek slider + timestamps grouped together */}
+        {/* Seek slider + timestamps */}
         <div className="flex min-w-0 flex-1 flex-col gap-1 self-center pt-2.5">
           <Slider
             className="cursor-pointer"
@@ -148,8 +149,8 @@ export function TextToSpeechControls({
 
       {/* ── Settings panel ── */}
       {showSettings && (
-        <div className="space-y-4 border-t px-4 py-4">
-          {/* Row 1: Voice */}
+        <FramePanel className="space-y-4 bg-background/95 px-4 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          {/* Voice */}
           <div className="space-y-1.5">
             <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
               Voice
@@ -174,9 +175,8 @@ export function TextToSpeechControls({
             </Select>
           </div>
 
-          {/* Row 2: Volume + Speed */}
+          {/* Volume + Speed */}
           <div className="grid grid-cols-2 gap-4">
-            {/* Volume */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
@@ -195,7 +195,6 @@ export function TextToSpeechControls({
               />
             </div>
 
-            {/* Speed */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
@@ -228,8 +227,8 @@ export function TextToSpeechControls({
             </div>
             <Switch checked={autoScroll} onCheckedChange={setAutoScroll} />
           </div>
-        </div>
+        </FramePanel>
       )}
-    </div>
+    </Frame>
   );
 }

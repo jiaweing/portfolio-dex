@@ -2,7 +2,7 @@
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import React from "react";
-import { Frame } from "@/components/ui/frame";
+import { Frame, FramePanel } from "@/components/ui/frame";
 import {
   Table,
   TableBody,
@@ -376,10 +376,20 @@ export function NotionBlock({
 
     case "code": {
       const code = block.code.rich_text.map((t: any) => t.plain_text).join("");
+      const language = block.code.language;
       return (
-        <pre className="my-4 overflow-x-auto rounded-md bg-muted p-4 text-foreground">
-          <code>{code}</code>
-        </pre>
+        <Frame className="my-4">
+          {language && language !== "plain text" && (
+            <div className="px-4 py-2 font-mono text-muted-foreground text-xs">
+              {language}
+            </div>
+          )}
+          <FramePanel className="overflow-hidden p-0">
+            <pre className="!my-0 overflow-x-auto bg-background p-4 text-foreground text-sm">
+              <code className="font-mono">{code}</code>
+            </pre>
+          </FramePanel>
+        </Frame>
       );
     }
 
