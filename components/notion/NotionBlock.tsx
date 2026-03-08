@@ -68,7 +68,7 @@ function renderRichText(
 
     if (code)
       content = (
-        <code className="rounded bg-muted px-1 py-0.5 font-mono text-sm">
+        <code className="rounded bg-muted px-1 py-0.5 font-mono text-foreground text-sm">
           {content}
         </code>
       );
@@ -377,7 +377,7 @@ export function NotionBlock({
     case "code": {
       const code = block.code.rich_text.map((t: any) => t.plain_text).join("");
       return (
-        <pre className="my-4 overflow-x-auto rounded-md bg-muted p-4">
+        <pre className="my-4 overflow-x-auto rounded-md bg-muted p-4 text-foreground">
           <code>{code}</code>
         </pre>
       );
