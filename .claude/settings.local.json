@@ -1,5 +1,14 @@
 {
   "permissions": {
-    "allow": ["Bash(npx tsc:*)", "Bash(bun run:*)", "Bash(bunx tsc:*)"]
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(bun run:*)",
+      "Bash(bunx tsc:*)",
+      "Bash(npx shadcn@latest:*)",
+      "Bash(curl -s http://localhost:3000/)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_evaluate"
+    ]
   }
 }

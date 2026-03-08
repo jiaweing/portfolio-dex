@@ -1,0 +1,108 @@
+[    1437ms] [ERROR] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/blog/bto-..." notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="/portfolio...">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="en"
+-                         className="light"
+-                         style={{color-scheme:"light"}}
+                        >
+                  ...
+ @ http://localhost:3000/_next/static/chunks/9717e_next_dist_efef4819._.js:3117
+[    8713ms] Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <InnerScrollAndFocusHandler segmentPath={[...]} focusAndScrollRef={{apply:false, ...}}>
+      <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+        <LoadingBoundary name="bto-timeli..." loading={null}>
+          <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/blog/bto-..." tree={[...]} params={{slug:"bto-..."}} ...>
+                  <SegmentViewNode type="page" pagePath="/portfolio...">
+                    <SegmentTrieNode>
+                    <BlogPostPage>
+                      <article>
+                        <FadeIn>
+                        <BlogTextToSpeech blocks={[...]}>
+                          <SpeechHighlightProvider autoScroll={true} currentCharIndex={0} isPaused={false} ...>
+                            <TextToSpeechControls autoScroll={true} ...>
+                              <div
++                               className="sticky top-20 z-10 mb-6 overflow-hidden rounded-xl border bg-background/95 ..."
+-                               className={" "}
+-                               style={{opacity:"0",transform:"translateY..."}}
+                              >
+                                <div
++                                 className="flex items-center gap-2 px-3 py-2.5"
+-                                 className="prose dark:prose-invert max-w-none"
+                                >
+                                  <div
++                                   className="flex items-center gap-1 self-center"
+-                                   className={null}
+-                                   data-block-id="b04149a4-9ae7-4f43-9f4d-75cf36e22961"
+                                  >
+                                    <Button className="size-9 rou..." onClick={function handlePlayPause} size="icon" ...>
++                                     <button
++                                       className={"inline-flex shrink-0 items-center justify-center gap-2 whitespace..."}
++                                       data-slot="button"
++                                       onClick={function handlePlayPause}
++                                     >
+-                                     <p className="mb-4 text-muted-foreground leading-7">
+                                    ...
+                                  ...
+                            ...
+                        ...
+                  ...
+                ...
+      ...
+
+    at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:3342:56)
+    at beginWork (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:6769:918)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:959:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:9556:97)
+    at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:9552:58)
+    at renderRootConcurrent (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:9535:71)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:9062:150)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_react-dom_e8832a81._.js:10224:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/9717e_next_dist_compiled_f187dbdb._.js:2647:64)
+[   11770ms] [WARNING] The resource https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/blog/bto-timeline-guide-for-2026:0
+[   11770ms] [WARNING] The resource https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/blog/bto-timeline-guide-for-2026:0

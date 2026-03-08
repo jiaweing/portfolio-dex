@@ -2,6 +2,15 @@
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import React from "react";
+import { Frame, FramePanel } from "@/components/ui/frame";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useSpeechHighlight } from "./SpeechHighlightContext";
 
 interface HighlightTracker {
@@ -201,6 +210,45 @@ function getBlockTextLength(block: BlockObjectResponse): number {
   }
 }
 
+const CALLOUT_COLORS: Record<string, { frame: string; panel: string }> = {
+  gray_background: {
+    frame: "bg-gray-200/80 dark:bg-gray-700/40",
+    panel: "bg-gray-50 dark:bg-gray-800/60",
+  },
+  brown_background: {
+    frame: "bg-stone-200/80 dark:bg-stone-800/40",
+    panel: "bg-stone-50 dark:bg-stone-900/60",
+  },
+  orange_background: {
+    frame: "bg-orange-200/80 dark:bg-orange-900/40",
+    panel: "bg-orange-50 dark:bg-orange-950/60",
+  },
+  yellow_background: {
+    frame: "bg-yellow-200/80 dark:bg-yellow-900/40",
+    panel: "bg-yellow-50 dark:bg-yellow-950/60",
+  },
+  green_background: {
+    frame: "bg-green-200/80 dark:bg-green-900/40",
+    panel: "bg-green-50 dark:bg-green-950/60",
+  },
+  blue_background: {
+    frame: "bg-blue-200/80 dark:bg-blue-900/40",
+    panel: "bg-blue-50 dark:bg-blue-950/60",
+  },
+  purple_background: {
+    frame: "bg-purple-200/80 dark:bg-purple-900/40",
+    panel: "bg-purple-50 dark:bg-purple-950/60",
+  },
+  pink_background: {
+    frame: "bg-pink-200/80 dark:bg-pink-900/40",
+    panel: "bg-pink-50 dark:bg-pink-950/60",
+  },
+  red_background: {
+    frame: "bg-red-200/80 dark:bg-red-900/40",
+    panel: "bg-red-50 dark:bg-red-950/60",
+  },
+};
+
 export function NotionBlock({
   block,
   allBlocks,
@@ -299,24 +347,32 @@ export function NotionBlock({
     case "callout": {
       const rt = block.callout.rich_text;
       const children: any[] = (block as any).children || [];
+      const calloutColor = CALLOUT_COLORS[block.callout.color] ?? {
+        frame: "",
+        panel: "",
+      };
       return (
-        <div className="my-4 flex items-start rounded-md border bg-muted/50 p-4 text-sm leading-relaxed">
-          {block.callout.icon?.type === "emoji" && (
-            <span className="mr-3 text-base">{block.callout.icon.emoji}</span>
-          )}
-          <div className="flex-1 text-muted-foreground">
-            {rt.length > 0 && (
-              <div>{renderRichText(rt, tracker, localHighlightIndex)}</div>
+        <Frame className={`my-4 ${calloutColor.frame}`}>
+          <FramePanel
+            className={`flex items-start gap-3 text-sm leading-relaxed ${calloutColor.panel}`}
+          >
+            {block.callout.icon?.type === "emoji" && (
+              <span className="text-base">{block.callout.icon.emoji}</span>
             )}
-            {children.length > 0 && (
-              <div>
-                {children.map((child: any) => (
-                  <NotionBlock block={child} key={child.id} />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+            <div className="flex-1 text-muted-foreground">
+              {rt.length > 0 && (
+                <div>{renderRichText(rt, tracker, localHighlightIndex)}</div>
+              )}
+              {children.length > 0 && (
+                <div className="[&_li]:list-none">
+                  {children.map((child: any) => (
+                    <NotionBlock block={child} key={child.id} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </FramePanel>
+        </Frame>
       );
     }
 
@@ -409,41 +465,39 @@ export function NotionBlock({
         : preRendered;
 
       return (
-        <div className="overflow-x-auto [&>table]:mt-0 [&>table]:mb-2">
-          <table className="w-full border-collapse text-sm">
-            {preRenderedHeader && (
-              <thead>
-                <tr>
-                  {preRenderedHeader.map((cellContent, cellIndex) => (
-                    <th
-                      className="border border-border bg-muted px-3 py-2 text-left font-medium"
-                      key={cellIndex}
-                    >
-                      {cellContent}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-            )}
-            <tbody>
-              {preRenderedBody.map((rowCells, rowIndex) => (
-                <tr
-                  className={rowIndex % 2 !== 0 ? "bg-muted/30" : ""}
-                  key={rowIndex}
-                >
-                  {rowCells.map((cellContent, cellIndex) => (
-                    <td
-                      className={`border border-border px-3 py-2${hasRowHeader && cellIndex === 0 ? "bg-muted font-medium" : ""}`}
-                      key={cellIndex}
-                    >
-                      {cellContent}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Frame className="my-4">
+          <FramePanel className="overflow-hidden p-0">
+            <Table>
+              {preRenderedHeader && (
+                <TableHeader>
+                  <TableRow>
+                    {preRenderedHeader.map((cellContent, cellIndex) => (
+                      <TableHead key={cellIndex}>{cellContent}</TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+              )}
+              <TableBody>
+                {preRenderedBody.map((rowCells, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    {rowCells.map((cellContent, cellIndex) => (
+                      <TableCell
+                        className={
+                          hasRowHeader && cellIndex === 0
+                            ? "font-medium"
+                            : undefined
+                        }
+                        key={cellIndex}
+                      >
+                        {cellContent}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </FramePanel>
+        </Frame>
       );
     }
 
