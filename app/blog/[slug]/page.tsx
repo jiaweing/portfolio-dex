@@ -15,6 +15,7 @@ import {
   getBlogPost,
   getBlogPosts,
 } from "@/lib/notion";
+import { highlightCode } from "@/lib/shiki";
 
 export const revalidate = 3600;
 
@@ -54,6 +55,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) {
     notFound();
   }
+
+  const highlightedCodeMap: Record<string, string> = {};
+  await Promise.all(
+    blocks
+      .filter((b) => b.type === "code")
+      .map(async (block) => {
+        const b = block as Extract<typeof block, { type: "code" }>;
+        const code = b.code.rich_text.map((t) => t.plain_text).join("");
+        const html = await highlightCode(code, b.code.language);
+        if (html) highlightedCodeMap[block.id] = html;
+      })
+  );
 
   return (
     <article>
@@ -98,7 +111,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       <BlogTextToSpeech blocks={blocks}>
         <FadeIn delay={0.2}>
-          <NotionRenderer blocks={blocks} />
+          <NotionRenderer
+            blocks={blocks}
+            highlightedCodeMap={highlightedCodeMap}
+          />
         </FadeIn>
       </BlogTextToSpeech>
 

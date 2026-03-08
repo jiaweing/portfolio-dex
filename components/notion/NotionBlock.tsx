@@ -252,9 +252,11 @@ const CALLOUT_COLORS: Record<string, { frame: string; panel: string }> = {
 export function NotionBlock({
   block,
   allBlocks,
+  highlightedCodeMap,
 }: {
   block: BlockObjectResponse;
   allBlocks?: BlockObjectResponse[];
+  highlightedCodeMap?: Record<string, string>;
 }) {
   const { currentCharIndex, isSpeaking, autoScroll } = useSpeechHighlight();
   const blockOffset = allBlocks ? useBlockCharOffset(allBlocks, block.id) : 0;
@@ -365,7 +367,11 @@ export function NotionBlock({
             {children.length > 0 && (
               <div className="[counter-reset:list-item] [&_li]:ml-5">
                 {children.map((child: any) => (
-                  <NotionBlock block={child} key={child.id} />
+                  <NotionBlock
+                    block={child}
+                    highlightedCodeMap={highlightedCodeMap}
+                    key={child.id}
+                  />
                 ))}
               </div>
             )}
@@ -377,6 +383,7 @@ export function NotionBlock({
     case "code": {
       const code = block.code.rich_text.map((t: any) => t.plain_text).join("");
       const language = block.code.language;
+      const highlightedHtml = highlightedCodeMap?.[block.id];
       return (
         <Frame className="my-4">
           {language && language !== "plain text" && (
@@ -385,9 +392,17 @@ export function NotionBlock({
             </div>
           )}
           <FramePanel className="overflow-hidden p-0">
-            <pre className="!my-0 overflow-x-auto bg-background p-4 text-foreground text-sm">
-              <code className="font-mono">{code}</code>
-            </pre>
+            {highlightedHtml ? (
+              <div
+                className="[&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 overflow-x-auto p-4 text-sm [&_code]:font-mono"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki output is safe server-generated HTML
+                dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+              />
+            ) : (
+              <pre className="!my-0 overflow-x-auto bg-transparent p-4 text-foreground text-sm">
+                <code className="font-mono">{code}</code>
+              </pre>
+            )}
           </FramePanel>
         </Frame>
       );
@@ -524,7 +539,11 @@ export function NotionBlock({
           {columns.map((col: any) => (
             <div key={col.id}>
               {(col.children || []).map((child: any) => (
-                <NotionBlock block={child} key={child.id} />
+                <NotionBlock
+                  block={child}
+                  highlightedCodeMap={highlightedCodeMap}
+                  key={child.id}
+                />
               ))}
             </div>
           ))}
@@ -537,7 +556,11 @@ export function NotionBlock({
       return (
         <div>
           {children.map((child: any) => (
-            <NotionBlock block={child} key={child.id} />
+            <NotionBlock
+              block={child}
+              highlightedCodeMap={highlightedCodeMap}
+              key={child.id}
+            />
           ))}
         </div>
       );

@@ -9,6 +9,7 @@ import {
 
 interface NotionRendererProps {
   blocks: BlockObjectResponse[];
+  highlightedCodeMap?: Record<string, string>;
 }
 
 type BlockGroup =
@@ -39,7 +40,10 @@ function groupBlocks(blocks: BlockObjectResponse[]): BlockGroup[] {
   return groups;
 }
 
-function NotionRendererInner({ blocks }: NotionRendererProps) {
+function NotionRendererInner({
+  blocks,
+  highlightedCodeMap,
+}: NotionRendererProps) {
   const groups = groupBlocks(blocks);
   return (
     <div className="prose dark:prose-invert max-w-none">
@@ -49,7 +53,11 @@ function NotionRendererInner({ blocks }: NotionRendererProps) {
             <ol className="my-4 ml-1 list-decimal space-y-1" key={i}>
               {group.blocks.map((block) => (
                 <div data-block-id={block.id} key={block.id}>
-                  <NotionBlock allBlocks={blocks} block={block} />
+                  <NotionBlock
+                    allBlocks={blocks}
+                    block={block}
+                    highlightedCodeMap={highlightedCodeMap}
+                  />
                 </div>
               ))}
             </ol>
@@ -60,7 +68,11 @@ function NotionRendererInner({ blocks }: NotionRendererProps) {
             <ul className="my-4 ml-1 list-disc space-y-1" key={i}>
               {group.blocks.map((block) => (
                 <div data-block-id={block.id} key={block.id}>
-                  <NotionBlock allBlocks={blocks} block={block} />
+                  <NotionBlock
+                    allBlocks={blocks}
+                    block={block}
+                    highlightedCodeMap={highlightedCodeMap}
+                  />
                 </div>
               ))}
             </ul>
@@ -69,7 +81,11 @@ function NotionRendererInner({ blocks }: NotionRendererProps) {
         const block = group.blocks[0];
         return (
           <div data-block-id={block.id} key={block.id}>
-            <NotionBlock allBlocks={blocks} block={block} />
+            <NotionBlock
+              allBlocks={blocks}
+              block={block}
+              highlightedCodeMap={highlightedCodeMap}
+            />
           </div>
         );
       })}
@@ -77,10 +93,16 @@ function NotionRendererInner({ blocks }: NotionRendererProps) {
   );
 }
 
-export function NotionRenderer({ blocks }: NotionRendererProps) {
-  // This component wraps the inner renderer with the highlight context
-  // The actual highlight state comes from BlogTextToSpeech via context
-  return <NotionRendererInner blocks={blocks} />;
+export function NotionRenderer({
+  blocks,
+  highlightedCodeMap,
+}: NotionRendererProps) {
+  return (
+    <NotionRendererInner
+      blocks={blocks}
+      highlightedCodeMap={highlightedCodeMap}
+    />
+  );
 }
 
 // Export the provider so BlogTextToSpeech can wrap everything

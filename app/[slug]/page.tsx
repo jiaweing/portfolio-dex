@@ -4,6 +4,7 @@ import { NotionRenderer } from "@/components/markdown-renderer";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generatePageMetadata } from "@/lib/metadata";
 import { extractDescriptionFromBlocks, getPage, getPages } from "@/lib/notion";
+import { highlightCode } from "@/lib/shiki";
 
 export const revalidate = 3600;
 
@@ -44,6 +45,20 @@ export default async function GenericPage({
     notFound();
   }
 
+  const highlightedCodeMap: Record<string, string> = {};
+  if (blocks) {
+    await Promise.all(
+      blocks
+        .filter((b) => b.type === "code")
+        .map(async (block) => {
+          const b = block as Extract<typeof block, { type: "code" }>;
+          const code = b.code.rich_text.map((t) => t.plain_text).join("");
+          const html = await highlightCode(code, b.code.language);
+          if (html) highlightedCodeMap[block.id] = html;
+        })
+    );
+  }
+
   return (
     <>
       <FadeIn>
@@ -57,7 +72,10 @@ export default async function GenericPage({
       {blocks && blocks.length > 0 && (
         <FadeIn delay={0.2} duration={0.5}>
           <div className="mb-16">
-            <NotionRenderer blocks={blocks} />
+            <NotionRenderer
+              blocks={blocks}
+              highlightedCodeMap={highlightedCodeMap}
+            />
           </div>
         </FadeIn>
       )}
