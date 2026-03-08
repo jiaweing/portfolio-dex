@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { LayoutWidthWrapper } from "@/components/LayoutWidthWrapper";
 import { MobileNav } from "@/components/MobileNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
@@ -115,6 +116,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {process.env.NODE_ENV === "development" && (
+          <Script
+            crossOrigin="anonymous"
+            src="//unpkg.com/react-grab/dist/index.global.js"
+            strategy="beforeInteractive"
+          />
+        )}
+        {process.env.NODE_ENV === "development" && (
+          <Script
+            src="//unpkg.com/@react-grab/mcp/dist/client.global.js"
+            strategy="lazyOnload"
+          />
+        )}
         {/* Performance optimizations */}
         <link href="https://fonts.googleapis.com" rel="preconnect" />
         <link

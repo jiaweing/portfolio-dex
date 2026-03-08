@@ -2,7 +2,7 @@
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import React from "react";
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { Frame } from "@/components/ui/frame";
 import {
   Table,
   TableBody,
@@ -328,7 +328,7 @@ export function NotionBlock({
     case "numbered_list_item": {
       const rt = block.numbered_list_item.rich_text;
       return (
-        <li className="mt-2 text-muted-foreground">
+        <li className="mt-2 list-decimal text-muted-foreground">
           {renderRichText(rt, tracker, localHighlightIndex)}
         </li>
       );
@@ -352,27 +352,25 @@ export function NotionBlock({
         panel: "",
       };
       return (
-        <Frame className={`my-4 ${calloutColor.frame}`}>
-          <FramePanel
-            className={`flex items-start gap-3 text-sm leading-relaxed ${calloutColor.panel}`}
-          >
-            {block.callout.icon?.type === "emoji" && (
-              <span className="text-base">{block.callout.icon.emoji}</span>
+        <div
+          className={`my-4 flex items-start gap-3 leading-relaxed ${calloutColor.panel} rounded-md p-4`}
+        >
+          {block.callout.icon?.type === "emoji" && (
+            <span className="text-base">{block.callout.icon.emoji}</span>
+          )}
+          <div className="flex-1 text-muted-foreground">
+            {rt.length > 0 && (
+              <div>{renderRichText(rt, tracker, localHighlightIndex)}</div>
             )}
-            <div className="flex-1 text-muted-foreground">
-              {rt.length > 0 && (
-                <div>{renderRichText(rt, tracker, localHighlightIndex)}</div>
-              )}
-              {children.length > 0 && (
-                <div className="[&_li]:list-none">
-                  {children.map((child: any) => (
-                    <NotionBlock block={child} key={child.id} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </FramePanel>
-        </Frame>
+            {children.length > 0 && (
+              <div className="[counter-reset:list-item] [&_li]:ml-5">
+                {children.map((child: any) => (
+                  <NotionBlock block={child} key={child.id} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       );
     }
 
@@ -465,38 +463,41 @@ export function NotionBlock({
         : preRendered;
 
       return (
-        <Frame className="my-4">
-          <FramePanel className="overflow-hidden p-0">
-            <Table>
-              {preRenderedHeader && (
-                <TableHeader>
-                  <TableRow>
-                    {preRenderedHeader.map((cellContent, cellIndex) => (
-                      <TableHead key={cellIndex}>{cellContent}</TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
-              )}
-              <TableBody>
-                {preRenderedBody.map((rowCells, rowIndex) => (
-                  <TableRow key={rowIndex}>
-                    {rowCells.map((cellContent, cellIndex) => (
-                      <TableCell
-                        className={
-                          hasRowHeader && cellIndex === 0
-                            ? "font-medium"
-                            : undefined
-                        }
-                        key={cellIndex}
-                      >
-                        {cellContent}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </FramePanel>
+        <Frame className="w-full overflow-hidden py-0">
+          <Table className="!mt-1.5 mb-1">
+            {preRenderedHeader && (
+              <TableHeader>
+                <TableRow>
+                  {preRenderedHeader.map((cellContent, cellIndex) => (
+                    <TableHead
+                      className="whitespace-normal break-words"
+                      key={cellIndex}
+                    >
+                      {cellContent}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+            )}
+            <TableBody>
+              {preRenderedBody.map((rowCells, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  {rowCells.map((cellContent, cellIndex) => (
+                    <TableCell
+                      className={
+                        hasRowHeader && cellIndex === 0
+                          ? "whitespace-normal break-words font-medium"
+                          : "whitespace-normal break-words"
+                      }
+                      key={cellIndex}
+                    >
+                      {cellContent}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Frame>
       );
     }
