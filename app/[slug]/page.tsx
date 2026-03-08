@@ -62,11 +62,16 @@ export default async function GenericPage({
   return (
     <>
       <FadeIn>
-        <header className="mb-12">
-          <h1 className="font-medium text-3xl tracking-tight md:text-4xl">
-            {page.title}
-          </h1>
-        </header>
+        <div className="mb-8 flex flex-col">
+          <div className="flex flex-col items-start gap-4">
+            <h3 className="mb-2 font-semibold">{page.title}</h3>
+            {page.description && (
+              <p className="text-muted-foreground text-xl">
+                {page.description}
+              </p>
+            )}
+          </div>
+        </div>
       </FadeIn>
 
       {blocks && blocks.length > 0 && (

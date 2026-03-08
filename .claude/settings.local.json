@@ -10,7 +10,8 @@
       "mcp__plugin_playwright_playwright__browser_take_screenshot",
       "mcp__plugin_playwright_playwright__browser_evaluate",
       "Bash(bun add:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(bun x:*)"
     ]
   }
 }
