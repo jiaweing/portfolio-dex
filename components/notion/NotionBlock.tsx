@@ -1,7 +1,7 @@
 "use client";
 
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { Link2 } from "lucide-react";
+import { Check, Copy, Link2 } from "lucide-react";
 import React from "react";
 import { sileo } from "sileo";
 import { Frame, FramePanel } from "@/components/ui/frame";
@@ -266,6 +266,62 @@ function handleCopyHeadingLink(id: string) {
   });
 }
 
+function CodeBlock({
+  code,
+  language,
+  highlightedHtml,
+}: {
+  code: string;
+  language: string;
+  highlightedHtml?: string;
+}) {
+  const [didCopy, setDidCopy] = React.useState(false);
+
+  const handleCopyCode = React.useCallback(async () => {
+    await navigator.clipboard.writeText(code);
+    setDidCopy(true);
+    sileo.success({
+      title: "Copied to clipboard",
+      description: "Code block copied successfully",
+    });
+    window.setTimeout(() => setDidCopy(false), 1500);
+  }, [code]);
+
+  return (
+    <Frame className="my-4">
+      <div className="flex items-center justify-between gap-2 px-4 py-2">
+        <div className="font-mono text-muted-foreground text-xs">
+          {language && language !== "plain text" ? language : "plain text"}
+        </div>
+        <button
+          className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          onClick={handleCopyCode}
+          type="button"
+        >
+          {didCopy ? (
+            <Check className="h-3.5 w-3.5" />
+          ) : (
+            <Copy className="h-3.5 w-3.5" />
+          )}
+        </button>
+      </div>
+      <FramePanel className="overflow-hidden p-0">
+        {highlightedHtml ? (
+          <div
+            className="[&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 overflow-x-auto p-4 text-sm [&_code]:font-mono"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki output is safe server-generated HTML
+            dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+          />
+        ) : (
+          <pre className="!my-0 overflow-x-auto bg-transparent p-4 text-foreground text-sm">
+            <code className="font-mono">{code}</code>
+          </pre>
+        )}
+      </FramePanel>
+    </Frame>
+  );
+}
+
 export function NotionBlock({
   block,
   allBlocks,
@@ -417,26 +473,11 @@ export function NotionBlock({
       const language = block.code.language;
       const highlightedHtml = highlightedCodeMap?.[block.id];
       return (
-        <Frame className="my-4">
-          {language && language !== "plain text" && (
-            <div className="px-4 py-2 font-mono text-muted-foreground text-xs">
-              {language}
-            </div>
-          )}
-          <FramePanel className="overflow-hidden p-0">
-            {highlightedHtml ? (
-              <div
-                className="[&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 overflow-x-auto p-4 text-sm [&_code]:font-mono"
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki output is safe server-generated HTML
-                dangerouslySetInnerHTML={{ __html: highlightedHtml }}
-              />
-            ) : (
-              <pre className="!my-0 overflow-x-auto bg-transparent p-4 text-foreground text-sm">
-                <code className="font-mono">{code}</code>
-              </pre>
-            )}
-          </FramePanel>
-        </Frame>
+        <CodeBlock
+          code={code}
+          highlightedHtml={highlightedHtml}
+          language={language}
+        />
       );
     }
 
