@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronDown, Copy, ExternalLink } from "lucide-react";
+import { Check, Copy, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -32,13 +32,15 @@ const createPrompt = ({
 
 function LLMLogo({ alt, src }: LLMLogoProps) {
   return (
-    <Image
-      alt={alt}
-      className="mr-2 h-4 w-4 shrink-0 object-contain dark:invert"
-      height={16}
-      src={src}
-      width={16}
-    />
+    <span className="mr-2 flex h-4 w-5 shrink-0 items-center justify-center">
+      <Image
+        alt={alt}
+        className="h-4 w-auto object-contain dark:invert"
+        height={16}
+        src={src}
+        width={24}
+      />
+    </span>
   );
 }
 
@@ -74,10 +76,13 @@ export function BlogLLMMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="h-8 gap-1.5 px-2.5 text-xs" size="sm" variant="ghost">
+        <Button
+          aria-label="Copy page"
+          className="h-8 px-2 text-muted-foreground hover:text-foreground"
+          size="icon"
+          variant="ghost"
+        >
           {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-          Copy page
-          <ChevronDown className="size-3.5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
