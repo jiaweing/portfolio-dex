@@ -27,6 +27,7 @@ interface UseSpeechSynthesisOptions {
 }
 
 interface UseSpeechSynthesisReturn {
+  setText: (text: string) => void;
   speak: (text: string) => void;
   cancel: () => void;
   pause: () => void;
@@ -105,6 +106,11 @@ export function useSpeechSynthesis(
   const isSupported =
     typeof window !== "undefined" && "speechSynthesis" in window;
 
+  const estimateDuration = React.useCallback((text: string) => {
+    const totalWords = text.split(/\s+/).filter(Boolean).length;
+    return (totalWords / WORDS_PER_SECOND / rateRef.current) * 1.1;
+  }, []);
+
   const clearProgressTimer = React.useCallback(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -177,9 +183,7 @@ export function useSpeechSynthesis(
       utterance.pitch = pitchRef.current;
       utterance.volume = volumeRef.current;
 
-      const totalWords = text.split(/\s+/).filter(Boolean).length;
-      const totalDuration =
-        (totalWords / WORDS_PER_SECOND / rateRef.current) * 1.1;
+      const totalDuration = estimateDuration(text);
       setTotalSeconds(totalDuration);
       totalSecondsRef.current = totalDuration;
 
@@ -254,16 +258,39 @@ export function useSpeechSynthesis(
 
       window.speechSynthesis.speak(utterance);
     },
-    [isSupported, clearProgressTimer, startProgressTimer, onEnd]
+    [isSupported, clearProgressTimer, startProgressTimer, onEnd, estimateDuration]
+  );
+
+  const setText = React.useCallback(
+    (text: string) => {
+      currentTextRef.current = text;
+      const estimated = estimateDuration(text);
+      setTotalSeconds(estimated);
+      totalSecondsRef.current = estimated;
+      if (!speakingRef.current && !pausedRef.current) {
+        const initialProgress = text.length
+          ? (currentCharIndexRef.current / text.length) * 100
+          : 0;
+        const initialElapsed = (initialProgress / 100) * estimated;
+        setProgress(initialProgress);
+        setElapsedSeconds(initialElapsed);
+      }
+    },
+    [estimateDuration]
   );
 
   const speak = React.useCallback(
     (text: string) => {
-      currentCharIndexRef.current = 0;
-      setCurrentCharIndex(0);
-      setElapsedSeconds(0);
-      setProgress(0);
-      startSpeech(text, 0);
+      const sameText = currentTextRef.current === text;
+      const offset = sameText ? currentCharIndexRef.current : 0;
+      currentTextRef.current = text;
+      if (!sameText) {
+        currentCharIndexRef.current = 0;
+        setCurrentCharIndex(0);
+        setElapsedSeconds(0);
+        setProgress(0);
+      }
+      startSpeech(text, offset);
     },
     [startSpeech]
   );
@@ -306,11 +333,17 @@ export function useSpeechSynthesis(
   const seek = React.useCallback(
     (percent: number) => {
       const text = currentTextRef.current;
-      if (!(text && (speakingRef.current || pausedRef.current))) return;
-      const charIndex = Math.floor((percent / 100) * text.length);
+      if (!text) return;
+      const clampedPercent = Math.min(Math.max(percent, 0), 100);
+      const charIndex = Math.floor((clampedPercent / 100) * text.length);
       currentCharIndexRef.current = charIndex;
       setCurrentCharIndex(charIndex);
-      startSpeech(text, charIndex);
+      const elapsed = (clampedPercent / 100) * totalSecondsRef.current;
+      setProgress(clampedPercent);
+      setElapsedSeconds(elapsed);
+      if (speakingRef.current || pausedRef.current) {
+        startSpeech(text, charIndex);
+      }
     },
     [startSpeech]
   );
@@ -322,11 +355,16 @@ export function useSpeechSynthesis(
       rateRef.current = newRate;
       setRateState(newRate);
       lsWrite(LS_RATE, String(newRate));
+      if (currentTextRef.current) {
+        const estimated = estimateDuration(currentTextRef.current);
+        setTotalSeconds(estimated);
+        totalSecondsRef.current = estimated;
+      }
       if (speakingRef.current && !pausedRef.current) {
         startSpeech(currentTextRef.current, currentCharIndexRef.current);
       }
     },
-    [startSpeech]
+    [startSpeech, estimateDuration]
   );
 
   const setPitch = React.useCallback(
@@ -365,6 +403,7 @@ export function useSpeechSynthesis(
   );
 
   return {
+    setText,
     speak,
     cancel,
     pause,

@@ -125,6 +125,7 @@ export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
   }, []);
 
   const {
+    setText,
     speak,
     cancel,
     pause,
@@ -151,6 +152,10 @@ export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
       cancel();
     };
   }, [cancel]);
+
+  React.useEffect(() => {
+    setText(text);
+  }, [text, setText]);
 
   if (!isSupported) {
     return <>{children}</>;
