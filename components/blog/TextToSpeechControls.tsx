@@ -122,6 +122,7 @@ export function TextToSpeechControls({
           <ElasticSlider
             defaultValue={progress}
             isStepped={false}
+            leftIcon={null}
             maxValue={100}
             onChange={(v) => seek(v)}
             onCommit={(v) => seek(v)}
@@ -131,6 +132,7 @@ export function TextToSpeechControls({
                 {formatTime(totalSeconds)}
               </span>
             )}
+            rightIcon={null}
             startingValue={0}
             stepSize={0.1}
           />
