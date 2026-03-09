@@ -17,6 +17,11 @@ interface BlogLLMMenuProps {
   postUrl: string;
 }
 
+interface LLMLogoProps {
+  alt: string;
+  src: string;
+}
+
 const createPrompt = ({
   title,
   url,
@@ -24,6 +29,18 @@ const createPrompt = ({
   title: string;
   url: string;
 }) => `I'm reading this blog post by Jia Wei Ng.\n\nTitle: ${title}\nURL: ${url}\n\nUnderstand the topic and be ready to answer questions I ask about it.\n\nWhen you reply, keep it concise and practical:\n1) Give me a 5-bullet summary\n2) Explain key ideas in plain language\n3) Flag assumptions or trade-offs\n4) Suggest 3 follow-up questions I should ask next`;
+
+function LLMLogo({ alt, src }: LLMLogoProps) {
+  return (
+    <Image
+      alt={alt}
+      className="mr-2 h-4 w-4 shrink-0 object-contain dark:invert"
+      height={16}
+      src={src}
+      width={16}
+    />
+  );
+}
 
 export function BlogLLMMenu({
   postTitle,
@@ -73,19 +90,19 @@ export function BlogLLMMenu({
           Open Markdown
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://chatgpt.com/?q=")}>
-          <Image alt="OpenAI" className="mr-2" height={16} src="/logos/openai.svg" width={16} />
+          <LLMLogo alt="OpenAI" src="/logos/openai.svg" />
           Open in ChatGPT
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://claude.ai/new?q=")}>
-          <Image alt="Claude" className="mr-2" height={16} src="/logos/claude.svg" width={16} />
+          <LLMLogo alt="Claude" src="/logos/claude.svg" />
           Open in Claude
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://gemini.google.com/app?prompt=")}>
-          <Image alt="Gemini" className="mr-2" height={16} src="/logos/gemini.svg" width={16} />
+          <LLMLogo alt="Gemini" src="/logos/gemini.svg" />
           Open in Gemini
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://t3.chat/?q=")}>
-          <Image alt="T3 Chat" className="mr-2" height={16} src="/logos/t3.svg" width={16} />
+          <LLMLogo alt="T3 Chat" src="/logos/t3.svg" />
           Open in T3 Chat
         </DropdownMenuItem>
       </DropdownMenuContent>
