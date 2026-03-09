@@ -128,6 +128,7 @@ export function TextToSpeechControls({
               <ChevronsLeft className="size-3.5 text-muted-foreground" />
             }
             maxValue={100}
+            onChange={(v) => seek(v)}
             onCommit={(v) => seek(v)}
             renderValue={(v) => (
               <span>
