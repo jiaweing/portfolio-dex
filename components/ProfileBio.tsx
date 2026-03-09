@@ -212,7 +212,7 @@ export function ProfileBio() {
           , from {weatherAdjective}
           <Image
             alt="Singapore Weather Icon"
-            className="corner-squircle mx-1 inline-block align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
+            className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
             height={30}
             src={singaporeIcon}
             width={30}
@@ -223,7 +223,7 @@ export function ProfileBio() {
         cool shit
         <Image
           alt="Fire"
-          className="corner-squircle mx-1 inline-block align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
+          className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
           height={30}
           src="/images/icons/Fire.png"
           width={30}
@@ -344,7 +344,7 @@ export function ProfileBio() {
         , strange anomalies and mysteries of the universe
         <Image
           alt="Milky Way"
-          className="corner-squircle mx-1 inline-block align-text-bottom shadow-xl transition-transform duration-300 hover:scale-110"
+          className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
           height={30}
           src="/images/icons/Milky Way.png"
           width={30}
