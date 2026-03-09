@@ -29,6 +29,7 @@ async function startServer(): Promise<ChildProcess> {
       ...process.env,
       NODE_ENV: "production",
       PORT: String(PORT),
+      OG_BUILD_INCLUDE_UNPUBLISHED: "true",
     },
   });
 
@@ -54,6 +55,9 @@ async function main() {
 
   if (isRunning) {
     console.log("Using existing server instance.");
+    console.warn(
+      "Existing server may not include unpublished posts unless OG_BUILD_INCLUDE_UNPUBLISHED=true is set."
+    );
   } else {
     serverProcess = await startServer();
   }

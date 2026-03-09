@@ -367,14 +367,19 @@ export const getBlogPost = unstable_cache(
 
       const page: any = response.results[0];
 
-      // Block access to non-published posts
-      const status = getProperty(page, "Status", "status");
-      if (status && status !== "Published") return { post: null, blocks: [] };
+      const includeHiddenForOg =
+        process.env.OG_BUILD_INCLUDE_UNPUBLISHED === "true";
 
-      // Block access to future-dated posts
+      // Block access to non-published posts unless OG generation explicitly opts in
+      const status = getProperty(page, "Status", "status");
+      if (!includeHiddenForOg && status && status !== "Published") {
+        return { post: null, blocks: [] };
+      }
+
+      // Block access to future-dated posts unless OG generation explicitly opts in
       const rawDate =
         getProperty(page, "Date", "date") || page.created_time || "";
-      if (rawDate) {
+      if (!includeHiddenForOg && rawDate) {
         const now = new Date();
         const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
         if (rawDate.slice(0, 10) > todayStr) return { post: null, blocks: [] };
