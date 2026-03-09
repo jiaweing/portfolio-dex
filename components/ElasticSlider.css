@@ -46,7 +46,7 @@
   touch-action: none;
   user-select: none;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 0.4rem 0;
 }
 
 .slider-root:active {
