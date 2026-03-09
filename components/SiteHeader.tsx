@@ -74,6 +74,7 @@ export function SiteHeader() {
         position="left"
         useThemeBackground
         width="180px"
+        zIndex={40}
       />
 
       <header className="fixed top-1/2 left-6 z-[100] hidden -translate-y-1/2 lg:block">

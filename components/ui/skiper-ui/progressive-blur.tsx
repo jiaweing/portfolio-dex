@@ -11,6 +11,7 @@ type ProgressiveBlurProps = {
   width?: string;
   blurAmount?: string;
   useThemeBackground?: boolean;
+  zIndex?: number;
 };
 
 const ProgressiveBlur = ({
@@ -21,6 +22,7 @@ const ProgressiveBlur = ({
   width = "180px",
   blurAmount = "4px",
   useThemeBackground = false,
+  zIndex = 50,
 }: ProgressiveBlurProps) => {
   const isTop = position === "top";
   const isLeft = position === "left";
@@ -88,9 +90,10 @@ const ProgressiveBlur = ({
 
   return (
     <div
-      className={`pointer-events-none fixed select-none ${className} z-50`}
+      className={`pointer-events-none fixed select-none ${className}`}
       style={{
         ...horizontalStyle,
+        zIndex,
         WebkitBackdropFilter: `blur(${blurAmount})`,
         backdropFilter: `blur(${blurAmount})`,
         WebkitUserSelect: "none",
