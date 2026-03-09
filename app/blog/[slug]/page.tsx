@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BlogLLMMenu } from "@/components/blog/BlogLLMMenu";
 import { BlogTextToSpeech } from "@/components/blog/BlogTextToSpeech";
 import { PostDate } from "@/components/blog/PostDate";
 import { PostTags } from "@/components/blog/PostTags";
@@ -13,12 +14,13 @@ import {
 import { NotionRenderer } from "@/components/NotionRenderer";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
-import { generateBlogMetadata } from "@/lib/metadata";
+import { generateBlogMetadata, siteConfig } from "@/lib/metadata";
 import {
   extractDescriptionFromBlocks,
   getBlogPost,
   getBlogPosts,
 } from "@/lib/notion";
+import { createBlogMarkdown } from "@/lib/blog-markdown";
 import { highlightCode } from "@/lib/shiki";
 
 export const revalidate = 3600;
@@ -72,6 +74,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       })
   );
 
+
+  const postUrl = `${siteConfig.url}/blog/${post.slug}`;
+  const postMarkdown = createBlogMarkdown({
+    title: post.title,
+    description: post.description,
+    date: post.date,
+    tags: post.tags,
+    url: postUrl,
+    blocks,
+  });
+
   const headings: TocHeading[] = blocks
     .filter(
       (
@@ -116,15 +129,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <FadeIn>
           <div className="mb-8 flex flex-col">
             <div className="flex flex-col items-start gap-4">
-              <Button
-                asChild
-                className="!p-0 text-muted-foreground"
-                variant="link"
-              >
-                <Link href={"/blog"}>
-                  <ArrowLeft /> back to writing
-                </Link>
-              </Button>
+              <div className="flex w-full items-start justify-between gap-3">
+                <Button
+                  asChild
+                  className="!p-0 text-muted-foreground"
+                  variant="link"
+                >
+                  <Link href={"/blog"}>
+                    <ArrowLeft /> back to writing
+                  </Link>
+                </Button>
+                <BlogLLMMenu
+                  postMarkdown={postMarkdown}
+                  postTitle={post.title}
+                  postUrl={postUrl}
+                />
+              </div>
               <h3 className="mb-2 font-semibold">{post.title}</h3>
               {post.description && (
                 <p className="text-muted-foreground text-xl">
