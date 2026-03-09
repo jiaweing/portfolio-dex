@@ -262,7 +262,7 @@ function handleCopyHeadingLink(id: string) {
   navigator.clipboard.writeText(url);
   sileo.success({
     title: "Copied to clipboard",
-    description: "Share this link to skip to this point of the document",
+    description: "Share this link to skip to this point on the page",
   });
 }
 
