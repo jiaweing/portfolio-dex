@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toSpeechText, buildSpeechTextMapping } from "@/lib/speech-text";
 import { useSpeechHighlight } from "./SpeechHighlightContext";
 
 interface HighlightTracker {
@@ -28,8 +29,9 @@ function renderRichText(
     const { bold, italic, strikethrough, underline, code } =
       t.annotations || {};
     const plainText = t.plain_text;
+    const { spokenText, spokenToOriginal } = buildSpeechTextMapping(plainText);
     const startIndex = tracker.currentOffset;
-    const endIndex = startIndex + plainText.length;
+    const endIndex = startIndex + spokenText.length;
     tracker.currentOffset = endIndex;
 
     let content: React.ReactNode;
@@ -41,16 +43,19 @@ function renderRichText(
       highlightIndex >= 0
     ) {
       // Find word boundaries around the highlight position
-      const localIndex = highlightIndex - startIndex;
-      const beforeHighlight = plainText.slice(0, localIndex);
-      const remaining = plainText.slice(localIndex);
+      const spokenLocalIndex = highlightIndex - startIndex;
+      const mappedOriginalIndex = spokenToOriginal[spokenLocalIndex];
+      if (mappedOriginalIndex === undefined) {
+        content = plainText;
+      } else {
+        const remaining = plainText.slice(mappedOriginalIndex);
 
       // Find start of current word
       const wordStartInRemaining = remaining.search(/\S/);
       if (wordStartInRemaining === -1) {
         content = plainText;
       } else {
-        const wordStart = localIndex + wordStartInRemaining;
+        const wordStart = mappedOriginalIndex + wordStartInRemaining;
         const wordEndMatch = plainText.slice(wordStart).match(/^(\S+)/);
         const wordEnd = wordStart + (wordEndMatch ? wordEndMatch[1].length : 0);
 
@@ -63,6 +68,7 @@ function renderRichText(
             {plainText.slice(wordEnd)}
           </>
         );
+      }
       }
     } else {
       content = plainText;
@@ -115,28 +121,28 @@ function getBlockTextLength(block: BlockObjectResponse): number {
     case "paragraph":
       return (
         block.paragraph.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) + 2
       );
     case "heading_1":
       return (
         block.heading_1.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) + 2
       );
     case "heading_2":
       return (
         block.heading_2.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) + 2
       );
     case "heading_3":
       return (
         block.heading_3.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) + 2
       );
@@ -144,7 +150,7 @@ function getBlockTextLength(block: BlockObjectResponse): number {
       return (
         2 +
         block.bulleted_list_item.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) +
         1
@@ -152,27 +158,27 @@ function getBlockTextLength(block: BlockObjectResponse): number {
     case "numbered_list_item":
       return (
         block.numbered_list_item.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) + 1
       ); // +1 for "\n"
     case "quote":
       return (
         2 +
-        block.quote.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
+        block.quote.rich_text.reduce((sum, t) => sum + toSpeechText(t.plain_text).length, 0) +
         2
       ); // +2 for quotes
     case "callout":
       return (
         block.callout.rich_text.reduce(
-          (sum, t) => sum + t.plain_text.length,
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
           0
         ) + 2
       );
     case "to_do":
       return (
         4 +
-        block.to_do.rich_text.reduce((sum, t) => sum + t.plain_text.length, 0) +
+        block.to_do.rich_text.reduce((sum, t) => sum + toSpeechText(t.plain_text).length, 0) +
         1
       ); // +4 for "[ ] ", +1 for "\n"
     case "code":
@@ -187,7 +193,7 @@ function getBlockTextLength(block: BlockObjectResponse): number {
           const cellsTextLength = cells.reduce(
             (sum, cell) =>
               sum +
-              cell.reduce((s: number, t: any) => s + t.plain_text.length, 0),
+              cell.reduce((s: number, t: any) => s + toSpeechText(t.plain_text).length, 0),
             0
           );
           const separatorLength = Math.max(0, cells.length - 1) * 3; // " | " between cells only
