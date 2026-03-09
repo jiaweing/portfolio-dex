@@ -2,8 +2,6 @@
 
 import {
   AlignLeft,
-  ChevronsLeft,
-  ChevronsRight,
   Minus,
   Pause,
   Play,
@@ -124,9 +122,6 @@ export function TextToSpeechControls({
           <ElasticSlider
             defaultValue={progress}
             isStepped={false}
-            leftIcon={
-              <ChevronsLeft className="size-3.5 text-muted-foreground" />
-            }
             maxValue={100}
             onChange={(v) => seek(v)}
             onCommit={(v) => seek(v)}
@@ -136,9 +131,6 @@ export function TextToSpeechControls({
                 {formatTime(totalSeconds)}
               </span>
             )}
-            rightIcon={
-              <ChevronsRight className="size-3.5 text-muted-foreground" />
-            }
             startingValue={0}
             stepSize={0.1}
           />
