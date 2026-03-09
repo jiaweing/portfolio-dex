@@ -116,6 +116,7 @@ function StackedFavicons({
                 ) : (
                   <Favicon
                     className={cn("corner-squircle h-7 w-7")}
+                    invert={item.name === "Base 7" ? "light" : false}
                     url={item.url!}
                   />
                 )}
