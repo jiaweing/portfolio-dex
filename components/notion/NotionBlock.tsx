@@ -294,7 +294,7 @@ function CodeBlock({
           {language && language !== "plain text" ? language : "plain text"}
         </div>
         <button
-          className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-border/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           onClick={handleCopyCode}
           type="button"
         >

@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, ChevronDown, Copy, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,26 +57,36 @@ export function BlogLLMMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="gap-1.5" size="sm" variant="outline">
-          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+        <Button className="h-8 gap-1.5 px-2.5 text-xs" size="sm" variant="ghost">
+          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
           Copy page
-          <ChevronDown className="size-4" />
+          <ChevronDown className="size-3.5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem onClick={copyMarkdown}>Copy markdown</DropdownMenuItem>
-        <DropdownMenuItem onClick={openMarkdown}>Open markdown</DropdownMenuItem>
+        <DropdownMenuItem onClick={copyMarkdown}>
+          <Copy className="mr-2 size-4" />
+          Copy Markdown
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={openMarkdown}>
+          <ExternalLink className="mr-2 size-4" />
+          Open Markdown
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://chatgpt.com/?q=")}>
-          Open in ChatGPT <ExternalLink className="ml-auto size-4" />
+          <Image alt="OpenAI" className="mr-2" height={16} src="/logos/openai.svg" width={16} />
+          Open in ChatGPT
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://claude.ai/new?q=")}>
-          Open in Claude <ExternalLink className="ml-auto size-4" />
+          <Image alt="Claude" className="mr-2" height={16} src="/logos/claude.svg" width={16} />
+          Open in Claude
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://gemini.google.com/app?prompt=")}>
-          Open in Gemini <ExternalLink className="ml-auto size-4" />
+          <Image alt="Gemini" className="mr-2" height={16} src="/logos/gemini.svg" width={16} />
+          Open in Gemini
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://t3.chat/?q=")}>
-          Open in T3 Chat <ExternalLink className="ml-auto size-4" />
+          <Image alt="T3 Chat" className="mr-2" height={16} src="/logos/t3.svg" width={16} />
+          Open in T3 Chat
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
