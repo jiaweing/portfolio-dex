@@ -165,7 +165,7 @@ export const PhotoGallery = ({
           >
             <Photo
               alt="Gallery photo"
-              className="aspect-[4/5] w-full shadow-lg"
+              className="aspect-[4/5] w-full"
               direction={photo.direction}
               height="auto"
               src={photo.src}
@@ -319,7 +319,7 @@ export const Photo = ({
       whileTap={direction ? { scale: 1.2, zIndex: 9999 } : undefined}
       // ...props
     >
-      <div className="relative h-full w-full overflow-hidden rounded-3xl shadow-md">
+      <div className="relative h-full w-full overflow-hidden rounded-3xl">
         <Image
           alt={alt}
           className={cn("rounded-3xl object-cover")}
