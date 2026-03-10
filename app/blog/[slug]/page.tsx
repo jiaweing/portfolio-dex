@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { BlogLLMMenu } from "@/components/blog/BlogLLMMenu";
 import { BlogTextToSpeech } from "@/components/blog/BlogTextToSpeech";
 import { PostDate } from "@/components/blog/PostDate";
-import { PostTags } from "@/components/blog/PostTags";
 import { ReadingTime } from "@/components/blog/ReadingTime";
 import {
   TableOfContents,
@@ -14,6 +13,13 @@ import {
 import { NotionRenderer } from "@/components/NotionRenderer";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { generateBlogMetadata, siteConfig } from "@/lib/metadata";
 import {
   extractDescriptionFromBlocks,
@@ -22,6 +28,7 @@ import {
 } from "@/lib/notion";
 import { createBlogMarkdown } from "@/lib/blog-markdown";
 import { highlightCode } from "@/lib/shiki";
+import { getTagColorClass } from "@/lib/tag-colors";
 
 export const revalidate = 3600;
 
@@ -73,7 +80,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         if (html) highlightedCodeMap[block.id] = html;
       })
   );
-
 
   const postUrl = `${siteConfig.url}/blog/${post.slug}`;
   const postMarkdown = createBlogMarkdown({
@@ -155,7 +161,28 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <PostDate date={post.date} />
               <ReadingTime minutes={post.readingTime} />
-              <PostTags tags={post.tags} />
+              {post.tags && post.tags.length > 0 && (
+                <TooltipProvider>
+                  <div className="flex items-center gap-1.5">
+                    <span>•</span>
+                    {post.tags.map((tag) => (
+                      <Tooltip key={`${post.id}-${tag}`}>
+                        <TooltipTrigger asChild>
+                          <span
+                            className={cn(
+                              "inline-flex h-2.5 w-2.5 shrink-0 rounded-full",
+                              getTagColorClass(tag)
+                            )}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="capitalize">{tag}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    ))}
+                  </div>
+                </TooltipProvider>
+              )}
             </div>
           </div>
         </FadeIn>
