@@ -161,7 +161,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                           <TooltipTrigger asChild>
                             <span
                               className={cn(
-                                "inline-flex h-2.5 w-2.5 shrink-0 rounded-full",
+                                "inline-flex h-2 w-2 shrink-0 rounded-full",
                                 getTagColorClass(tag, post.tagColors?.[tag])
                               )}
                             />
