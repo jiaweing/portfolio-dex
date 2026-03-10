@@ -35,6 +35,18 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     return [...tags].sort((a, b) => a.localeCompare(b));
   }, [posts]);
 
+  const tagColors = useMemo(() => {
+    const colors: Record<string, string> = {};
+    for (const post of posts) {
+      for (const tag of post.tags ?? []) {
+        if (!colors[tag] && post.tagColors?.[tag]) {
+          colors[tag] = post.tagColors[tag];
+        }
+      }
+    }
+    return colors;
+  }, [posts]);
+
   const filteredPosts = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
@@ -98,7 +110,10 @@ export function BlogPostList({ posts }: BlogPostListProps) {
               variant="default"
             >
               <span
-                className={cn("h-1.5 w-1.5 rounded-full", getTagColorClass(tag))}
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full",
+                  getTagColorClass(tag, tagColors[tag])
+                )}
               />
               <span className="capitalize">{tag}</span>
             </Toggle>
@@ -144,7 +159,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                             <span
                               className={cn(
                                 "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
-                                getTagColorClass(tag)
+                                getTagColorClass(tag, post.tagColors?.[tag])
                               )}
                             />
                           </TooltipTrigger>
