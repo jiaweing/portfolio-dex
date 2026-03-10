@@ -22,8 +22,6 @@ export const metadata = generateMetadata({
 export default async function BlogPage() {
   const posts = await getBlogPosts();
 
-
-
   return (
     <>
       <FadeIn>
@@ -49,9 +47,6 @@ export default async function BlogPage() {
               </Tooltip>
             </TooltipProvider>
           </div>
-          <h3 className="font-semibold text-muted-foreground">
-            about life, psychology, business, tech and AI
-          </h3>
         </div>
       </FadeIn>
       <FadeIn delay={0.05}>
