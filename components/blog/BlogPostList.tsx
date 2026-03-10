@@ -35,6 +35,21 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     return [...tags].sort((a, b) => a.localeCompare(b));
   }, [posts]);
 
+  const tagColors = useMemo(() => {
+    const colorMap: Record<string, string> = {};
+
+    for (const post of posts) {
+      for (const tag of post.tags ?? []) {
+        const color = post.tagColors?.[tag];
+        if (color && !colorMap[tag]) {
+          colorMap[tag] = color;
+        }
+      }
+    }
+
+    return colorMap;
+  }, [posts]);
+
   const filteredPosts = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
@@ -98,7 +113,10 @@ export function BlogPostList({ posts }: BlogPostListProps) {
               variant="default"
             >
               <span
-                className={cn("h-1.5 w-1.5 rounded-full", getTagColorClass(tag))}
+                className={cn(
+                  "h-1.5 w-1.5 rounded-full",
+                  getTagColorClass(tag, tagColors[tag])
+                )}
               />
               <span className="capitalize">{tag}</span>
             </Toggle>
