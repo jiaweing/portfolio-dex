@@ -144,7 +144,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                             <span
                               className={cn(
                                 "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
-                                getTagColorClass(tag)
+                                getTagColorClass(tag, post.tagColors?.[tag])
                               )}
                             />
                           </TooltipTrigger>
