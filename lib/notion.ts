@@ -192,6 +192,11 @@ const getTags = (page: any): string[] => {
   const preferredTagProps = ["Tags", "Tag", "Categories", "Category"];
 
   for (const prop of preferredTagProps) {
+    const selectedTag = getProperty(page, prop, "select");
+    if (selectedTag) {
+      return [selectedTag];
+    }
+
     const tags = getProperty(page, prop, "multi_select");
     if (tags && tags.length > 0) {
       return tags;
@@ -202,6 +207,9 @@ const getTags = (page: any): string[] => {
 
   for (const key in page.properties) {
     const property = page.properties[key];
+    if (property?.type === "select" && property.select?.name) {
+      return [property.select.name];
+    }
     if (property?.type === "multi_select" && property.multi_select?.length > 0) {
       return property.multi_select.map((option: any) => option.name);
     }
