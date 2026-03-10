@@ -4,7 +4,6 @@ import { formatDate } from "date-fns";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
-import { PostTags } from "@/components/blog/PostTags";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
 import {
@@ -80,9 +79,9 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
   return (
     <div className="space-y-6 pt-6 pb-10 text-sm leading-relaxed">
-      <div className="space-y-3 rounded-lg bg-muted/40 p-3">
+      <div className="space-y-3">
         <Input
-          className="border-0 bg-muted shadow-none"
+          className="shadow-none"
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search posts..."
           value={search}
@@ -91,7 +90,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
           {allTags.map((tag) => (
             <Toggle
               aria-label={`Filter by ${tag}`}
-              className="h-8 gap-1.5 border-0 bg-muted px-2 shadow-none hover:bg-muted/80"
+              className="h-8 gap-1.5 border px-2 shadow-none"
               key={tag}
               onPressedChange={() => toggleTag(tag)}
               pressed={selectedTags.includes(tag)}
@@ -99,7 +98,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
               variant="default"
             >
               <span
-                className={cn("h-2 w-2 rounded-full", getTagColorClass(tag))}
+                className={cn("h-1.5 w-1.5 rounded-full", getTagColorClass(tag))}
               />
               <span className="capitalize">{tag}</span>
             </Toggle>
@@ -144,7 +143,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                           <TooltipTrigger asChild>
                             <span
                               className={cn(
-                                "inline-flex h-2.5 w-2.5 shrink-0 rounded-full",
+                                "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
                                 getTagColorClass(tag)
                               )}
                             />
@@ -155,9 +154,6 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                         </Tooltip>
                       ))}
                     </div>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-2 text-muted-foreground text-sm">
-                    <PostTags tags={post.tags} />
                   </div>
                 </article>
               ))}
