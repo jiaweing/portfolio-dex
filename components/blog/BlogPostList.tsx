@@ -105,7 +105,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
           {allTags.map((tag) => (
             <Toggle
               aria-label={`Filter by ${tag}`}
-              className="h-8 gap-1.5 border-0 px-2 shadow-none"
+              className="h-8 gap-1.5 border-0 px-2 text-foreground shadow-none hover:text-current"
               key={tag}
               onPressedChange={() => toggleTag(tag)}
               pressed={selectedTags.includes(tag)}
