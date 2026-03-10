@@ -47,7 +47,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
       const matchesTags =
         selectedTags.length === 0 ||
-        selectedTags.every((selectedTag) => post.tags?.includes(selectedTag));
+        selectedTags.some((selectedTag) => post.tags?.includes(selectedTag));
 
       return matchesSearch && matchesTags;
     });
@@ -81,7 +81,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     <div className="space-y-6 pt-6 pb-10 text-sm leading-relaxed">
       <div className="space-y-3">
         <Input
-          className="shadow-none"
+          className="border-0 bg-muted shadow-none"
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search posts..."
           value={search}
@@ -90,7 +90,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
           {allTags.map((tag) => (
             <Toggle
               aria-label={`Filter by ${tag}`}
-              className="h-8 gap-1.5 border px-2 shadow-none"
+              className="h-8 gap-1.5 border-0 px-2 shadow-none"
               key={tag}
               onPressedChange={() => toggleTag(tag)}
               pressed={selectedTags.includes(tag)}
