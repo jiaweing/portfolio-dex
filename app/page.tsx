@@ -82,7 +82,7 @@ export default async function Home() {
                           </Link>
                         </div>
                         <div className="flex shrink-0 items-center gap-2 text-muted-foreground text-sm">
-                          <PostTags tags={post.tags} />
+                          <PostTags tagColors={post.tagColors} tags={post.tags} />
                         </div>
                       </article>
                     ))}

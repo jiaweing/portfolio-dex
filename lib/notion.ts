@@ -33,6 +33,7 @@ export interface BlogPost {
   description: string;
   authors: { name: string; avatar?: string }[];
   tags: string[];
+  tagColors?: Record<string, string>;
   cover?: string;
   readingTime: number; // in minutes
 }
@@ -188,18 +189,29 @@ const getProperty = (
   return "";
 };
 
-const getTags = (page: any): string[] => {
+const getTagsWithColors = (
+  page: any
+): { name: string; color: string | undefined }[] => {
   const preferredTagProps = ["Tags", "Tag", "Categories", "Category"];
 
   for (const prop of preferredTagProps) {
-    const selectedTag = getProperty(page, prop, "select");
-    if (selectedTag) {
-      return [selectedTag];
+    const property = page.properties?.[prop];
+    if (!property) continue;
+
+    if (property.type === "select" && property.select?.name) {
+      return [
+        {
+          name: property.select.name,
+          color: property.select.color,
+        },
+      ];
     }
 
-    const tags = getProperty(page, prop, "multi_select");
-    if (tags && tags.length > 0) {
-      return tags;
+    if (property.type === "multi_select" && property.multi_select?.length > 0) {
+      return property.multi_select.map((option: any) => ({
+        name: option.name,
+        color: option.color,
+      }));
     }
   }
 
@@ -208,15 +220,32 @@ const getTags = (page: any): string[] => {
   for (const key in page.properties) {
     const property = page.properties[key];
     if (property?.type === "select" && property.select?.name) {
-      return [property.select.name];
+      return [{ name: property.select.name, color: property.select.color }];
     }
     if (property?.type === "multi_select" && property.multi_select?.length > 0) {
-      return property.multi_select.map((option: any) => option.name);
+      return property.multi_select.map((option: any) => ({
+        name: option.name,
+        color: option.color,
+      }));
     }
   }
 
   return [];
 };
+
+const getTags = (page: any): string[] =>
+  getTagsWithColors(page).map((option) => option.name);
+
+const getTagColorMap = (page: any): Record<string, string> =>
+  getTagsWithColors(page).reduce(
+    (acc, option) => {
+      if (option.color) {
+        acc[option.name] = option.color;
+      }
+      return acc;
+    },
+    {} as Record<string, string>
+  );
 
 // Robust Title Getter
 const getTitle = (page: any) => {
@@ -325,6 +354,7 @@ export const fetchBlogPosts = async (options?: {
     return allResults
       .map((page: any) => {
         const tags = getTags(page);
+        const tagColors = getTagColorMap(page);
         const banner =
           page.properties?.Banner?.files?.[0]?.file?.url ||
           page.properties?.Banner?.files?.[0]?.external?.url ||
@@ -342,6 +372,7 @@ export const fetchBlogPosts = async (options?: {
           description: getProperty(page, "Excerpt", "rich_text") || "",
           authors: getProperty(page, "Author", "people") || [],
           tags,
+          tagColors,
           cover: banner,
           readingTime: 0, // calculated on individual post page
         } as BlogPost;
@@ -416,6 +447,7 @@ export const getBlogPost = unstable_cache(
       }
 
       const tags = getTags(page);
+      const tagColors = getTagColorMap(page);
       const banner =
         page.properties?.Banner?.files?.[0]?.file?.url ||
         page.properties?.Banner?.files?.[0]?.external?.url ||
@@ -433,6 +465,7 @@ export const getBlogPost = unstable_cache(
         description: getProperty(page, "Excerpt", "rich_text") || "",
         authors: getProperty(page, "Author", "people") || [],
         tags,
+        tagColors,
         cover: banner,
         readingTime: 0, // placeholder, will be set after fetching blocks
       };
