@@ -52,7 +52,7 @@ export function SantaAvatar({
       )}
       <Avatar
         className={cn(
-          "corner-squircle border border-white/10 shadow-xl transition-transform duration-300 group-hover:scale-110",
+          "corner-squircle border border-white/10 transition-transform duration-300 group-hover:scale-110",
           className
         )}
         {...props}
