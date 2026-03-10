@@ -151,7 +151,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   postUrl={postUrl}
                 />
               </div>
-              <h3 className="mb-2 font-semibold">{post.title}</h3>
+              <div className="mb-2 flex items-center gap-2">
+                <h3 className="font-semibold">{post.title}</h3>
+                {post.tags && post.tags.length > 0 && (
+                  <TooltipProvider>
+                    <div className="flex items-center gap-1.5">
+                      {post.tags.map((tag) => (
+                        <Tooltip key={`${post.id}-${tag}`}>
+                          <TooltipTrigger asChild>
+                            <span
+                              className={cn(
+                                "inline-flex h-2.5 w-2.5 shrink-0 rounded-full",
+                                getTagColorClass(tag)
+                              )}
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="capitalize">{tag}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      ))}
+                    </div>
+                  </TooltipProvider>
+                )}
+              </div>
               {post.description && (
                 <p className="text-muted-foreground text-xl">
                   {post.description}
@@ -161,28 +184,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <PostDate date={post.date} />
               <ReadingTime minutes={post.readingTime} />
-              {post.tags && post.tags.length > 0 && (
-                <TooltipProvider>
-                  <div className="flex items-center gap-1.5">
-                    <span>•</span>
-                    {post.tags.map((tag) => (
-                      <Tooltip key={`${post.id}-${tag}`}>
-                        <TooltipTrigger asChild>
-                          <span
-                            className={cn(
-                              "inline-flex h-2.5 w-2.5 shrink-0 rounded-full",
-                              getTagColorClass(tag)
-                            )}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="capitalize">{tag}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    ))}
-                  </div>
-                </TooltipProvider>
-              )}
             </div>
           </div>
         </FadeIn>
