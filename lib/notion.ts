@@ -188,6 +188,38 @@ const getProperty = (
   return "";
 };
 
+const getTags = (page: any): string[] => {
+  const preferredTagProps = ["Tags", "Tag", "Categories", "Category"];
+
+  for (const prop of preferredTagProps) {
+    const multiTags = getProperty(page, prop, "multi_select");
+    if (multiTags && multiTags.length > 0) {
+      return multiTags;
+    }
+
+    const singleTag = getProperty(page, prop, "select");
+    if (singleTag) {
+      return [singleTag];
+    }
+  }
+
+  if (!page.properties) return [];
+
+  for (const key in page.properties) {
+    const property = page.properties[key];
+
+    if (property?.type === "multi_select" && property.multi_select?.length > 0) {
+      return property.multi_select.map((option: any) => option.name);
+    }
+
+    if (property?.type === "select" && property.select?.name) {
+      return [property.select.name];
+    }
+  }
+
+  return [];
+};
+
 // Robust Title Getter
 const getTitle = (page: any) => {
   if (!page.properties) return "Untitled";
@@ -294,7 +326,7 @@ export const fetchBlogPosts = async (options?: {
 
     return allResults
       .map((page: any) => {
-        const tags = getProperty(page, "Tags", "multi_select") || [];
+        const tags = getTags(page);
         const banner =
           page.properties?.Banner?.files?.[0]?.file?.url ||
           page.properties?.Banner?.files?.[0]?.external?.url ||
@@ -385,7 +417,7 @@ export const getBlogPost = unstable_cache(
         if (rawDate.slice(0, 10) > todayStr) return { post: null, blocks: [] };
       }
 
-      const tags = getProperty(page, "Tags", "multi_select") || [];
+      const tags = getTags(page);
       const banner =
         page.properties?.Banner?.files?.[0]?.file?.url ||
         page.properties?.Banner?.files?.[0]?.external?.url ||
