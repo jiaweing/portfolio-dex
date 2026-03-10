@@ -131,7 +131,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   };
 
   return (
-    <div className="space-y-6 pt-6 pb-10 text-sm leading-relaxed">
+    <div className="space-y-6 pt-3 pb-10 text-sm leading-relaxed">
       <div className="space-y-3">
         <Input
           className="border-0 bg-muted shadow-none"
