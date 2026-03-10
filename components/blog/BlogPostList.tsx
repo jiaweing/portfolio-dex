@@ -2,7 +2,8 @@
 
 import { formatDate } from "date-fns";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
@@ -21,8 +22,22 @@ interface BlogPostListProps {
 }
 
 export function BlogPostList({ posts }: BlogPostListProps) {
-  const [search, setSearch] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("search") ?? "";
+  const selectedTags = useMemo(() => {
+    const tags = searchParams.get("tags");
+    if (!tags) {
+      return [];
+    }
+
+    return tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+  }, [searchParams]);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -87,9 +102,32 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   }, [filteredPosts]);
 
   const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((value) => value !== tag) : [...prev, tag]
-    );
+    const nextTags = selectedTags.includes(tag)
+      ? selectedTags.filter((value) => value !== tag)
+      : [...selectedTags, tag];
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (nextTags.length > 0) {
+      params.set("tags", nextTags.join(","));
+    } else {
+      params.delete("tags");
+    }
+
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
+
+  const updateSearch = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (value.trim().length > 0) {
+      params.set("search", value);
+    } else {
+      params.delete("search");
+    }
+
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   };
 
   return (
@@ -97,7 +135,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
       <div className="space-y-3">
         <Input
           className="border-0 bg-muted shadow-none"
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) => updateSearch(event.target.value)}
           placeholder="Search posts..."
           value={search}
         />
