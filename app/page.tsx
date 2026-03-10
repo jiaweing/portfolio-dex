@@ -1,10 +1,17 @@
 import { formatDate } from "date-fns";
+import { Radio } from "lucide-react";
 import Link from "next/link";
 import { PostTags } from "@/components/blog/PostTags";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProfileBio } from "@/components/ProfileBio";
 import { FadeIn } from "@/components/ui/fade-in";
 import { PhotoGallery } from "@/components/ui/gallery";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { generateMetadata } from "@/lib/metadata";
 import { getBlogPosts, getProjects } from "@/lib/notion";
 import JsonLd from "./jsonld";
@@ -45,7 +52,25 @@ export default async function Home() {
         <FadeIn delay={0.3}>
           <div className="mt-16">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold">writing</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold">writing</h3>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        aria-label="RSS feed"
+                        className="text-muted-foreground transition-colors hover:text-foreground"
+                        href="/feed.xml"
+                      >
+                        <Radio className="h-4 w-4" />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Subscribe to my RSS feed to get new posts in your reader</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
               <Link
                 className="text-muted-foreground text-sm hover:text-foreground"
                 href="/blog"
