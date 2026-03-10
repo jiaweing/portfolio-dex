@@ -80,8 +80,9 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
   return (
     <div className="space-y-6 pt-6 pb-10 text-sm leading-relaxed">
-      <div className="space-y-3 rounded-lg border p-3">
+      <div className="space-y-3 rounded-lg bg-muted/40 p-3">
         <Input
+          className="border-0 bg-muted shadow-none"
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search posts..."
           value={search}
@@ -90,12 +91,12 @@ export function BlogPostList({ posts }: BlogPostListProps) {
           {allTags.map((tag) => (
             <Toggle
               aria-label={`Filter by ${tag}`}
-              className="h-8 gap-1.5 px-2"
+              className="h-8 gap-1.5 border-0 bg-muted px-2 shadow-none hover:bg-muted/80"
               key={tag}
               onPressedChange={() => toggleTag(tag)}
               pressed={selectedTags.includes(tag)}
               size="sm"
-              variant="outline"
+              variant="default"
             >
               <span
                 className={cn("h-2 w-2 rounded-full", getTagColorClass(tag))}
