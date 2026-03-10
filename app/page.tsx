@@ -87,7 +87,7 @@ export default async function Home() {
                   <div className="grid gap-1 space-y-1">
                     {group.posts.map((post) => (
                       <article
-                        className="group relative flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+                        className="group relative flex"
                         key={post.id}
                       >
                         <div className="flex min-w-0 items-center gap-2">
@@ -105,8 +105,6 @@ export default async function Home() {
                           >
                             {post.title}
                           </Link>
-                        </div>
-                        <div className="flex shrink-0 items-center gap-2 text-muted-foreground text-sm">
                           <PostTags tagColors={post.tagColors} tags={post.tags} />
                         </div>
                       </article>
