@@ -293,6 +293,8 @@ function CodeBlock({
     window.setTimeout(() => setDidCopy(false), 1500);
   }, [code]);
 
+  const isMermaid = language.toLowerCase() === "mermaid";
+
   return (
     <Frame className="my-4">
       <div className="flex items-center justify-between gap-2 px-4 py-2">
@@ -312,7 +314,9 @@ function CodeBlock({
         </button>
       </div>
       <FramePanel className="overflow-hidden p-0">
-        {highlightedHtml ? (
+        {isMermaid ? (
+          <MermaidDiagram code={code} />
+        ) : highlightedHtml ? (
           <div
             className="[&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 overflow-x-auto p-4 text-sm [&_code]:font-mono"
             // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki output is safe server-generated HTML
@@ -325,6 +329,32 @@ function CodeBlock({
         )}
       </FramePanel>
     </Frame>
+  );
+}
+
+function MermaidDiagram({ code }: { code: string }) {
+  const [failed, setFailed] = React.useState(false);
+  const encoded = React.useMemo(() => {
+    const utf8 = encodeURIComponent(code).replace(
+      /%([0-9A-F]{2})/g,
+      (_, p1) => String.fromCharCode(Number.parseInt(p1, 16))
+    );
+    return btoa(utf8);
+  }, [code]);
+
+  if (failed) {
+    return <div className="p-4 text-destructive text-sm">Failed to render Mermaid diagram.</div>;
+  }
+
+  return (
+    <div className="overflow-x-auto p-4">
+      <img
+        alt="Mermaid diagram"
+        className="h-auto w-full rounded-md"
+        onError={() => setFailed(true)}
+        src={`https://mermaid.ink/svg/${encoded}`}
+      />
+    </div>
   );
 }
 
