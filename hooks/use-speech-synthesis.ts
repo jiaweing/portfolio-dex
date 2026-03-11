@@ -258,7 +258,13 @@ export function useSpeechSynthesis(
 
       window.speechSynthesis.speak(utterance);
     },
-    [isSupported, clearProgressTimer, startProgressTimer, onEnd, estimateDuration]
+    [
+      isSupported,
+      clearProgressTimer,
+      startProgressTimer,
+      onEnd,
+      estimateDuration,
+    ]
   );
 
   const setText = React.useCallback(
@@ -267,7 +273,7 @@ export function useSpeechSynthesis(
       const estimated = estimateDuration(text);
       setTotalSeconds(estimated);
       totalSecondsRef.current = estimated;
-      if (!speakingRef.current && !pausedRef.current) {
+      if (!(speakingRef.current || pausedRef.current)) {
         const initialProgress = text.length
           ? (currentCharIndexRef.current / text.length) * 100
           : 0;

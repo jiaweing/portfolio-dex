@@ -13,9 +13,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 import type { BlogPost } from "@/lib/notion";
 import { getTagColorClass } from "@/lib/tag-colors";
+import { cn } from "@/lib/utils";
 
 interface BlogPostListProps {
   posts: BlogPost[];
@@ -114,7 +114,9 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     }
 
     const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
   };
 
   const updateSearch = (value: string) => {
@@ -127,7 +129,9 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     }
 
     const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
   };
 
   return (
@@ -169,7 +173,9 @@ export function BlogPostList({ posts }: BlogPostListProps) {
       <TooltipProvider>
         {groups.map((group) => (
           <div key={group.label}>
-            <p className="mb-2 font-medium text-muted-foreground">{group.label}</p>
+            <p className="mb-2 font-medium text-muted-foreground">
+              {group.label}
+            </p>
             <div className="grid gap-1 space-y-1">
               {group.posts.map((post) => (
                 <article

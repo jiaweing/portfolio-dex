@@ -66,7 +66,9 @@ export default async function Home() {
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Subscribe to my RSS feed to get new posts in your reader</p>
+                      <p>
+                        Subscribe to my RSS feed to get new posts in your reader
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -86,10 +88,7 @@ export default async function Home() {
                   </p>
                   <div className="grid gap-1 space-y-1">
                     {group.posts.map((post) => (
-                      <article
-                        className="group relative flex"
-                        key={post.id}
-                      >
+                      <article className="group relative flex" key={post.id}>
                         <div className="flex min-w-0 items-center gap-2">
                           {post.date && (
                             <time
@@ -105,7 +104,10 @@ export default async function Home() {
                           >
                             {post.title}
                           </Link>
-                          <PostTags tagColors={post.tagColors} tags={post.tags} />
+                          <PostTags
+                            tagColors={post.tagColors}
+                            tags={post.tags}
+                          />
                         </div>
                       </article>
                     ))}

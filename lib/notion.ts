@@ -222,7 +222,10 @@ const getTagsWithColors = (
     if (property?.type === "select" && property.select?.name) {
       return [{ name: property.select.name, color: property.select.color }];
     }
-    if (property?.type === "multi_select" && property.multi_select?.length > 0) {
+    if (
+      property?.type === "multi_select" &&
+      property.multi_select?.length > 0
+    ) {
       return property.multi_select.map((option: any) => ({
         name: option.name,
         color: option.color,

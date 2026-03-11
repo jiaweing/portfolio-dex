@@ -5,7 +5,10 @@ function renderBlocks(blocks: BlockObjectResponse[], depth = 0): string[] {
   const lines: string[] = [];
 
   for (const block of blocks) {
-    const children = "children" in block ? (block.children as BlockObjectResponse[] | undefined) : undefined;
+    const children =
+      "children" in block
+        ? (block.children as BlockObjectResponse[] | undefined)
+        : undefined;
 
     switch (block.type) {
       case "heading_1":
@@ -72,10 +75,12 @@ export function createBlogMarkdown(params: {
 }): string {
   const frontmatter = [
     "---",
-    `title: \"${params.title.replaceAll('"', '\\"')}\"`,
-    `date: \"${params.date}\"`,
-    `url: \"${params.url}\"`,
-    params.tags.length ? `tags: [${params.tags.map((tag) => `\"${tag.replaceAll('"', '\\"')}\"`).join(", ")}]` : undefined,
+    `title: "${params.title.replaceAll('"', '\\"')}"`,
+    `date: "${params.date}"`,
+    `url: "${params.url}"`,
+    params.tags.length
+      ? `tags: [${params.tags.map((tag) => `"${tag.replaceAll('"', '\\"')}"`).join(", ")}]`
+      : undefined,
     "---",
     "",
   ].filter(Boolean) as string[];

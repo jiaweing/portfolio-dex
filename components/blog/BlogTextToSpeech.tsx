@@ -53,7 +53,8 @@ function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
       }
       case "bulleted_list_item": {
         const rt = block.bulleted_list_item.rich_text;
-        text += "- " + rt.map((t) => toSpeechText(t.plain_text)).join("") + "\n";
+        text +=
+          "- " + rt.map((t) => toSpeechText(t.plain_text)).join("") + "\n";
         break;
       }
       case "numbered_list_item": {
@@ -63,7 +64,8 @@ function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
       }
       case "quote": {
         const rt = block.quote.rich_text;
-        text += '"' + rt.map((t) => toSpeechText(t.plain_text)).join("") + '"\n\n';
+        text +=
+          '"' + rt.map((t) => toSpeechText(t.plain_text)).join("") + '"\n\n';
         break;
       }
       case "callout": {
@@ -73,7 +75,8 @@ function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
       }
       case "to_do": {
         const rt = block.to_do.rich_text;
-        text += "[ ] " + rt.map((t) => toSpeechText(t.plain_text)).join("") + "\n";
+        text +=
+          "[ ] " + rt.map((t) => toSpeechText(t.plain_text)).join("") + "\n";
         break;
       }
       case "table": {
@@ -83,7 +86,9 @@ function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
             const cells = row.table_row.cells as any[][];
             text +=
               cells
-                .map((cell) => cell.map((t) => toSpeechText(t.plain_text)).join(""))
+                .map((cell) =>
+                  cell.map((t) => toSpeechText(t.plain_text)).join("")
+                )
                 .join(" | ") + "\n";
           }
         }

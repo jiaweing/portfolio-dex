@@ -22,13 +22,8 @@ interface LLMLogoProps {
   src: string;
 }
 
-const createPrompt = ({
-  title,
-  url,
-}: {
-  title: string;
-  url: string;
-}) => `I'm reading this blog post by Jia Wei Ng.\n\nTitle: ${title}\nURL: ${url}\n\nUnderstand the topic and be ready to answer questions I ask about it.\n\nWhen you reply, keep it concise and practical:\n1) Give me a 5-bullet summary\n2) Explain key ideas in plain language\n3) Flag assumptions or trade-offs\n4) Suggest 3 follow-up questions I should ask next`;
+const createPrompt = ({ title, url }: { title: string; url: string }) =>
+  `I'm reading this blog post by Jia Wei Ng.\n\nTitle: ${title}\nURL: ${url}\n\nUnderstand the topic and be ready to answer questions I ask about it.\n\nWhen you reply, keep it concise and practical:\n1) Give me a 5-bullet summary\n2) Explain key ideas in plain language\n3) Flag assumptions or trade-offs\n4) Suggest 3 follow-up questions I should ask next`;
 
 function LLMLogo({ alt, src }: LLMLogoProps) {
   return (
@@ -56,7 +51,9 @@ export function BlogLLMMenu({
   );
 
   const openMarkdown = () => {
-    const blob = new Blob([postMarkdown], { type: "text/markdown;charset=utf-8" });
+    const blob = new Blob([postMarkdown], {
+      type: "text/markdown;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
     window.open(url, "_blank", "noopener,noreferrer");
     setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -82,7 +79,11 @@ export function BlogLLMMenu({
           size="icon"
           variant="ghost"
         >
-          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+          {copied ? (
+            <Check className="size-3.5" />
+          ) : (
+            <Copy className="size-3.5" />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
@@ -102,7 +103,9 @@ export function BlogLLMMenu({
           <LLMLogo alt="Claude" src="/logos/claude.svg" />
           Open in Claude
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => openLLM("https://gemini.google.com/app?prompt=")}>
+        <DropdownMenuItem
+          onClick={() => openLLM("https://gemini.google.com/app?prompt=")}
+        >
           <LLMLogo alt="Gemini" src="/logos/gemini.svg" />
           Open in Gemini
         </DropdownMenuItem>

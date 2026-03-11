@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toSpeechText, buildSpeechTextMapping } from "@/lib/speech-text";
+import { buildSpeechTextMapping, toSpeechText } from "@/lib/speech-text";
 import { useSpeechHighlight } from "./SpeechHighlightContext";
 
 interface HighlightTracker {
@@ -50,25 +50,26 @@ function renderRichText(
       } else {
         const remaining = plainText.slice(mappedOriginalIndex);
 
-      // Find start of current word
-      const wordStartInRemaining = remaining.search(/\S/);
-      if (wordStartInRemaining === -1) {
-        content = plainText;
-      } else {
-        const wordStart = mappedOriginalIndex + wordStartInRemaining;
-        const wordEndMatch = plainText.slice(wordStart).match(/^(\S+)/);
-        const wordEnd = wordStart + (wordEndMatch ? wordEndMatch[1].length : 0);
+        // Find start of current word
+        const wordStartInRemaining = remaining.search(/\S/);
+        if (wordStartInRemaining === -1) {
+          content = plainText;
+        } else {
+          const wordStart = mappedOriginalIndex + wordStartInRemaining;
+          const wordEndMatch = plainText.slice(wordStart).match(/^(\S+)/);
+          const wordEnd =
+            wordStart + (wordEndMatch ? wordEndMatch[1].length : 0);
 
-        content = (
-          <>
-            {plainText.slice(0, wordStart)}
-            <mark className="animate-pulse rounded bg-primary/20 px-0.5 text-foreground">
-              {plainText.slice(wordStart, wordEnd)}
-            </mark>
-            {plainText.slice(wordEnd)}
-          </>
-        );
-      }
+          content = (
+            <>
+              {plainText.slice(0, wordStart)}
+              <mark className="animate-pulse rounded bg-primary/20 px-0.5 text-foreground">
+                {plainText.slice(wordStart, wordEnd)}
+              </mark>
+              {plainText.slice(wordEnd)}
+            </>
+          );
+        }
       }
     } else {
       content = plainText;
@@ -165,7 +166,10 @@ function getBlockTextLength(block: BlockObjectResponse): number {
     case "quote":
       return (
         2 +
-        block.quote.rich_text.reduce((sum, t) => sum + toSpeechText(t.plain_text).length, 0) +
+        block.quote.rich_text.reduce(
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
+          0
+        ) +
         2
       ); // +2 for quotes
     case "callout":
@@ -178,7 +182,10 @@ function getBlockTextLength(block: BlockObjectResponse): number {
     case "to_do":
       return (
         4 +
-        block.to_do.rich_text.reduce((sum, t) => sum + toSpeechText(t.plain_text).length, 0) +
+        block.to_do.rich_text.reduce(
+          (sum, t) => sum + toSpeechText(t.plain_text).length,
+          0
+        ) +
         1
       ); // +4 for "[ ] ", +1 for "\n"
     case "code":
@@ -193,7 +200,10 @@ function getBlockTextLength(block: BlockObjectResponse): number {
           const cellsTextLength = cells.reduce(
             (sum, cell) =>
               sum +
-              cell.reduce((s: number, t: any) => s + toSpeechText(t.plain_text).length, 0),
+              cell.reduce(
+                (s: number, t: any) => s + toSpeechText(t.plain_text).length,
+                0
+              ),
             0
           );
           const separatorLength = Math.max(0, cells.length - 1) * 3; // " | " between cells only
@@ -335,15 +345,18 @@ function CodeBlock({
 function MermaidDiagram({ code }: { code: string }) {
   const [failed, setFailed] = React.useState(false);
   const encoded = React.useMemo(() => {
-    const utf8 = encodeURIComponent(code).replace(
-      /%([0-9A-F]{2})/g,
-      (_, p1) => String.fromCharCode(Number.parseInt(p1, 16))
+    const utf8 = encodeURIComponent(code).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+      String.fromCharCode(Number.parseInt(p1, 16))
     );
     return btoa(utf8);
   }, [code]);
 
   if (failed) {
-    return <div className="p-4 text-destructive text-sm">Failed to render Mermaid diagram.</div>;
+    return (
+      <div className="p-4 text-destructive text-sm">
+        Failed to render Mermaid diagram.
+      </div>
+    );
   }
 
   return (

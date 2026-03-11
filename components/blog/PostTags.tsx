@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { getTagColorClass } from "@/lib/tag-colors";
+import { cn } from "@/lib/utils";
 
 interface PostTagsProps {
   tags?: string[];
@@ -14,7 +14,10 @@ export function PostTags({ tags, tagColors }: PostTagsProps) {
       {tags.map((tag) => (
         <span
           aria-label={tag}
-          className={cn("inline-flex h-1.5 w-1.5 shrink-0 rounded-full", getTagColorClass(tag, tagColors?.[tag]))}
+          className={cn(
+            "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
+            getTagColorClass(tag, tagColors?.[tag])
+          )}
           key={tag}
           title={tag}
         />
