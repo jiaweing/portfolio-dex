@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { buildSpeechTextMapping, toSpeechText } from "@/lib/speech-text";
 import { useSpeechHighlight } from "./SpeechHighlightContext";
 
@@ -23,56 +24,140 @@ interface HighlightTracker {
 function renderRichText(
   richText: any[],
   tracker: HighlightTracker,
-  highlightIndex: number
+  highlightIndex: number,
+  blockOffset?: number,
+  onWordClick?: (absCharIndex: number) => void
 ): React.ReactNode {
   return richText.map((t, i) => {
     const { bold, italic, strikethrough, underline, code } =
       t.annotations || {};
     const plainText = t.plain_text;
     const { spokenText, spokenToOriginal } = buildSpeechTextMapping(plainText);
-    const startIndex = tracker.currentOffset;
-    const endIndex = startIndex + spokenText.length;
-    tracker.currentOffset = endIndex;
+    const segmentStart = tracker.currentOffset;
+    const segmentEnd = segmentStart + spokenText.length;
+    tracker.currentOffset = segmentEnd;
 
     let content: React.ReactNode;
 
-    // Check if we need to highlight within this text segment
-    if (
-      highlightIndex >= startIndex &&
-      highlightIndex < endIndex &&
-      highlightIndex >= 0
-    ) {
-      // Find word boundaries around the highlight position
-      const spokenLocalIndex = highlightIndex - startIndex;
-      const mappedOriginalIndex = spokenToOriginal[spokenLocalIndex];
-      if (mappedOriginalIndex === undefined) {
-        content = plainText;
-      } else {
-        const remaining = plainText.slice(mappedOriginalIndex);
+    // Word-level rendering: clickable words with per-word highlight
+    if (onWordClick !== undefined && blockOffset !== undefined && !t.href) {
+      // Build reverse mapping: original index → spoken index within this segment
+      const originalToSpoken: number[] = new Array(plainText.length).fill(-1);
+      for (let si = 0; si < spokenToOriginal.length; si++) {
+        originalToSpoken[spokenToOriginal[si]] = si;
+      }
 
-        // Find start of current word
-        const wordStartInRemaining = remaining.search(/\S/);
-        if (wordStartInRemaining === -1) {
+      const tokens: React.ReactNode[] = [];
+      const tokenRegex = /(\S+|\s+)/g;
+      let match: RegExpExecArray | null;
+
+      // biome-ignore lint/suspicious/noAssignInExpressions: intentional loop pattern
+      while ((match = tokenRegex.exec(plainText)) !== null) {
+        const token = match[0];
+        const tokenOrigStart = match.index;
+        const tokenIdx = tokens.length;
+
+        if (/^\s+$/.test(token)) {
+          tokens.push(<React.Fragment key={tokenIdx}>{token}</React.Fragment>);
+          continue;
+        }
+
+        // Find first and last spoken char positions for this word token
+        let spokenWordStart = -1;
+        for (let p = tokenOrigStart; p < tokenOrigStart + token.length; p++) {
+          if (originalToSpoken[p] !== -1) {
+            spokenWordStart = originalToSpoken[p];
+            break;
+          }
+        }
+        let spokenWordEnd = -1;
+        for (
+          let p = tokenOrigStart + token.length - 1;
+          p >= tokenOrigStart;
+          p--
+        ) {
+          if (originalToSpoken[p] !== -1) {
+            spokenWordEnd = originalToSpoken[p] + 1;
+            break;
+          }
+        }
+
+        // Local indices (relative to block) for highlight comparison
+        const localWordStart =
+          spokenWordStart >= 0 ? segmentStart + spokenWordStart : -1;
+        const localWordEnd =
+          spokenWordEnd >= 0 ? segmentStart + spokenWordEnd : -1;
+
+        // Absolute index for seeking
+        const absSeekIndex =
+          spokenWordStart >= 0 ? blockOffset + segmentStart + spokenWordStart : -1;
+
+        const isHighlighted =
+          highlightIndex >= 0 &&
+          localWordStart >= 0 &&
+          highlightIndex >= localWordStart &&
+          highlightIndex < localWordEnd;
+
+        tokens.push(
+          <span
+            key={tokenIdx}
+            className={cn(
+              absSeekIndex >= 0 &&
+                "cursor-pointer rounded transition-colors hover:bg-primary/10",
+              isHighlighted &&
+                "animate-pulse bg-primary/20 px-0.5 text-foreground"
+            )}
+            onClick={
+              absSeekIndex >= 0
+                ? (e) => {
+                    e.stopPropagation();
+                    onWordClick(absSeekIndex);
+                  }
+                : undefined
+            }
+          >
+            {token}
+          </span>
+        );
+      }
+
+      content = <>{tokens}</>;
+    } else {
+      // Fallback: highlight the current word without click support (e.g. links)
+      if (
+        highlightIndex >= segmentStart &&
+        highlightIndex < segmentEnd &&
+        highlightIndex >= 0
+      ) {
+        const spokenLocalIndex = highlightIndex - segmentStart;
+        const mappedOriginalIndex = spokenToOriginal[spokenLocalIndex];
+        if (mappedOriginalIndex === undefined) {
           content = plainText;
         } else {
-          const wordStart = mappedOriginalIndex + wordStartInRemaining;
-          const wordEndMatch = plainText.slice(wordStart).match(/^(\S+)/);
-          const wordEnd =
-            wordStart + (wordEndMatch ? wordEndMatch[1].length : 0);
+          const remaining = plainText.slice(mappedOriginalIndex);
+          const wordStartInRemaining = remaining.search(/\S/);
+          if (wordStartInRemaining === -1) {
+            content = plainText;
+          } else {
+            const wordStart = mappedOriginalIndex + wordStartInRemaining;
+            const wordEndMatch = plainText.slice(wordStart).match(/^(\S+)/);
+            const wordEnd =
+              wordStart + (wordEndMatch ? wordEndMatch[1].length : 0);
 
-          content = (
-            <>
-              {plainText.slice(0, wordStart)}
-              <mark className="animate-pulse rounded bg-primary/20 px-0.5 text-foreground">
-                {plainText.slice(wordStart, wordEnd)}
-              </mark>
-              {plainText.slice(wordEnd)}
-            </>
-          );
+            content = (
+              <>
+                {plainText.slice(0, wordStart)}
+                <mark className="animate-pulse rounded bg-primary/20 px-0.5 text-foreground">
+                  {plainText.slice(wordStart, wordEnd)}
+                </mark>
+                {plainText.slice(wordEnd)}
+              </>
+            );
+          }
         }
+      } else {
+        content = plainText;
       }
-    } else {
-      content = plainText;
     }
 
     if (code)
@@ -380,7 +465,7 @@ export function NotionBlock({
   allBlocks?: BlockObjectResponse[];
   highlightedCodeMap?: Record<string, string>;
 }) {
-  const { currentCharIndex, isSpeaking, autoScroll } = useSpeechHighlight();
+  const { currentCharIndex, isSpeaking, autoScroll, onWordClick } = useSpeechHighlight();
   const blockOffset = allBlocks ? useBlockCharOffset(allBlocks, block.id) : 0;
 
   // Calculate the highlight position relative to this block
@@ -407,7 +492,7 @@ export function NotionBlock({
       const rt = block.paragraph.rich_text;
       return (
         <p className="mb-4 text-muted-foreground leading-7">
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
         </p>
       );
     }
@@ -420,7 +505,7 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
           <HeadingAnchor id={block.id} />
         </h1>
       );
@@ -434,7 +519,7 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
           <HeadingAnchor id={block.id} />
         </h2>
       );
@@ -448,7 +533,7 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
           <HeadingAnchor id={block.id} />
         </h3>
       );
@@ -459,7 +544,7 @@ export function NotionBlock({
       tracker.currentOffset = 2; // skip "- " prefix in extracted text
       return (
         <li className="mt-2 text-muted-foreground">
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
         </li>
       );
     }
@@ -468,7 +553,7 @@ export function NotionBlock({
       const rt = block.numbered_list_item.rich_text;
       return (
         <li className="mt-2 list-decimal text-muted-foreground">
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
         </li>
       );
     }
@@ -478,7 +563,7 @@ export function NotionBlock({
       tracker.currentOffset = 1; // skip opening `"` in extracted text
       return (
         <blockquote className="my-4 border-primary border-l-4 pl-4 italic">
-          {renderRichText(rt, tracker, localHighlightIndex)}
+          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
         </blockquote>
       );
     }
@@ -499,7 +584,7 @@ export function NotionBlock({
           )}
           <div className="flex-1 text-muted-foreground">
             {rt.length > 0 && (
-              <div>{renderRichText(rt, tracker, localHighlightIndex)}</div>
+              <div>{renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}</div>
             )}
             {children.length > 0 && (
               <div className="[counter-reset:list-item] [&_li]:ml-5">
@@ -570,7 +655,7 @@ export function NotionBlock({
             type="checkbox"
           />
           <span className={checked ? "text-muted-foreground line-through" : ""}>
-            {renderRichText(rt, tracker, localHighlightIndex)}
+            {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
           </span>
         </div>
       );
@@ -593,7 +678,9 @@ export function NotionBlock({
           const content = renderRichText(
             cell,
             tableTracker,
-            localHighlightIndex
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
           );
           if (cellIndex < cells.length - 1) {
             tableTracker.currentOffset += 3; // advance past " | "

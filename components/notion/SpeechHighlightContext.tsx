@@ -7,6 +7,7 @@ interface SpeechHighlightContextValue {
   isSpeaking: boolean;
   isPaused: boolean;
   autoScroll: boolean;
+  onWordClick?: (absCharIndex: number) => void;
 }
 
 const SpeechHighlightContext = React.createContext<SpeechHighlightContextValue>(
@@ -15,6 +16,7 @@ const SpeechHighlightContext = React.createContext<SpeechHighlightContextValue>(
     isSpeaking: false,
     isPaused: false,
     autoScroll: true,
+    onWordClick: undefined,
   }
 );
 
@@ -28,16 +30,18 @@ export function SpeechHighlightProvider({
   isSpeaking,
   isPaused,
   autoScroll,
+  onWordClick,
 }: {
   children: React.ReactNode;
   currentCharIndex: number;
   isSpeaking: boolean;
   isPaused: boolean;
   autoScroll: boolean;
+  onWordClick?: (absCharIndex: number) => void;
 }) {
   const value = React.useMemo(
-    () => ({ currentCharIndex, isSpeaking, isPaused, autoScroll }),
-    [currentCharIndex, isSpeaking, isPaused, autoScroll]
+    () => ({ currentCharIndex, isSpeaking, isPaused, autoScroll, onWordClick }),
+    [currentCharIndex, isSpeaking, isPaused, autoScroll, onWordClick]
   );
 
   return (

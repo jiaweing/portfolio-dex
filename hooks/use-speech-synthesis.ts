@@ -33,6 +33,7 @@ interface UseSpeechSynthesisReturn {
   pause: () => void;
   resume: () => void;
   seek: (percent: number) => void;
+  seekToChar: (charIndex: number) => void;
   speaking: boolean;
   paused: boolean;
   voices: SpeechSynthesisVoice[];
@@ -334,6 +335,23 @@ export function useSpeechSynthesis(
     [startSpeech]
   );
 
+  // Seek to an absolute character index and always start speaking from there.
+  const seekToChar = React.useCallback(
+    (charIndex: number) => {
+      const text = currentTextRef.current;
+      if (!text) return;
+      const clampedIndex = Math.min(Math.max(charIndex, 0), text.length);
+      currentCharIndexRef.current = clampedIndex;
+      setCurrentCharIndex(clampedIndex);
+      const percent = text.length > 0 ? (clampedIndex / text.length) * 100 : 0;
+      const elapsed = (percent / 100) * totalSecondsRef.current;
+      setProgress(percent);
+      setElapsedSeconds(elapsed);
+      startSpeech(text, clampedIndex);
+    },
+    [startSpeech]
+  );
+
   // Smart setters — update the ref + state, then restart from the current
   // char position if speech is actively playing (not paused).
   const setRate = React.useCallback(
@@ -395,6 +413,7 @@ export function useSpeechSynthesis(
     pause,
     resume,
     seek,
+    seekToChar,
     speaking,
     paused,
     voices,
