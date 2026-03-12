@@ -206,29 +206,6 @@ export function useSpeechSynthesis(
           const absIndex = offset + event.charIndex;
           currentCharIndexRef.current = absIndex;
           setCurrentCharIndex(absIndex);
-
-          // Recalibrate total duration using actual speech rate so far
-          const actualElapsedSpeaking =
-            (Date.now() - startTimeRef.current) / 1000 - initialElapsed;
-          if (actualElapsedSpeaking > 1) {
-            const wordsSpokenInSegment = text
-              .slice(offset, absIndex)
-              .split(/\s+/)
-              .filter(Boolean).length;
-            if (wordsSpokenInSegment > 0) {
-              const actualRate = wordsSpokenInSegment / actualElapsedSpeaking;
-              const wordsRemaining = text
-                .slice(absIndex)
-                .split(/\s+/)
-                .filter(Boolean).length;
-              const calibratedTotal =
-                initialElapsed +
-                actualElapsedSpeaking +
-                wordsRemaining / actualRate;
-              setTotalSeconds(calibratedTotal);
-              totalSecondsRef.current = calibratedTotal;
-            }
-          }
         }
       };
 
@@ -329,9 +306,12 @@ export function useSpeechSynthesis(
     window.speechSynthesis.resume();
     setPaused(false);
     pausedRef.current = false;
-    const pauseDuration = (Date.now() - pausedTimeRef.current) / 1000;
-    startTimeRef.current += pauseDuration * 1000;
-    startProgressTimer(totalSecondsRef.current);
+    // Calculate elapsed at the moment we paused so the progress bar continues
+    // from the right position. startProgressTimer would otherwise reset
+    // startTimeRef to Date.now() (initialElapsed=0), losing our position.
+    const elapsedAtPause =
+      (pausedTimeRef.current - startTimeRef.current) / 1000;
+    startProgressTimer(totalSecondsRef.current, elapsedAtPause);
   }, [isSupported, startProgressTimer]);
 
   // Seek to a position expressed as a percentage (0–100).
