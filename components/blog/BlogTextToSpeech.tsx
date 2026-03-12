@@ -137,6 +137,7 @@ export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
     pause,
     resume,
     seek,
+    seekToChar,
     speaking,
     paused,
     voices,
@@ -173,6 +174,7 @@ export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
       currentCharIndex={currentCharIndex}
       isPaused={paused}
       isSpeaking={speaking}
+      onWordClick={seekToChar}
     >
       {text && (
         <TextToSpeechControls
