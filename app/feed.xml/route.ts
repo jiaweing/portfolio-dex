@@ -1,7 +1,6 @@
 import { getBlogPosts } from "@/lib/notion";
 
 export const revalidate = 3600;
-export const dynamic = "force-static";
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://jiaweing.com";
