@@ -84,10 +84,17 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     });
   }, [posts, search, selectedTags]);
 
-  const groups = useMemo(() => {
+  const { pinnedPosts, groups } = useMemo(() => {
+    const pinned: BlogPost[] = [];
     const grouped: { label: string; posts: BlogPost[] }[] = [];
 
     for (const post of filteredPosts) {
+      // Add to pinned list if pinned
+      if (post.pinned) {
+        pinned.push(post);
+      }
+
+      // Add to date groups (pinned posts appear in both)
       const label = post.date
         ? formatDate(new Date(post.date), "MMM yyyy")
         : "Unknown";
@@ -99,8 +106,10 @@ export function BlogPostList({ posts }: BlogPostListProps) {
       }
     }
 
-    return grouped;
+    return { pinnedPosts: pinned, groups: grouped };
   }, [filteredPosts]);
+
+  const hasActiveFilters = search.trim().length > 0 || selectedTags.length > 0;
 
   const toggleTag = (tag: string) => {
     const nextTags = selectedTags.includes(tag)
@@ -177,7 +186,63 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
       <FadeIn delay={0.1}>
         <TooltipProvider>
-          <div className="space-y-6">
+          <div className="group/list space-y-6">
+            {!hasActiveFilters && pinnedPosts.length > 0 && (
+              <>
+                <p className="mb-2 font-medium text-muted-foreground">Pinned</p>
+                <div className="grid gap-1 space-y-1">
+                  {pinnedPosts.map((post) => (
+                    <article
+                      className="group hover:!opacity-100 hit-area-y-2 relative flex flex-col gap-2 transition-opacity duration-1000 ease-out hover:duration-50 group-hover/list:opacity-30 sm:flex-row sm:items-center sm:justify-between"
+                      key={post.id}
+                      style={{ pointerEvents: "auto" }}
+                    >
+                      <div className="relative z-10 flex min-w-0 items-center gap-2">
+                        <div className="flex h-6 w-6 items-center justify-center">
+                          <div className="flex items-center gap-1">
+                            {post.tags?.map((tag) => (
+                              <Tooltip key={`${post.id}-${tag}`}>
+                                <TooltipTrigger asChild>
+                                  <span
+                                    className={cn(
+                                      "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
+                                      getTagColorClass(
+                                        tag,
+                                        post.tagColors?.[tag]
+                                      )
+                                    )}
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="capitalize">{tag}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            ))}
+                          </div>
+                        </div>
+                        <BlogPostHoverCard post={post}>
+                          <Link
+                            className="relative z-10 min-w-0 cursor-pointer truncate text-foreground"
+                            href={`/blog/${post.slug}`}
+                          >
+                            {post.title}
+                          </Link>
+                        </BlogPostHoverCard>
+                      </div>
+                      {post.date && (
+                        <time
+                          className="relative z-10 shrink-0 text-muted-foreground text-xs tabular-nums"
+                          dateTime={post.date}
+                        >
+                          {formatDate(new Date(post.date), "MMM d, yyyy")}
+                        </time>
+                      )}
+                    </article>
+                  ))}
+                </div>
+              </>
+            )}
+
             {groups.map((group) => (
               <div key={group.label}>
                 <p className="mb-2 font-medium text-muted-foreground">
@@ -186,10 +251,11 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                 <div className="grid gap-1 space-y-1">
                   {group.posts.map((post) => (
                     <article
-                      className="group relative flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+                      className="group hover:!opacity-100 hit-area-y-2 relative flex flex-col gap-2 transition-opacity duration-1000 ease-out hover:duration-50 group-hover/list:opacity-30 sm:flex-row sm:items-center sm:justify-between"
                       key={post.id}
+                      style={{ pointerEvents: "auto" }}
                     >
-                      <div className="flex min-w-0 items-center gap-2">
+                      <div className="relative z-10 flex min-w-0 items-center gap-2">
                         {post.date && (
                           <time
                             className="flex h-6 w-6 shrink-0 items-center justify-center rounded border font-medium text-xs tabular-nums"
@@ -200,7 +266,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                         )}
                         <BlogPostHoverCard post={post}>
                           <Link
-                            className="min-w-0 truncate font-medium text-foreground hover:underline"
+                            className="relative z-10 min-w-0 cursor-pointer truncate text-foreground"
                             href={`/blog/${post.slug}`}
                           >
                             {post.title}

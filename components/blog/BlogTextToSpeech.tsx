@@ -3,6 +3,7 @@
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import * as React from "react";
 import { SpeechHighlightProvider } from "@/components/notion/SpeechHighlightContext";
+import { FadeIn } from "@/components/ui/fade-in";
 import { useSpeechSynthesis } from "@/hooks/use-speech-synthesis";
 import { toSpeechText } from "@/lib/speech-text";
 import { TextToSpeechControls } from "./TextToSpeechControls";
@@ -177,29 +178,31 @@ export function BlogTextToSpeech({ blocks, children }: BlogTextToSpeechProps) {
       onWordClick={seekToChar}
     >
       {text && (
-        <TextToSpeechControls
-          autoScroll={autoScroll}
-          cancel={cancel}
-          elapsedSeconds={elapsedSeconds}
-          isSupported={isSupported}
-          pause={pause}
-          paused={paused}
-          progress={progress}
-          rate={rate}
-          resume={resume}
-          seek={seek}
-          selectedVoice={selectedVoice}
-          setAutoScroll={setAutoScroll}
-          setRate={setRate}
-          setSelectedVoice={setSelectedVoice}
-          setVolume={setVolume}
-          speak={() => speak(text)}
-          speaking={speaking}
-          text={text}
-          totalSeconds={totalSeconds}
-          voices={voices}
-          volume={volume}
-        />
+        <FadeIn delay={0.15}>
+          <TextToSpeechControls
+            autoScroll={autoScroll}
+            cancel={cancel}
+            elapsedSeconds={elapsedSeconds}
+            isSupported={isSupported}
+            pause={pause}
+            paused={paused}
+            progress={progress}
+            rate={rate}
+            resume={resume}
+            seek={seek}
+            selectedVoice={selectedVoice}
+            setAutoScroll={setAutoScroll}
+            setRate={setRate}
+            setSelectedVoice={setSelectedVoice}
+            setVolume={setVolume}
+            speak={() => speak(text)}
+            speaking={speaking}
+            text={text}
+            totalSeconds={totalSeconds}
+            voices={voices}
+            volume={volume}
+          />
+        </FadeIn>
       )}
       {children}
     </SpeechHighlightProvider>

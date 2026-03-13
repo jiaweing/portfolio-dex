@@ -36,6 +36,7 @@ export interface BlogPost {
   tagColors?: Record<string, string>;
   cover?: string;
   readingTime: number; // in minutes
+  pinned?: boolean;
 }
 
 export interface Page {
@@ -161,7 +162,8 @@ const getProperty = (
     | "select"
     | "status"
     | "url"
-    | "people" = "rich_text"
+    | "people"
+    | "checkbox" = "rich_text"
 ) => {
   const p = page.properties?.[prop];
   if (!p) return null;
@@ -185,6 +187,7 @@ const getProperty = (
         avatar: person.avatar_url,
       })) || []
     );
+  if (type === "checkbox") return p.checkbox;
 
   return "";
 };
@@ -378,6 +381,7 @@ export const fetchBlogPosts = async (options?: {
           tagColors,
           cover: banner,
           readingTime: 0, // calculated on individual post page
+          pinned: getProperty(page, "Pinned", "checkbox"),
         } as BlogPost;
       })
       .filter((post: BlogPost) => {
