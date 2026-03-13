@@ -13,33 +13,44 @@ export type ExperienceItemType = {
 
 export function ExperienceItem({ item }: { item: ExperienceItemType }) {
   return (
-    <div className="flex flex-col leading-relaxed md:flex-row md:items-center md:gap-2">
-      <div className="flex min-w-0 shrink-0 items-center gap-1">
-        {item.title && (
-          <span className="whitespace-nowrap">{item.title} @</span>
-        )}
-        {item.url ? (
-          <Link
-            className="truncate text-blue-500 dark:text-sky-500"
-            href={item.url as any}
-            target={item.url.startsWith("http") ? "_blank" : "_self"}
-          >
-            <Favicon
-              hide={item.hideFavicon}
-              invert={item.invertFavicon}
-              url={item.url}
-            />
-            {item.organization}
-          </Link>
-        ) : (
-          <span className="truncate text-muted-foreground">
-            {item.organization}
-          </span>
+    <div className="flex items-center gap-2 md:gap-2">
+      <div className="flex min-w-0 shrink flex-col gap-2.5 md:flex-row md:items-center">
+        <div className="flex min-w-0 shrink-0 items-center gap-1">
+          {item.url ? (
+            <Link
+              className="truncate"
+              href={item.url as any}
+              target={item.url.startsWith("http") ? "_blank" : "_self"}
+            >
+              <Favicon
+                hide={item.hideFavicon}
+                invert={item.invertFavicon}
+                url={item.url}
+              />
+              <span className="border-muted-foreground/40 border-b border-dashed font-medium transition-colors duration-300 hover:border-foreground dark:text-white">
+                {item.organization}
+              </span>
+            </Link>
+          ) : (
+            <span className="truncate text-muted-foreground">
+              {item.organization}
+            </span>
+          )}
+        </div>
+        {item.description && (
+          <>
+            {/* <span className="text-muted-foreground">&bull;</span> */}
+            <span className="text-muted-foreground text-xs md:max-w-md">
+              {item.description}
+            </span>
+          </>
         )}
       </div>
-      <span className="text-muted-foreground text-xs md:max-w-md">
-        {item.description}
-      </span>
+      {item.title && (
+        <span className="ml-auto shrink-0 whitespace-nowrap rounded-full bg-muted px-2 text-xs">
+          {item.title}
+        </span>
+      )}
     </div>
   );
 }

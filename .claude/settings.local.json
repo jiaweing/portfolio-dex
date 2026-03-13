@@ -16,7 +16,9 @@
       "Bash(xargs cat:*)",
       "WebFetch(domain:github.com)",
       "Bash(curl -s \"https://api.github.com/repos/remvze/desengs/contents/src\" | grep -o '\"name\": \"[^\"]*\"' | head -20)",
-      "Bash(curl -s \"https://raw.githubusercontent.com/remvze/desengs/main/src/components/Card.astro\")"
+      "Bash(curl -s \"https://raw.githubusercontent.com/remvze/desengs/main/src/components/Card.astro\")",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "mcp__plugin_context-mode_context-mode__ctx_execute_file"
     ]
   }
 }

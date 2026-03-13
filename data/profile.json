@@ -4,14 +4,14 @@
       "title": "Business Director",
       "organization": "base07.com",
       "url": "https://base07.com",
-      "description": "a company creating companies",
+      "description": "we make agentic apps",
       "invertFavicon": "light"
     },
     {
-      "title": "Founder",
+      "title": "Co-Founder",
       "organization": "ryu",
       "url": "https://ryuhq.com",
-      "description": "coming jan 2026"
+      "description": "coming apr 2026"
     },
     {
       "title": "Founder",
@@ -23,13 +23,7 @@
       "title": "Podcast Host & Writer",
       "organization": "updatenight.com",
       "url": "https://updatenight.com",
-      "description": "tech news that matter (1k+ views)"
-    },
-    {
-      "title": "Founder",
-      "organization": "Division Null ∅",
-      "url": "https://discord.com/invite/KTCGWC7bZn",
-      "description": "a space to share the latest in tech (80+ members)"
+      "description": "handpicked tools and underrated news"
     },
     {
       "title": "Co-Founder",
@@ -84,7 +78,7 @@
       "title": "Lead Mobile Developer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
-      "description": "streamlined medicine delivery for Singapore hospitals"
+      "description": "streamlined medicine delivery for SG hospitals"
     }
   ],
   "past": [
@@ -126,28 +120,16 @@
     },
     {
       "title": "Founder",
-      "organization": "vephius",
-      "url": "https://vephius.com",
-      "description": "social productivity app"
-    },
-    {
-      "title": "Founder",
-      "organization": "dojo q",
-      "url": "",
-      "description": "free local quiz app"
-    },
-    {
-      "title": "Founder",
-      "organization": "best before",
-      "url": "https://github.com/jiaweing/best-before",
-      "description": "simple expiry date tracking app"
-    },
-    {
-      "title": "Founder",
       "organization": "casigned",
       "url": "https://tally.so/r/m6QO4O",
       "description": "personalized NFC business card service",
       "invertFavicon": "dark"
+    },
+    {
+      "title": "Founder",
+      "organization": "Division Null ∅",
+      "url": "https://discord.com/invite/KTCGWC7bZn",
+      "description": "a space to share the latest in tech"
     },
     {
       "title": "Founder",
@@ -160,7 +142,7 @@
       "title": "Founder",
       "organization": "titan.tf",
       "url": "https://titan.tf",
-      "description": "450k unique players, 10k monthly active users"
+      "description": "470k unique players, 10k monthly active users"
     },
     {
       "title": "Software Engineer",
@@ -180,7 +162,7 @@
       "description": "blockchain for document security, tokenization, and contact tracing"
     },
     {
-      "title": "Diploma in Business Information Systems",
+      "title": "Business Information Systems",
       "organization": "Republic Polytechnic",
       "url": "https://www.rp.edu.sg",
       "description": "2017-2019"
