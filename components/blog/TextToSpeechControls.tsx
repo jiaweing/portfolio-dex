@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import {
   AlignLeft,
   Minus,
@@ -14,7 +15,7 @@ import {
 import * as React from "react";
 import ElasticSlider from "@/components/ElasticSlider";
 import { Button } from "@/components/ui/button";
-import { Frame, FramePanel } from "@/components/ui/frame";
+import { Frame } from "@/components/ui/frame";
 import {
   Select,
   SelectContent,
@@ -150,89 +151,104 @@ export function TextToSpeechControls({
       </div>
 
       {/* ── Settings panel ── */}
-      {showSettings && (
-        <FramePanel className="space-y-4 bg-background/95 px-4 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          {/* Voice */}
-          <div className="space-y-1.5">
-            <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-              Voice
-            </p>
-            <Select
-              onValueChange={(value) => {
-                const voice = voices.find((v) => v.name === value);
-                if (voice) setSelectedVoice(voice);
-              }}
-              value={selectedVoice?.name ?? ""}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select voice" />
-              </SelectTrigger>
-              <SelectContent>
-                {displayVoices.map((voice) => (
-                  <SelectItem key={voice.name} value={voice.name}>
-                    {voice.name} ({voice.lang})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Volume + Speed */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-0.5">
+      <AnimatePresence mode="wait">
+        {showSettings && (
+          <motion.div
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            className="space-y-4 bg-background/95 px-4 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+            data-slot="frame-panel"
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            {/* Voice */}
+            <div className="space-y-1.5">
               <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-                Volume
+                Voice
               </p>
-              <ElasticSlider
-                defaultValue={volume * 100}
-                isStepped={false}
-                leftIcon={
-                  <VolumeX className="size-3.5 text-muted-foreground" />
-                }
-                maxValue={100}
-                onCommit={(v) => setVolume(v / 100)}
-                renderValue={(v) => <span>{Math.round(v)}%</span>}
-                rightIcon={
-                  <Volume2 className="size-3.5 text-muted-foreground" />
-                }
-                startingValue={0}
-                stepSize={1}
-              />
+              <Select
+                onValueChange={(value) => {
+                  const voice = voices.find((v) => v.name === value);
+                  if (voice) setSelectedVoice(voice);
+                }}
+                value={selectedVoice?.name ?? ""}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select voice" />
+                </SelectTrigger>
+                <SelectContent>
+                  {displayVoices.map((voice) => (
+                    <SelectItem key={voice.name} value={voice.name}>
+                      {voice.name} ({voice.lang})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
-            <div className="space-y-0.5">
-              <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-                Speed
-              </p>
-              <ElasticSlider
-                defaultValue={rate}
-                isStepped={true}
-                leftIcon={<Minus className="size-3.5 text-muted-foreground" />}
-                maxValue={2}
-                onCommit={(v) => setRate(v)}
-                renderValue={(v) => <span>{v.toFixed(1)}×</span>}
-                rightIcon={<Plus className="size-3.5 text-muted-foreground" />}
-                startingValue={0.5}
-                stepSize={0.1}
-              />
-            </div>
-          </div>
-
-          {/* Auto-scroll */}
-          <div className="flex items-center justify-between gap-4 rounded-lg border bg-muted/40 px-3 py-2.5">
-            <div className="flex items-start gap-2.5">
-              <AlignLeft className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-              <div>
-                <p className="font-medium text-sm leading-none">Auto-scroll</p>
-                <p className="mt-1 text-muted-foreground text-xs">
-                  Follow the highlighted text as it plays
+            {/* Volume + Speed */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-0.5">
+                <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+                  Volume
                 </p>
+                <ElasticSlider
+                  defaultValue={volume * 100}
+                  isStepped={false}
+                  leftIcon={
+                    <VolumeX className="size-3.5 text-muted-foreground" />
+                  }
+                  maxValue={100}
+                  onCommit={(v) => setVolume(v / 100)}
+                  renderValue={(v) => <span>{Math.round(v)}%</span>}
+                  rightIcon={
+                    <Volume2 className="size-3.5 text-muted-foreground" />
+                  }
+                  startingValue={0}
+                  stepSize={1}
+                />
+              </div>
+
+              <div className="space-y-0.5">
+                <p className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+                  Speed
+                </p>
+                <ElasticSlider
+                  defaultValue={rate}
+                  isStepped={true}
+                  leftIcon={
+                    <Minus className="size-3.5 text-muted-foreground" />
+                  }
+                  maxValue={2}
+                  onCommit={(v) => setRate(v)}
+                  renderValue={(v) => <span>{v.toFixed(1)}×</span>}
+                  rightIcon={
+                    <Plus className="size-3.5 text-muted-foreground" />
+                  }
+                  startingValue={0.5}
+                  stepSize={0.1}
+                />
               </div>
             </div>
-            <Switch checked={autoScroll} onCheckedChange={setAutoScroll} />
-          </div>
-        </FramePanel>
-      )}
+
+            {/* Auto-scroll */}
+            <div className="flex items-center justify-between gap-4 rounded-lg border bg-muted/40 px-3 py-2.5">
+              <div className="flex items-start gap-2.5">
+                <AlignLeft className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+                <div>
+                  <p className="font-medium text-sm leading-none">
+                    Auto-scroll
+                  </p>
+                  <p className="mt-1 text-muted-foreground text-xs">
+                    Follow the highlighted text as it plays
+                  </p>
+                </div>
+              </div>
+              <Switch checked={autoScroll} onCheckedChange={setAutoScroll} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Frame>
   );
 }

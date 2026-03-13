@@ -62,7 +62,7 @@ export default async function GenericPage({
   return (
     <>
       <FadeIn>
-        <div className="mb-8 flex flex-col">
+        <div className="my-8 flex flex-col">
           <div className="flex flex-col items-start gap-4">
             <h3 className="mb-2 font-semibold">{page.title}</h3>
             {page.description && (

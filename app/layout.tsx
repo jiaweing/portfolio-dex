@@ -110,8 +110,10 @@ export const viewport = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -198,6 +200,7 @@ export default function RootLayout({
             </div>
           </PlausibleWrapper>
 
+          {modal}
           <ThemeToggle />
           <TailwindIndicator />
           <SeasonalEffects />

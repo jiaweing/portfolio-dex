@@ -49,9 +49,7 @@ export default async function BlogPage() {
           </div>
         </div>
       </FadeIn>
-      <FadeIn delay={0.05}>
-        <BlogPostList posts={posts} />
-      </FadeIn>
+      <BlogPostList posts={posts} />
     </>
   );
 }
