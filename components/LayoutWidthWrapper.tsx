@@ -11,7 +11,8 @@ export function LayoutWidthWrapper({
   className?: string;
 }) {
   const pathname = usePathname();
-  const isWidePage = pathname === "/projects" || pathname === "/wrapped";
+  const isWidePage =
+    pathname?.startsWith("/projects") || pathname === "/wrapped";
 
   return (
     <div
