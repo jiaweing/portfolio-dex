@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { NotionRenderer } from "@/components/markdown-renderer";
+import { NotionRenderer } from "@/components/NotionRenderer";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generatePageMetadata } from "@/lib/metadata";
 import { extractDescriptionFromBlocks, getPage, getPages } from "@/lib/notion";

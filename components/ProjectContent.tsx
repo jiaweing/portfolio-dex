@@ -4,7 +4,7 @@ import {
   LinkSquare02Icon as ExternalLink,
 } from "hugeicons-react";
 import Link from "next/link";
-import { NotionRenderer } from "@/components/markdown-renderer";
+import { NotionRenderer } from "@/components/NotionRenderer";
 import ProjectGallery from "@/components/project-gallery";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FadeIn } from "@/components/ui/fade-in";
