@@ -23,7 +23,7 @@
       "title": "Podcast Host & Writer",
       "organization": "updatenight.com",
       "url": "https://updatenight.com",
-      "description": "handpicked tools and underrated news"
+      "description": "handpicked tools & underrated news"
     },
     {
       "title": "Co-Founder",
@@ -47,31 +47,31 @@
       "title": "Founder",
       "organization": "decosmic.com",
       "url": "https://decosmic.com",
-      "description": "build and deploy AI agents"
+      "description": "build & deploy AI agents"
     },
     {
       "title": "Computer Science",
       "organization": "University of Glasgow",
       "url": "https://www.gla.ac.uk",
-      "description": "junior, 2026"
+      "description": "2023-2026"
     },
     {
       "title": "Computer Science",
       "organization": "Singapore Institute of Technology",
       "url": "https://www.singaporetech.edu.sg",
-      "description": "junior, 2026"
+      "description": "2023-2026"
     },
     {
-      "title": "Campus Lead",
+      "title": "Campus Lead @ SIT",
       "organization": "Notion",
       "url": "https://notion.so",
-      "description": "Singapore Institue of Technology"
+      "description": ""
     },
     {
       "title": "",
       "organization": "Unsplash",
       "url": "https://unsplash.com/@jiaweing",
-      "description": "top 25%, 460k views and 4.3k downloads",
+      "description": "top 25%, 460k views & 4.3k downloads",
       "invertFavicon": "dark"
     },
     {
@@ -135,7 +135,7 @@
       "title": "Founder",
       "organization": "been.place",
       "url": "https://been.place",
-      "description": "track, remember, and share places",
+      "description": "track, remember & share places",
       "hideFavicon": true
     },
     {
@@ -159,7 +159,7 @@
       "title": "Software Developer",
       "organization": "1citadel.com",
       "url": "https://1citadel.com",
-      "description": "blockchain for document security, tokenization, and contact tracing"
+      "description": "blockchain for doc security, tokenization & contact tracing"
     },
     {
       "title": "Business Information Systems",
@@ -251,7 +251,7 @@
     },
     {
       "name": "iPad Air 4",
-      "description": "tablet for notes and sketching",
+      "description": "tablet for notes & sketching",
       "url": "https://www.apple.com/ipad-air",
       "category": "tablet"
     },
@@ -281,7 +281,7 @@
     },
     {
       "name": "Yunzii AL75",
-      "description": "custom mechanical keyboard with HMX Chu switches and Aifei Stealth keycaps",
+      "description": "custom mechanical keyboard with HMX Chu switches & Aifei Stealth keycaps",
       "url": "https://yunzii.com/products/yunzii-al75-keyboard-kit",
       "category": "keyboard"
     },
@@ -343,7 +343,7 @@
     },
     {
       "name": "Fujifilm X-T50",
-      "description": "mirrorless camera for photography and video",
+      "description": "mirrorless camera for photography & video",
       "url": "https://fujifilm-x.com/en-us/products/cameras/x-t50/",
       "category": "camera"
     },
@@ -375,7 +375,7 @@
     },
     {
       "name": "ANBERNIC RG40XX V",
-      "description": "retro game console with 4-inch screen and 64GB storage",
+      "description": "retro game console with 4-inch screen & 64GB storage",
       "url": "https://anbernic.com/products/rg40xx-v",
       "category": "gaming"
     },
@@ -399,7 +399,7 @@
     },
     {
       "name": "My Collection",
-      "description": "view my complete desk setup and gear collection",
+      "description": "view my complete desk setup & gear collection",
       "url": "https://mycollection.shop/jiaweing",
       "category": "collection"
     }

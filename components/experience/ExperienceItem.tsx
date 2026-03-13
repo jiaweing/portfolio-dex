@@ -40,14 +40,14 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
         {item.description && (
           <>
             {/* <span className="text-muted-foreground">&bull;</span> */}
-            <span className="text-muted-foreground text-xs md:max-w-md">
+            <span className="text-muted-foreground/80 dark:text-muted-foreground/50">
               {item.description}
             </span>
           </>
         )}
       </div>
       {item.title && (
-        <span className="ml-auto shrink-0 whitespace-nowrap rounded-full bg-muted px-2 text-xs">
+        <span className="shrink-0 whitespace-nowrap rounded-full border border-muted/50 px-2 text-xs">
           {item.title}
         </span>
       )}
