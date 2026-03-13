@@ -177,57 +177,59 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
       <FadeIn delay={0.1}>
         <TooltipProvider>
-          {groups.map((group) => (
-            <div key={group.label}>
-              <p className="mb-2 font-medium text-muted-foreground">
-                {group.label}
-              </p>
-              <div className="grid gap-1 space-y-1">
-                {group.posts.map((post) => (
-                  <article
-                    className="group relative flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
-                    key={post.id}
-                  >
-                    <div className="flex min-w-0 items-center gap-2">
-                      {post.date && (
-                        <time
-                          className="flex h-6 w-6 shrink-0 items-center justify-center rounded border font-medium text-xs tabular-nums"
-                          dateTime={post.date}
-                        >
-                          {formatDate(new Date(post.date), "d")}
-                        </time>
-                      )}
-                      <BlogPostHoverCard post={post}>
-                        <Link
-                          className="min-w-0 truncate font-medium text-foreground hover:underline"
-                          href={`/blog/${post.slug}`}
-                        >
-                          {post.title}
-                        </Link>
-                      </BlogPostHoverCard>
-                      <div className="flex items-center gap-1">
-                        {post.tags?.map((tag) => (
-                          <Tooltip key={`${post.id}-${tag}`}>
-                            <TooltipTrigger asChild>
-                              <span
-                                className={cn(
-                                  "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
-                                  getTagColorClass(tag, post.tagColors?.[tag])
-                                )}
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="capitalize">{tag}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        ))}
+          <div className="space-y-6">
+            {groups.map((group) => (
+              <div key={group.label}>
+                <p className="mb-2 font-medium text-muted-foreground">
+                  {group.label}
+                </p>
+                <div className="grid gap-1 space-y-1">
+                  {group.posts.map((post) => (
+                    <article
+                      className="group relative flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+                      key={post.id}
+                    >
+                      <div className="flex min-w-0 items-center gap-2">
+                        {post.date && (
+                          <time
+                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded border font-medium text-xs tabular-nums"
+                            dateTime={post.date}
+                          >
+                            {formatDate(new Date(post.date), "d")}
+                          </time>
+                        )}
+                        <BlogPostHoverCard post={post}>
+                          <Link
+                            className="min-w-0 truncate font-medium text-foreground hover:underline"
+                            href={`/blog/${post.slug}`}
+                          >
+                            {post.title}
+                          </Link>
+                        </BlogPostHoverCard>
+                        <div className="flex items-center gap-1">
+                          {post.tags?.map((tag) => (
+                            <Tooltip key={`${post.id}-${tag}`}>
+                              <TooltipTrigger asChild>
+                                <span
+                                  className={cn(
+                                    "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
+                                    getTagColorClass(tag, post.tagColors?.[tag])
+                                  )}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="capitalize">{tag}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </TooltipProvider>
       </FadeIn>
     </div>
