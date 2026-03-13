@@ -13,8 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 import { buildSpeechTextMapping, toSpeechText } from "@/lib/speech-text";
+import { cn } from "@/lib/utils";
 import { useSpeechHighlight } from "./SpeechHighlightContext";
 
 interface HighlightTracker {
@@ -90,7 +90,9 @@ function renderRichText(
 
         // Absolute index for seeking
         const absSeekIndex =
-          spokenWordStart >= 0 ? blockOffset + segmentStart + spokenWordStart : -1;
+          spokenWordStart >= 0
+            ? blockOffset + segmentStart + spokenWordStart
+            : -1;
 
         const isHighlighted =
           highlightIndex >= 0 &&
@@ -100,13 +102,13 @@ function renderRichText(
 
         tokens.push(
           <span
-            key={tokenIdx}
             className={cn(
               absSeekIndex >= 0 &&
                 "cursor-pointer rounded transition-colors hover:bg-primary/10",
               isHighlighted &&
                 "animate-pulse bg-primary/20 px-0.5 text-foreground"
             )}
+            key={tokenIdx}
             onClick={
               absSeekIndex >= 0
                 ? (e) => {
@@ -465,7 +467,8 @@ export function NotionBlock({
   allBlocks?: BlockObjectResponse[];
   highlightedCodeMap?: Record<string, string>;
 }) {
-  const { currentCharIndex, isSpeaking, autoScroll, onWordClick } = useSpeechHighlight();
+  const { currentCharIndex, isSpeaking, autoScroll, onWordClick } =
+    useSpeechHighlight();
   const blockOffset = allBlocks ? useBlockCharOffset(allBlocks, block.id) : 0;
 
   // Calculate the highlight position relative to this block
@@ -492,7 +495,13 @@ export function NotionBlock({
       const rt = block.paragraph.rich_text;
       return (
         <p className="mb-4 text-muted-foreground leading-7">
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
         </p>
       );
     }
@@ -505,7 +514,13 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
           <HeadingAnchor id={block.id} />
         </h1>
       );
@@ -519,7 +534,13 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
           <HeadingAnchor id={block.id} />
         </h2>
       );
@@ -533,7 +554,13 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
           <HeadingAnchor id={block.id} />
         </h3>
       );
@@ -544,7 +571,13 @@ export function NotionBlock({
       tracker.currentOffset = 2; // skip "- " prefix in extracted text
       return (
         <li className="mt-2 text-muted-foreground">
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
         </li>
       );
     }
@@ -553,7 +586,13 @@ export function NotionBlock({
       const rt = block.numbered_list_item.rich_text;
       return (
         <li className="mt-2 list-decimal text-muted-foreground">
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
         </li>
       );
     }
@@ -563,7 +602,13 @@ export function NotionBlock({
       tracker.currentOffset = 1; // skip opening `"` in extracted text
       return (
         <blockquote className="my-4 border-primary border-l-4 pl-4 italic">
-          {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+          {renderRichText(
+            rt,
+            tracker,
+            localHighlightIndex,
+            blockOffset,
+            onWordClick
+          )}
         </blockquote>
       );
     }
@@ -584,7 +629,15 @@ export function NotionBlock({
           )}
           <div className="flex-1 text-muted-foreground">
             {rt.length > 0 && (
-              <div>{renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}</div>
+              <div>
+                {renderRichText(
+                  rt,
+                  tracker,
+                  localHighlightIndex,
+                  blockOffset,
+                  onWordClick
+                )}
+              </div>
             )}
             {children.length > 0 && (
               <div className="[counter-reset:list-item] [&_li]:ml-5">
@@ -655,7 +708,13 @@ export function NotionBlock({
             type="checkbox"
           />
           <span className={checked ? "text-muted-foreground line-through" : ""}>
-            {renderRichText(rt, tracker, localHighlightIndex, blockOffset, onWordClick)}
+            {renderRichText(
+              rt,
+              tracker,
+              localHighlightIndex,
+              blockOffset,
+              onWordClick
+            )}
           </span>
         </div>
       );
