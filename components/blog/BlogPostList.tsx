@@ -149,7 +149,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
       <div className="space-y-3">
         <FadeIn delay={0}>
           <Input
-            className="border-0 bg-muted shadow-none"
+            className="!text-xl h-14 rounded-3xl border-0 bg-muted shadow-none"
             onChange={(event) => updateSearch(event.target.value)}
             placeholder="Search posts..."
             value={search}

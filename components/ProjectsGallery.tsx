@@ -202,12 +202,14 @@ function ProjectCard({
               </div>
 
               {project.url && (
-                <a
+                <button
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-transform duration-100 hover:scale-110"
-                  href={project.url}
-                  onClick={(e) => e.stopPropagation()}
-                  rel="noopener noreferrer"
-                  target="_blank"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(project.url, "_blank", "noopener,noreferrer");
+                  }}
+                  type="button"
                 >
                   <svg
                     fill="none"
@@ -223,7 +225,7 @@ function ProjectCard({
                     <line x1="7" x2="17" y1="17" y2="7" />
                     <polyline points="7 7 17 7 17 17" />
                   </svg>
-                </a>
+                </button>
               )}
             </div>
 

@@ -78,6 +78,134 @@
 
   --animate-cosmic-pulse: cosmic-pulse 5s ease-in-out infinite;
 
+  /* Loader animations */
+  --animate-pulse-dot: pulse-dot 1.2s ease-in-out infinite;
+  --animate-thin-pulse: thin-pulse 1.5s ease-in-out infinite;
+  --animate-spinner-fade: spinner-fade 1.2s linear infinite;
+  --animate-bounce-dots: bounce-dots 1.4s ease-in-out infinite;
+  --animate-typing: typing 1s infinite;
+  --animate-wave: wave 1s ease-in-out infinite;
+  --animate-wave-bars: wave-bars 1.2s ease-in-out infinite;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-text-blink: text-blink 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 4s infinite linear;
+  --animate-loading-dots: loading-dots 1.4s infinite;
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes thin-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes spinner-fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounce-dots {
+    0%,
+    80%,
+    100% {
+      transform: scale(0);
+    }
+    40% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes typing {
+    0%,
+    100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes wave {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(1.5);
+    }
+  }
+
+  @keyframes wave-bars {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(2);
+    }
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes text-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes loading-dots {
+    0%,
+    20% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   --color-context-card-border: var(--context-card-border);
   --color-amber-600: var(--ds-amber-600);
   --color-gray-200: var(--ds-gray-200);

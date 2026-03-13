@@ -220,8 +220,7 @@ export function ProfileBio() {
           />
           Singapore)
         </span>
-        , a serial entrepreneur, designer & software engineer who loves building
-        cool shit
+        , a serial entrepreneur, designer & software engineer
         <Image
           alt="Fire"
           className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
