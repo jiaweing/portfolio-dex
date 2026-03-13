@@ -6,6 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { BlogPost } from "@/lib/notion";
+import { getTagColorClass } from "@/lib/tag-colors";
+import { cn } from "@/lib/utils";
 
 interface PreviewData {
   description: string | null;
@@ -101,23 +103,30 @@ export function BlogPostHoverCard({ post, children }: BlogPostHoverCardProps) {
               </div>
             )}
             <div className="flex flex-col gap-2 p-4">
-              <p className="font-semibold text-sm leading-snug">{post.title}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-semibold text-sm leading-snug">
+                  {post.title}
+                </p>
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex items-center gap-1">
+                    {post.tags.map((tag) => (
+                      <span
+                        className={cn(
+                          "inline-flex h-1.5 w-1.5 shrink-0 rounded-full",
+                          getTagColorClass(tag, post.tagColors?.[tag])
+                        )}
+                        key={tag}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <div className="flex flex-wrap items-center gap-1.5 text-muted-foreground text-xs">
                 {post.date && (
                   <time dateTime={post.date}>
                     {formatDate(new Date(post.date), "MMMM d, yyyy")}
                   </time>
-                )}
-                {post.tags && post.tags.length > 0 && (
-                  <>
-                    <span>•</span>
-                    {post.tags.map((tag) => (
-                      <span className="capitalize" key={tag}>
-                        {tag}
-                      </span>
-                    ))}
-                  </>
                 )}
                 {preview && preview.readingTime > 0 && (
                   <span className="inline-flex items-center gap-1">
