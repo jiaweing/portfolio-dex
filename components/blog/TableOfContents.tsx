@@ -35,9 +35,11 @@ function getPaddingLeft(level: 1 | 2 | 3) {
 function TOCItemLink({
   heading,
   isActive,
+  alwaysExpanded = false,
 }: {
   heading: TocHeading;
   isActive: boolean;
+  alwaysExpanded?: boolean;
 }) {
   return (
     <Link
@@ -62,12 +64,14 @@ function TOCItemLink({
         style={{ width: getLineWidth(heading.level) }}
       />
 
-      {/* Animated text — slides in on group hover */}
-      <div className="grid w-full grid-rows-[0fr] transition-[grid-template-rows] delay-200 duration-300 ease-in-out group-hover:grid-rows-[1fr] group-hover:delay-0">
+      {/* Animated text — slides in on group hover, or always visible when alwaysExpanded */}
+      <div
+        className={`grid w-full transition-[grid-template-rows] duration-300 ease-in-out ${alwaysExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr] delay-200 group-hover:grid-rows-[1fr] group-hover:delay-0"}`}
+      >
         <div className="overflow-hidden">
           <div className="flex min-h-5 flex-col justify-center">
             <span
-              className={`block w-full -translate-x-4 py-0.5 pr-8 text-left font-medium text-sm opacity-0 transition-all delay-0 duration-200 ease-in-out group-hover:translate-x-0 group-hover:opacity-100 group-hover:delay-150 group-hover:duration-300 ${
+              className={`block w-full py-0.5 pr-8 text-left font-medium text-sm transition-all duration-200 ease-in-out ${alwaysExpanded ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0 delay-0 group-hover:translate-x-0 group-hover:opacity-100 group-hover:delay-150 group-hover:duration-300"} ${
                 isActive ? "text-foreground" : "text-muted-foreground"
               }`}
               style={{ paddingLeft: getPaddingLeft(heading.level) }}
@@ -81,17 +85,26 @@ function TOCItemLink({
   );
 }
 
-export function TableOfContents({ headings }: { headings: TocHeading[] }) {
+export function TableOfContents({
+  headings,
+  alwaysExpanded = false,
+}: {
+  headings: TocHeading[];
+  alwaysExpanded?: boolean;
+}) {
   const headingIds = useMemo(() => headings.map((h) => h.id), [headings]);
   const activeId = useActiveHeading(headingIds);
 
   if (headings.length === 0) return null;
 
   return (
-    <nav className="group max-h-[75vh] w-full overflow-y-auto pr-10">
+    <nav
+      className={`group max-h-[75vh] w-full overflow-y-auto pr-10 ${alwaysExpanded ? "always-expanded" : ""}`}
+    >
       <div className="flex flex-col gap-1">
         {headings.map((heading) => (
           <TOCItemLink
+            alwaysExpanded={alwaysExpanded}
             heading={heading}
             isActive={activeId === heading.id}
             key={heading.id}

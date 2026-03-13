@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogLLMMenu } from "@/components/blog/BlogLLMMenu";
 import { BlogTextToSpeech } from "@/components/blog/BlogTextToSpeech";
+import { MobileTocSheet } from "@/components/blog/MobileTocSheet";
 import { PostDate } from "@/components/blog/PostDate";
 import { ReadingTime } from "@/components/blog/ReadingTime";
 import {
@@ -131,6 +132,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <TableOfContents headings={headings} />
         </div>
       )}
+      {headings.length > 0 && <MobileTocSheet headings={headings} />}
       <article>
         <FadeIn>
           <div className="mb-8 flex flex-col">
