@@ -3,7 +3,7 @@
 import { formatDate } from "date-fns";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { FadeIn } from "@/components/ui/fade-in";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,44 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const search = searchParams.get("search") ?? "";
+  const urlSearch = searchParams.get("search") ?? "";
+  const [inputValue, setInputValue] = useState(urlSearch);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync input with URL on popstate (back/forward navigation)
+  useEffect(() => {
+    setInputValue(urlSearch);
+  }, [urlSearch]);
+
+  // Debounce URL updates
+  useEffect(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      if (inputValue !== urlSearch) {
+        const params = new URLSearchParams(searchParams.toString());
+        if (inputValue.trim().length > 0) {
+          params.set("search", inputValue);
+        } else {
+          params.delete("search");
+        }
+        const query = params.toString();
+        router.replace(query ? `${pathname}?${query}` : pathname, {
+          scroll: false,
+        });
+      }
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [inputValue, urlSearch, searchParams, router, pathname]);
+
+  const search = urlSearch;
   const selectedTags = useMemo(() => {
     const tags = searchParams.get("tags");
     if (!tags) {
@@ -129,38 +166,15 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     });
   };
 
-  const updateSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value.trim().length > 0) {
-      params.set("search", value);
-    } else {
-      params.delete("search");
-    }
-
-    const query = params.toString();
-    router.replace(query ? `${pathname}?${query}` : pathname, {
-      scroll: false,
-    });
-  };
-
   return (
     <div className="space-y-6 pt-3 pb-10 text-sm leading-relaxed">
       <div className="space-y-3">
         <FadeIn delay={0}>
-          <Input
-            className="!text-xl h-14 rounded-3xl border-0 bg-muted shadow-none"
-            onChange={(event) => updateSearch(event.target.value)}
-            placeholder="Search posts..."
-            value={search}
-          />
-        </FadeIn>
-        <FadeIn delay={0.05}>
-          <div className="flex flex-wrap gap-2">
+          <div className="relative z-0 mx-2 -mb-4 flex flex-wrap justify-center rounded-xl rounded-b-none bg-muted/50 px-1 py-2">
             {allTags.map((tag) => (
               <Toggle
                 aria-label={`Filter by ${tag}`}
-                className="h-8 gap-1.5 border-0 px-2 text-foreground shadow-none hover:text-current"
+                className="h-7 gap-1.5 border-0 px-2 text-foreground text-sm shadow-none hover:text-current"
                 key={tag}
                 onPressedChange={() => toggleTag(tag)}
                 pressed={selectedTags.includes(tag)}
@@ -177,6 +191,14 @@ export function BlogPostList({ posts }: BlogPostListProps) {
               </Toggle>
             ))}
           </div>
+        </FadeIn>
+        <FadeIn delay={0.05}>
+          <Input
+            className="!bg-muted relative z-10 h-12 border-0 shadow-none"
+            onChange={(event) => setInputValue(event.target.value)}
+            placeholder="Search"
+            value={inputValue}
+          />
         </FadeIn>
       </div>
 
