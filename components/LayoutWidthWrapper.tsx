@@ -13,12 +13,13 @@ export function LayoutWidthWrapper({
   const pathname = usePathname();
   const isWidePage =
     pathname?.startsWith("/projects") || pathname === "/wrapped";
+  const isFullWidthPage = pathname?.startsWith("/setup");
 
   return (
     <div
       className={cn(
         "relative mx-auto px-6 py-6 pb-20",
-        isWidePage ? "max-w-7xl" : "max-w-2xl",
+        isFullWidthPage ? "max-w-none" : isWidePage ? "max-w-7xl" : "max-w-2xl",
         className
       )}
     >

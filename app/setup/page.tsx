@@ -1,7 +1,7 @@
-// Import structured data component
-import { GearSection } from "@/components/GearSection";
+import { StackTable } from "@/components/StackTable";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generateMetadata } from "@/lib/metadata";
+import { getStackItems } from "@/lib/notion";
 import JsonLd from "../jsonld";
 
 export const metadata = generateMetadata({
@@ -10,12 +10,15 @@ export const metadata = generateMetadata({
   url: "/setup",
 });
 
-export default async function Home() {
+export default async function SetupPage() {
+  const items = await getStackItems();
   return (
     <>
       <JsonLd />
       <FadeIn>
-        <GearSection />
+        <div className="-mx-6 w-screen overflow-x-auto">
+          <StackTable items={items} />
+        </div>
       </FadeIn>
     </>
   );

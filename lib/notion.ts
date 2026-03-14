@@ -666,6 +666,75 @@ export const getProjects = unstable_cache(fetchProjects, ["projects"], {
   revalidate: REVALIDATE_TIME,
 });
 
+// --- Stack Items ---
+export interface StackItem {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  category: string;
+  categoryColor: string;
+  platforms: { name: string; color: string }[];
+  hideFavicon: boolean;
+}
+
+export const fetchStackItems = async (): Promise<StackItem[]> => {
+  const notion = getNotionClient();
+  const databaseId = process.env.NOTION_SETUP_DATABASE_ID;
+
+  if (!databaseId) return [];
+
+  try {
+    const allResults: any[] = [];
+    let cursor: string | undefined;
+
+    do {
+      let response: any;
+      const sorts = [{ property: "Name", direction: "ascending" as const }];
+
+      if (notion.dataSources) {
+        response = await notion.dataSources.query({
+          data_source_id: databaseId,
+          sorts,
+          start_cursor: cursor,
+          page_size: 100,
+        });
+      } else {
+        response = await notion.databases.query({
+          database_id: databaseId,
+          sorts,
+          start_cursor: cursor,
+          page_size: 100,
+        });
+      }
+
+      allResults.push(...response.results);
+      cursor = response.has_more ? response.next_cursor : undefined;
+    } while (cursor);
+
+    return allResults.map((page: any) => {
+      const categorySelect = page.properties?.Category?.select;
+      return {
+        id: page.id,
+        name: getTitle(page),
+        description: getProperty(page, "Description", "rich_text") || "",
+        url: getProperty(page, "URL", "url") || "",
+        category: categorySelect?.name || "",
+        categoryColor: categorySelect?.color || "default",
+        platforms: getProperty(page, "Platforms", "multi_select_colored") || [],
+        hideFavicon: getProperty(page, "HideFavicon", "checkbox") ?? false,
+      };
+    });
+  } catch (e) {
+    console.error("Failed to fetch stack items", e);
+    return [];
+  }
+};
+
+export const getStackItems = unstable_cache(fetchStackItems, ["stack-items"], {
+  revalidate: REVALIDATE_TIME,
+});
+
 export const getProject = unstable_cache(
   async (
     slug: string

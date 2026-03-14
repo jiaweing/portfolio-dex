@@ -40,7 +40,7 @@ export function Favicon({
     return (
       <img
         alt=""
-        className={`mr-1 inline-block h-4 w-4 rounded-sm align-text-bottom ${className} ${
+        className={`mr-1 inline-block h-4 w-4 rounded-full align-text-bottom ${className} ${
           shouldInvert ? "invert" : ""
         }`}
         loading="lazy"

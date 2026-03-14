@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen02Icon as BookOpen,
-  ComputerPhoneSyncIcon as Computer,
+  Bookmark02Icon as Computer,
   FolderLibraryIcon,
   Globe02Icon,
   UserSquareIcon,
