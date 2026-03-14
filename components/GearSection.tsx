@@ -31,7 +31,7 @@ function GearListItem({ item }: { item: GearItem }) {
     <p className="leading-relaxed">
       {item.url && item.url !== "#" ? (
         <Link
-          className="text-blue-500 dark:text-sky-500"
+          className="transition-colors duration-300"
           href={item.url as any}
           target="_blank"
         >
@@ -40,7 +40,9 @@ function GearListItem({ item }: { item: GearItem }) {
             invert={item.invertFavicon}
             url={item.url}
           />
-          {item.name}
+          <span className="border-muted-foreground/40 border-b border-dashed hover:border-foreground dark:text-white">
+            {item.name}
+          </span>
         </Link>
       ) : (
         <span className="text-muted-foreground">{item.name}</span>
