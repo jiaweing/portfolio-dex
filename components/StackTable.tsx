@@ -243,17 +243,19 @@ export function StackTable({ items }: StackTableProps) {
         <div className="w-full overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-muted/50 text-left">
-                <th className="w-[700px] px-4 py-2.5 font-semibold lg:pl-[10rem]">
+              <tr className="border-y bg-muted/50 text-left text-xs">
+                <th className="w-[700px] px-4 py-2.5 font-semibold leading-relaxed lg:pl-[10rem]">
                   Name
                 </th>
-                <th className="px-4 py-2.5 font-semibold">Description</th>
+                <th className="px-4 py-2.5 font-semibold leading-relaxed">
+                  Description
+                </th>
                 <th className="w-[350px] px-4 py-2.5 font-semibold">
                   <div className="flex items-center gap-2">
                     {allCategories.length > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1.5 font-semibold transition-colors hover:text-foreground">
+                          <button className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
                             Category
                             {selectedCategories.length > 0 && (
                               <Badge
@@ -307,7 +309,7 @@ export function StackTable({ items }: StackTableProps) {
                     {allPlatforms.length > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1.5 font-semibold transition-colors hover:text-foreground">
+                          <button className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
                             Platforms
                             {selectedPlatforms.length > 0 && (
                               <Badge
@@ -379,16 +381,18 @@ export function StackTable({ items }: StackTableProps) {
                           url={item.url}
                         />
                       )}
-                      <span className="truncate">{item.name}</span>
+                      <span className="truncate leading-relaxed">
+                        {item.name}
+                      </span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 font-medium text-muted-foreground/80 dark:text-muted-foreground/70">
+                  <td className="px-4 py-4 font-medium text-muted-foreground/80 leading-relaxed dark:text-muted-foreground/70">
                     {item.description}
                   </td>
                   <td className="w-[140px] px-4 py-4">
                     {item.category && (
                       <span
-                        className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm ${
+                        className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
                           NOTION_COLOR_MAP[item.categoryColor] ??
                           NOTION_COLOR_MAP.default
                         }`}
@@ -401,7 +405,7 @@ export function StackTable({ items }: StackTableProps) {
                     <div className="flex flex-wrap gap-1">
                       {item.platforms.map((platform) => (
                         <span
-                          className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm ${
+                          className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
                             NOTION_COLOR_MAP[platform.color] ??
                             NOTION_COLOR_MAP.default
                           }`}

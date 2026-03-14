@@ -244,7 +244,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                         </div>
                         <BlogPostHoverCard post={post}>
                           <Link
-                            className="relative z-10 min-w-0 cursor-pointer truncate text-foreground"
+                            className="relative z-10 min-w-0 cursor-pointer truncate text-foreground leading-relaxed"
                             href={`/blog/${post.slug}`}
                           >
                             {post.title}
@@ -288,7 +288,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                         )}
                         <BlogPostHoverCard post={post}>
                           <Link
-                            className="relative z-10 min-w-0 cursor-pointer truncate text-foreground"
+                            className="relative z-10 min-w-0 cursor-pointer truncate text-foreground leading-relaxed"
                             href={`/blog/${post.slug}`}
                           >
                             {post.title}

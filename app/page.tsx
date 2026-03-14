@@ -99,7 +99,7 @@ export default async function Home() {
                             </time>
                           )}
                           <Link
-                            className="min-w-0 truncate font-medium text-foreground"
+                            className="min-w-0 truncate font-medium text-foreground leading-relaxed"
                             href={`/blog/${post.slug}`}
                           >
                             {post.title}

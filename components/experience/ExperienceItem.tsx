@@ -27,12 +27,12 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
                 invert={item.invertFavicon}
                 url={item.url}
               />
-              <span className="border-muted-foreground/40 border-b border-dashed font-medium transition-colors duration-300 hover:border-foreground dark:text-white">
+              <span className="border-muted-foreground/40 border-b border-dashed font-medium leading-relaxed transition-colors duration-300 hover:border-foreground dark:text-white">
                 {item.organization}
               </span>
             </Link>
           ) : (
-            <span className="truncate text-muted-foreground">
+            <span className="truncate text-muted-foreground leading-relaxed">
               {item.organization}
             </span>
           )}
@@ -40,14 +40,14 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
         {item.description && (
           <>
             {/* <span className="text-muted-foreground">&bull;</span> */}
-            <span className="text-muted-foreground/80 dark:text-muted-foreground/50">
+            <span className="text-muted-foreground/80 leading-relaxed dark:text-muted-foreground/70">
               {item.description}
             </span>
           </>
         )}
       </div>
       {item.title && (
-        <span className="shrink-0 whitespace-nowrap rounded-full border border-muted/50 px-2 text-xs">
+        <span className="shrink-0 whitespace-nowrap rounded-full border border-muted/50 px-2 text-xs leading-relaxed">
           {item.title}
         </span>
       )}
