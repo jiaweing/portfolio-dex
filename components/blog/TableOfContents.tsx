@@ -36,10 +36,12 @@ function TOCItemLink({
   heading,
   isActive,
   alwaysExpanded = false,
+  onItemClick,
 }: {
   heading: TocHeading;
   isActive: boolean;
   alwaysExpanded?: boolean;
+  onItemClick?: (id: string) => void;
 }) {
   return (
     <Link
@@ -47,10 +49,19 @@ function TOCItemLink({
       href={`#${heading.id}`}
       onClick={(e) => {
         e.preventDefault();
-        document.getElementById(heading.id)?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        onItemClick?.(heading.id);
+
+        window.setTimeout(() => {
+          const headingEl = document.getElementById(heading.id);
+          if (!headingEl) return;
+
+          headingEl.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+
+          window.history.replaceState(null, "", `#${heading.id}`);
+        }, 250);
       }}
       title={heading.text}
     >
@@ -88,9 +99,11 @@ function TOCItemLink({
 export function TableOfContents({
   headings,
   alwaysExpanded = false,
+  onItemClick,
 }: {
   headings: TocHeading[];
   alwaysExpanded?: boolean;
+  onItemClick?: (id: string) => void;
 }) {
   const headingIds = useMemo(() => headings.map((h) => h.id), [headings]);
   const activeId = useActiveHeading(headingIds);
@@ -108,6 +121,7 @@ export function TableOfContents({
             heading={heading}
             isActive={activeId === heading.id}
             key={heading.id}
+            onItemClick={onItemClick}
           />
         ))}
       </div>
