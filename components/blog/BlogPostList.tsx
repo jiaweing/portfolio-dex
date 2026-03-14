@@ -253,7 +253,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                       </div>
                       {post.date && (
                         <time
-                          className="relative z-10 shrink-0 text-muted-foreground text-xs tabular-nums"
+                          className="relative z-10 hidden shrink-0 text-muted-foreground text-xs tabular-nums sm:block"
                           dateTime={post.date}
                         >
                           {formatDate(new Date(post.date), "MMM d, yyyy")}
