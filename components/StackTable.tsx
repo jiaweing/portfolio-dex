@@ -241,19 +241,19 @@ export function StackTable({ items }: StackTableProps) {
         </div>
       ) : (
         <div className="w-full overflow-x-auto">
-          <table className="w-full border-collapse text-lg">
+          <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-muted/50 text-left text-muted-foreground text-xs">
-                <th className="w-[700px] px-4 py-2.5 font-medium lg:pl-[10rem]">
+              <tr className="bg-muted/50 text-left">
+                <th className="w-[700px] px-4 py-2.5 font-semibold lg:pl-[10rem]">
                   Name
                 </th>
-                <th className="px-4 py-2.5 font-medium">Description</th>
-                <th className="w-[350px] px-4 py-2.5 font-medium">
+                <th className="px-4 py-2.5 font-semibold">Description</th>
+                <th className="w-[350px] px-4 py-2.5 font-semibold">
                   <div className="flex items-center gap-2">
                     {allCategories.length > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1.5 transition-colors hover:text-foreground">
+                          <button className="flex items-center gap-1.5 font-semibold transition-colors hover:text-foreground">
                             Category
                             {selectedCategories.length > 0 && (
                               <Badge
@@ -307,7 +307,7 @@ export function StackTable({ items }: StackTableProps) {
                     {allPlatforms.length > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1.5 transition-colors hover:text-foreground">
+                          <button className="flex items-center gap-1.5 font-semibold transition-colors hover:text-foreground">
                             Platforms
                             {selectedPlatforms.length > 0 && (
                               <Badge
@@ -382,7 +382,7 @@ export function StackTable({ items }: StackTableProps) {
                       <span className="truncate">{item.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-muted-foreground">
+                  <td className="px-4 py-4 font-medium text-muted-foreground/80 dark:text-muted-foreground/70">
                     {item.description}
                   </td>
                   <td className="w-[140px] px-4 py-4">
