@@ -94,14 +94,17 @@ export function NotionImageLightbox({
       </button>
 
       <Dialog onOpenChange={setOpen} open={open}>
-        <DialogContent className="h-dvh max-h-dvh w-screen max-w-none border-none bg-background/95 p-0 backdrop-blur-xs sm:rounded-none [&>button]:hidden">
+        <DialogContent className="inset-0 top-0 left-0 z-[220] h-dvh max-h-dvh w-screen max-w-none translate-x-0 translate-y-0 border-none bg-background/95 p-0 backdrop-blur-xs sm:rounded-none [&>button]:hidden">
           <DialogTitle className="sr-only">{alt || "Image preview"}</DialogTitle>
 
-          <div className="absolute top-3 right-3 z-20 flex items-center gap-2 sm:top-4 sm:right-4">
-            <div className="flex items-center gap-1 rounded-full border bg-background/80 p-1 shadow-md backdrop-blur-sm">
+          <div
+            className="absolute top-3 right-3 z-30 flex items-center gap-2 sm:top-4 sm:right-4"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center gap-1 rounded-full bg-background/80 p-1 shadow-md backdrop-blur-sm">
               <button
                 aria-label="Zoom out"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border-0 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 onClick={() => handleZoom(-ZOOM_STEP)}
                 type="button"
               >
@@ -112,7 +115,7 @@ export function NotionImageLightbox({
               </span>
               <button
                 aria-label="Zoom in"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border-0 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 onClick={() => handleZoom(ZOOM_STEP)}
                 type="button"
               >
@@ -120,7 +123,7 @@ export function NotionImageLightbox({
               </button>
               <button
                 aria-label="Reset zoom"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border-0 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 onClick={resetView}
                 type="button"
               >
@@ -130,7 +133,7 @@ export function NotionImageLightbox({
 
             <button
               aria-label="Close image preview"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border bg-background/80 text-muted-foreground shadow-md transition-colors hover:bg-muted hover:text-foreground"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border-0 bg-background/80 text-muted-foreground shadow-md transition-colors hover:bg-muted hover:text-foreground"
               onClick={() => setOpen(false)}
               type="button"
             >
@@ -143,6 +146,7 @@ export function NotionImageLightbox({
               "flex h-full w-full items-center justify-center overflow-hidden p-4 pt-20 sm:p-8 sm:pt-24",
               zoom > 1 && "touch-none"
             )}
+            onClick={() => setOpen(false)}
             onMouseMove={(event) =>
               updateDrag({ x: event.clientX, y: event.clientY })
             }
@@ -167,6 +171,7 @@ export function NotionImageLightbox({
                 isDragging && "cursor-grabbing"
               )}
               draggable={false}
+              onClick={(event) => event.stopPropagation()}
               onMouseDown={(event) =>
                 startDrag({ x: event.clientX, y: event.clientY })
               }
