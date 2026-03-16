@@ -47,22 +47,7 @@ function TOCItemLink({
     <Link
       className="relative flex min-h-5 w-full flex-col justify-start"
       href={`#${heading.id}`}
-      onClick={(e) => {
-        e.preventDefault();
-        onItemClick?.(heading.id);
-
-        window.setTimeout(() => {
-          const headingEl = document.getElementById(heading.id);
-          if (!headingEl) return;
-
-          headingEl.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-
-          window.history.replaceState(null, "", `#${heading.id}`);
-        }, 250);
-      }}
+      onClick={() => onItemClick?.(heading.id)}
       title={heading.text}
     >
       {/* Line indicator */}
