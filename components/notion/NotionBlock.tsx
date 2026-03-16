@@ -16,6 +16,7 @@ import {
 import { buildSpeechTextMapping, toSpeechText } from "@/lib/speech-text";
 import { cn } from "@/lib/utils";
 import { useSpeechHighlight } from "./SpeechHighlightContext";
+import { NotionImageLightbox } from "./NotionImageLightbox";
 
 interface HighlightTracker {
   currentOffset: number;
@@ -687,9 +688,8 @@ export function NotionBlock({
 
       return (
         <figure className="my-6">
-          <img
+          <NotionImageLightbox
             alt={caption || "Notion Image"}
-            className="h-auto w-full rounded-lg"
             src={imageUrl}
           />
           {caption && (
