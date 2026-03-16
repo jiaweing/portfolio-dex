@@ -510,17 +510,19 @@ export function NotionBlock({
       const rt = block.heading_1.rich_text;
       return (
         <h1
-          className="group/heading mt-8 mb-4 flex cursor-pointer scroll-mt-44 items-center gap-2 font-medium text-2xl"
+          className="group/heading mt-8 mb-4 flex cursor-pointer scroll-mt-44 items-start gap-2 font-medium text-2xl"
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(
-            rt,
-            tracker,
-            localHighlightIndex,
-            blockOffset,
-            onWordClick
-          )}
+          <span className="min-w-0 break-words whitespace-normal">
+            {renderRichText(
+              rt,
+              tracker,
+              localHighlightIndex,
+              blockOffset,
+              onWordClick
+            )}
+          </span>
           <HeadingAnchor id={block.id} />
         </h1>
       );
@@ -530,17 +532,19 @@ export function NotionBlock({
       const rt = block.heading_2.rich_text;
       return (
         <h2
-          className="group/heading mt-6 mb-3 flex cursor-pointer scroll-mt-44 items-center gap-2 font-medium text-xl"
+          className="group/heading mt-6 mb-3 flex cursor-pointer scroll-mt-44 items-start gap-2 font-medium text-xl"
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(
-            rt,
-            tracker,
-            localHighlightIndex,
-            blockOffset,
-            onWordClick
-          )}
+          <span className="min-w-0 break-words whitespace-normal">
+            {renderRichText(
+              rt,
+              tracker,
+              localHighlightIndex,
+              blockOffset,
+              onWordClick
+            )}
+          </span>
           <HeadingAnchor id={block.id} />
         </h2>
       );
@@ -550,17 +554,19 @@ export function NotionBlock({
       const rt = block.heading_3.rich_text;
       return (
         <h3
-          className="group/heading mt-4 mb-2 flex cursor-pointer scroll-mt-44 items-center gap-2 font-medium text-lg"
+          className="group/heading mt-4 mb-2 flex cursor-pointer scroll-mt-44 items-start gap-2 font-medium text-lg"
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          {renderRichText(
-            rt,
-            tracker,
-            localHighlightIndex,
-            blockOffset,
-            onWordClick
-          )}
+          <span className="min-w-0 break-words whitespace-normal">
+            {renderRichText(
+              rt,
+              tracker,
+              localHighlightIndex,
+              blockOffset,
+              onWordClick
+            )}
+          </span>
           <HeadingAnchor id={block.id} />
         </h3>
       );
