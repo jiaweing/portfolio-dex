@@ -276,37 +276,211 @@ const getTitle = (page: any) => {
   return "Untitled";
 };
 
-// Helper: Recursively fetch block children up to a given depth
-async function fetchBlockChildren(blockId: string): Promise<any[]> {
-  const notion = getNotionClient();
-  const allBlocks: any[] = [];
-  let cursor: string | undefined;
-
-  do {
-    const response: any = await notion.blocks.children.list({
-      block_id: blockId,
-      start_cursor: cursor,
-      page_size: 100,
-    });
-    allBlocks.push(...response.results);
-    cursor = response.has_more ? response.next_cursor : undefined;
-  } while (cursor);
-
-  return Promise.all(
-    allBlocks.map(async (block: any) => {
-      if (block.has_children) {
-        const children = await fetchBlockChildren(block.id);
-        return { ...block, children };
-      }
-      return block;
-    })
-  );
+function makeRichText(text: string) {
+  return text ? [{ type: "text", text: { content: text }, plain_text: text }] : [];
 }
 
-// Helper: Fetch page blocks with children pre-fetched for nested blocks (tables, columns, etc.)
-async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
-  const blocks = await fetchBlockChildren(pageId);
+function markdownToBlocks(markdown: string): BlockObjectResponse[] {
+  const lines = markdown.replace(/\r\n/g, "\n").split("\n");
+  const blocks: any[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      i++;
+      continue;
+    }
+
+    if (/^```/.test(trimmed)) {
+      const language = trimmed.slice(3).trim() || "plain text";
+      const codeLines: string[] = [];
+      i++;
+      while (i < lines.length && !/^```/.test(lines[i].trim())) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length) i++;
+      const codeText = codeLines.join("\n");
+      blocks.push({
+        object: "block",
+        id: `md-code-${blocks.length}`,
+        type: "code",
+        has_children: false,
+        code: {
+          rich_text: makeRichText(codeText),
+          language,
+          caption: [],
+        },
+      });
+      continue;
+    }
+
+    if (trimmed === "---") {
+      blocks.push({
+        object: "block",
+        id: `md-divider-${blocks.length}`,
+        type: "divider",
+        has_children: false,
+        divider: {},
+      });
+      i++;
+      continue;
+    }
+
+    const headingMatch = trimmed.match(/^(#{1,3})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const content = headingMatch[2];
+      const type = `heading_${level}`;
+      blocks.push({
+        object: "block",
+        id: `md-heading-${blocks.length}`,
+        type,
+        has_children: false,
+        [type]: {
+          rich_text: makeRichText(content),
+          color: "default",
+          is_toggleable: false,
+        },
+      });
+      i++;
+      continue;
+    }
+
+    const todoMatch = trimmed.match(/^- \[( |x|X)\]\s+(.+)$/);
+    if (todoMatch) {
+      blocks.push({
+        object: "block",
+        id: `md-todo-${blocks.length}`,
+        type: "to_do",
+        has_children: false,
+        to_do: {
+          rich_text: makeRichText(todoMatch[2]),
+          checked: todoMatch[1].toLowerCase() === "x",
+          color: "default",
+          children: [],
+        },
+      });
+      i++;
+      continue;
+    }
+
+    const numberedMatch = trimmed.match(/^\d+\.\s+(.+)$/);
+    if (numberedMatch) {
+      blocks.push({
+        object: "block",
+        id: `md-ol-${blocks.length}`,
+        type: "numbered_list_item",
+        has_children: false,
+        numbered_list_item: {
+          rich_text: makeRichText(numberedMatch[1]),
+          color: "default",
+          children: [],
+        },
+      });
+      i++;
+      continue;
+    }
+
+    const bulletedMatch = trimmed.match(/^- (.+)$/);
+    if (bulletedMatch) {
+      blocks.push({
+        object: "block",
+        id: `md-ul-${blocks.length}`,
+        type: "bulleted_list_item",
+        has_children: false,
+        bulleted_list_item: {
+          rich_text: makeRichText(bulletedMatch[1]),
+          color: "default",
+          children: [],
+        },
+      });
+      i++;
+      continue;
+    }
+
+    const quoteMatch = trimmed.match(/^>\s?(.+)$/);
+    if (quoteMatch) {
+      blocks.push({
+        object: "block",
+        id: `md-quote-${blocks.length}`,
+        type: "quote",
+        has_children: false,
+        quote: {
+          rich_text: makeRichText(quoteMatch[1]),
+          color: "default",
+          children: [],
+        },
+      });
+      i++;
+      continue;
+    }
+
+    const paragraphLines = [line];
+    i++;
+    while (
+      i < lines.length &&
+      lines[i].trim() &&
+      !/^(#{1,3})\s+/.test(lines[i].trim()) &&
+      !/^\d+\.\s+/.test(lines[i].trim()) &&
+      !/^- /.test(lines[i].trim()) &&
+      !/^>\s?/.test(lines[i].trim()) &&
+      !/^```/.test(lines[i].trim()) &&
+      lines[i].trim() !== "---"
+    ) {
+      paragraphLines.push(lines[i]);
+      i++;
+    }
+
+    blocks.push({
+      object: "block",
+      id: `md-p-${blocks.length}`,
+      type: "paragraph",
+      has_children: false,
+      paragraph: {
+        rich_text: makeRichText(paragraphLines.join("\n").trim()),
+        color: "default",
+        children: [],
+      },
+    });
+  }
+
   return blocks as BlockObjectResponse[];
+}
+
+async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
+  const notion = getNotionClient();
+  if (!notion) return [];
+
+  try {
+    if (typeof notion.pages?.retrieveMarkdown === "function") {
+      const markdownResponse: any = await notion.pages.retrieveMarkdown({
+        page_id: pageId,
+      });
+      return markdownToBlocks(markdownResponse.markdown || "");
+    }
+
+    const response = await fetch(`https://api.notion.com/v1/pages/${pageId}/markdown`, {
+      headers: {
+        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+        "Notion-Version": "2026-03-11",
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`Failed to fetch markdown for page ${pageId}:`, response.status);
+      return [];
+    }
+
+    const markdownResponse = await response.json();
+    return markdownToBlocks(markdownResponse.markdown || "");
+  } catch (error) {
+    console.error(`Error fetching markdown for page ${pageId}:`, error);
+    return [];
+  }
 }
 
 // --- Blog Posts ---
