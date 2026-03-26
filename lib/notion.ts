@@ -280,6 +280,108 @@ function makeRichText(text: string) {
   return text ? [{ type: "text", text: { content: text }, plain_text: text }] : [];
 }
 
+function decodeHtmlEntities(value: string): string {
+  return value
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function makeRichTextSegment(
+  text: string,
+  options?: {
+    bold?: boolean;
+    italic?: boolean;
+    strikethrough?: boolean;
+    underline?: boolean;
+    code?: boolean;
+    href?: string;
+  }
+) {
+  return {
+    type: "text",
+    text: { content: text, link: options?.href ? { url: options.href } : null },
+    plain_text: text,
+    href: options?.href ?? null,
+    annotations: {
+      bold: Boolean(options?.bold),
+      italic: Boolean(options?.italic),
+      strikethrough: Boolean(options?.strikethrough),
+      underline: Boolean(options?.underline),
+      code: Boolean(options?.code),
+      color: "default",
+    },
+  };
+}
+
+function parseInlineRichText(text: string): any[] {
+  const normalized = decodeHtmlEntities(text);
+  const richText: any[] = [];
+  const pattern =
+    /(\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_|~~([^~]+)~~|`([^`]+)`|<u>(.*?)<\/u>|<em>(.*?)<\/em>|<strong>(.*?)<\/strong>|<code>(.*?)<\/code>|<a\s+href="(https?:\/\/[^"]+)"[^>]*>(.*?)<\/a>)/g;
+
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+  // biome-ignore lint/suspicious/noAssignInExpressions: iterative regex scanning
+  while ((match = pattern.exec(normalized)) !== null) {
+    if (match.index > cursor) {
+      const plain = normalized.slice(cursor, match.index);
+      if (plain) richText.push(makeRichTextSegment(plain));
+    }
+
+    if (match[2] && match[3]) {
+      richText.push(makeRichTextSegment(match[2], { href: match[3] }));
+    } else if (match[4]) {
+      richText.push(makeRichTextSegment(match[4], { bold: true }));
+    } else if (match[5]) {
+      richText.push(makeRichTextSegment(match[5], { bold: true }));
+    } else if (match[6]) {
+      richText.push(makeRichTextSegment(match[6], { italic: true }));
+    } else if (match[7]) {
+      richText.push(makeRichTextSegment(match[7], { italic: true }));
+    } else if (match[8]) {
+      richText.push(makeRichTextSegment(match[8], { strikethrough: true }));
+    } else if (match[9]) {
+      richText.push(makeRichTextSegment(match[9], { code: true }));
+    } else if (match[10]) {
+      richText.push(makeRichTextSegment(match[10], { underline: true }));
+    } else if (match[11]) {
+      richText.push(makeRichTextSegment(match[11], { italic: true }));
+    } else if (match[12]) {
+      richText.push(makeRichTextSegment(match[12], { bold: true }));
+    } else if (match[13]) {
+      richText.push(makeRichTextSegment(match[13], { code: true }));
+    } else if (match[14] && match[15]) {
+      richText.push(makeRichTextSegment(match[15], { href: match[14] }));
+    }
+
+    cursor = pattern.lastIndex;
+  }
+
+  if (cursor < normalized.length) {
+    const remaining = normalized.slice(cursor);
+    if (remaining) richText.push(makeRichTextSegment(remaining));
+  }
+
+  return richText.length > 0 ? richText : makeRichText(normalized);
+}
+
+function parseMarkdownTableRows(lines: string[]): string[][] | null {
+  const rows: string[][] = [];
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith("|") || !trimmed.endsWith("|")) return null;
+    const row = trimmed
+      .slice(1, -1)
+      .split("|")
+      .map((cell) => cell.trim());
+    rows.push(row);
+  }
+  return rows.length > 0 ? rows : null;
+}
+
 function markdownToBlocks(markdown: string): BlockObjectResponse[] {
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
   const blocks: any[] = [];
@@ -318,6 +420,90 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
       continue;
     }
 
+    if (trimmed.startsWith("<table>")) {
+      const tableLines: string[] = [];
+      while (i < lines.length) {
+        tableLines.push(lines[i]);
+        if (lines[i].trim().endsWith("</table>")) break;
+        i++;
+      }
+      if (i < lines.length) i++;
+
+      const tableRaw = tableLines.join("\n");
+      const rowMatches = [...tableRaw.matchAll(/<tr>([\s\S]*?)<\/tr>/g)];
+      const parsedRows = rowMatches.map((rowMatch) =>
+        [...rowMatch[1].matchAll(/<t[hd]>([\s\S]*?)<\/t[hd]>/g)].map((cellMatch) =>
+          cellMatch[1].trim()
+        )
+      );
+      const tableRows = parsedRows.filter((r) => r.length > 0);
+
+      if (tableRows.length > 0) {
+        blocks.push({
+          object: "block",
+          id: `md-table-${blocks.length}`,
+          type: "table",
+          has_children: true,
+          table: {
+            table_width: tableRows[0].length,
+            has_column_header: true,
+            has_row_header: false,
+            children: [],
+          },
+          children: tableRows.map((row, rowIndex) => ({
+            object: "block",
+            id: `md-table-row-${blocks.length}-${rowIndex}`,
+            type: "table_row",
+            has_children: false,
+            table_row: {
+              cells: row.map((cell) => parseInlineRichText(cell)),
+            },
+          })),
+        });
+      }
+      continue;
+    }
+
+    if (trimmed.startsWith("|") && i + 1 < lines.length) {
+      const candidate = lines.slice(i, i + 3);
+      const hasSeparator = /^\|?[\s:-]+(\|[\s:-]+)+\|?$/.test(
+        candidate[1]?.trim() || ""
+      );
+      if (hasSeparator) {
+        const tableBlockLines = [candidate[0]];
+        i += 2; // skip header and separator
+        while (i < lines.length && lines[i].trim().startsWith("|")) {
+          tableBlockLines.push(lines[i]);
+          i++;
+        }
+        const rows = parseMarkdownTableRows(tableBlockLines);
+        if (rows?.length) {
+          blocks.push({
+            object: "block",
+            id: `md-table-${blocks.length}`,
+            type: "table",
+            has_children: true,
+            table: {
+              table_width: rows[0].length,
+              has_column_header: true,
+              has_row_header: false,
+              children: [],
+            },
+            children: rows.map((row, rowIndex) => ({
+              object: "block",
+              id: `md-table-row-${blocks.length}-${rowIndex}`,
+              type: "table_row",
+              has_children: false,
+              table_row: {
+                cells: row.map((cell) => parseInlineRichText(cell)),
+              },
+            })),
+          });
+          continue;
+        }
+      }
+    }
+
     if (trimmed === "---") {
       blocks.push({
         object: "block",
@@ -341,7 +527,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
         type,
         has_children: false,
         [type]: {
-          rich_text: makeRichText(content),
+          rich_text: parseInlineRichText(content),
           color: "default",
           is_toggleable: false,
         },
@@ -358,7 +544,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
         type: "to_do",
         has_children: false,
         to_do: {
-          rich_text: makeRichText(todoMatch[2]),
+          rich_text: parseInlineRichText(todoMatch[2]),
           checked: todoMatch[1].toLowerCase() === "x",
           color: "default",
           children: [],
@@ -376,7 +562,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
         type: "numbered_list_item",
         has_children: false,
         numbered_list_item: {
-          rich_text: makeRichText(numberedMatch[1]),
+          rich_text: parseInlineRichText(numberedMatch[1]),
           color: "default",
           children: [],
         },
@@ -393,7 +579,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
         type: "bulleted_list_item",
         has_children: false,
         bulleted_list_item: {
-          rich_text: makeRichText(bulletedMatch[1]),
+          rich_text: parseInlineRichText(bulletedMatch[1]),
           color: "default",
           children: [],
         },
@@ -410,7 +596,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
         type: "quote",
         has_children: false,
         quote: {
-          rich_text: makeRichText(quoteMatch[1]),
+          rich_text: parseInlineRichText(quoteMatch[1]),
           color: "default",
           children: [],
         },
@@ -441,7 +627,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
       type: "paragraph",
       has_children: false,
       paragraph: {
-        rich_text: makeRichText(paragraphLines.join("\n").trim()),
+        rich_text: parseInlineRichText(paragraphLines.join("\n").trim()),
         color: "default",
         children: [],
       },
