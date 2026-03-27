@@ -382,8 +382,21 @@ function parseMarkdownTableRows(lines: string[]): string[][] | null {
   return rows.length > 0 ? rows : null;
 }
 
+function normalizeMarkdownContent(markdown: string): string {
+  const normalizedNewlines = markdown.replace(/\r\n/g, "\n");
+
+  // Some pages were migrated with literal "\n" sequences instead of actual newlines.
+  // If we don't detect any real line breaks, decode escaped newlines so markdown
+  // syntax (headings, lists, tables, etc.) can be parsed correctly.
+  if (!normalizedNewlines.includes("\n") && normalizedNewlines.includes("\\n")) {
+    return normalizedNewlines.replace(/\\n/g, "\n");
+  }
+
+  return normalizedNewlines;
+}
+
 function markdownToBlocks(markdown: string): BlockObjectResponse[] {
-  const lines = markdown.replace(/\r\n/g, "\n").split("\n");
+  const lines = normalizeMarkdownContent(markdown).split("\n");
   const blocks: any[] = [];
   let i = 0;
 
@@ -420,19 +433,19 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
       continue;
     }
 
-    if (trimmed.startsWith("<table>")) {
+    if (/^<table\b/i.test(trimmed)) {
       const tableLines: string[] = [];
       while (i < lines.length) {
         tableLines.push(lines[i]);
-        if (lines[i].trim().endsWith("</table>")) break;
+        if (/<\/table>\s*$/i.test(lines[i].trim())) break;
         i++;
       }
       if (i < lines.length) i++;
 
       const tableRaw = tableLines.join("\n");
-      const rowMatches = [...tableRaw.matchAll(/<tr>([\s\S]*?)<\/tr>/g)];
+      const rowMatches = [...tableRaw.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)];
       const parsedRows = rowMatches.map((rowMatch) =>
-        [...rowMatch[1].matchAll(/<t[hd]>([\s\S]*?)<\/t[hd]>/g)].map((cellMatch) =>
+        [...rowMatch[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((cellMatch) =>
           cellMatch[1].trim()
         )
       );
