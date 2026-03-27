@@ -319,8 +319,15 @@ function makeRichTextSegment(
 function parseInlineRichText(text: string): any[] {
   const normalized = decodeHtmlEntities(text);
   const richText: any[] = [];
+  // Alternatives in priority order:
+  // 1. Backslash-escaped ASCII punctuation (CommonMark spec) — must come first so \* \$ etc. are never consumed by bold/italic patterns
+  // 2. Links [text](url) — checked before bold/italic so nested markers inside link text are handled separately
+  // 3. Bold-italic ***text*** — before **bold** to avoid partial match
+  // 4. **bold** and __bold__
+  // 5. *italic* and _italic_
+  // 6. ~~strikethrough~~, `code`, HTML tags
   const pattern =
-    /(\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_|~~([^~]+)~~|`([^`]+)`|<u>(.*?)<\/u>|<em>(.*?)<\/em>|<strong>(.*?)<\/strong>|<code>(.*?)<\/code>|<a\s+href="(https?:\/\/[^"]+)"[^>]*>(.*?)<\/a>)/g;
+    /(\\([!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~])|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_|~~([^~]+)~~|`([^`]+)`|<u>(.*?)<\/u>|<em>(.*?)<\/em>|<strong>(.*?)<\/strong>|<code>(.*?)<\/code>|<a\s+href="(https?:\/\/[^"]+)"[^>]*>(.*?)<\/a>)/g;
 
   let cursor = 0;
   let match: RegExpExecArray | null;
@@ -331,30 +338,61 @@ function parseInlineRichText(text: string): any[] {
       if (plain) richText.push(makeRichTextSegment(plain));
     }
 
-    if (match[2] && match[3]) {
-      richText.push(makeRichTextSegment(match[2], { href: match[3] }));
-    } else if (match[4]) {
-      richText.push(makeRichTextSegment(match[4], { bold: true }));
+    if (match[2] !== undefined) {
+      // Backslash-escaped punctuation — output the literal character, strip the backslash
+      richText.push(makeRichTextSegment(match[2]));
+    } else if (match[3] && match[4]) {
+      // [link text](url) — process nested bold/italic inside the link text
+      const linkText = match[3];
+      const linkUrl = match[4];
+      const boldItalicInner = linkText.match(/^\*\*\*(.+)\*\*\*$/);
+      const boldInner = linkText.match(/^\*\*(.+)\*\*$|^__(.+)__$/);
+      const italicInner = linkText.match(/^\*(.+)\*$|^_(.+)_$/);
+      if (boldItalicInner) {
+        richText.push(makeRichTextSegment(boldItalicInner[1], { href: linkUrl, bold: true, italic: true }));
+      } else if (boldInner) {
+        richText.push(makeRichTextSegment(boldInner[1] ?? boldInner[2], { href: linkUrl, bold: true }));
+      } else if (italicInner) {
+        richText.push(makeRichTextSegment(italicInner[1] ?? italicInner[2], { href: linkUrl, italic: true }));
+      } else {
+        richText.push(makeRichTextSegment(linkText, { href: linkUrl }));
+      }
     } else if (match[5]) {
-      richText.push(makeRichTextSegment(match[5], { bold: true }));
+      // ***bold italic***
+      richText.push(makeRichTextSegment(match[5], { bold: true, italic: true }));
     } else if (match[6]) {
-      richText.push(makeRichTextSegment(match[6], { italic: true }));
+      // **bold**
+      richText.push(makeRichTextSegment(match[6], { bold: true }));
     } else if (match[7]) {
-      richText.push(makeRichTextSegment(match[7], { italic: true }));
+      // __bold__
+      richText.push(makeRichTextSegment(match[7], { bold: true }));
     } else if (match[8]) {
-      richText.push(makeRichTextSegment(match[8], { strikethrough: true }));
+      // *italic*
+      richText.push(makeRichTextSegment(match[8], { italic: true }));
     } else if (match[9]) {
-      richText.push(makeRichTextSegment(match[9], { code: true }));
+      // _italic_
+      richText.push(makeRichTextSegment(match[9], { italic: true }));
     } else if (match[10]) {
-      richText.push(makeRichTextSegment(match[10], { underline: true }));
+      // ~~strikethrough~~
+      richText.push(makeRichTextSegment(match[10], { strikethrough: true }));
     } else if (match[11]) {
-      richText.push(makeRichTextSegment(match[11], { italic: true }));
+      // `code`
+      richText.push(makeRichTextSegment(match[11], { code: true }));
     } else if (match[12]) {
-      richText.push(makeRichTextSegment(match[12], { bold: true }));
+      // <u>underline</u>
+      richText.push(makeRichTextSegment(match[12], { underline: true }));
     } else if (match[13]) {
-      richText.push(makeRichTextSegment(match[13], { code: true }));
-    } else if (match[14] && match[15]) {
-      richText.push(makeRichTextSegment(match[15], { href: match[14] }));
+      // <em>italic</em>
+      richText.push(makeRichTextSegment(match[13], { italic: true }));
+    } else if (match[14]) {
+      // <strong>bold</strong>
+      richText.push(makeRichTextSegment(match[14], { bold: true }));
+    } else if (match[15]) {
+      // <code>code</code>
+      richText.push(makeRichTextSegment(match[15], { code: true }));
+    } else if (match[16] && match[17]) {
+      // <a href="url">text</a>
+      richText.push(makeRichTextSegment(match[17], { href: match[16] }));
     }
 
     cursor = pattern.lastIndex;
