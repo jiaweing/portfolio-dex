@@ -420,15 +420,46 @@ function parseMarkdownTableRows(lines: string[]): string[][] | null {
   return rows.length > 0 ? rows : null;
 }
 
+function parseCalloutAttributes(rawAttributes: string): { icon: string; color: string } {
+  const iconMatch = rawAttributes.match(/icon\s*=\s*"([^"]+)"/i);
+  const colorMatch = rawAttributes.match(/color\s*=\s*"([^"]+)"/i);
+
+  const colorMap: Record<string, string> = {
+    gray_bg: "gray_background",
+    brown_bg: "brown_background",
+    orange_bg: "orange_background",
+    yellow_bg: "yellow_background",
+    green_bg: "green_background",
+    blue_bg: "blue_background",
+    purple_bg: "purple_background",
+    pink_bg: "pink_background",
+    red_bg: "red_background",
+  };
+
+  const rawColor = (colorMatch?.[1] || "gray_bg").toLowerCase();
+
+  return {
+    icon: iconMatch?.[1] || "💡",
+    color: colorMap[rawColor] || "gray_background",
+  };
+}
+
 function normalizeMarkdownContent(markdown: string): string {
   let normalized = markdown.replace(/\r\n/g, "\n");
 
-  // Some pages were migrated with literal "\n" sequences instead of actual newlines.
-  // If we don't detect any real line breaks, decode escaped newlines so markdown
-  // syntax (headings, lists, tables, etc.) can be parsed correctly.
-  if (!normalized.includes("\n") && normalized.includes("\\n")) {
+  // The markdown endpoint may return escaped newlines as literal "\n".
+  // Decode when escaped newlines dominate (or when there are no real newlines)
+  // so block parsing still works for headings/lists/callouts/tables.
+  const escapedNewlineCount = (normalized.match(/\\n/g) || []).length;
+  const actualNewlineCount = (normalized.match(/\n/g) || []).length;
+  if (escapedNewlineCount > 0 && (actualNewlineCount === 0 || escapedNewlineCount > actualNewlineCount)) {
     normalized = normalized.replace(/\\n/g, "\n");
   }
+
+  // Normalize custom Notion markdown block tags into predictable block boundaries.
+  normalized = normalized.replace(/\s*<empty-block\s*\/>\s*/gi, "\n\n");
+  normalized = normalized.replace(/([^\n])(\s*<callout\b)/gi, (_, before, tag) => `${before}\n\n${tag.trimStart()}`);
+  normalized = normalized.replace(/(<\/callout>)(\s*)([^\n])/gi, (_, closeTag, _ws, after) => `${closeTag}\n\n${after}`);
 
   // Notion's markdown API may append <table> directly after paragraph text on the
   // same line. Ensure HTML block-level table elements always start on their own line
@@ -474,6 +505,36 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
           caption: [],
         },
       });
+      continue;
+    }
+
+    if (/^<callout\b/i.test(trimmed)) {
+      const calloutLines = [line];
+      while (i + 1 < lines.length && !/<\/callout>\s*$/i.test(calloutLines[calloutLines.length - 1].trim())) {
+        i++;
+        calloutLines.push(lines[i]);
+      }
+      if (i < lines.length) i++;
+
+      const calloutRaw = calloutLines.join("\n").trim();
+      const calloutMatch = calloutRaw.match(/^<callout\b([^>]*)>([\s\S]*?)<\/callout>$/i);
+
+      if (calloutMatch) {
+        const attrs = parseCalloutAttributes(calloutMatch[1] || "");
+        const content = calloutMatch[2].trim();
+        blocks.push({
+          object: "block",
+          id: `md-callout-${blocks.length}`,
+          type: "callout",
+          has_children: false,
+          callout: {
+            rich_text: parseInlineRichText(content),
+            icon: { type: "emoji", emoji: attrs.icon },
+            color: attrs.color,
+            children: [],
+          },
+        });
+      }
       continue;
     }
 
