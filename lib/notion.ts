@@ -383,16 +383,22 @@ function parseMarkdownTableRows(lines: string[]): string[][] | null {
 }
 
 function normalizeMarkdownContent(markdown: string): string {
-  const normalizedNewlines = markdown.replace(/\r\n/g, "\n");
+  let normalized = markdown.replace(/\r\n/g, "\n");
 
   // Some pages were migrated with literal "\n" sequences instead of actual newlines.
   // If we don't detect any real line breaks, decode escaped newlines so markdown
   // syntax (headings, lists, tables, etc.) can be parsed correctly.
-  if (!normalizedNewlines.includes("\n") && normalizedNewlines.includes("\\n")) {
-    return normalizedNewlines.replace(/\\n/g, "\n");
+  if (!normalized.includes("\n") && normalized.includes("\\n")) {
+    normalized = normalized.replace(/\\n/g, "\n");
   }
 
-  return normalizedNewlines;
+  // Notion's markdown API may append <table> directly after paragraph text on the
+  // same line. Ensure HTML block-level table elements always start on their own line
+  // so the block parser can detect them correctly.
+  normalized = normalized.replace(/([^\n])(\s*<table\b)/gi, (_, before, tag) => `${before}\n\n${tag.trimStart()}`);
+  normalized = normalized.replace(/(<\/table>)(\s*)([^\n])/gi, (_, closeTag, _ws, after) => `${closeTag}\n\n${after}`);
+
+  return normalized;
 }
 
 function markdownToBlocks(markdown: string): BlockObjectResponse[] {
@@ -628,6 +634,7 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
       !/^- /.test(lines[i].trim()) &&
       !/^>\s?/.test(lines[i].trim()) &&
       !/^```/.test(lines[i].trim()) &&
+      !/^<table\b/i.test(lines[i].trim()) &&
       lines[i].trim() !== "---"
     ) {
       paragraphLines.push(lines[i]);
