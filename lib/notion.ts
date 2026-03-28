@@ -330,7 +330,7 @@ function parseInlineRichText(text: string): any[] {
   // 4. *italic* and _italic_
   // 5. ~~strikethrough~~, `code`, HTML tags
   const pattern =
-    /(\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_|~~([^~]+)~~|`([^`]+)`|<u>(.*?)<\/u>|<em>(.*?)<\/em>|<strong>(.*?)<\/strong>|<code>(.*?)<\/code>|<a\s+href="(https?:\/\/[^"]+)"[^>]*>(.*?)<\/a>)/g;
+    /(\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|__([^_]+)__|\*([^*]+)\*|_([^_]+)_|~~([^~]+)~~|`([^`]+)`|<u>(.*?)<\/u>|<em>(.*?)<\/em>|<strong>(.*?)<\/strong>|<code>(.*?)<\/code>|<a\s+href="((?:https?:\/\/|mailto:)[^"]+)"[^>]*>(.*?)<\/a>)/g;
 
   let cursor = 0;
   let match: RegExpExecArray | null;
