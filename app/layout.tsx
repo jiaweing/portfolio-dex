@@ -140,7 +140,7 @@ export default function RootLayout({
         />
         <link href="https://github.com" rel="dns-prefetch" />
         <link href="https://images.unsplash.com" rel="dns-prefetch" />
-        <link href="https://quasarite.com" rel="dns-prefetch" />
+        <link href="https://stats.jiaweing.com" rel="dns-prefetch" />
 
         {/* Preload critical fonts */}
         <link
