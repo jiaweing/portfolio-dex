@@ -277,7 +277,9 @@ const getTitle = (page: any) => {
 };
 
 function makeRichText(text: string) {
-  return text ? [{ type: "text", text: { content: text }, plain_text: text }] : [];
+  return text
+    ? [{ type: "text", text: { content: text }, plain_text: text }]
+    : [];
 }
 
 function decodeHtmlEntities(value: string): string {
@@ -290,7 +292,7 @@ function decodeHtmlEntities(value: string): string {
 }
 
 function unescapeMarkdownPunctuation(value: string): string {
-  return value.replace(/\\([!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~])/g, "$1");
+  return value.replace(/\\([!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])/g, "$1");
 }
 
 function makeRichTextSegment(
@@ -349,17 +351,35 @@ function parseInlineRichText(text: string): any[] {
       const boldInner = linkText.match(/^\*\*(.+)\*\*$|^__(.+)__$/);
       const italicInner = linkText.match(/^\*(.+)\*$|^_(.+)_$/);
       if (boldItalicInner) {
-        richText.push(makeRichTextSegment(boldItalicInner[1], { href: linkUrl, bold: true, italic: true }));
+        richText.push(
+          makeRichTextSegment(boldItalicInner[1], {
+            href: linkUrl,
+            bold: true,
+            italic: true,
+          })
+        );
       } else if (boldInner) {
-        richText.push(makeRichTextSegment(boldInner[1] ?? boldInner[2], { href: linkUrl, bold: true }));
+        richText.push(
+          makeRichTextSegment(boldInner[1] ?? boldInner[2], {
+            href: linkUrl,
+            bold: true,
+          })
+        );
       } else if (italicInner) {
-        richText.push(makeRichTextSegment(italicInner[1] ?? italicInner[2], { href: linkUrl, italic: true }));
+        richText.push(
+          makeRichTextSegment(italicInner[1] ?? italicInner[2], {
+            href: linkUrl,
+            italic: true,
+          })
+        );
       } else {
         richText.push(makeRichTextSegment(linkText, { href: linkUrl }));
       }
     } else if (match[4]) {
       // ***bold italic***
-      richText.push(makeRichTextSegment(match[4], { bold: true, italic: true }));
+      richText.push(
+        makeRichTextSegment(match[4], { bold: true, italic: true })
+      );
     } else if (match[5]) {
       // **bold**
       richText.push(makeRichTextSegment(match[5], { bold: true }));
@@ -410,7 +430,7 @@ function parseMarkdownTableRows(lines: string[]): string[][] | null {
   const rows: string[][] = [];
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed.startsWith("|") || !trimmed.endsWith("|")) return null;
+    if (!(trimmed.startsWith("|") && trimmed.endsWith("|"))) return null;
     const row = trimmed
       .slice(1, -1)
       .split("|")
@@ -420,7 +440,10 @@ function parseMarkdownTableRows(lines: string[]): string[][] | null {
   return rows.length > 0 ? rows : null;
 }
 
-function parseCalloutAttributes(rawAttributes: string): { icon: string; color: string } {
+function parseCalloutAttributes(rawAttributes: string): {
+  icon: string;
+  color: string;
+} {
   const iconMatch = rawAttributes.match(/icon\s*=\s*"([^"]+)"/i);
   const colorMatch = rawAttributes.match(/color\s*=\s*"([^"]+)"/i);
 
@@ -452,20 +475,35 @@ function normalizeMarkdownContent(markdown: string): string {
   // so block parsing still works for headings/lists/callouts/tables.
   const escapedNewlineCount = (normalized.match(/\\n/g) || []).length;
   const actualNewlineCount = (normalized.match(/\n/g) || []).length;
-  if (escapedNewlineCount > 0 && (actualNewlineCount === 0 || escapedNewlineCount > actualNewlineCount)) {
+  if (
+    escapedNewlineCount > 0 &&
+    (actualNewlineCount === 0 || escapedNewlineCount > actualNewlineCount)
+  ) {
     normalized = normalized.replace(/\\n/g, "\n");
   }
 
   // Normalize custom Notion markdown block tags into predictable block boundaries.
   normalized = normalized.replace(/\s*<empty-block\s*\/>\s*/gi, "\n\n");
-  normalized = normalized.replace(/([^\n])(\s*<callout\b)/gi, (_, before, tag) => `${before}\n\n${tag.trimStart()}`);
-  normalized = normalized.replace(/(<\/callout>)(\s*)([^\n])/gi, (_, closeTag, _ws, after) => `${closeTag}\n\n${after}`);
+  normalized = normalized.replace(
+    /([^\n])(\s*<callout\b)/gi,
+    (_, before, tag) => `${before}\n\n${tag.trimStart()}`
+  );
+  normalized = normalized.replace(
+    /(<\/callout>)(\s*)([^\n])/gi,
+    (_, closeTag, _ws, after) => `${closeTag}\n\n${after}`
+  );
 
   // Notion's markdown API may append <table> directly after paragraph text on the
   // same line. Ensure HTML block-level table elements always start on their own line
   // so the block parser can detect them correctly.
-  normalized = normalized.replace(/([^\n])(\s*<table\b)/gi, (_, before, tag) => `${before}\n\n${tag.trimStart()}`);
-  normalized = normalized.replace(/(<\/table>)(\s*)([^\n])/gi, (_, closeTag, _ws, after) => `${closeTag}\n\n${after}`);
+  normalized = normalized.replace(
+    /([^\n])(\s*<table\b)/gi,
+    (_, before, tag) => `${before}\n\n${tag.trimStart()}`
+  );
+  normalized = normalized.replace(
+    /(<\/table>)(\s*)([^\n])/gi,
+    (_, closeTag, _ws, after) => `${closeTag}\n\n${after}`
+  );
 
   return normalized;
 }
@@ -510,14 +548,19 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
 
     if (/^<callout\b/i.test(trimmed)) {
       const calloutLines = [line];
-      while (i + 1 < lines.length && !/<\/callout>\s*$/i.test(calloutLines[calloutLines.length - 1].trim())) {
+      while (
+        i + 1 < lines.length &&
+        !/<\/callout>\s*$/i.test(calloutLines[calloutLines.length - 1].trim())
+      ) {
         i++;
         calloutLines.push(lines[i]);
       }
       if (i < lines.length) i++;
 
       const calloutRaw = calloutLines.join("\n").trim();
-      const calloutMatch = calloutRaw.match(/^<callout\b([^>]*)>([\s\S]*?)<\/callout>$/i);
+      const calloutMatch = calloutRaw.match(
+        /^<callout\b([^>]*)>([\s\S]*?)<\/callout>$/i
+      );
 
       if (calloutMatch) {
         const attrs = parseCalloutAttributes(calloutMatch[1] || "");
@@ -548,10 +591,12 @@ function markdownToBlocks(markdown: string): BlockObjectResponse[] {
       if (i < lines.length) i++;
 
       const tableRaw = tableLines.join("\n");
-      const rowMatches = [...tableRaw.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)];
+      const rowMatches = [
+        ...tableRaw.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi),
+      ];
       const parsedRows = rowMatches.map((rowMatch) =>
-        [...rowMatch[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((cellMatch) =>
-          cellMatch[1].trim()
+        [...rowMatch[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(
+          (cellMatch) => cellMatch[1].trim()
         )
       );
       const tableRows = parsedRows.filter((r) => r.length > 0);
@@ -768,15 +813,21 @@ async function fetchPageBlocks(pageId: string): Promise<BlockObjectResponse[]> {
       return markdownToBlocks(markdownResponse.markdown || "");
     }
 
-    const response = await fetch(`https://api.notion.com/v1/pages/${pageId}/markdown`, {
-      headers: {
-        Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
-        "Notion-Version": "2026-03-11",
-      },
-    });
+    const response = await fetch(
+      `https://api.notion.com/v1/pages/${pageId}/markdown`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NOTION_API_KEY}`,
+          "Notion-Version": "2026-03-11",
+        },
+      }
+    );
 
     if (!response.ok) {
-      console.error(`Failed to fetch markdown for page ${pageId}:`, response.status);
+      console.error(
+        `Failed to fetch markdown for page ${pageId}:`,
+        response.status
+      );
       return [];
     }
 

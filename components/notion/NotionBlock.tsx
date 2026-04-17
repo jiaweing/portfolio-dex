@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/table";
 import { buildSpeechTextMapping, toSpeechText } from "@/lib/speech-text";
 import { cn } from "@/lib/utils";
-import { useSpeechHighlight } from "./SpeechHighlightContext";
 import { NotionImageLightbox } from "./NotionImageLightbox";
+import { useSpeechHighlight } from "./SpeechHighlightContext";
 
 interface HighlightTracker {
   currentOffset: number;
@@ -515,7 +515,7 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          <span className="min-w-0 break-words whitespace-normal">
+          <span className="min-w-0 whitespace-normal break-words">
             {renderRichText(
               rt,
               tracker,
@@ -537,7 +537,7 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          <span className="min-w-0 break-words whitespace-normal">
+          <span className="min-w-0 whitespace-normal break-words">
             {renderRichText(
               rt,
               tracker,
@@ -559,7 +559,7 @@ export function NotionBlock({
           id={block.id}
           onClick={() => handleCopyHeadingLink(block.id)}
         >
-          <span className="min-w-0 break-words whitespace-normal">
+          <span className="min-w-0 whitespace-normal break-words">
             {renderRichText(
               rt,
               tracker,
@@ -688,10 +688,7 @@ export function NotionBlock({
 
       return (
         <figure className="my-6">
-          <NotionImageLightbox
-            alt={caption || "Notion Image"}
-            src={imageUrl}
-          />
+          <NotionImageLightbox alt={caption || "Notion Image"} src={imageUrl} />
           {caption && (
             <figcaption className="mt-2 text-center text-muted-foreground text-sm">
               {caption}

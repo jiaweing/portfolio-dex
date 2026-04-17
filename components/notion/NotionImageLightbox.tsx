@@ -95,7 +95,9 @@ export function NotionImageLightbox({
 
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogContent className="inset-0 top-0 left-0 z-[220] h-dvh max-h-dvh w-screen max-w-none translate-x-0 translate-y-0 border-none bg-background/95 p-0 backdrop-blur-xs sm:rounded-none [&>button]:hidden">
-          <DialogTitle className="sr-only">{alt || "Image preview"}</DialogTitle>
+          <DialogTitle className="sr-only">
+            {alt || "Image preview"}
+          </DialogTitle>
 
           <div
             className="absolute top-3 right-3 z-30 flex items-center gap-2 sm:top-4 sm:right-4"
@@ -147,11 +149,11 @@ export function NotionImageLightbox({
               zoom > 1 && "touch-none"
             )}
             onClick={() => setOpen(false)}
+            onMouseLeave={stopDrag}
             onMouseMove={(event) =>
               updateDrag({ x: event.clientX, y: event.clientY })
             }
             onMouseUp={stopDrag}
-            onMouseLeave={stopDrag}
             onTouchEnd={stopDrag}
             onTouchMove={(event) => {
               const touch = event.touches[0];

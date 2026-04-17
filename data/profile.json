@@ -4,7 +4,7 @@
       "title": "CEO",
       "organization": "amajor.ai",
       "url": "https://amajor.ai",
-      "description": "software agency — web, mobile, AI & SaaS products"
+      "description": "the company behind ryu, bringing agents to everyone"
     },
     {
       "title": "Business Director",
@@ -17,7 +17,7 @@
       "title": "Co-Founder",
       "organization": "ryu",
       "url": "https://ryuhq.com",
-      "description": "coming apr 2026"
+      "description": "coming may 2026"
     },
     {
       "title": "Founder",
@@ -55,39 +55,21 @@
       "url": "https://decosmic.com",
       "description": "build & deploy AI agents"
     },
-    {
-      "title": "Computer Science",
-      "organization": "University of Glasgow",
-      "url": "https://www.gla.ac.uk",
-      "description": "2023-2026"
-    },
-    {
-      "title": "Computer Science",
-      "organization": "Singapore Institute of Technology",
-      "url": "https://www.singaporetech.edu.sg",
-      "description": "2023-2026"
-    },
+
     {
       "title": "Campus Lead @ SIT",
       "organization": "Notion",
       "url": "https://notion.so",
       "description": ""
-    },
-    {
-      "title": "",
-      "organization": "Unsplash",
-      "url": "https://unsplash.com/@jiaweing",
-      "description": "top 25%, 460k views & 4.3k downloads",
-      "invertFavicon": "dark"
-    },
+    }
+  ],
+  "past": [
     {
       "title": "Lead Mobile Developer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
       "description": "streamlined medicine delivery for SG hospitals"
-    }
-  ],
-  "past": [
+    },
     {
       "title": "",
       "organization": "Dell Innovatefest 2025",
@@ -125,6 +107,18 @@
       "description": "top 10%, 25/250"
     },
     {
+      "title": "Computer Science",
+      "organization": "University of Glasgow",
+      "url": "https://www.gla.ac.uk",
+      "description": "2023-2026"
+    },
+    {
+      "title": "Computer Science",
+      "organization": "Singapore Institute of Technology",
+      "url": "https://www.singaporetech.edu.sg",
+      "description": "2023-2026"
+    },
+    {
       "title": "Founder",
       "organization": "casigned",
       "url": "https://tally.so/r/m6QO4O",
@@ -160,6 +154,13 @@
       "organization": "mindef.gov.sg",
       "url": "https://mindef.gov.sg",
       "description": "predictive models for large datasets"
+    },
+    {
+      "title": "",
+      "organization": "Unsplash",
+      "url": "https://unsplash.com/@jiaweing",
+      "description": "top 25%, 460k views & 4.3k downloads",
+      "invertFavicon": "dark"
     },
     {
       "title": "Software Developer",
