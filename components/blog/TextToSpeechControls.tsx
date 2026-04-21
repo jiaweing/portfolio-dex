@@ -323,7 +323,7 @@ export function TextToSpeechControls({
       </div>
 
       {shouldShowFloatingTrigger && (
-        <div className="fixed bottom-5 left-4 z-40 md:hidden">
+        <div className="fixed bottom-20 left-4 z-40 md:hidden">
           <AnimatePresence mode="wait">
             {showFloatingPanel ? (
               <motion.div

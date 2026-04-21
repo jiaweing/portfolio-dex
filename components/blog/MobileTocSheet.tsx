@@ -1,7 +1,7 @@
 "use client";
 
 import { List } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TocHeading } from "@/components/blog/TableOfContents";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import {
@@ -16,24 +16,24 @@ export function MobileTocSheet({ headings }: { headings: TocHeading[] }) {
   const [open, setOpen] = useState(false);
   const pendingId = useRef<string | null>(null);
 
-  function handleOpenChange(val: boolean) {
-    setOpen(val);
-    if (!val && pendingId.current) {
+  useEffect(() => {
+    if (!open && pendingId.current) {
       const id = pendingId.current;
       pendingId.current = null;
       window.history.replaceState(null, "", `#${id}`);
-      requestAnimationFrame(() => {
+      const timer = setTimeout(() => {
         const el = document.getElementById(id);
         if (!el) return;
         const top = el.getBoundingClientRect().top + window.scrollY - 96;
         window.scrollTo({ top, behavior: "smooth" });
-      });
+      }, 350);
+      return () => clearTimeout(timer);
     }
-  }
+  }, [open]);
 
   return (
     <div className="fixed right-4 bottom-20 z-[200] xl:hidden">
-      <Drawer direction="right" onOpenChange={handleOpenChange} open={open}>
+      <Drawer direction="right" onOpenChange={setOpen} open={open}>
         <DrawerTrigger asChild>
           <button className="rounded-full border border-border bg-background p-4 shadow-lg backdrop-blur-sm">
             <List className="h-6 w-6" />
