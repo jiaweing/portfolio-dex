@@ -18,7 +18,7 @@ export const siteConfig: SiteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://jiaweing.com",
   ogImage: "https://jiaweing.com/og/index.png",
   links: {
-    twitter: "https://twitter.com/j14wei",
+    twitter: "https://twitter.com/jiaweihq",
     github: "https://github.com/jiaweing",
   },
 };

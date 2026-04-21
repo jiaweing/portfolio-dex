@@ -47,7 +47,10 @@ function TOCItemLink({
     <Link
       className="relative flex min-h-5 w-full flex-col justify-start"
       href={`#${heading.id}`}
-      onClick={() => onItemClick?.(heading.id)}
+      onClick={(e) => {
+        e.preventDefault();
+        onItemClick?.(heading.id);
+      }}
       title={heading.text}
     >
       {/* Line indicator */}

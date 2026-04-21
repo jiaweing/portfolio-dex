@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { LayoutWidthWrapper } from "@/components/LayoutWidthWrapper";
-import { MobileNav } from "@/components/MobileNav";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SeasonalEffects } from "@/components/seasonal-effects";
@@ -166,7 +166,7 @@ export default function RootLayout({
         <link href="/.well-known/llms.txt" rel="llms" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden pb-20 antialiased lg:pb-0`}
       >
         <ThemeProvider
           attribute="class"
@@ -181,7 +181,6 @@ export default function RootLayout({
                   <LayoutWidthWrapper>
                     <div className="relative z-[100] mx-auto max-w-2xl space-y-4 leading-relaxed">
                       <SiteHeader />
-                      <MobileNav />
                     </div>
                     <ProgressiveBlur
                       height="100px"
@@ -200,6 +199,7 @@ export default function RootLayout({
             </div>
           </PlausibleWrapper>
 
+          <MobileBottomNav />
           {modal}
           <ThemeToggle />
           <TailwindIndicator />
