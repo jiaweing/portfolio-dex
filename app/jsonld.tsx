@@ -18,10 +18,10 @@ export default function JsonLd() {
     sameAs: [
       "https://github.com/jiaweing",
       "https://www.linkedin.com/in/jiaweing/",
-      "https://x.com/j14wei",
-      "https://www.threads.net/@j14.wei",
-      "https://www.tiktok.com/@j14.wei",
-      "https://www.youtube.com/@j14wei",
+      "https://x.com/jiaweihq",
+      "https://www.threads.net/@jiaweihq",
+      "https://www.tiktok.com/@jiaweihq",
+      "https://www.youtube.com/@jiaweihq",
     ],
     jobTitle: "Software Engineer & Designer",
     worksFor: [

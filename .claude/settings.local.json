@@ -23,7 +23,9 @@
       "WebFetch(domain:isitagentready.com)",
       "Bash(xargs wc *)",
       "Bash(git *)",
-      "Bash(awk '{print $9}')"
+      "Bash(awk '{print $9}')",
+      "Bash(grep -v \"^$\")",
+      "WebFetch(domain:www.javii.es)"
     ]
   }
 }

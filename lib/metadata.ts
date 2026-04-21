@@ -75,7 +75,16 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
     siteConfig.url
   ).toString();
 
-  // Use static OG image, fallback to pageImage if custom image provided
+  // Use: explicit image > static pre-generated > dynamic API fallback
+  const dynamicOgUrl = new URL("/api/og", siteConfig.url);
+  dynamicOgUrl.searchParams.set("title", pageTitle);
+  if (description) dynamicOgUrl.searchParams.set("subtitle", description);
+  if (type === "article")
+    dynamicOgUrl.searchParams.set(
+      "type",
+      url?.startsWith("/blog") ? "blog" : "project"
+    );
+
   const ogImageUrl = image || staticOgUrl;
 
   const openGraphImages = [
@@ -139,14 +148,20 @@ export function generateBlogMetadata(post: BlogPost): Metadata {
     siteConfig.name,
   ];
 
+  const dynamicOg = new URL("/api/og", siteConfig.url);
+  dynamicOg.searchParams.set("title", post.title);
+  dynamicOg.searchParams.set("type", "blog");
+  if (post.description)
+    dynamicOg.searchParams.set("subtitle", post.description);
+
   return generateMetadata({
     title: post.title,
     description: post.description,
-    image: post.cover,
+    image: post.cover || dynamicOg.toString(),
     url: `/blog/${post.slug}`,
     type: "article",
     publishedTime: post.date,
-    modifiedTime: post.date, // Notion doesn't always have distinct modified time for blog posts in this type, using date as fallback
+    modifiedTime: post.date,
     authors: authorNames,
     tags: post.tags,
     category: "blog",
@@ -154,12 +169,18 @@ export function generateBlogMetadata(post: BlogPost): Metadata {
 }
 
 export function generateProjectMetadata(project: Project): Metadata {
+  const dynamicOg = new URL("/api/og", siteConfig.url);
+  dynamicOg.searchParams.set("title", project.title);
+  dynamicOg.searchParams.set("type", "project");
+  if (project.description)
+    dynamicOg.searchParams.set("subtitle", project.description);
+
   return generateMetadata({
     title: project.title,
     description: project.description,
-    image: project.cover,
+    image: project.cover || dynamicOg.toString(),
     url: `/projects/${project.slug}`,
-    type: "article", // or website, but projects are like articles/case studies
+    type: "article",
     category: "project",
     tags: project.techStack,
   });

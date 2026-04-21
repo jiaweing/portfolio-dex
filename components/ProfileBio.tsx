@@ -103,9 +103,12 @@ function StackedFavicons({
                       className={cn(
                         "h-full w-full object-contain",
                         !isProject &&
-                          ["X/Twitter", "GitHub", "Threads"].includes(
-                            item.name
-                          ) &&
+                          [
+                            "X/Twitter",
+                            "GitHub",
+                            "Threads",
+                            "Instagram",
+                          ].includes(item.name) &&
                           "dark:brightness-0 dark:invert"
                       )}
                       height={16}
@@ -351,8 +354,8 @@ export function ProfileBio() {
         />
       </motion.p>
 
-      <motion.p variants={itemVariants}>
-        I document my life & build in public at{" "}
+      <motion.div className="space-y-3" variants={itemVariants}>
+        <p>I document my life &amp; build in public at</p>
         <StackedFavicons
           items={profileData.social.map((s) => ({
             url: s.url,
@@ -360,7 +363,7 @@ export function ProfileBio() {
             name: s.name,
           }))}
         />
-      </motion.p>
+      </motion.div>
 
       <motion.div variants={itemVariants}>
         <Quotes />
