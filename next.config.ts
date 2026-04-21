@@ -20,6 +20,23 @@ const withPWA = require("next-pwa")({
 });
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value: '</.well-known/api-catalog>; rel="api-catalog"',
+          },
+          {
+            key: "Link",
+            value: '</feed.xml>; rel="alternate"; type="application/rss+xml"',
+          },
+        ],
+      },
+    ];
+  },
   typedRoutes: false,
   transpilePackages: ["shiki"],
   experimental: {

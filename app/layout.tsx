@@ -25,6 +25,7 @@ const geistMono = Geist_Mono({
 
 import { Toaster } from "sileo";
 import { OpenSourceToast } from "@/components/open-source-toast";
+import { WebMCPProvider } from "@/components/WebMCPProvider";
 import { siteConfig } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -206,6 +207,7 @@ export default function RootLayout({
           <SeasonalEffects />
           <Toaster position="bottom-right" theme="system" />
           <OpenSourceToast />
+          <WebMCPProvider />
           <GoogleAnalytics gaId="G-MJ0F694R8J" />
         </ThemeProvider>
       </body>
