@@ -59,7 +59,7 @@ export function ThemeToggle() {
       {/* Desktop: Top-right fixed button */}
       <Button
         aria-label={`Current theme: ${getLabel()}. Click to change theme.`}
-        className="fixed top-6 right-6 z-50 hidden md:inline-flex"
+        className="fixed top-6 right-6 z-50 inline-flex"
         onClick={cycleTheme}
         variant="ghost"
       >
