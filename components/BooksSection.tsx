@@ -158,6 +158,7 @@ export function BooksSection({ books }: BooksSectionProps) {
 
   return (
     <div
+      data-lenis-prevent
       ref={scrollRef}
       style={{
         width: "100vw",

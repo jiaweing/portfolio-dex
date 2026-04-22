@@ -254,19 +254,17 @@ export function StackTable({ items }: StackTableProps) {
                   <div className="flex items-center gap-2">
                     {allCategories.length > 0 && (
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
-                            Category
-                            {selectedCategories.length > 0 && (
-                              <Badge
-                                className="h-4 rounded-sm px-1.5 text-[10px]"
-                                variant="secondary"
-                              >
-                                {selectedCategories.length}
-                              </Badge>
-                            )}
-                            <ChevronDownIcon className="size-3.5" />
-                          </button>
+                        <DropdownMenuTrigger className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
+                          Category
+                          {selectedCategories.length > 0 && (
+                            <Badge
+                              className="h-4 rounded-sm px-1.5 text-[10px]"
+                              variant="secondary"
+                            >
+                              {selectedCategories.length}
+                            </Badge>
+                          )}
+                          <ChevronDownIcon className="size-3.5" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
                           <DropdownMenuLabel>
@@ -308,19 +306,17 @@ export function StackTable({ items }: StackTableProps) {
                   <div className="flex items-center gap-2">
                     {allPlatforms.length > 0 && (
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
-                            Platforms
-                            {selectedPlatforms.length > 0 && (
-                              <Badge
-                                className="h-4 rounded-sm px-1.5 text-[10px]"
-                                variant="secondary"
-                              >
-                                {selectedPlatforms.length}
-                              </Badge>
-                            )}
-                            <ChevronDownIcon className="size-3.5" />
-                          </button>
+                        <DropdownMenuTrigger className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
+                          Platforms
+                          {selectedPlatforms.length > 0 && (
+                            <Badge
+                              className="h-4 rounded-sm px-1.5 text-[10px]"
+                              variant="secondary"
+                            >
+                              {selectedPlatforms.length}
+                            </Badge>
+                          )}
+                          <ChevronDownIcon className="size-3.5" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
                           <DropdownMenuLabel>

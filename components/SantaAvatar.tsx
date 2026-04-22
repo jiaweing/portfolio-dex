@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSeasonalEffect } from "@/hooks/use-seasonal-effect";
 import { cn } from "@/lib/utils";
 
-type SantaAvatarProps = React.ComponentPropsWithoutRef<typeof Avatar>;
+type SantaAvatarProps = React.ComponentPropsWithoutRef<typeof Avatar> & {
+  hatClassName?: string;
+};
 
-export function SantaAvatar({ className, ...props }: SantaAvatarProps) {
-  const [showHat, setShowHat] = useState(false);
-
-  useEffect(() => {
-    const now = new Date();
-    // Show only in December (Month index 11)
-    if (now.getMonth() === 11) {
-      setShowHat(true);
-    }
-  }, []);
+export function SantaAvatar({
+  className,
+  hatClassName,
+  ...props
+}: SantaAvatarProps) {
+  const effect = useSeasonalEffect();
+  const showHat = effect === "snow";
 
   return (
     <span className="group relative inline-flex">
@@ -21,22 +20,19 @@ export function SantaAvatar({ className, ...props }: SantaAvatarProps) {
         <svg
           aria-label="Santa Hat"
           className={cn(
-            "absolute -top-6 -left-2 z-10 size-12 -rotate-[22deg] transform",
-            className
+            "absolute -top-5 -left-1.5 z-10 size-10 -rotate-[22deg] transform",
+            hatClassName
           )}
           fill="none"
           viewBox="0 0 28 28"
           xmlns="http://www.w3.org/2000/svg"
         >
           <title>Santa Hat</title>
-          {/* Pom-pom - moved to the drooping tip */}
           <circle className="fill-white" cx="3" cy="11" r="2.5" />
-          {/* Hat Body - Drooping to the left */}
           <path
             className="fill-red-600"
             d="M19 17 C20 12 15 2 8 5 C 5 6 3 9 4 11 C 5 12 4 17 4 17 L19 17 Z"
           />
-          {/* Brim - unchanged */}
           <path
             className="fill-white"
             d="M2 16C2 15.4477 2.44772 15 3 15H20C20.5523 15 21 15.4477 21 16V18C21 18.5523 20.5523 19 20 19H3C2.44772 19 2 18.5523 2 18V16Z"

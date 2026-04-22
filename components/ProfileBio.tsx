@@ -52,20 +52,37 @@ const itemVariants = {
   },
 };
 
+type FaviconItem = {
+  url?: string;
+  src?: string;
+  name: string;
+  brandBg?: string;
+  invertDark?: boolean;
+  invertLight?: boolean;
+};
+
 function StackedFavicons({
   items,
   isProject = false,
 }: {
-  items: {
-    url?: string;
-    src?: string;
-    name: string;
-    brandBg?: string;
-    invertDark?: boolean;
-    invertLight?: boolean;
-  }[];
+  items: FaviconItem[];
   isProject?: boolean;
 }) {
+  // Tag duplicate src items with a single-letter badge so they look distinct
+  const srcCounts = items.reduce<Record<string, number>>((acc, item) => {
+    if (item.src) acc[item.src] = (acc[item.src] ?? 0) + 1;
+    return acc;
+  }, {});
+  const merged = items.map((item) => {
+    if (item.src && srcCounts[item.src] > 1) {
+      // Extract first letter inside parens, e.g. "YouTube (Tech)" → "T"
+      const match = item.name.match(/\((\w)/);
+      const letter = match ? match[1] : item.name[0];
+      return { ...item, badge: letter };
+    }
+    return item;
+  }) as (FaviconItem & { badge?: string })[];
+
   return (
     <TooltipProvider delay={0}>
       <motion.span
@@ -76,7 +93,7 @@ function StackedFavicons({
         initial="rest"
         whileHover="hover"
       >
-        {items.map((item, i) => (
+        {merged.map((item, i) => (
           <Tooltip key={item.name + i}>
             <TooltipTrigger asChild>
               <motion.a
@@ -87,7 +104,7 @@ function StackedFavicons({
                 variants={{
                   rest: {
                     rotate:
-                      (i - (items.length - 1) / 2) * (isProject ? 15 : 12),
+                      (i - (merged.length - 1) / 2) * (isProject ? 15 : 12),
                     x: isProject ? i * -2 : 0,
                     zIndex: i,
                   },
@@ -102,8 +119,8 @@ function StackedFavicons({
                 {item.src ? (
                   <span
                     className={cn(
-                      "flex h-5 w-5 items-center justify-center overflow-hidden",
-                      isProject && "corner-squircle"
+                      "relative flex h-5 w-5 items-center justify-center overflow-visible",
+                      isProject && "corner-squircle overflow-hidden"
                     )}
                   >
                     <Image
@@ -126,6 +143,11 @@ function StackedFavicons({
                       src={item.src}
                       width={16}
                     />
+                    {item.badge && (
+                      <span className="absolute -right-1.5 -bottom-1 flex h-3 w-3 items-center justify-center rounded-full bg-muted font-bold text-[7px] text-muted-foreground leading-none ring-1 ring-background">
+                        {item.badge}
+                      </span>
+                    )}
                   </span>
                 ) : (
                   <Favicon
@@ -205,7 +227,10 @@ export function ProfileBio() {
     >
       <motion.p variants={itemVariants}>
         <span className="font-normal text-muted-foreground">Hi, I&apos;m </span>
-        <SantaAvatar className="corner-squircle mr-2 inline-block size-5 align-middle md:size-6.5" />
+        <SantaAvatar
+          className="corner-squircle mr-1 inline-block size-5 align-middle md:size-6.5"
+          hatClassName="-top-3 -left-1 size-7"
+        />
         <span className="text-black text-foreground dark:text-white">
           <TextShimmer
             className="inline-block"
@@ -231,7 +256,7 @@ export function ProfileBio() {
           />
           Singapore)
         </span>
-        , a designer & software engineer
+        , a founder, designer & engineer
         <Image
           alt="Fire"
           className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
@@ -242,7 +267,7 @@ export function ProfileBio() {
       </motion.p>
 
       <motion.p variants={itemVariants}>
-        I currently build and scale products at{" "}
+        I&apos;m currently the CEO at{" "}
         <Link
           className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://amajor.ai"
@@ -250,33 +275,6 @@ export function ProfileBio() {
           target="_blank"
         >
           A Major
-        </Link>
-        ,{" "}
-        <Link
-          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
-          href="https://updatenight.com"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Update Night
-        </Link>
-        ,{" "}
-        <Link
-          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
-          href="https://supply.tf"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          supply.tf
-        </Link>
-        , and{" "}
-        <Link
-          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
-          href="https://decosmic.com"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Decosmic
         </Link>{" "}
         <StackedFavicons
           isProject
@@ -287,23 +285,65 @@ export function ProfileBio() {
               name: "amajor.ai",
               invertDark: true,
             },
+          ]}
+        />
+        , building and scaling{" "}
+        <Link
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          href="https://updatenight.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Update Night
+        </Link>{" "}
+        and{" "}
+        <Link
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          href="https://ryuhq.com"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Ryu
+        </Link>{" "}
+        <StackedFavicons
+          isProject
+          items={[
             {
               url: "https://updatenight.com",
               src: "/logos/updatenight.png",
               name: "Update Night",
             },
             {
+              url: "https://ryuhq.com",
+              src: "/logos/ryu.png",
+              name: "Ryu",
+            },
+          ]}
+        />
+      </motion.p>
+
+      <motion.p variants={itemVariants}>
+        I also wear{" "}
+        <Link
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          href="https://supply.tf"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          supply.tf
+        </Link>{" "}
+        <StackedFavicons
+          isProject
+          items={[
+            {
               url: "https://supply.tf",
               src: "/logos/supply.png",
               name: "supply.tf",
             },
-            {
-              url: "https://decosmic.com",
-              src: "/logos/decosmic.png",
-              name: "Decosmic",
-            },
           ]}
         />
+        , a clothing brand for those who dare to stand out, chase their dreams,
+        and refuse to blend in.
       </motion.p>
 
       <motion.p variants={itemVariants}>

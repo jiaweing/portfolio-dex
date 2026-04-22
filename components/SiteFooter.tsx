@@ -1,3 +1,6 @@
+"use client";
+
+import { PartyPopper, Snowflake, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -7,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { triggerSeasonalEffect } from "@/hooks/use-seasonal-effect";
 import { siteConfig } from "@/lib/metadata";
 
 const socialLinks = [
@@ -14,7 +18,7 @@ const socialLinks = [
     name: "GitHub",
     href: siteConfig.links.github,
     icon: "/logos/github_light.svg",
-    filterClass: "invert dark:brightness-0 dark:invert",
+    filterClass: "brightness-0 dark:brightness-0 dark:invert",
   },
   {
     name: "LinkedIn",
@@ -26,9 +30,18 @@ const socialLinks = [
     name: "X/Twitter",
     href: siteConfig.links.twitter,
     icon: "/logos/x.svg",
-    filterClass: "dark:brightness-0 dark:invert",
+    filterClass: "brightness-0 dark:brightness-0 dark:invert",
     sizeClass: "h-3 w-3",
   },
+];
+
+const seasonalButtons: {
+  effect: "snow" | "confetti";
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+}[] = [
+  { effect: "snow", label: "Snow", Icon: Snowflake },
+  { effect: "confetti", label: "Confetti", Icon: PartyPopper },
 ];
 
 export function SiteFooter() {
@@ -43,6 +56,7 @@ export function SiteFooter() {
             </p>
             <Button
               className="mt-3 normal-case"
+              nativeButton={false}
               render={
                 <a
                   href="mailto:hey@jiaweing.com"
@@ -67,7 +81,7 @@ export function SiteFooter() {
                     >
                       <Image
                         alt={s.name}
-                        className={`opacity-30 grayscale transition-all hover:opacity-100 hover:grayscale-0 ${s.sizeClass ?? "h-4 w-4"} ${s.filterClass}`}
+                        className={`opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0 ${s.sizeClass ?? "h-4 w-4"} ${s.filterClass}`}
                         height={16}
                         src={s.icon}
                         width={16}
@@ -86,31 +100,67 @@ export function SiteFooter() {
           </TooltipProvider>
         </div>
 
-        <div className="mt-6 border-border border-t" />
-
-        <div className="flex items-center justify-between pt-3">
+        <div className="mt-6 flex items-center justify-between pt-3">
           <p className="text-muted-foreground text-xs">
             © {new Date().getFullYear()} Jia Wei Ng. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-xs">
-            Designed &amp; built with{" "}
-            <span className="relative inline-flex items-center justify-center">
-              <span className="absolute animate-ping text-red-400 opacity-75">
-                ♥
-              </span>
-              <span className="absolute animate-ping text-red-400 opacity-40 [animation-delay:600ms] [animation-duration:1.5s]">
-                ♥
-              </span>
-              <span className="relative text-red-400">♥</span>
-            </span>{" "}
-            by Jia Wei
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
+              {seasonalButtons.map(({ effect, label, Icon }) => (
+                <TooltipProvider delay={0} key={effect}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        className="rounded-md p-1 text-muted-foreground opacity-40 transition-all hover:scale-125 hover:text-foreground hover:opacity-100"
+                        onClick={() => triggerSeasonalEffect(effect)}
+                        type="button"
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="px-2 py-1 text-xs" side="top">
+                      {label}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ))}
+              <TooltipProvider delay={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      className="rounded-md p-1 text-muted-foreground opacity-40 transition-all hover:scale-125 hover:text-foreground hover:opacity-100"
+                      onClick={() => triggerSeasonalEffect(null)}
+                      type="button"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="px-2 py-1 text-xs" side="top">
+                    Clear effects
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <p className="text-muted-foreground text-xs">
+              Designed &amp; built with{" "}
+              <span className="relative inline-flex items-center justify-center transition-transform hover:scale-150">
+                <span className="absolute animate-ping text-red-400 opacity-75">
+                  ♥
+                </span>
+                <span className="absolute animate-ping text-red-400 opacity-40 [animation-delay:600ms] [animation-duration:1.5s]">
+                  ♥
+                </span>
+                <span className="relative text-red-400">♥</span>
+              </span>{" "}
+              by Jia Wei
+            </p>
+          </div>
         </div>
       </div>
 
       <div className="w-full overflow-hidden px-3 pb-4">
         <p
-          className="text-center font-bold text-foreground/[0.07] leading-none tracking-tight dark:text-foreground/[0.05]"
+          className="bg-gradient-to-r from-foreground/[0.12] via-foreground/[0.06] to-foreground/[0.02] bg-clip-text text-center font-bold text-transparent leading-none tracking-tight dark:from-foreground/[0.10] dark:via-foreground/[0.05] dark:to-transparent"
           style={{ fontSize: "11vw" }}
         >
           jiawei

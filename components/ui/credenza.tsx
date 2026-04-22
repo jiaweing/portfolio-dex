@@ -1,6 +1,6 @@
 "use client";
 
-import type * as React from "react";
+import * as React from "react";
 import {
   Dialog,
   DialogClose,
@@ -45,14 +45,28 @@ const Credenza = ({ children, ...props }: RootCredenzaProps) => {
   return <Credenza {...props}>{children}</Credenza>;
 };
 
-const CredenzaTrigger = ({ className, children, ...props }: CredenzaProps) => {
+const CredenzaTrigger = ({
+  className,
+  children,
+  asChild,
+  ...props
+}: CredenzaProps) => {
   const isDesktop = !useIsMobile();
-  const CredenzaTrigger = isDesktop ? DialogTrigger : DrawerTrigger;
+
+  if (isDesktop) {
+    const renderElement =
+      asChild && React.isValidElement(children) ? children : undefined;
+    return (
+      <DialogTrigger className={className} render={renderElement} {...props}>
+        {renderElement ? undefined : children}
+      </DialogTrigger>
+    );
+  }
 
   return (
-    <CredenzaTrigger className={className} {...props}>
+    <DrawerTrigger asChild={asChild} className={className} {...props}>
       {children}
-    </CredenzaTrigger>
+    </DrawerTrigger>
   );
 };
 

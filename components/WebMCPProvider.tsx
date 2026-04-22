@@ -19,7 +19,7 @@ export function WebMCPProvider() {
         const social = (profileData as any).social;
         return {
           name: "Jia Wei Ng",
-          bio: "a designer & software engineer",
+          bio: "a founder, designer & engineer",
           currentRoles: present,
           social,
         };

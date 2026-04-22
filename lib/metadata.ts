@@ -14,7 +14,7 @@ interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Jia Wei Ng",
-  description: "a designer & software engineer",
+  description: "a founder, designer & engineer",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://jiaweing.com",
   ogImage: "https://jiaweing.com/og/index.png",
   links: {

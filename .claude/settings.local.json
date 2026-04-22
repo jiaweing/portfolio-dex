@@ -59,7 +59,13 @@
       "Bash(vercel ls *)",
       "Bash(vercel inspect *)",
       "Bash(sed -i 's|const mcpBin = new URL\\(\"./browser-mcp.js\", import.meta.url\\).pathname;|const { fileURLToPath } = await import\\(\"node:url\"\\);\\\\n    const mcpBin = fileURLToPath\\(new URL\\(\"./browser-mcp.js\", import.meta.url\\)\\);|' /tmp/expect-fork/apps/cli/src/index.tsx)",
-      "Bash(sed -n '250,260p' /tmp/expect-fork/apps/cli/src/index.tsx)"
+      "Bash(sed -n '250,260p' /tmp/expect-fork/apps/cli/src/index.tsx)",
+      "Bash(npx playwright *)",
+      "Read(//tmp/**)",
+      "Bash(gh pr create --repo millionco/expect --title 'fix: use fileURLToPath instead of .pathname for Windows compatibility' --body ' *)",
+      "Bash(gh pr create --repo millionco/expect --head jiaweing:fix/windows-mcp-path --base main --title 'fix: use fileURLToPath instead of .pathname for Windows compatibility' --body ' *)",
+      "Bash(gh api *)",
+      "Bash(gh issue *)"
     ]
   }
 }
