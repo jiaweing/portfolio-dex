@@ -139,13 +139,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="flex flex-col items-start gap-4">
               <div className="flex w-full items-start justify-between gap-3">
                 <Button
-                  asChild
                   className="!p-0 text-muted-foreground"
+                  render={
+                    <Link className="flex items-center gap-1" href="/blog" />
+                  }
                   variant="link"
                 >
-                  <Link className="flex items-center gap-1" href={"/blog"}>
-                    <ArrowLeft /> back to writing
-                  </Link>
+                  <ArrowLeft /> back to writing
                 </Button>
                 <BlogLLMMenu
                   postMarkdown={postMarkdown}

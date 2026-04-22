@@ -1,13 +1,4 @@
-import { Radio } from "lucide-react";
-import Link from "next/link";
 import { BlogPostList } from "@/components/blog/BlogPostList";
-import { FadeIn } from "@/components/ui/fade-in";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { generateMetadata } from "@/lib/metadata";
 import { getBlogPosts } from "@/lib/notion";
 
@@ -22,34 +13,5 @@ export const metadata = generateMetadata({
 export default async function BlogPage() {
   const posts = await getBlogPosts();
 
-  return (
-    <>
-      <FadeIn>
-        <div className="mb-4 flex flex-col">
-          <div className="flex flex-row items-center gap-2">
-            <h3 className="font-semibold">writing</h3>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link
-                    aria-label="RSS feed"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                    href="/feed.xml"
-                  >
-                    <Radio className="h-4 w-4" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    Subscribe to my RSS feed to get new posts in your reader
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
-      </FadeIn>
-      <BlogPostList posts={posts} />
-    </>
-  );
+  return <BlogPostList posts={posts} />;
 }

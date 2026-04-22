@@ -41,14 +41,18 @@ export function SiteFooter() {
             <p className="text-muted-foreground text-xs">
               {siteConfig.description}
             </p>
-            <Button asChild className="mt-3 normal-case" size="sm">
-              <a
-                href="mailto:hey@jiaweing.com"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                contact me
-              </a>
+            <Button
+              className="mt-3 normal-case"
+              render={
+                <a
+                  href="mailto:hey@jiaweing.com"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                />
+              }
+              size="sm"
+            >
+              contact me
             </Button>
           </div>
           <TooltipProvider delayDuration={0}>

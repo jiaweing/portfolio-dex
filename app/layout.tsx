@@ -178,7 +178,7 @@ export default function RootLayout({
           <PlausibleWrapper>
             <div className="relative flex min-h-screen flex-col">
               <div>
-                <section className="relative z-10 bg-background lg:mb-[400px]">
+                <section className="relative z-10 min-h-screen bg-background lg:mb-[400px]">
                   <LayoutWidthWrapper>
                     <div className="relative z-[100] mx-auto max-w-2xl space-y-4 leading-relaxed">
                       <SiteHeader />

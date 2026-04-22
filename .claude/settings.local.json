@@ -53,7 +53,9 @@
       "Bash(timeout 5 expect mcp)",
       "Bash(npm view *)",
       "Bash(expect mcp *)",
-      "Bash(gh repo *)"
+      "Bash(gh repo *)",
+      "Bash(bun dev *)",
+      "Bash(curl *)"
     ]
   }
 }

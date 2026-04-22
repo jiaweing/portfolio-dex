@@ -100,7 +100,7 @@ function StackedFavicons({
                 }}
               >
                 {item.src ? (
-                  <div
+                  <span
                     className={cn(
                       "flex h-5 w-5 items-center justify-center overflow-hidden",
                       isProject && "corner-squircle"
@@ -126,7 +126,7 @@ function StackedFavicons({
                       src={item.src}
                       width={16}
                     />
-                  </div>
+                  </span>
                 ) : (
                   <Favicon
                     className={cn("corner-squircle h-7 w-7")}

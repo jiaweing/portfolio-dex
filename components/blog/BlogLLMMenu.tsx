@@ -72,19 +72,21 @@ export function BlogLLMMenu({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          aria-label="Copy page"
-          className="h-8 px-2 text-muted-foreground hover:text-foreground"
-          size="icon"
-          variant="ghost"
-        >
-          {copied ? (
-            <Check className="size-3.5" />
-          ) : (
-            <Copy className="size-3.5" />
-          )}
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            aria-label="Copy page"
+            className="h-8 px-2 text-muted-foreground hover:text-foreground"
+            size="icon"
+            variant="ghost"
+          />
+        }
+      >
+        {copied ? (
+          <Check className="size-3.5" />
+        ) : (
+          <Copy className="size-3.5" />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem onClick={copyMarkdown}>
