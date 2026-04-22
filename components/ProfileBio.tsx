@@ -136,10 +136,7 @@ function StackedFavicons({
                 )}
               </motion.a>
             </TooltipTrigger>
-            <TooltipContent
-              className="px-2 py-1 font-medium text-xs"
-              side="top"
-            >
+            <TooltipContent className="px-2 py-1 text-xs" side="top">
               {item.name}
             </TooltipContent>
           </Tooltip>
@@ -209,7 +206,7 @@ export function ProfileBio() {
       <motion.p variants={itemVariants}>
         <span className="font-normal text-muted-foreground">Hi, I&apos;m </span>
         <SantaAvatar className="corner-squircle mr-2 inline-block size-5 align-middle md:size-6.5" />
-        <span className="font-medium text-black text-foreground dark:text-white">
+        <span className="text-black text-foreground dark:text-white">
           <TextShimmer
             className="inline-block"
             duration={1.2}
@@ -234,7 +231,7 @@ export function ProfileBio() {
           />
           Singapore)
         </span>
-        , a serial entrepreneur, designer & software engineer
+        , a designer & software engineer
         <Image
           alt="Fire"
           className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
@@ -247,7 +244,7 @@ export function ProfileBio() {
       <motion.p variants={itemVariants}>
         I currently build and scale products at{" "}
         <Link
-          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://amajor.ai"
           rel="noopener noreferrer"
           target="_blank"
@@ -256,7 +253,7 @@ export function ProfileBio() {
         </Link>
         ,{" "}
         <Link
-          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://updatenight.com"
           rel="noopener noreferrer"
           target="_blank"
@@ -265,7 +262,7 @@ export function ProfileBio() {
         </Link>
         ,{" "}
         <Link
-          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://supply.tf"
           rel="noopener noreferrer"
           target="_blank"
@@ -274,7 +271,7 @@ export function ProfileBio() {
         </Link>
         , and{" "}
         <Link
-          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://decosmic.com"
           rel="noopener noreferrer"
           target="_blank"
@@ -312,7 +309,7 @@ export function ProfileBio() {
       <motion.p variants={itemVariants}>
         Previously, I scaled{" "}
         <Link
-          className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+          className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
           href="https://titan.tf"
           rel="noopener noreferrer"
           target="_blank"
@@ -332,22 +329,18 @@ export function ProfileBio() {
         />
         to{" "}
         <AnimatedNumber
-          className="font-medium text-black text-foreground dark:text-white"
+          className="text-black text-foreground dark:text-white"
           springOptions={{ bounce: 0, duration: 3000 }}
           value={players}
         />
-        <span className="font-medium text-black text-foreground dark:text-white">
-          k
-        </span>{" "}
+        <span className="text-black text-foreground dark:text-white">k</span>{" "}
         unique players and{" "}
         <AnimatedNumber
-          className="font-medium text-black text-foreground dark:text-white"
+          className="text-black text-foreground dark:text-white"
           springOptions={{ bounce: 0, duration: 3000 }}
           value={mau}
         />
-        <span className="font-medium text-black text-foreground dark:text-white">
-          k
-        </span>{" "}
+        <span className="text-black text-foreground dark:text-white">k</span>{" "}
         monthly active users.
       </motion.p>
 
@@ -389,8 +382,12 @@ export function ProfileBio() {
         />
       </motion.p>
 
-      <motion.div className="space-y-3" variants={itemVariants}>
-        <p>I document my life &amp; build in public at</p>
+      <motion.div className="space-y-1.5" variants={itemVariants}>
+        <p>
+          <span className="chroma-text chroma-text-animate">
+            I document my life &amp; build in public at
+          </span>
+        </p>
         <StackedFavicons
           items={profileData.social
             .filter((s) => s.name !== "LinkedIn" && s.name !== "GitHub")

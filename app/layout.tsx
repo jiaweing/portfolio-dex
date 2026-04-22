@@ -26,6 +26,7 @@ const geistMono = Geist_Mono({
 
 import { Toaster } from "sileo";
 import { OpenSourceToast } from "@/components/open-source-toast";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import { WebMCPProvider } from "@/components/WebMCPProvider";
 import { siteConfig } from "@/lib/metadata";
 
@@ -118,7 +119,7 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className={`${geistSans.variable} ${geistMono.variable}`} lang="en">
       <head>
         {process.env.NODE_ENV === "development" && (
           <Script
@@ -167,9 +168,7 @@ export default function RootLayout({
         <link href="/manifest.webmanifest" rel="manifest" />
         <link href="/.well-known/llms.txt" rel="llms" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden pb-20 antialiased lg:pb-0`}
-      >
+      <body className="overflow-x-hidden pb-20 antialiased lg:pb-0">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -209,6 +208,7 @@ export default function RootLayout({
           <SeasonalEffects />
           <Toaster position="bottom-right" theme="system" />
           <OpenSourceToast />
+          <SmoothScroll />
           <WebMCPProvider />
           <GoogleAnalytics gaId="G-MJ0F694R8J" />
         </ThemeProvider>

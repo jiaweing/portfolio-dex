@@ -9,8 +9,7 @@ export async function GET(request: NextRequest) {
 
     const title = searchParams.get("title") || "Jia Wei Ng";
     const subtitle =
-      searchParams.get("subtitle") ||
-      "a serial entrepreneur, designer & software engineer";
+      searchParams.get("subtitle") || "a designer & software engineer";
     const type = searchParams.get("type") || ""; // "blog" | "project" | ""
 
     const CELL = 48;

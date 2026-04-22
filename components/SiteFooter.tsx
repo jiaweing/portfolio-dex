@@ -90,7 +90,16 @@ export function SiteFooter() {
           </p>
           <p className="text-muted-foreground text-xs">
             Designed &amp; built with{" "}
-            <span className="animate-pulse text-red-400">♥</span> by Jia Wei
+            <span className="relative inline-flex items-center justify-center">
+              <span className="absolute animate-ping text-red-400 opacity-75">
+                ♥
+              </span>
+              <span className="absolute animate-ping text-red-400 opacity-40 [animation-delay:600ms] [animation-duration:1.5s]">
+                ♥
+              </span>
+              <span className="relative text-red-400">♥</span>
+            </span>{" "}
+            by Jia Wei
           </p>
         </div>
       </div>

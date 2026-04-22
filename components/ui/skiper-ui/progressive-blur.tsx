@@ -94,8 +94,6 @@ const ProgressiveBlur = ({
       style={{
         ...horizontalStyle,
         zIndex,
-        WebkitBackdropFilter: `blur(${blurAmount})`,
-        backdropFilter: `blur(${blurAmount})`,
         WebkitUserSelect: "none",
         userSelect: "none",
       }}

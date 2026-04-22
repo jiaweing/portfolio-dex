@@ -74,7 +74,7 @@ export default function JsonLd() {
       "@type": "PostalAddress",
       addressCountry: "Singapore",
     },
-    description: "a serial entrepreneur, designer & software engineer",
+    description: "a designer & software engineer",
   };
 
   // Website schema for better site representation
@@ -88,7 +88,7 @@ export default function JsonLd() {
       name: "Jia Wei Ng",
       url: "https://jiaweing.com",
     },
-    description: "a serial entrepreneur, designer & software engineer",
+    description: "a designer & software engineer",
     publisher: {
       "@type": "Person",
       name: "Jia Wei Ng",

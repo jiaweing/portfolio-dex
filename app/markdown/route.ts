@@ -27,7 +27,7 @@ export async function GET() {
   const lines: string[] = [
     "# Jia Wei Ng",
     "",
-    "a serial entrepreneur, designer & software engineer based in Singapore.",
+    "a designer & software engineer based in Singapore.",
     "",
     "## Current Roles",
     "",

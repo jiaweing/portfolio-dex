@@ -31,7 +31,29 @@
       "WebFetch(domain:api.svgl.app)",
       "Bash(curl -s \"https://cdn.simpleicons.org/shopee\" -o public/logos/shopee.svg)",
       "Bash(curl -s \"https://cdn.simpleicons.org/unsplash\" -o public/logos/unsplash.svg)",
-      "Bash(curl -s \"https://cdn.simpleicons.org/dell\" -o public/logos/dell.svg)"
+      "Bash(curl -s \"https://cdn.simpleicons.org/dell\" -o public/logos/dell.svg)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); deps={**d.get\\('dependencies',{}\\), **d.get\\('devDependencies',{}\\)}; [print\\(k,v\\) for k,v in deps.items\\(\\)]\")",
+      "WebFetch(domain:www.expect.dev)",
+      "Bash(npx expect-cli *)",
+      "Bash(bunx expect-cli *)",
+      "Read(//c/Users/jiawei/.claude/**)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('mcpServers', {}\\), indent=2\\)\\)\")",
+      "Bash(python3 *)",
+      "Bash(xargs grep *)",
+      "Bash(bunx --bun which expect-cli)",
+      "Bash(bun pm *)",
+      "Bash(npm list *)",
+      "Bash(npm root *)",
+      "Read(//c/Users/jiawei/**)",
+      "WebSearch",
+      "Bash(timeout 5 npx -y expect-cli mcp)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(npm install *)",
+      "Bash(where expect *)",
+      "Bash(timeout 5 expect mcp)",
+      "Bash(npm view *)",
+      "Bash(expect mcp *)",
+      "Bash(gh repo *)"
     ]
   }
 }

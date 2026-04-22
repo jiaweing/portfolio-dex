@@ -1,7 +1,8 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @plugin "@tailwindcss/typography";
 @plugin "@toolwind/corner-shape";
-@plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -215,13 +216,15 @@
   --color-book-bind: var(--ds-book-bind);
   --shadow-book: var(--ds-shadow-book);
   --shadow-book-border: var(--ds-shadow-book-border);
+  --font-heading: var(--font-sans);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 :root {
-  --radius: 1rem;
-  --background: oklch(1 0 0);
+  --radius: 0.625rem;
   --background-rgb: 255, 255, 255;
-  --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -238,11 +241,11 @@
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.705 0.015 286.067);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --chart-1: oklch(0.871 0.006 286.286);
+  --chart-2: oklch(0.552 0.016 285.938);
+  --chart-3: oklch(0.442 0.017 285.786);
+  --chart-4: oklch(0.37 0.013 285.805);
+  --chart-5: oklch(0.274 0.006 286.033);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
   --sidebar-primary: oklch(0.21 0.006 285.885);
@@ -284,6 +287,8 @@
     0 1px 1px 0 rgba(0, 0, 0, 0.02), 0 4px 8px -4px rgba(0, 0, 0, 0.1), 0 16px
     24px -8px rgba(0, 0, 0, 0.03);
   --ds-shadow-book-border: inset 0 1px 2px 0 rgba(255, 255, 255, 0.3);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
 }
 
 .dark {
@@ -306,11 +311,11 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --chart-1: oklch(0.871 0.006 286.286);
+  --chart-2: oklch(0.552 0.016 285.938);
+  --chart-3: oklch(0.442 0.017 285.786);
+  --chart-4: oklch(0.37 0.013 285.805);
+  --chart-5: oklch(0.274 0.006 286.033);
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -334,6 +339,115 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Chroma text sweep animation (ported from diabrowser.com) */
+.chroma-text {
+  /* rainbow strictly in middle third (33%–67%), outer thirds pure muted */
+  background: linear-gradient(
+    90deg,
+    var(--muted-foreground) 0%,
+    var(--muted-foreground) 33.33%,
+    #c679c4 40%,
+    #fa3d1d 45%,
+    #ffb005 50%,
+    #e1e1fe 55%,
+    #0358f7 60%,
+    var(--muted-foreground) 66.67%,
+    var(--muted-foreground) 100%
+  );
+  background-size: 300% auto;
+  background-position: right center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  will-change: background-position;
+}
+
+.chroma-text-animate {
+  animation: chroma-shimmer 6s ease-in-out 1.5s infinite;
+}
+
+@keyframes chroma-shimmer {
+  0% {
+    background-position: right center;
+  }
+  42% {
+    background-position: left center;
+    animation-timing-function: steps(1);
+  }
+  43% {
+    background-position: right center;
+  }
+  100% {
+    background-position: right center;
+  }
+}
+
+.chroma-text-out {
+  --chroma-base: #000000;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 33.33%,
+      #c679c4 40%,
+      #fa3d1d 45%,
+      #ffb005 50%,
+      #e1e1fe 55%,
+      #0358f7 60%,
+      var(--chroma-base) 66.67%,
+      var(--chroma-base)
+    ),
+    linear-gradient(
+      270deg,
+      transparent 0,
+      transparent 33.33%,
+      #c679c4 40%,
+      #fa3d1d 45%,
+      #ffb005 50%,
+      #e1e1fe 55%,
+      #0358f7 60%,
+      var(--chroma-base) 66.67%,
+      var(--chroma-base)
+    );
+  background-size:
+    300% 100%,
+    300% 100%;
+  background-position:
+    100% 0,
+    100% 0;
+  background-blend-mode: normal;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  will-change: background-position;
+}
+
+.dark .chroma-text-out {
+  --chroma-base: #ffffff;
+}
+
+.chroma-text-out-animate {
+  animation: chroma-expand-bidirectional 0.85s ease-in-out 0.6s forwards;
+}
+
+@keyframes chroma-expand-bidirectional {
+  0% {
+    background-position:
+      100% 0,
+      100% 0;
+  }
+  to {
+    background-position:
+      0 0,
+      0 0;
   }
 }
 

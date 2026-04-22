@@ -143,7 +143,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   className="!p-0 text-muted-foreground"
                   variant="link"
                 >
-                  <Link href={"/blog"}>
+                  <Link className="flex items-center gap-1" href={"/blog"}>
                     <ArrowLeft /> back to writing
                   </Link>
                 </Button>

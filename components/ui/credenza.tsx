@@ -21,7 +21,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +46,7 @@ const Credenza = ({ children, ...props }: RootCredenzaProps) => {
 };
 
 const CredenzaTrigger = ({ className, children, ...props }: CredenzaProps) => {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = !useIsMobile();
   const CredenzaTrigger = isDesktop ? DialogTrigger : DrawerTrigger;
 
   return (

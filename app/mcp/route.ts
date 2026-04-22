@@ -44,7 +44,7 @@ async function executeTool(name: string, args: Record<string, unknown>) {
     const social = (profileData as any).social;
     return {
       name: "Jia Wei Ng",
-      bio: "a serial entrepreneur, designer & software engineer based in Singapore",
+      bio: "a designer & software engineer based in Singapore",
       url: "https://jiaweing.com",
       currentRoles: present.map((r: any) => ({
         title: r.title,
