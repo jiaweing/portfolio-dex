@@ -5,6 +5,7 @@ import Script from "next/script";
 import { LayoutWidthWrapper } from "@/components/LayoutWidthWrapper";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { PlausibleWrapper } from "@/components/PlausibleWrapper";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SeasonalEffects } from "@/components/seasonal-effects";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -178,7 +179,7 @@ export default function RootLayout({
           <PlausibleWrapper>
             <div className="relative flex min-h-screen flex-col">
               <div>
-                <section className="bg-white dark:bg-transparent">
+                <section className="relative z-10 bg-background lg:mb-[400px]">
                   <LayoutWidthWrapper>
                     <div className="relative z-[100] mx-auto max-w-2xl space-y-4 leading-relaxed">
                       <SiteHeader />
@@ -201,6 +202,7 @@ export default function RootLayout({
           </PlausibleWrapper>
 
           <MobileBottomNav />
+          <SiteFooter />
           {modal}
           <ThemeToggle />
           <TailwindIndicator />

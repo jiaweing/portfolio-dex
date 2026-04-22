@@ -102,13 +102,15 @@ function StackedFavicons({
                 {item.src ? (
                   <div
                     className={cn(
-                      "corner-squircle flex h-5 w-5 items-center justify-center overflow-hidden"
+                      "flex h-5 w-5 items-center justify-center overflow-hidden",
+                      isProject && "corner-squircle"
                     )}
                   >
                     <Image
                       alt={item.name}
                       className={cn(
-                        "h-full w-full rounded-sm object-contain",
+                        "h-full w-full object-contain",
+                        isProject && "rounded-sm",
                         (item.invertDark ||
                           (!isProject &&
                             [
@@ -390,11 +392,13 @@ export function ProfileBio() {
       <motion.div className="space-y-3" variants={itemVariants}>
         <p>I document my life &amp; build in public at</p>
         <StackedFavicons
-          items={profileData.social.map((s) => ({
-            url: s.url,
-            src: s.icon,
-            name: s.name,
-          }))}
+          items={profileData.social
+            .filter((s) => s.name !== "LinkedIn" && s.name !== "GitHub")
+            .map((s) => ({
+              url: s.url,
+              src: s.icon,
+              name: s.name,
+            }))}
         />
       </motion.div>
 

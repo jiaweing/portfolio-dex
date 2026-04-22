@@ -10,7 +10,7 @@ export function Quotes() {
         <div className="size-1.5 rounded-full bg-muted-foreground/20" />
       </div>
 
-      <div className="w-full text-left">
+      <div className="min-h-[5.5rem] w-full text-left md:min-h-[4.5rem]">
         <TextLoop className="whitespace-normal text-lg text-muted-foreground/80 italic leading-relaxed md:text-xl">
           <span>
             "The people who are crazy enough to think they can change the world
