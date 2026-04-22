@@ -67,7 +67,7 @@ function StackedFavicons({
   isProject?: boolean;
 }) {
   return (
-    <TooltipProvider delayDuration={0}>
+    <TooltipProvider delay={0}>
       <motion.span
         className={cn(
           "mx-1 inline-flex items-center transition-all duration-900",

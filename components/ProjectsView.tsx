@@ -17,14 +17,14 @@ export function ProjectsView({ projects }: ProjectsViewProps) {
     <div className="relative min-h-screen w-full">
       <Tabs className="w-full" defaultValue="gallery">
         <div className="container mx-auto flex justify-center">
-          <TabsList variant="pills">
-            <TabsTrigger value="gallery" variant="pills">
+          <TabsList>
+            <TabsTrigger value="gallery">
               <Layers className="h-4 w-4" />
             </TabsTrigger>
-            <TabsTrigger value="stack" variant="pills">
+            <TabsTrigger value="stack">
               <WalletCards className="h-4 w-4" />
             </TabsTrigger>
-            <TabsTrigger value="game" variant="pills">
+            <TabsTrigger value="game">
               <Gamepad2 className="h-4 w-4" />
             </TabsTrigger>
           </TabsList>

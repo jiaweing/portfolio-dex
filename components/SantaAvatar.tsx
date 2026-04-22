@@ -2,16 +2,9 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
-interface SantaAvatarProps
-  extends React.ComponentPropsWithoutRef<typeof Avatar> {
-  size?: number;
-}
+type SantaAvatarProps = React.ComponentPropsWithoutRef<typeof Avatar>;
 
-export function SantaAvatar({
-  className,
-  size = 10,
-  ...props
-}: SantaAvatarProps) {
+export function SantaAvatar({ className, ...props }: SantaAvatarProps) {
   const [showHat, setShowHat] = useState(false);
 
   useEffect(() => {

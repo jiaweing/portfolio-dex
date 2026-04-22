@@ -55,7 +55,7 @@ export function SiteFooter() {
               contact me
             </Button>
           </div>
-          <TooltipProvider delayDuration={0}>
+          <TooltipProvider delay={0}>
             <div className="flex items-center gap-3">
               {socialLinks.map((s) => (
                 <Tooltip key={s.name}>
