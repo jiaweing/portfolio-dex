@@ -11,7 +11,7 @@ type FaviconProps = {
   fallback?: string;
 };
 
-const AVATAR_COLORS = [
+const AVATAR_COLORS: [string, string][] = [
   ["#f87171", "#7f1d1d"],
   ["#fb923c", "#7c2d12"],
   ["#facc15", "#713f12"],
