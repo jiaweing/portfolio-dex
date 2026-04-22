@@ -1,3 +1,4 @@
+import { AchievementsSection } from "@/components/experience/AchievementsSection";
 import { PastSection } from "@/components/experience/PastSection";
 import { PresentSection } from "@/components/experience/PresentSection";
 import type { Project } from "@/lib/notion";
@@ -10,6 +11,7 @@ export function ExperienceSection({ projects }: ExperienceSectionProps) {
   return (
     <div className="mx-auto my-8 mt-6 space-y-6">
       <PresentSection />
+      <AchievementsSection />
       <PastSection />
     </div>
   );

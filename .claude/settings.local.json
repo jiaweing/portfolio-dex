@@ -25,7 +25,13 @@
       "Bash(git *)",
       "Bash(awk '{print $9}')",
       "Bash(grep -v \"^$\")",
-      "WebFetch(domain:www.javii.es)"
+      "WebFetch(domain:www.javii.es)",
+      "Bash(npx svgls *)",
+      "WebFetch(domain:svgl.app)",
+      "WebFetch(domain:api.svgl.app)",
+      "Bash(curl -s \"https://cdn.simpleicons.org/shopee\" -o public/logos/shopee.svg)",
+      "Bash(curl -s \"https://cdn.simpleicons.org/unsplash\" -o public/logos/unsplash.svg)",
+      "Bash(curl -s \"https://cdn.simpleicons.org/dell\" -o public/logos/dell.svg)"
     ]
   }
 }

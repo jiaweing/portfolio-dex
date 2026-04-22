@@ -1,12 +1,12 @@
 import profileData from "@/data/profile.json";
 import { ExperienceItem, type ExperienceItemType } from "./ExperienceItem";
 
-export function PastSection() {
+export function AchievementsSection() {
   return (
     <div>
-      <h3 className="mb-2 font-semibold">past</h3>
+      <h3 className="mb-2 font-semibold">achievements</h3>
       <div className="text-sm leading-relaxed">
-        {(profileData.past as unknown as ExperienceItemType[]).map(
+        {(profileData.achievements as unknown as ExperienceItemType[]).map(
           (item, index) => (
             <ExperienceItem item={item} key={index} />
           )

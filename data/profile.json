@@ -4,107 +4,81 @@
       "title": "CEO",
       "organization": "amajor.ai",
       "url": "https://amajor.ai",
-      "description": "the company behind ryu, bringing agents to everyone"
-    },
-    {
-      "title": "Business Director",
-      "organization": "base07.com",
-      "url": "https://base07.com",
-      "description": "we make agentic apps",
-      "invertFavicon": "light"
+      "description": "the company behind ryu, bringing agents to everyone",
+      "image": "/logos/amajor.svg",
+      "invertImage": "dark"
     },
     {
       "title": "Co-Founder",
       "organization": "ryu",
       "url": "https://ryuhq.com",
-      "description": "coming may 2026"
+      "description": "coming may 2026",
+      "image": "/logos/ryu.png"
     },
     {
       "title": "Founder",
       "organization": "supply.tf",
       "url": "https://supply.tf",
-      "description": "clothing brand, streetwear"
+      "description": "clothing brand, streetwear",
+      "image": "/logos/supply.png"
     },
     {
       "title": "Podcast Host & Writer",
       "organization": "updatenight.com",
       "url": "https://updatenight.com",
-      "description": "handpicked tools & underrated news"
-    },
-    {
-      "title": "Co-Founder",
-      "organization": "paoverse.com",
-      "url": "https://paoverse.com",
-      "description": "400+ followers"
+      "description": "handpicked tools & underrated news",
+      "image": "/logos/updatenight.png"
     },
     {
       "title": "",
       "organization": "YouTube Partner",
       "url": "https://www.youtube.com/@j14wei",
-      "description": "860+ subscribers, 100k views"
-    },
+      "description": "860+ subscribers, 100k views",
+      "image": "/logos/youtube.svg"
+    }
+  ],
+  "past": [
     {
-      "title": "Affiliate & Seller",
-      "organization": "Shopee",
-      "url": "https://shopee.sg",
-      "description": ""
+      "title": "Business Director",
+      "organization": "base07.com",
+      "url": "https://base07.com",
+      "description": "we make agentic apps",
+      "image": "/logos/base7.svg",
+      "invertImage": "dark"
     },
     {
       "title": "Founder",
       "organization": "decosmic.com",
       "url": "https://decosmic.com",
-      "description": "build & deploy AI agents"
+      "description": "world's first few pioneers in RAG, anchoring agents on trusted data",
+      "image": "/logos/decosmic.png"
     },
-
     {
       "title": "Campus Lead @ SIT",
       "organization": "Notion",
       "url": "https://notion.so",
-      "description": ""
-    }
-  ],
-  "past": [
+      "description": "the everything app for notes, docs & projects",
+      "image": "/logos/notion.svg"
+    },
+    {
+      "title": "Affiliate & Seller",
+      "organization": "Shopee",
+      "url": "https://shopee.sg",
+      "description": "SEA's largest e-commerce marketplace",
+      "image": "/logos/shopee.svg"
+    },
+    {
+      "title": "Co-Founder",
+      "organization": "paoverse.com",
+      "url": "https://paoverse.com",
+      "description": "400+ followers",
+      "image": "/logos/paoverse.svg"
+    },
     {
       "title": "Lead Mobile Developer",
       "organization": "betteragesolutions.com",
       "url": "https://betteragesolutions.com",
       "description": "streamlined medicine delivery for SG hospitals"
-    },
-    {
-      "title": "",
-      "organization": "Dell Innovatefest 2025",
-      "url": "https://www.businesstimes.com.sg/lifestyle/dell-innovatefest-2025-uses-ai-address-mental-health-issues",
-      "description": "finalist, featured on business times"
-    },
-    {
-      "title": "",
-      "organization": "University of Glasgow Design Innovation",
-      "url": "https://www.linkedin.com/posts/jiaweing_my-team-and-i-just-won-best-poster-at-our-activity-7368311623792394240-FZ5o",
-      "description": "best poster"
-    },
-    {
-      "title": "",
-      "organization": "Google APAC Solution Challenge 2025",
-      "url": "https://vision.hack2skill.com/event/apacsolutionchallenge",
-      "description": "top 10 apac, top 1 singapore"
-    },
-    {
-      "title": "",
-      "organization": "Dell Cloud Native Award - Professional Software Development",
-      "url": "https://dell.com.sg",
-      "description": "1st place"
-    },
-    {
-      "title": "",
-      "organization": "Dell Cloud Native Award - Cloud Computing",
-      "url": "https://dell.com.sg",
-      "description": "1st place"
-    },
-    {
-      "title": "",
-      "organization": "GovTech x OpenAI Hackathon 2024",
-      "url": "https://www.tech.gov.sg",
-      "description": "top 10%, 25/250"
     },
     {
       "title": "Computer Science",
@@ -123,56 +97,86 @@
       "organization": "casigned",
       "url": "https://tally.so/r/m6QO4O",
       "description": "personalized NFC business card service",
-      "invertFavicon": "dark"
+      "image": "/logos/casigned.png"
     },
     {
       "title": "Founder",
-      "organization": "Division Null ∅",
+      "organization": "Division Null ∅ (now Update Night)",
       "url": "https://discord.com/invite/KTCGWC7bZn",
-      "description": "a space to share the latest in tech"
-    },
-    {
-      "title": "Founder",
-      "organization": "been.place",
-      "url": "https://been.place",
-      "description": "track, remember & share places",
-      "hideFavicon": true
-    },
-    {
-      "title": "Founder",
-      "organization": "titan.tf",
-      "url": "https://titan.tf",
-      "description": "470k unique players, 10k monthly active users"
-    },
-    {
-      "title": "Software Engineer",
-      "organization": "betteragesolutions.com",
-      "url": "https://betteragesolutions.com"
+      "description": "a space to share the latest in tech",
+      "image": "/logos/discord.svg"
     },
     {
       "title": "Administrative Assistant",
       "organization": "mindef.gov.sg",
       "url": "https://mindef.gov.sg",
-      "description": "predictive models for large datasets"
-    },
-    {
-      "title": "",
-      "organization": "Unsplash",
-      "url": "https://unsplash.com/@jiaweing",
-      "description": "top 25%, 460k views & 4.3k downloads",
-      "invertFavicon": "dark"
+      "description": "predictive models for large datasets",
+      "hideFavicon": true
     },
     {
       "title": "Software Developer",
       "organization": "1citadel.com",
       "url": "https://1citadel.com",
-      "description": "blockchain for doc security, tokenization & contact tracing"
+      "description": "blockchain for doc security, tokenization & contact tracing",
+      "hideFavicon": true
     },
     {
       "title": "Business Information Systems",
       "organization": "Republic Polytechnic",
       "url": "https://www.rp.edu.sg",
       "description": "2017-2019"
+    },
+    {
+      "title": "Founder",
+      "organization": "titan.tf",
+      "url": "https://titan.tf",
+      "description": "470k unique players, 10k monthly active users",
+      "image": "/logos/titan.png",
+      "invertImage": "light"
+    }
+  ],
+  "achievements": [
+    {
+      "title": "",
+      "organization": "Google APAC Solution Challenge 2025",
+      "url": "https://vision.hack2skill.com/event/apacsolutionchallenge",
+      "description": "top 10 apac, top 1 singapore",
+      "image": "/logos/google.svg"
+    },
+    {
+      "title": "",
+      "organization": "Dell Innovatefest 2025",
+      "url": "https://www.businesstimes.com.sg/lifestyle/dell-innovatefest-2025-uses-ai-address-mental-health-issues",
+      "description": "finalist, featured on business times",
+      "image": "/logos/dell.svg"
+    },
+    {
+      "title": "",
+      "organization": "Dell Cloud Native Award - Professional Software Development",
+      "url": "https://dell.com.sg",
+      "description": "1st place",
+      "image": "/logos/dell.svg"
+    },
+    {
+      "title": "",
+      "organization": "Dell Cloud Native Award - Cloud Computing",
+      "url": "https://dell.com.sg",
+      "description": "1st place",
+      "image": "/logos/dell.svg"
+    },
+    {
+      "title": "",
+      "organization": "GovTech x OpenAI Hackathon 2024",
+      "url": "https://www.tech.gov.sg",
+      "description": "top 10%, 25/250"
+    },
+    {
+      "title": "",
+      "organization": "Unsplash",
+      "url": "https://unsplash.com/@jiaweing",
+      "description": "top 25%, 460k views & 4.3k downloads",
+      "image": "/logos/unsplash.svg",
+      "invertImage": "dark"
     },
     {
       "title": "",

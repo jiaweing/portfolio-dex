@@ -56,7 +56,14 @@ function StackedFavicons({
   items,
   isProject = false,
 }: {
-  items: { url?: string; src?: string; name: string; brandBg?: string }[];
+  items: {
+    url?: string;
+    src?: string;
+    name: string;
+    brandBg?: string;
+    invertDark?: boolean;
+    invertLight?: boolean;
+  }[];
   isProject?: boolean;
 }) {
   return (
@@ -101,15 +108,17 @@ function StackedFavicons({
                     <Image
                       alt={item.name}
                       className={cn(
-                        "h-full w-full object-contain",
-                        !isProject &&
-                          [
-                            "X/Twitter",
-                            "GitHub",
-                            "Threads",
-                            "Instagram",
-                          ].includes(item.name) &&
-                          "dark:brightness-0 dark:invert"
+                        "h-full w-full rounded-sm object-contain",
+                        (item.invertDark ||
+                          (!isProject &&
+                            [
+                              "X/Twitter",
+                              "GitHub",
+                              "Threads",
+                              "Instagram",
+                            ].includes(item.name))) &&
+                          "dark:brightness-0 dark:invert",
+                        item.invertLight && "invert dark:invert-0"
                       )}
                       height={16}
                       src={item.src}
@@ -237,11 +246,11 @@ export function ProfileBio() {
         I currently build and scale products at{" "}
         <Link
           className="border-muted-foreground/40 border-b border-dashed font-medium text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
-          href="https://base07.com"
+          href="https://amajor.ai"
           rel="noopener noreferrer"
           target="_blank"
         >
-          Base 7
+          A Major
         </Link>
         ,{" "}
         <Link
@@ -273,10 +282,27 @@ export function ProfileBio() {
         <StackedFavicons
           isProject
           items={[
-            { url: "https://base07.com", name: "Base 7" },
-            { url: "https://updatenight.com", name: "Update Night" },
-            { url: "https://supply.tf", name: "supply.tf" },
-            { url: "https://decosmic.com", name: "Decosmic" },
+            {
+              url: "https://amajor.ai",
+              src: "/logos/amajor.svg",
+              name: "amajor.ai",
+              invertDark: true,
+            },
+            {
+              url: "https://updatenight.com",
+              src: "/logos/updatenight.png",
+              name: "Update Night",
+            },
+            {
+              url: "https://supply.tf",
+              src: "/logos/supply.png",
+              name: "supply.tf",
+            },
+            {
+              url: "https://decosmic.com",
+              src: "/logos/decosmic.png",
+              name: "Decosmic",
+            },
           ]}
         />
       </motion.p>
@@ -293,7 +319,14 @@ export function ProfileBio() {
         </Link>{" "}
         <StackedFavicons
           isProject
-          items={[{ url: "https://titan.tf", name: "titan.tf" }]}
+          items={[
+            {
+              url: "https://titan.tf",
+              src: "/logos/titan.png",
+              name: "titan.tf",
+              invertLight: true,
+            },
+          ]}
         />
         to{" "}
         <AnimatedNumber
