@@ -50,7 +50,22 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   const [inputValue, setInputValue] = useState(urlSearch);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
+  const viewMode = (
+    searchParams.get("view") === "calendar" ? "calendar" : "list"
+  ) as "list" | "calendar";
+
+  const setViewMode = (mode: "list" | "calendar") => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (mode === "calendar") {
+      params.set("view", "calendar");
+    } else {
+      params.delete("view");
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  };
   const [calendarDate, setCalendarDate] = useState(() =>
     startOfMonth(new Date())
   );
@@ -173,7 +188,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     return { pinnedPosts: pinned, groups: grouped };
   }, [filteredPosts]);
 
-  // Map of date string (yyyy-MM-dd) -> posts for calendar view (uses all posts, no filters)
+  // All posts by day (unfiltered) — used to determine which days have any posts
   const postsByDay = useMemo(() => {
     const map = new Map<string, BlogPost[]>();
     for (const post of posts) {
@@ -189,6 +204,19 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     return map;
   }, [posts]);
 
+  // Tag-filtered posts by day — used for dots, counts, and expanded list
+  const filteredPostsByDay = useMemo(() => {
+    if (selectedTags.length === 0) return postsByDay;
+    const map = new Map<string, BlogPost[]>();
+    for (const [key, dayPosts] of postsByDay) {
+      const filtered = dayPosts.filter((post) =>
+        selectedTags.some((tag) => post.tags?.includes(tag))
+      );
+      if (filtered.length > 0) map.set(key, filtered);
+    }
+    return map;
+  }, [postsByDay, selectedTags]);
+
   const calendarDays = useMemo(() => {
     const monthStart = startOfMonth(calendarDate);
     const monthEnd = endOfMonth(calendarDate);
@@ -200,17 +228,17 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   const selectedDayPosts = useMemo(() => {
     if (!selectedDay) return [];
     const key = formatDate(selectedDay, "yyyy-MM-dd");
-    return postsByDay.get(key) ?? [];
-  }, [selectedDay, postsByDay]);
+    return filteredPostsByDay.get(key) ?? [];
+  }, [selectedDay, filteredPostsByDay]);
 
   const currentMonthPostCount = useMemo(() => {
     const monthKey = formatDate(calendarDate, "yyyy-MM");
     let count = 0;
-    for (const [key] of postsByDay) {
-      if (key.startsWith(monthKey)) count += postsByDay.get(key)!.length;
+    for (const [key, dayPosts] of filteredPostsByDay) {
+      if (key.startsWith(monthKey)) count += dayPosts.length;
     }
     return count;
-  }, [calendarDate, postsByDay]);
+  }, [calendarDate, filteredPostsByDay]);
 
   const { minMonth, maxMonth } = useMemo(() => {
     const dates = posts
@@ -495,7 +523,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
             <div className="grid grid-cols-7 gap-1">
               {calendarDays.map((day) => {
                 const key = formatDate(day, "yyyy-MM-dd");
-                const dayPosts = postsByDay.get(key) ?? [];
+                const dayPosts = filteredPostsByDay.get(key) ?? [];
                 const hasPosts = dayPosts.length > 0;
                 const isCurrentMonth = isSameMonth(day, calendarDate);
                 const isSelected = selectedDay

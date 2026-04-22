@@ -432,7 +432,7 @@ export function StackTable({ items }: StackTableProps) {
           )}
         >
           <Input
-            className="h-14 rounded-3xl border-0 bg-background/70 pl-6 shadow-xl backdrop-blur-xl"
+            className="h-14 rounded-3xl border-0 bg-background/70 pl-6 shadow-none backdrop-blur-xl"
             onBlur={() => setIsSearchFocused(false)}
             onChange={(event) => setInputValue(event.target.value)}
             onFocus={() => setIsSearchFocused(true)}
