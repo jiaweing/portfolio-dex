@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Favicon } from "@/components/ui/Favicon";
+import { cn } from "@/lib/utils";
 
 export type ExperienceItemType = {
   title: string;
@@ -20,15 +21,12 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
           <div className="h-full w-full p-1.5">
             <img
               alt={item.organization}
-              className={`h-full w-full rounded-sm object-contain${
-                item.invertImage === "dark"
-                  ? "dark:invert"
-                  : item.invertImage === "light"
-                    ? "invert dark:invert-0"
-                    : item.invertImage === "always"
-                      ? "invert"
-                      : ""
-              }`}
+              className={cn(
+                "h-full w-full rounded-sm object-contain",
+                item.invertImage === "dark" && "dark:invert",
+                item.invertImage === "light" && "invert dark:invert-0",
+                item.invertImage === "always" && "invert"
+              )}
               src={item.image}
             />
           </div>
@@ -45,8 +43,8 @@ export function ExperienceItem({ item }: { item: ExperienceItemType }) {
         )}
       </div>
       <div className="flex min-w-0 flex-col gap-0.5">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <span className="shrink-0 font-medium leading-relaxed dark:text-white">
+        <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+          <span className="font-medium leading-relaxed dark:text-white">
             {item.organization}
           </span>
           {item.title && (
