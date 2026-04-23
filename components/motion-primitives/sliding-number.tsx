@@ -105,7 +105,7 @@ export function SlidingNumber({
 }: SlidingNumberProps) {
   const absValue = Math.abs(value);
   const [integerPart, decimalPart] = absValue.toString().split(".");
-  const integerValue = Number.parseInt(integerPart, 10);
+  const integerValue = Math.trunc(absValue);
   const paddedInteger =
     padStart && integerValue < 10 ? `0${integerPart}` : integerPart;
   const integerDigits = paddedInteger.split("");
@@ -132,7 +132,7 @@ export function SlidingNumber({
               key={`decimal-${index}`}
               place={10 ** (decimalPart.length - index - 1)}
               transition={transition}
-              value={Number.parseInt(decimalPart, 10)}
+              value={+decimalPart}
             />
           ))}
         </>
