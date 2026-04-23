@@ -5,17 +5,34 @@ import {
   Moon02Icon as Moon,
   Sun01Icon as Sun,
 } from "hugeicons-react";
+import { Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { CommandPalette } from "./search/command-palette";
 import { Button } from "./ui/button";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  // Avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const ctrl = e.metaKey || e.ctrlKey;
+      if (ctrl && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      } else if (ctrl && !e.shiftKey && e.key === ",") {
+        e.preventDefault();
+        window.open("mailto:hey@jiaweing.com", "_blank", "noopener,noreferrer");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   if (!mounted) {
@@ -56,15 +73,24 @@ export function ThemeToggle() {
 
   return (
     <>
-      {/* Desktop: Top-right fixed button */}
-      <Button
-        aria-label={`Current theme: ${getLabel()}. Click to change theme.`}
-        className="fixed top-6 right-6 z-50 inline-flex"
-        onClick={cycleTheme}
-        variant="ghost"
-      >
-        {getIcon()}
-      </Button>
+      <CommandPalette onOpenChange={setIsSearchOpen} open={isSearchOpen} />
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-1">
+        <button
+          aria-label="Search (⌘K)"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          onClick={() => setIsSearchOpen(true)}
+          type="button"
+        >
+          <Search className="h-4 w-4" />
+        </button>
+        <Button
+          aria-label={`Current theme: ${getLabel()}. Click to change theme.`}
+          onClick={cycleTheme}
+          variant="ghost"
+        >
+          {getIcon()}
+        </Button>
+      </div>
     </>
   );
 }

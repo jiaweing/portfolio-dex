@@ -25,6 +25,7 @@ const geistMono = Geist_Mono({
 });
 
 import { Toaster } from "sileo";
+import { AgentationProvider } from "@/components/agentation-provider";
 import { OpenSourceToast } from "@/components/open-source-toast";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { WebMCPProvider } from "@/components/WebMCPProvider";
@@ -205,6 +206,7 @@ export default function RootLayout({
           {modal}
           <ThemeToggle />
           <TailwindIndicator />
+          <AgentationProvider />
           <SeasonalEffects />
           <Toaster position="bottom-right" theme="system" />
           <OpenSourceToast />

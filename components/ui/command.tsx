@@ -20,7 +20,7 @@ function Command({
   return (
     <CommandPrimitive
       className={cn(
-        "flex size-full flex-col overflow-hidden rounded-4xl bg-popover p-1 text-popover-foreground",
+        "flex size-full flex-col overflow-hidden rounded-4xl bg-input/50 p-1 text-popover-foreground",
         className
       )}
       data-slot="command"
@@ -34,13 +34,17 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
+  commandClassName,
   showCloseButton = false,
+  filter,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   title?: string;
   description?: string;
   className?: string;
+  commandClassName?: string;
   showCloseButton?: boolean;
+  filter?: React.ComponentProps<typeof CommandPrimitive>["filter"];
   children: React.ReactNode;
 }) {
   return (
@@ -50,13 +54,15 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn(
-          "top-1/3 translate-y-0 overflow-hidden rounded-4xl! p-0",
-          className
-        )}
+        className={cn("top-1/2 -translate-y-1/2 rounded-4xl! p-0", className)}
         showCloseButton={showCloseButton}
       >
-        {children}
+        <Command
+          className={cn("overflow-hidden", commandClassName)}
+          filter={filter}
+        >
+          {children}
+        </Command>
       </DialogContent>
     </Dialog>
   );
@@ -67,8 +73,8 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div className="p-1 pb-0" data-slot="command-input-wrapper">
-      <InputGroup className="h-9 bg-input/50">
+    <div data-slot="command-input-wrapper">
+      <InputGroup className="h-16 rounded-none bg-transparent pb-3">
         <CommandPrimitive.Input
           className={cn(
             "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
