@@ -62,6 +62,7 @@ function DialogContent({
           "open:fade-in-0 open:zoom-in-95 closed:fade-out-0 closed:zoom-out-95 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 closed:animate-out gap-6 rounded-4xl bg-popover p-6 text-popover-foreground text-sm shadow-xl outline-none ring-8 ring-background/20 duration-100 open:animate-in sm:max-w-md",
           className
         )}
+        data-lenis-prevent
         data-slot="dialog-content"
         {...props}
       >

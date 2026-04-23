@@ -20,6 +20,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
+import { ScrollFadeEffect } from "@/components/scroll-fade-effect";
 import {
   CommandDialog,
   CommandEmpty,

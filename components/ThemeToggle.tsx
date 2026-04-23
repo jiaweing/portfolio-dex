@@ -43,7 +43,12 @@ export function ThemeToggle() {
     const next =
       theme === "system" ? "light" : theme === "light" ? "dark" : "system";
     if (document.startViewTransition) {
-      document.startViewTransition(() => setTheme(next));
+      const goingDark = next === "dark";
+      if (goingDark) document.documentElement.classList.add("to-dark");
+      const transition = document.startViewTransition(() => setTheme(next));
+      transition.finished.finally(() => {
+        document.documentElement.classList.remove("to-dark");
+      });
     } else {
       setTheme(next);
     }

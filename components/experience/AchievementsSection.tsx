@@ -6,7 +6,7 @@ import type { ExperienceItemType } from "./ExperienceItem";
 
 function TrophyCard({ item }: { item: ExperienceItemType }) {
   const inner = (
-    <div className="flex flex-col gap-0.5 rounded-sm px-2 py-2 transition-colors duration-150 hover:bg-muted/50">
+    <div className="flex h-full flex-col gap-0.5 rounded-sm px-2 py-2 transition-colors duration-150 hover:bg-muted/50">
       <div className="h-10 w-10 shrink-0">
         {item.image ? (
           <div className="h-full w-full p-1.5">
@@ -47,6 +47,7 @@ function TrophyCard({ item }: { item: ExperienceItemType }) {
   if (item.url) {
     return (
       <Link
+        className="block h-full"
         href={item.url as any}
         target={item.url.startsWith("http") ? "_blank" : "_self"}
       >
