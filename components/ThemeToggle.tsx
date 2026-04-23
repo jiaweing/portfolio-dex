@@ -40,12 +40,12 @@ export function ThemeToggle() {
   }
 
   const cycleTheme = () => {
-    if (theme === "system") {
-      setTheme("light");
-    } else if (theme === "light") {
-      setTheme("dark");
+    const next =
+      theme === "system" ? "light" : theme === "light" ? "dark" : "system";
+    if (document.startViewTransition) {
+      document.startViewTransition(() => setTheme(next));
     } else {
-      setTheme("system");
+      setTheme(next);
     }
   };
 

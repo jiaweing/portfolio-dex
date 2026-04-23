@@ -6,11 +6,13 @@ import {
   format,
   formatISO,
   getDay,
+  getYear,
   nextDay,
   parseISO,
   subWeeks,
 } from "date-fns";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   Suspense,
   use,
@@ -42,6 +44,8 @@ type HoverState = {
   activity: Activity;
   x: number;
   y: number;
+  date: string;
+  ti: number;
   wi: number;
   di: number;
 } | null;
@@ -74,16 +78,105 @@ function Wallpaper({
   data,
   hovered,
   onHoverChange,
+  fullPage = false,
 }: {
   data: Activity[];
   hovered: HoverState;
   onHoverChange: (state: HoverState) => void;
+  fullPage?: boolean;
 }) {
   const weeks = useMemo(() => buildWeeks(data), [data]);
   if (!weeks.length) return null;
 
+  // For fullPage: group by year and stack bands; otherwise single band
+  const yearBands = useMemo(() => {
+    if (!fullPage) return null;
+    const byYear = new Map<number, Activity[]>();
+    for (const a of data) {
+      const y = getYear(parseISO(a.date));
+      if (!byYear.has(y)) byYear.set(y, []);
+      byYear.get(y)!.push(a);
+    }
+    return [...byYear.entries()]
+      .sort(([a], [b]) => b - a) // most recent year first
+      .map(([, acts]) => buildWeeks(acts));
+  }, [data, fullPage]);
+
+  const bandH = ROWS * CELL - GAP;
+
+  if (fullPage && yearBands && yearBands.length > 0) {
+    const maxWeeks = Math.max(...yearBands.map((b) => b.length));
+    const vw = maxWeeks * CELL - GAP;
+    const totalVh = yearBands.length * bandH + (yearBands.length - 1) * GAP;
+
+    return (
+      <svg
+        className="cursor-crosshair"
+        onMouseLeave={() => onHoverChange(null)}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ display: "block", width: "100%" }}
+        viewBox={`0 0 ${vw} ${totalVh}`}
+      >
+        {yearBands.map((band, ti) =>
+          band.map((week, wi) =>
+            week.map((activity, di) => {
+              if (!activity) return null;
+              const yOffset = ti * (bandH + GAP);
+              const isHovered =
+                hovered?.ti === ti && hovered?.wi === wi && hovered?.di === di;
+              return (
+                <g
+                  key={`${ti}-${wi}-${di}`}
+                  onMouseEnter={(e) => {
+                    const bbox = (
+                      e.currentTarget as SVGGElement
+                    ).getBoundingClientRect();
+                    onHoverChange({
+                      activity,
+                      x: bbox.left + bbox.width / 2,
+                      y: bbox.top,
+                      date: activity.date,
+                      ti,
+                      wi,
+                      di,
+                    });
+                  }}
+                >
+                  <rect
+                    fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                    height={BLOCK}
+                    rx={RADIUS}
+                    ry={RADIUS}
+                    width={BLOCK}
+                    x={wi * CELL}
+                    y={di * CELL + yOffset}
+                  />
+                  {isHovered && (
+                    <rect
+                      fill="none"
+                      height={BLOCK + 4}
+                      pointerEvents="none"
+                      rx={RADIUS + 2}
+                      ry={RADIUS + 2}
+                      stroke="rgba(34,197,94,0.9)"
+                      strokeWidth={1.5}
+                      width={BLOCK + 4}
+                      x={wi * CELL - 2}
+                      y={di * CELL - 2 + yOffset}
+                    />
+                  )}
+                </g>
+              );
+            })
+          )
+        )}
+      </svg>
+    );
+  }
+
+  // Home banner: single band
   const vw = weeks.length * CELL - GAP;
-  const vh = ROWS * CELL - GAP;
+  const vh = bandH;
 
   return (
     <svg
@@ -97,7 +190,8 @@ function Wallpaper({
       {weeks.map((week, wi) =>
         week.map((activity, di) => {
           if (!activity) return null;
-          const isHovered = hovered?.wi === wi && hovered?.di === di;
+          const isHovered =
+            hovered?.ti === 0 && hovered?.wi === wi && hovered?.di === di;
           return (
             <g
               key={`${wi}-${di}`}
@@ -109,6 +203,8 @@ function Wallpaper({
                   activity,
                   x: bbox.left + bbox.width / 2,
                   y: bbox.top,
+                  date: activity.date,
+                  ti: 0,
                   wi,
                   di,
                 });
@@ -149,14 +245,21 @@ function BannerContent({
   contributions,
   hovered,
   onHoverChange,
+  fullPage,
 }: {
   contributions: Promise<Activity[]>;
   hovered: HoverState;
   onHoverChange: (state: HoverState) => void;
+  fullPage?: boolean;
 }) {
   const data = use(contributions);
   return (
-    <Wallpaper data={data} hovered={hovered} onHoverChange={onHoverChange} />
+    <Wallpaper
+      data={data}
+      fullPage={fullPage}
+      hovered={hovered}
+      onHoverChange={onHoverChange}
+    />
   );
 }
 
@@ -252,15 +355,59 @@ function HoverTooltip({ hovered }: { hovered: HoverState }) {
 
 export function ContributionsBanner({
   contributions,
+  fullPage = false,
 }: {
   contributions: Promise<Activity[]>;
+  fullPage?: boolean;
 }) {
   const reduced = useReducedMotion();
+  const router = useRouter();
   const [hovered, setHovered] = useState<HoverState>(null);
   const onHoverChange = useCallback(
     (state: HoverState) => setHovered(state),
     []
   );
+
+  if (fullPage) {
+    return (
+      <>
+        <motion.div
+          animate={{ clipPath: "inset(0 0% 0 0%)" }}
+          initial={{
+            clipPath: reduced ? "inset(0 0% 0 0%)" : "inset(0 50% 0 50%)",
+          }}
+          style={{
+            position: "relative",
+            width: "100vw",
+            marginLeft: "calc(-50vw + 50%)",
+            marginTop: "-6.5rem",
+            marginBottom: "-4.5rem",
+            zIndex: 0,
+          }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          <div
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%)",
+            }}
+          >
+            <Suspense fallback={null}>
+              <BannerContent
+                contributions={contributions}
+                fullPage
+                hovered={hovered}
+                onHoverChange={onHoverChange}
+              />
+            </Suspense>
+          </div>
+        </motion.div>
+        <HoverTooltip hovered={hovered} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -269,9 +416,9 @@ export function ContributionsBanner({
         initial={{
           clipPath: reduced ? "inset(0 0% 0 0%)" : "inset(0 50% 0 50%)",
         }}
+        onClick={() => router.push("/contributions")}
         style={{
           position: "absolute",
-          // Cancel pt-20 (5rem) + py-6 (1.5rem) from layout to reach page top
           top: "-6.5rem",
           left: "50%",
           transform: "translateX(-50%)",
@@ -279,6 +426,7 @@ export function ContributionsBanner({
           height: "22rem",
           overflow: "hidden",
           zIndex: 0,
+          cursor: "pointer",
         }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
@@ -299,7 +447,7 @@ export function ContributionsBanner({
             />
           </Suspense>
         </div>
-        {/* Bottom fade — visual only */}
+        {/* Bottom fade */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0"
           style={{
@@ -308,14 +456,13 @@ export function ContributionsBanner({
               "linear-gradient(to bottom, transparent 0%, var(--background) 65%)",
           }}
         />
-        {/* Invisible click-blocker covers the fully opaque / invisible bottom region */}
+        {/* Click-blocker covers faded area */}
         <div
           className="absolute inset-x-0 bottom-0"
           style={{ height: "45%" }}
         />
       </motion.div>
 
-      {/* Portal outside clipPath so tooltip is never clipped */}
       <HoverTooltip hovered={hovered} />
     </>
   );
