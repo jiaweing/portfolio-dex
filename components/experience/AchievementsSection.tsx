@@ -63,8 +63,8 @@ export function AchievementsSection() {
     profileData.achievements as unknown as ExperienceItemType[];
 
   const rows: ExperienceItemType[][] = [];
-  for (let i = 0; i < achievements.length; i += 3) {
-    rows.push(achievements.slice(i, i + 3));
+  for (let i = 0; i < achievements.length; i += 2) {
+    rows.push(achievements.slice(i, i + 2));
   }
 
   return (
@@ -72,7 +72,7 @@ export function AchievementsSection() {
       <h3 className="mb-2 font-semibold">achievements</h3>
       <div className="overflow-hidden rounded-lg text-sm leading-relaxed">
         {rows.map((row, rowIdx) => (
-          <div className="grid grid-cols-3" key={rowIdx}>
+          <div className="grid grid-cols-2" key={rowIdx}>
             {row.map((item, i) => (
               <TrophyCard item={item} key={i} />
             ))}

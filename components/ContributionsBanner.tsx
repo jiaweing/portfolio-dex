@@ -11,7 +11,14 @@ import {
   parseISO,
   subWeeks,
 } from "date-fns";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
   Suspense,
@@ -31,6 +38,9 @@ const GAP = 4;
 const CELL = BLOCK + GAP;
 const ROWS = 7;
 const RADIUS = 3;
+
+const REVEAL_DURATION = 1.0;
+const SWEEP_EDGE_PCT = 8;
 
 const GREEN: Record<number, string> = {
   0: "rgba(34,197,94,0.04)",
@@ -74,21 +84,36 @@ function buildWeeks(activities: Activity[]) {
   return Array.from({ length: n }, (_, i) => padded.slice(i * 7, i * 7 + 7));
 }
 
+function sweepDelay(wi: number, centerWi: number, halfWeeks: number) {
+  const dist = Math.abs(wi - centerWi) / halfWeeks;
+  return REVEAL_DURATION * (1 - Math.sqrt(1 - Math.min(1, dist)));
+}
+
 function Wallpaper({
   data,
   hovered,
   onHoverChange,
   fullPage = false,
+  reduced = false,
 }: {
   data: Activity[];
   hovered: HoverState;
   onHoverChange: (state: HoverState) => void;
   fullPage?: boolean;
+  reduced?: boolean;
 }) {
   const weeks = useMemo(() => buildWeeks(data), [data]);
   if (!weeks.length) return null;
 
-  // For fullPage: group by year and stack bands; otherwise single band
+  // Precompute stable random jitter per cell (0–180ms)
+  const jitter = useMemo(() => {
+    const map = new Map<string, number>();
+    weeks.forEach((week, wi) =>
+      week.forEach((_, di) => map.set(`${wi}-${di}`, Math.random() * 0.18))
+    );
+    return map;
+  }, [weeks]);
+
   const yearBands = useMemo(() => {
     if (!fullPage) return null;
     const byYear = new Map<number, Activity[]>();
@@ -98,77 +123,115 @@ function Wallpaper({
       byYear.get(y)!.push(a);
     }
     return [...byYear.entries()]
-      .sort(([a], [b]) => b - a) // most recent year first
+      .sort(([a], [b]) => b - a)
       .map(([, acts]) => buildWeeks(acts));
   }, [data, fullPage]);
 
+  // Jitter for fullPage bands keyed as `${ti}-${wi}-${di}`
+  const bandJitter = useMemo(() => {
+    if (!yearBands) return null;
+    const map = new Map<string, number>();
+    yearBands.forEach((band, ti) =>
+      band.forEach((week, wi) =>
+        week.forEach((_, di) =>
+          map.set(`${ti}-${wi}-${di}`, Math.random() * 0.18)
+        )
+      )
+    );
+    return map;
+  }, [yearBands]);
+
   const bandH = ROWS * CELL - GAP;
+  const popInitial = reduced
+    ? { scale: 1, opacity: 1 }
+    : { scale: 0, opacity: 0 };
+  const popAnimate = { scale: 1, opacity: 1 };
+  const popTransition = {
+    type: "spring" as const,
+    stiffness: 450,
+    damping: 28,
+  };
+  const popStyle = {
+    transformBox: "fill-box" as const,
+    transformOrigin: "center",
+  };
 
   if (fullPage && yearBands && yearBands.length > 0) {
     const maxWeeks = Math.max(...yearBands.map((b) => b.length));
     const vw = maxWeeks * CELL - GAP;
     const totalVh = yearBands.length * bandH + (yearBands.length - 1) * GAP;
+    const centerWi = (maxWeeks - 1) / 2;
 
     return (
       <svg
         className="cursor-crosshair"
         onMouseLeave={() => onHoverChange(null)}
+        overflow="visible"
         preserveAspectRatio="xMidYMid meet"
         style={{ display: "block", width: "100%" }}
         viewBox={`0 0 ${vw} ${totalVh}`}
       >
         {yearBands.map((band, ti) =>
-          band.map((week, wi) =>
-            week.map((activity, di) => {
+          band.map((week, wi) => {
+            const base = reduced ? 0 : sweepDelay(wi, centerWi, maxWeeks / 2);
+            const yOffset = ti * (bandH + GAP);
+            return week.map((activity, di) => {
               if (!activity) return null;
-              const yOffset = ti * (bandH + GAP);
               const isHovered =
                 hovered?.ti === ti && hovered?.wi === wi && hovered?.di === di;
+              const delay = base + (bandJitter?.get(`${ti}-${wi}-${di}`) ?? 0);
               return (
-                <g
+                <motion.g
+                  animate={popAnimate}
+                  initial={popInitial}
                   key={`${ti}-${wi}-${di}`}
-                  onMouseEnter={(e) => {
-                    const bbox = (
-                      e.currentTarget as SVGGElement
-                    ).getBoundingClientRect();
-                    onHoverChange({
-                      activity,
-                      x: bbox.left + bbox.width / 2,
-                      y: bbox.top,
-                      date: activity.date,
-                      ti,
-                      wi,
-                      di,
-                    });
-                  }}
+                  style={popStyle}
+                  transition={{ ...popTransition, delay }}
                 >
-                  <rect
-                    fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
-                    height={BLOCK}
-                    rx={RADIUS}
-                    ry={RADIUS}
-                    width={BLOCK}
-                    x={wi * CELL}
-                    y={di * CELL + yOffset}
-                  />
-                  {isHovered && (
+                  <g
+                    onMouseEnter={(e) => {
+                      const bbox = (
+                        e.currentTarget as SVGGElement
+                      ).getBoundingClientRect();
+                      onHoverChange({
+                        activity,
+                        x: bbox.left + bbox.width / 2,
+                        y: bbox.top,
+                        date: activity.date,
+                        ti,
+                        wi,
+                        di,
+                      });
+                    }}
+                  >
                     <rect
-                      fill="none"
-                      height={BLOCK + 4}
-                      pointerEvents="none"
-                      rx={RADIUS + 2}
-                      ry={RADIUS + 2}
-                      stroke="rgba(34,197,94,0.9)"
-                      strokeWidth={1.5}
-                      width={BLOCK + 4}
-                      x={wi * CELL - 2}
-                      y={di * CELL - 2 + yOffset}
+                      fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                      height={BLOCK}
+                      rx={RADIUS}
+                      ry={RADIUS}
+                      width={BLOCK}
+                      x={wi * CELL}
+                      y={di * CELL + yOffset}
                     />
-                  )}
-                </g>
+                    {isHovered && (
+                      <rect
+                        fill="none"
+                        height={BLOCK + 4}
+                        pointerEvents="none"
+                        rx={RADIUS + 2}
+                        ry={RADIUS + 2}
+                        stroke="rgba(34,197,94,0.9)"
+                        strokeWidth={1.5}
+                        width={BLOCK + 4}
+                        x={wi * CELL - 2}
+                        y={di * CELL - 2 + yOffset}
+                      />
+                    )}
+                  </g>
+                </motion.g>
               );
-            })
-          )
+            });
+          })
         )}
       </svg>
     );
@@ -177,66 +240,76 @@ function Wallpaper({
   // Home banner: single band
   const vw = weeks.length * CELL - GAP;
   const vh = bandH;
+  const centerWi = (weeks.length - 1) / 2;
 
   return (
     <svg
       className="cursor-crosshair"
-      height="100%"
       onMouseLeave={() => onHoverChange(null)}
-      preserveAspectRatio="xMidYMid slice"
+      overflow="visible"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block", width: "100%", height: "auto" }}
       viewBox={`0 0 ${vw} ${vh}`}
-      width="100%"
     >
-      {weeks.map((week, wi) =>
-        week.map((activity, di) => {
+      {weeks.map((week, wi) => {
+        const base = reduced ? 0 : sweepDelay(wi, centerWi, weeks.length / 2);
+        return week.map((activity, di) => {
           if (!activity) return null;
           const isHovered =
             hovered?.ti === 0 && hovered?.wi === wi && hovered?.di === di;
+          const delay = base + (jitter.get(`${wi}-${di}`) ?? 0);
           return (
-            <g
+            <motion.g
+              animate={popAnimate}
+              initial={popInitial}
               key={`${wi}-${di}`}
-              onMouseEnter={(e) => {
-                const bbox = (
-                  e.currentTarget as SVGGElement
-                ).getBoundingClientRect();
-                onHoverChange({
-                  activity,
-                  x: bbox.left + bbox.width / 2,
-                  y: bbox.top,
-                  date: activity.date,
-                  ti: 0,
-                  wi,
-                  di,
-                });
-              }}
+              style={popStyle}
+              transition={{ ...popTransition, delay }}
             >
-              <rect
-                fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
-                height={BLOCK}
-                rx={RADIUS}
-                ry={RADIUS}
-                width={BLOCK}
-                x={wi * CELL}
-                y={di * CELL}
-              />
-              {isHovered && (
+              <g
+                onMouseEnter={(e) => {
+                  const bbox = (
+                    e.currentTarget as SVGGElement
+                  ).getBoundingClientRect();
+                  onHoverChange({
+                    activity,
+                    x: bbox.left + bbox.width / 2,
+                    y: bbox.top,
+                    date: activity.date,
+                    ti: 0,
+                    wi,
+                    di,
+                  });
+                }}
+              >
                 <rect
-                  fill="none"
-                  height={BLOCK + 4}
-                  pointerEvents="none"
-                  rx={RADIUS + 2}
-                  ry={RADIUS + 2}
-                  stroke="rgba(34,197,94,0.9)"
-                  strokeWidth={1.5}
-                  width={BLOCK + 4}
-                  x={wi * CELL - 2}
-                  y={di * CELL - 2}
+                  fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                  height={BLOCK}
+                  rx={RADIUS}
+                  ry={RADIUS}
+                  width={BLOCK}
+                  x={wi * CELL}
+                  y={di * CELL}
                 />
-              )}
-            </g>
+                {isHovered && (
+                  <rect
+                    fill="none"
+                    height={BLOCK + 4}
+                    pointerEvents="none"
+                    rx={RADIUS + 2}
+                    ry={RADIUS + 2}
+                    stroke="rgba(34,197,94,0.9)"
+                    strokeWidth={1.5}
+                    width={BLOCK + 4}
+                    x={wi * CELL - 2}
+                    y={di * CELL - 2}
+                  />
+                )}
+              </g>
+            </motion.g>
           );
-        })
-      )}
+        });
+      })}
     </svg>
   );
 }
@@ -246,11 +319,13 @@ function BannerContent({
   hovered,
   onHoverChange,
   fullPage,
+  reduced,
 }: {
   contributions: Promise<Activity[]>;
   hovered: HoverState;
   onHoverChange: (state: HoverState) => void;
   fullPage?: boolean;
+  reduced?: boolean;
 }) {
   const data = use(contributions);
   return (
@@ -259,6 +334,7 @@ function BannerContent({
       fullPage={fullPage}
       hovered={hovered}
       onHoverChange={onHoverChange}
+      reduced={reduced}
     />
   );
 }
@@ -272,7 +348,6 @@ function HoverTooltip({ hovered }: { hovered: HoverState }) {
     <AnimatePresence>
       {hovered && (
         <motion.div
-          // Stable key — stays mounted while hovering so SlidingNumber animates between values
           animate={{
             opacity: 1,
             y: 0,
@@ -309,7 +384,6 @@ function HoverTooltip({ hovered }: { hovered: HoverState }) {
               {hovered.activity.count !== 1 ? "contributions" : "contribution"}
             </span>
             <span>on</span>
-            {/* Month — slides only when month changes */}
             <AnimatePresence initial={false} mode="wait">
               <motion.span
                 animate={{ y: "0%", opacity: 1 }}
@@ -322,7 +396,6 @@ function HoverTooltip({ hovered }: { hovered: HoverState }) {
                 {format(parseISO(hovered.activity.date), "MMM")}
               </motion.span>
             </AnimatePresence>
-            {/* Day — SlidingNumber rolls the day digit */}
             <SlidingNumber
               transition={{
                 type: "spring",
@@ -332,7 +405,6 @@ function HoverTooltip({ hovered }: { hovered: HoverState }) {
               }}
               value={Number(format(parseISO(hovered.activity.date), "d"))}
             />
-            {/* Year — slides only when year changes */}
             <AnimatePresence initial={false} mode="wait">
               <motion.span
                 animate={{ y: "0%", opacity: 1 }}
@@ -368,14 +440,29 @@ export function ContributionsBanner({
     []
   );
 
+  const progress = useMotionValue(reduced ? 1 : 0);
+
+  useEffect(() => {
+    if (reduced) return;
+    const controls = animate(progress, 1, {
+      duration: REVEAL_DURATION,
+      ease: "easeOut",
+    });
+    return controls.stop;
+  }, [progress, reduced]);
+
+  const sweepMask = useTransform(progress, (p) => {
+    const leftEdge = 50 - p * 50;
+    const rightEdge = 50 + p * 50;
+    const leftFade = Math.max(0, leftEdge - SWEEP_EDGE_PCT);
+    const rightFade = Math.min(100, rightEdge + SWEEP_EDGE_PCT);
+    return `linear-gradient(to right, transparent ${leftFade.toFixed(1)}%, black ${leftEdge.toFixed(1)}%, black ${rightEdge.toFixed(1)}%, transparent ${rightFade.toFixed(1)}%)`;
+  });
+
   if (fullPage) {
     return (
       <>
         <motion.div
-          animate={{ clipPath: "inset(0 0% 0 0%)" }}
-          initial={{
-            clipPath: reduced ? "inset(0 0% 0 0%)" : "inset(0 50% 0 50%)",
-          }}
           style={{
             position: "relative",
             width: "100vw",
@@ -383,8 +470,9 @@ export function ContributionsBanner({
             marginTop: "-6.5rem",
             marginBottom: "-4.5rem",
             zIndex: 0,
+            maskImage: sweepMask,
+            WebkitMaskImage: sweepMask,
           }}
-          transition={{ duration: 1, ease: "easeOut" }}
         >
           <div
             style={{
@@ -400,6 +488,7 @@ export function ContributionsBanner({
                 fullPage
                 hovered={hovered}
                 onHoverChange={onHoverChange}
+                reduced={reduced ?? false}
               />
             </Suspense>
           </div>
@@ -412,10 +501,6 @@ export function ContributionsBanner({
   return (
     <>
       <motion.div
-        animate={{ clipPath: "inset(0 0% 0 0%)" }}
-        initial={{
-          clipPath: reduced ? "inset(0 0% 0 0%)" : "inset(0 50% 0 50%)",
-        }}
         onClick={() => router.push("/contributions")}
         style={{
           position: "absolute",
@@ -427,8 +512,9 @@ export function ContributionsBanner({
           overflow: "hidden",
           zIndex: 0,
           cursor: "pointer",
+          maskImage: sweepMask,
+          WebkitMaskImage: sweepMask,
         }}
-        transition={{ duration: 1, ease: "easeOut" }}
       >
         <div
           className="absolute inset-0"
@@ -444,6 +530,7 @@ export function ContributionsBanner({
               contributions={contributions}
               hovered={hovered}
               onHoverChange={onHoverChange}
+              reduced={reduced ?? false}
             />
           </Suspense>
         </div>

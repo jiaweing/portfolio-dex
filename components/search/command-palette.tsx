@@ -152,117 +152,119 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
       title="Search"
     >
       <CommandInput placeholder="Search pages..." />
-      <CommandList className="scroll-fade-effect-y relative z-10 -mt-4 max-h-[420px] overflow-y-auto rounded-2xl border-foreground/10 border-t border-b bg-popover bg-clip-padding [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group]]:p-0 [&_[cmdk-item]]:rounded-none [&_[cmdk-item]]:px-4">
-        <CommandEmpty>No results found.</CommandEmpty>
+      <CommandList className="relative z-10 -mt-4 max-h-none overflow-y-hidden rounded-2xl border-foreground/10 border-t border-b bg-popover bg-clip-padding [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group]]:p-0 [&_[cmdk-item]]:rounded-none [&_[cmdk-item]]:px-4">
+        <ScrollFadeEffect className="max-h-[min(60vh,420px)]">
+          <CommandEmpty>No results found.</CommandEmpty>
 
-        <CommandGroup heading="Pages">
-          {PAGES.map((page) => {
-            const Icon = page.icon;
-            return (
-              <CommandItem
-                className="gap-3 py-2"
-                key={page.href}
-                onSelect={() => navigate(page.href)}
-                value={`page ${page.name} ${page.description}`}
-              >
-                <Icon className="size-4 shrink-0 text-muted-foreground" />
-                <div className="flex min-w-0 flex-col">
-                  <span className="truncate">{page.name}</span>
-                  <span className="truncate text-muted-foreground text-xs">
-                    {page.description}
-                  </span>
-                </div>
-              </CommandItem>
-            );
-          })}
-        </CommandGroup>
+          <CommandGroup heading="Pages">
+            {PAGES.map((page) => {
+              const Icon = page.icon;
+              return (
+                <CommandItem
+                  className="gap-3 py-2"
+                  key={page.href}
+                  onSelect={() => navigate(page.href)}
+                  value={`page ${page.name} ${page.description}`}
+                >
+                  <Icon className="size-4 shrink-0 text-muted-foreground" />
+                  <div className="flex min-w-0 flex-col">
+                    <span className="truncate">{page.name}</span>
+                    <span className="truncate text-muted-foreground text-xs">
+                      {page.description}
+                    </span>
+                  </div>
+                </CommandItem>
+              );
+            })}
+          </CommandGroup>
 
-        <CommandGroup heading="Actions">
-          {ACTIONS.map((action) => {
-            const Icon = action.icon;
-            return (
-              <CommandItem
-                className="gap-3 py-2"
-                key={action.href}
-                onSelect={() => openExternal(action.href)}
-                value={`action ${action.name} ${action.description}`}
-              >
-                <Icon className="size-4 shrink-0 text-muted-foreground" />
-                <div className="flex min-w-0 flex-col">
-                  <span className="truncate">{action.name}</span>
-                  <span className="truncate text-muted-foreground text-xs">
-                    {action.description}
-                  </span>
-                </div>
-                <CommandShortcut>⌃,</CommandShortcut>
-              </CommandItem>
-            );
-          })}
-        </CommandGroup>
+          <CommandGroup heading="Actions">
+            {ACTIONS.map((action) => {
+              const Icon = action.icon;
+              return (
+                <CommandItem
+                  className="gap-3 py-2"
+                  key={action.href}
+                  onSelect={() => openExternal(action.href)}
+                  value={`action ${action.name} ${action.description}`}
+                >
+                  <Icon className="size-4 shrink-0 text-muted-foreground" />
+                  <div className="flex min-w-0 flex-col">
+                    <span className="truncate">{action.name}</span>
+                    <span className="truncate text-muted-foreground text-xs">
+                      {action.description}
+                    </span>
+                  </div>
+                  <CommandShortcut>⌃,</CommandShortcut>
+                </CommandItem>
+              );
+            })}
+          </CommandGroup>
 
-        <CommandGroup heading="Social">
-          {SOCIAL.map((link) => {
-            const Icon = link.icon;
-            return (
-              <CommandItem
-                className="gap-3 py-2"
-                key={link.href}
-                onSelect={() => openExternal(link.href)}
-                value={`social ${link.name} ${link.description}`}
-              >
-                <Icon className="size-4 shrink-0 text-muted-foreground" />
-                <div className="flex min-w-0 flex-col">
-                  <span className="truncate">{link.name}</span>
-                  <span className="truncate text-muted-foreground text-xs">
-                    {link.description}
-                  </span>
-                </div>
-              </CommandItem>
-            );
-          })}
-        </CommandGroup>
+          <CommandGroup heading="Social">
+            {SOCIAL.map((link) => {
+              const Icon = link.icon;
+              return (
+                <CommandItem
+                  className="gap-3 py-2"
+                  key={link.href}
+                  onSelect={() => openExternal(link.href)}
+                  value={`social ${link.name} ${link.description}`}
+                >
+                  <Icon className="size-4 shrink-0 text-muted-foreground" />
+                  <div className="flex min-w-0 flex-col">
+                    <span className="truncate">{link.name}</span>
+                    <span className="truncate text-muted-foreground text-xs">
+                      {link.description}
+                    </span>
+                  </div>
+                </CommandItem>
+              );
+            })}
+          </CommandGroup>
 
-        <CommandGroup heading="Preferences">
-          <CommandItem
-            className="gap-3 py-2"
-            onSelect={() => runTheme("light")}
-            value="theme light mode appearance"
-          >
-            <Sun className="size-4 shrink-0 text-muted-foreground" />
-            <div className="flex min-w-0 flex-col">
-              <span className="truncate">Light Mode</span>
-              <span className="truncate text-muted-foreground text-xs">
-                Switch to light theme
-              </span>
-            </div>
-          </CommandItem>
-          <CommandItem
-            className="gap-3 py-2"
-            onSelect={() => runTheme("dark")}
-            value="theme dark mode appearance"
-          >
-            <Moon className="size-4 shrink-0 text-muted-foreground" />
-            <div className="flex min-w-0 flex-col">
-              <span className="truncate">Dark Mode</span>
-              <span className="truncate text-muted-foreground text-xs">
-                Switch to dark theme
-              </span>
-            </div>
-          </CommandItem>
-          <CommandItem
-            className="gap-3 py-2"
-            onSelect={() => runTheme("system")}
-            value="theme system mode appearance auto"
-          >
-            <Monitor className="size-4 shrink-0 text-muted-foreground" />
-            <div className="flex min-w-0 flex-col">
-              <span className="truncate">System Theme</span>
-              <span className="truncate text-muted-foreground text-xs">
-                Follow system preference
-              </span>
-            </div>
-          </CommandItem>
-        </CommandGroup>
+          <CommandGroup heading="Preferences">
+            <CommandItem
+              className="gap-3 py-2"
+              onSelect={() => runTheme("light")}
+              value="theme light mode appearance"
+            >
+              <Sun className="size-4 shrink-0 text-muted-foreground" />
+              <div className="flex min-w-0 flex-col">
+                <span className="truncate">Light Mode</span>
+                <span className="truncate text-muted-foreground text-xs">
+                  Switch to light theme
+                </span>
+              </div>
+            </CommandItem>
+            <CommandItem
+              className="gap-3 py-2"
+              onSelect={() => runTheme("dark")}
+              value="theme dark mode appearance"
+            >
+              <Moon className="size-4 shrink-0 text-muted-foreground" />
+              <div className="flex min-w-0 flex-col">
+                <span className="truncate">Dark Mode</span>
+                <span className="truncate text-muted-foreground text-xs">
+                  Switch to dark theme
+                </span>
+              </div>
+            </CommandItem>
+            <CommandItem
+              className="gap-3 py-2"
+              onSelect={() => runTheme("system")}
+              value="theme system mode appearance auto"
+            >
+              <Monitor className="size-4 shrink-0 text-muted-foreground" />
+              <div className="flex min-w-0 flex-col">
+                <span className="truncate">System Theme</span>
+                <span className="truncate text-muted-foreground text-xs">
+                  Follow system preference
+                </span>
+              </div>
+            </CommandItem>
+          </CommandGroup>
+        </ScrollFadeEffect>
       </CommandList>
       <div className="hidden items-center gap-4 px-4 py-2 text-muted-foreground sm:flex">
         <span className="flex items-center gap-1 text-muted-foreground text-xs">

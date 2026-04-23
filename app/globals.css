@@ -5,6 +5,8 @@
 @plugin "@toolwind/corner-shape";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant open (&[data-state="open"]);
+@custom-variant closed (&[data-state="closed"]);
 
 @property --top-mask-height {
   syntax: "<length>";
