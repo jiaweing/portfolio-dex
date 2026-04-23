@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ScrollFadeEffect } from "@/components/scroll-fade-effect";
 import {
   CommandDialog,
@@ -119,6 +119,11 @@ function searchFilter(value: string, search: string): number {
 export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
   const router = useRouter();
   const { setTheme } = useTheme();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 640px)").matches);
+  }, []);
 
   const navigate = useCallback(
     (href: string) => {
@@ -148,12 +153,13 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
       commandClassName="p-0"
       description="Search pages"
       filter={searchFilter}
+      onOpenAutoFocus={isMobile ? (e) => e.preventDefault() : undefined}
       onOpenChange={onOpenChange}
       open={open}
       title="Search"
     >
       <CommandInput placeholder="Search pages..." />
-      <CommandList className="relative z-10 -mt-4 max-h-none overflow-y-hidden rounded-2xl border-foreground/10 border-t border-b bg-popover bg-clip-padding [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group]]:p-0 [&_[cmdk-item]]:rounded-none [&_[cmdk-item]]:px-4">
+      <CommandList className="relative z-10 -mt-4 max-h-none overflow-y-hidden rounded-2xl border-foreground/10 border-t bg-popover bg-clip-padding sm:border-b [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group]]:p-0 [&_[cmdk-item]]:rounded-none [&_[cmdk-item]]:px-4">
         <ScrollFadeEffect className="max-h-[min(60vh,420px)]">
           <CommandEmpty>No results found.</CommandEmpty>
 
@@ -196,7 +202,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                       {action.description}
                     </span>
                   </div>
-                  <CommandShortcut>⌃,</CommandShortcut>
+                  <CommandShortcut>⌃.</CommandShortcut>
                 </CommandItem>
               );
             })}
@@ -270,7 +276,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
       <div className="hidden items-center gap-4 px-4 py-2 text-muted-foreground sm:flex">
         <span className="flex items-center gap-1 text-muted-foreground text-xs">
           <kbd className="rounded bg-popover px-1 py-0.5 font-mono text-[10px]">
-            ⌃,
+            ⌃.
           </kbd>
           Send an Email
         </span>

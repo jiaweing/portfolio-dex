@@ -37,6 +37,7 @@ function CommandDialog({
   commandClassName,
   showCloseButton = false,
   filter,
+  onOpenAutoFocus,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
   title?: string;
@@ -44,6 +45,7 @@ function CommandDialog({
   className?: string;
   commandClassName?: string;
   showCloseButton?: boolean;
+  onOpenAutoFocus?: (e: Event) => void;
   filter?: React.ComponentProps<typeof CommandPrimitive>["filter"];
   children: React.ReactNode;
 }) {
@@ -55,6 +57,7 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         className={cn("top-1/2 -translate-y-1/2 rounded-4xl! p-0", className)}
+        onOpenAutoFocus={onOpenAutoFocus}
         showCloseButton={showCloseButton}
       >
         <Command

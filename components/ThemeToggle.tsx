@@ -26,7 +26,7 @@ export function ThemeToggle() {
       if (ctrl && e.key === "k") {
         e.preventDefault();
         setIsSearchOpen((prev) => !prev);
-      } else if (ctrl && !e.shiftKey && e.key === ",") {
+      } else if (ctrl && !e.shiftKey && e.key === ".") {
         e.preventDefault();
         window.open("mailto:hey@jiaweing.com", "_blank", "noopener,noreferrer");
       }
@@ -43,8 +43,7 @@ export function ThemeToggle() {
     const next =
       theme === "system" ? "light" : theme === "light" ? "dark" : "system";
     if (document.startViewTransition) {
-      const goingDark = next === "dark";
-      if (goingDark) document.documentElement.classList.add("to-dark");
+      if (next === "dark") document.documentElement.classList.add("to-dark");
       const transition = document.startViewTransition(() => setTheme(next));
       transition.finished.finally(() => {
         document.documentElement.classList.remove("to-dark");

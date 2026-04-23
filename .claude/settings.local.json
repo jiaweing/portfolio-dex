@@ -68,7 +68,11 @@
       "Bash(gh issue *)",
       "WebFetch(domain:base-ui.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(npx tailwindcss *)"
+      "Bash(npx tailwindcss *)",
+      "Bash(vercel logs *)",
+      "Bash(grep -E \"\\\\.ts$|\\\\.tsx$\")",
+      "Bash(grep -E \"\\\\.\\(tsx?|jsx?\\)$\")",
+      "Bash(vercel link *)"
     ]
   }
 }
