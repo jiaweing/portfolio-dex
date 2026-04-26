@@ -1,10 +1,12 @@
 import { formatDate } from "date-fns";
 import { Radio } from "lucide-react";
 import Link from "next/link";
+import { AppDeck } from "@/components/AppDeck";
 import { PostTags } from "@/components/blog/PostTags";
 import { ContributionsBanner } from "@/components/ContributionsBanner";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProfileBio } from "@/components/ProfileBio";
+import { StatsBento } from "@/components/StatsBento";
 import { FadeIn } from "@/components/ui/fade-in";
 import { PhotoGallery } from "@/components/ui/gallery";
 import {
@@ -53,6 +55,17 @@ export default async function Home() {
           <FadeIn delay={0.2}>
             <div className="mt-16">
               <PhotoGallery />
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.25}>
+            <div className="mt-12">
+              <AppDeck projects={projects} />
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <div className="mt-16">
+              <h3 className="mb-4 font-semibold">at a glance</h3>
+              <StatsBento />
             </div>
           </FadeIn>
           {recentPosts.length > 0 && (

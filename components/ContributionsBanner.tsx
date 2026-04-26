@@ -15,6 +15,7 @@ import {
   AnimatePresence,
   animate,
   motion,
+  useInView,
   useMotionValue,
   useReducedMotion,
   useTransform,
@@ -26,6 +27,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
@@ -89,6 +91,132 @@ function sweepDelay(wi: number, centerWi: number, halfWeeks: number) {
   return REVEAL_DURATION * (1 - Math.sqrt(1 - Math.min(1, dist)));
 }
 
+const cellPopStyle = {
+  transformBox: "fill-box" as const,
+  transformOrigin: "center",
+} as const;
+
+function YearBand({
+  band,
+  ti,
+  centerWi,
+  maxWeeks,
+  hovered,
+  onHoverChange,
+  reduced,
+}: {
+  band: ReturnType<typeof buildWeeks>;
+  ti: number;
+  centerWi: number;
+  maxWeeks: number;
+  hovered: HoverState;
+  onHoverChange: (state: HoverState) => void;
+  reduced: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "300px 0px" });
+
+  const jitter = useMemo(() => {
+    const map = new Map<string, number>();
+    band.forEach((week, wi) =>
+      week.forEach((_, di) => map.set(`${wi}-${di}`, Math.random() * 0.18))
+    );
+    return map;
+  }, [band]);
+
+  const bandH = ROWS * CELL - GAP;
+  const vw = band.length * CELL - GAP;
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const svg = e.currentTarget;
+      const rect = svg.getBoundingClientRect();
+      const svgX = (e.clientX - rect.left) * (vw / rect.width);
+      const svgY = (e.clientY - rect.top) * (bandH / rect.height);
+      const wi = Math.floor(svgX / CELL);
+      const di = Math.floor(svgY / CELL);
+      const activity = band[wi]?.[di];
+      if (!activity) {
+        onHoverChange(null);
+        return;
+      }
+      onHoverChange({
+        activity,
+        x: rect.left + ((wi * CELL + BLOCK / 2) / vw) * rect.width,
+        y: rect.top + ((di * CELL) / bandH) * rect.height,
+        date: activity.date,
+        ti,
+        wi,
+        di,
+      });
+    },
+    [band, bandH, vw, ti, onHoverChange]
+  );
+
+  return (
+    <div ref={ref} style={{ width: "100%", aspectRatio: `${vw} / ${bandH}` }}>
+      {inView && (
+        <svg
+          className="cursor-crosshair"
+          onMouseLeave={() => onHoverChange(null)}
+          onMouseMove={handleMouseMove}
+          overflow="visible"
+          preserveAspectRatio="xMidYMid meet"
+          style={{ display: "block", width: "100%" }}
+          viewBox={`0 0 ${vw} ${bandH}`}
+        >
+          {band.map((week, wi) => {
+            const base = reduced ? 0 : sweepDelay(wi, centerWi, maxWeeks / 2);
+            return week.map((activity, di) => {
+              if (!activity) return null;
+              const isHovered =
+                hovered?.ti === ti && hovered?.wi === wi && hovered?.di === di;
+              const delay = base + (jitter.get(`${wi}-${di}`) ?? 0);
+              return (
+                <g
+                  key={`${wi}-${di}`}
+                  style={
+                    reduced
+                      ? undefined
+                      : {
+                          ...cellPopStyle,
+                          animation: `cellPop 0.35s cubic-bezier(0.34,1.56,0.64,1) ${delay.toFixed(3)}s both`,
+                        }
+                  }
+                >
+                  <rect
+                    fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                    height={BLOCK}
+                    rx={RADIUS}
+                    ry={RADIUS}
+                    width={BLOCK}
+                    x={wi * CELL}
+                    y={di * CELL}
+                  />
+                  {isHovered && (
+                    <rect
+                      fill="none"
+                      height={BLOCK + 4}
+                      pointerEvents="none"
+                      rx={RADIUS + 2}
+                      ry={RADIUS + 2}
+                      stroke="rgba(34,197,94,0.9)"
+                      strokeWidth={1.5}
+                      width={BLOCK + 4}
+                      x={wi * CELL - 2}
+                      y={di * CELL - 2}
+                    />
+                  )}
+                </g>
+              );
+            });
+          })}
+        </svg>
+      )}
+    </div>
+  );
+}
+
 function Wallpaper({
   data,
   hovered,
@@ -105,15 +233,6 @@ function Wallpaper({
   const weeks = useMemo(() => buildWeeks(data), [data]);
   if (!weeks.length) return null;
 
-  // Precompute stable random jitter per cell (0–180ms)
-  const jitter = useMemo(() => {
-    const map = new Map<string, number>();
-    weeks.forEach((week, wi) =>
-      week.forEach((_, di) => map.set(`${wi}-${di}`, Math.random() * 0.18))
-    );
-    return map;
-  }, [weeks]);
-
   const yearBands = useMemo(() => {
     if (!fullPage) return null;
     const byYear = new Map<number, Activity[]>();
@@ -127,113 +246,45 @@ function Wallpaper({
       .map(([, acts]) => buildWeeks(acts));
   }, [data, fullPage]);
 
-  // Jitter for fullPage bands keyed as `${ti}-${wi}-${di}`
-  const bandJitter = useMemo(() => {
-    if (!yearBands) return null;
+  // Only used for home banner (fullPage uses per-YearBand jitter)
+  const jitter = useMemo(() => {
+    if (fullPage) return new Map<string, number>();
     const map = new Map<string, number>();
-    yearBands.forEach((band, ti) =>
-      band.forEach((week, wi) =>
-        week.forEach((_, di) =>
-          map.set(`${ti}-${wi}-${di}`, Math.random() * 0.18)
-        )
-      )
+    weeks.forEach((week, wi) =>
+      week.forEach((_, di) => map.set(`${wi}-${di}`, Math.random() * 0.18))
     );
     return map;
-  }, [yearBands]);
+  }, [weeks, fullPage]);
 
   const bandH = ROWS * CELL - GAP;
-  const popInitial = reduced
-    ? { scale: 1, opacity: 1 }
-    : { scale: 0, opacity: 0 };
-  const popAnimate = { scale: 1, opacity: 1 };
-  const popTransition = {
-    type: "spring" as const,
-    stiffness: 450,
-    damping: 28,
-  };
-  const popStyle = {
-    transformBox: "fill-box" as const,
-    transformOrigin: "center",
-  };
 
   if (fullPage && yearBands && yearBands.length > 0) {
     const maxWeeks = Math.max(...yearBands.map((b) => b.length));
-    const vw = maxWeeks * CELL - GAP;
-    const totalVh = yearBands.length * bandH + (yearBands.length - 1) * GAP;
     const centerWi = (maxWeeks - 1) / 2;
 
     return (
-      <svg
+      <div
         className="cursor-crosshair"
-        onMouseLeave={() => onHoverChange(null)}
-        overflow="visible"
-        preserveAspectRatio="xMidYMid meet"
-        style={{ display: "block", width: "100%" }}
-        viewBox={`0 0 ${vw} ${totalVh}`}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: BLOCK,
+          width: "100%",
+        }}
       >
-        {yearBands.map((band, ti) =>
-          band.map((week, wi) => {
-            const base = reduced ? 0 : sweepDelay(wi, centerWi, maxWeeks / 2);
-            const yOffset = ti * (bandH + GAP);
-            return week.map((activity, di) => {
-              if (!activity) return null;
-              const isHovered =
-                hovered?.ti === ti && hovered?.wi === wi && hovered?.di === di;
-              const delay = base + (bandJitter?.get(`${ti}-${wi}-${di}`) ?? 0);
-              return (
-                <motion.g
-                  animate={popAnimate}
-                  initial={popInitial}
-                  key={`${ti}-${wi}-${di}`}
-                  style={popStyle}
-                  transition={{ ...popTransition, delay }}
-                >
-                  <g
-                    onMouseEnter={(e) => {
-                      const bbox = (
-                        e.currentTarget as SVGGElement
-                      ).getBoundingClientRect();
-                      onHoverChange({
-                        activity,
-                        x: bbox.left + bbox.width / 2,
-                        y: bbox.top,
-                        date: activity.date,
-                        ti,
-                        wi,
-                        di,
-                      });
-                    }}
-                  >
-                    <rect
-                      fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
-                      height={BLOCK}
-                      rx={RADIUS}
-                      ry={RADIUS}
-                      width={BLOCK}
-                      x={wi * CELL}
-                      y={di * CELL + yOffset}
-                    />
-                    {isHovered && (
-                      <rect
-                        fill="none"
-                        height={BLOCK + 4}
-                        pointerEvents="none"
-                        rx={RADIUS + 2}
-                        ry={RADIUS + 2}
-                        stroke="rgba(34,197,94,0.9)"
-                        strokeWidth={1.5}
-                        width={BLOCK + 4}
-                        x={wi * CELL - 2}
-                        y={di * CELL - 2 + yOffset}
-                      />
-                    )}
-                  </g>
-                </motion.g>
-              );
-            });
-          })
-        )}
-      </svg>
+        {yearBands.map((band, ti) => (
+          <YearBand
+            band={band}
+            centerWi={centerWi}
+            hovered={hovered}
+            key={ti}
+            maxWeeks={maxWeeks}
+            onHoverChange={onHoverChange}
+            reduced={reduced}
+            ti={ti}
+          />
+        ))}
+      </div>
     );
   }
 
@@ -242,10 +293,34 @@ function Wallpaper({
   const vh = bandH;
   const centerWi = (weeks.length - 1) / 2;
 
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    const svgX = (e.clientX - rect.left) * (vw / rect.width);
+    const svgY = (e.clientY - rect.top) * (vh / rect.height);
+    const wi = Math.floor(svgX / CELL);
+    const di = Math.floor(svgY / CELL);
+    const activity = weeks[wi]?.[di];
+    if (!activity) {
+      onHoverChange(null);
+      return;
+    }
+    onHoverChange({
+      activity,
+      x: rect.left + ((wi * CELL + BLOCK / 2) / vw) * rect.width,
+      y: rect.top + ((di * CELL) / vh) * rect.height,
+      date: activity.date,
+      ti: 0,
+      wi,
+      di,
+    });
+  };
+
   return (
     <svg
       className="cursor-crosshair"
       onMouseLeave={() => onHoverChange(null)}
+      onMouseMove={handleMouseMove}
       overflow="visible"
       preserveAspectRatio="xMidYMid meet"
       style={{ display: "block", width: "100%", height: "auto" }}
@@ -259,54 +334,41 @@ function Wallpaper({
             hovered?.ti === 0 && hovered?.wi === wi && hovered?.di === di;
           const delay = base + (jitter.get(`${wi}-${di}`) ?? 0);
           return (
-            <motion.g
-              animate={popAnimate}
-              initial={popInitial}
+            <g
               key={`${wi}-${di}`}
-              style={popStyle}
-              transition={{ ...popTransition, delay }}
+              style={
+                reduced
+                  ? undefined
+                  : {
+                      ...cellPopStyle,
+                      animation: `cellPop 0.35s cubic-bezier(0.34,1.56,0.64,1) ${delay.toFixed(3)}s both`,
+                    }
+              }
             >
-              <g
-                onMouseEnter={(e) => {
-                  const bbox = (
-                    e.currentTarget as SVGGElement
-                  ).getBoundingClientRect();
-                  onHoverChange({
-                    activity,
-                    x: bbox.left + bbox.width / 2,
-                    y: bbox.top,
-                    date: activity.date,
-                    ti: 0,
-                    wi,
-                    di,
-                  });
-                }}
-              >
+              <rect
+                fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                height={BLOCK}
+                rx={RADIUS}
+                ry={RADIUS}
+                width={BLOCK}
+                x={wi * CELL}
+                y={di * CELL}
+              />
+              {isHovered && (
                 <rect
-                  fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
-                  height={BLOCK}
-                  rx={RADIUS}
-                  ry={RADIUS}
-                  width={BLOCK}
-                  x={wi * CELL}
-                  y={di * CELL}
+                  fill="none"
+                  height={BLOCK + 4}
+                  pointerEvents="none"
+                  rx={RADIUS + 2}
+                  ry={RADIUS + 2}
+                  stroke="rgba(34,197,94,0.9)"
+                  strokeWidth={1.5}
+                  width={BLOCK + 4}
+                  x={wi * CELL - 2}
+                  y={di * CELL - 2}
                 />
-                {isHovered && (
-                  <rect
-                    fill="none"
-                    height={BLOCK + 4}
-                    pointerEvents="none"
-                    rx={RADIUS + 2}
-                    ry={RADIUS + 2}
-                    stroke="rgba(34,197,94,0.9)"
-                    strokeWidth={1.5}
-                    width={BLOCK + 4}
-                    x={wi * CELL - 2}
-                    y={di * CELL - 2}
-                  />
-                )}
-              </g>
-            </motion.g>
+              )}
+            </g>
           );
         });
       })}

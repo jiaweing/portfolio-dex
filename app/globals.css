@@ -29,6 +29,17 @@
   initial-value: 64px;
 }
 
+@keyframes cellPop {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @keyframes show-top-mask {
   to {
     --top-mask-height: var(--mask-height);
