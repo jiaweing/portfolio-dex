@@ -1,18 +1,10 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import {
-  Briefcase,
-  Camera,
-  Clock,
-  Eye,
-  Rocket,
-  Target,
-  Trophy,
-} from "lucide-react";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { Briefcase, Trophy } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { AnimatedNumber } from "@/components/core/animated-number";
+import { SlidingNumber } from "@/components/motion-primitives/sliding-number";
 import { cn } from "@/lib/utils";
 
 const containerVariants = {
@@ -44,6 +36,7 @@ type StatDef = {
   icon: React.ReactNode;
   wide?: boolean;
   tall?: boolean;
+  decimals?: number;
 };
 
 const YTIcon = (
@@ -73,6 +66,42 @@ const ThreadsIcon = (
     width={16}
   />
 );
+const TitanIcon = (
+  <Image
+    alt="titan.tf"
+    className="h-4 w-4"
+    height={16}
+    src="/logos/titan.png"
+    width={16}
+  />
+);
+const GoogleIcon = (
+  <Image
+    alt="Google"
+    className="h-4 w-4"
+    height={16}
+    src="/logos/google.svg"
+    width={16}
+  />
+);
+const InstagramIcon = (
+  <Image
+    alt="Instagram"
+    className="h-4 w-4 dark:invert"
+    height={16}
+    src="/logos/instagram.svg"
+    width={16}
+  />
+);
+const UnsplashIcon = (
+  <Image
+    alt="Unsplash"
+    className="h-4 w-4 dark:invert"
+    height={16}
+    src="/logos/unsplash.svg"
+    width={16}
+  />
+);
 
 // Layout (3-col, grid-flow-dense):
 // Row 1: [18 ventures 2×2] [2 companies]
@@ -87,8 +116,16 @@ const STATS: StatDef[] = [
   {
     target: 18,
     label: "ventures built",
-    sublabel: "founder",
-    icon: <Rocket className="h-4 w-4" />,
+    sublabel: "serial entrepreneur",
+    icon: (
+      <Image
+        alt="Jia Wei"
+        className="h-4 w-4 rounded-full object-cover"
+        height={16}
+        src="/images/avatars/jiawei.jpg"
+        width={16}
+      />
+    ),
     wide: true,
     tall: true,
   },
@@ -96,28 +133,47 @@ const STATS: StatDef[] = [
     target: 2,
     label: "companies incorporated",
     sublabel: "in Singapore",
-    icon: <Briefcase className="h-4 w-4" />,
+    icon: (
+      <span className="flex items-center gap-1">
+        <Image
+          alt="Base7"
+          className="h-4 w-4 dark:invert"
+          height={16}
+          src="/logos/base7-submark.svg"
+          width={16}
+        />
+        <Image
+          alt="Amajor"
+          className="h-4 w-4 dark:invert"
+          height={16}
+          src="/logos/amajor.svg"
+          width={16}
+        />
+      </span>
+    ),
   },
   {
     target: 10,
     label: "years shipping software",
     sublabel: "since titan.tf at 15",
-    icon: <Clock className="h-4 w-4" />,
+    icon: TitanIcon,
   },
   // ── Career ───────────────────────────────────────────────
   {
-    target: 4127,
+    target: 4.1,
+    suffix: "k",
     label: "jobs applied",
     sublabel: "0 interviews",
     icon: <Briefcase className="h-4 w-4" />,
     wide: true,
+    decimals: 1,
   },
   // ── Hackathons ───────────────────────────────────────────
   {
     target: 5,
-    label: "hackathons entered",
+    label: "hackathons joined",
     sublabel: "Google, Dell, GovTech",
-    icon: <Target className="h-4 w-4" />,
+    icon: GoogleIcon,
     tall: true,
   },
   {
@@ -132,7 +188,7 @@ const STATS: StatDef[] = [
     suffix: "k",
     label: "photo views",
     sublabel: "Unsplash — top 25%",
-    icon: <Camera className="h-4 w-4" />,
+    icon: UnsplashIcon,
   },
   // ── YouTube ──────────────────────────────────────────────
   {
@@ -167,22 +223,45 @@ const STATS: StatDef[] = [
     tall: true,
   },
   {
-    target: 16_800,
+    target: 27,
+    suffix: "k",
     label: "Threads views",
     sublabel: "past 90 days",
     icon: ThreadsIcon,
   },
   {
-    target: 6200,
+    target: 6.2,
+    suffix: "k",
     label: "Instagram views",
     sublabel: "past 90 days",
-    icon: <Eye className="h-4 w-4" />,
+    icon: InstagramIcon,
+    decimals: 1,
   },
 ];
 
 function StatCard({ stat, value }: { stat: StatDef; value: number }) {
   const { wide, tall } = stat;
   const hero = wide && tall;
+
+  const motionVal = useMotionValue(0);
+  const springVal = useSpring(motionVal, {
+    stiffness: hero ? 12 : wide || tall ? 15 : 20,
+    damping: 10,
+    mass: 1.5,
+  });
+  const factor = 10 ** (stat.decimals ?? 0);
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    motionVal.set(value);
+  }, [value, motionVal]);
+
+  useEffect(() => {
+    return springVal.on("change", (v) =>
+      setDisplay(Math.round(v * factor) / factor)
+    );
+  }, [springVal, factor]);
+
   return (
     <motion.div
       className={cn(
@@ -208,12 +287,14 @@ function StatCard({ stat, value }: { stat: StatDef; value: number }) {
           )}
         >
           {stat.prefix && <span>{stat.prefix}</span>}
-          <AnimatedNumber
-            springOptions={{
-              bounce: 0,
-              duration: hero ? 3500 : wide || tall ? 3000 : 2000,
+          <SlidingNumber
+            transition={{
+              type: "spring",
+              stiffness: 120,
+              damping: 20,
+              mass: 0.8,
             }}
-            value={value}
+            value={display}
           />
           {stat.suffix && (
             <span className="ml-0.5 text-[0.6em]">{stat.suffix}</span>

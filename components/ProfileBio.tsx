@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/tooltip";
 import profileData from "@/data/profile.json";
 import { cn } from "@/lib/utils";
-import { AnimatedNumber } from "./core/animated-number";
 import { Quotes } from "./core/quotes";
+import { SlidingNumber } from "./motion-primitives/sliding-number";
 import { TextShimmer } from "./motion-primitives/text-shimmer";
 import { SantaAvatar } from "./SantaAvatar";
 import { Favicon } from "./ui/Favicon";
@@ -175,16 +175,54 @@ export function ProfileBio() {
   const [currentAge, setCurrentAge] = useState(0);
   const [players, setPlayers] = useState(0);
   const [mau, setMau] = useState(0);
+
+  const ageMotion = useMotionValue(0);
+  const ageSpring = useSpring(ageMotion, {
+    stiffness: 20,
+    damping: 10,
+    mass: 1.5,
+  });
+  const [ageDisplay, setAgeDisplay] = useState(0);
+
+  const playersMotion = useMotionValue(0);
+  const playersSpring = useSpring(playersMotion, {
+    stiffness: 15,
+    damping: 10,
+    mass: 1.5,
+  });
+  const [playersDisplay, setPlayersDisplay] = useState(0);
+
+  const mauMotion = useMotionValue(0);
+  const mauSpring = useSpring(mauMotion, {
+    stiffness: 20,
+    damping: 10,
+    mass: 1.5,
+  });
+  const [mauDisplay, setMauDisplay] = useState(0);
   const [singaporeIcon, setSingaporeIcon] = useState(
     "/images/icons/Sun Behind Small Cloud.png"
   );
   const [weatherAdjective, setWeatherAdjective] = useState("sunny");
 
   useEffect(() => {
+    return ageSpring.on("change", (v) => setAgeDisplay(Math.round(v)));
+  }, [ageSpring]);
+  useEffect(() => {
+    return playersSpring.on("change", (v) => setPlayersDisplay(Math.round(v)));
+  }, [playersSpring]);
+  useEffect(() => {
+    return mauSpring.on("change", (v) => setMauDisplay(Math.round(v)));
+  }, [mauSpring]);
+
+  useEffect(() => {
     if (isInView) {
-      setCurrentAge(getAge("2000-08-11"));
+      const age = getAge("2000-08-11");
+      setCurrentAge(age);
       setPlayers(470);
       setMau(10);
+      ageMotion.set(age);
+      playersMotion.set(470);
+      mauMotion.set(10);
 
       // Singapore Icon Logic
       const date = new Date();
@@ -242,9 +280,14 @@ export function ProfileBio() {
         </span>{" "}
         <span className="whitespace-nowrap text-lg text-muted-foreground">
           (Jay,{" "}
-          <AnimatedNumber
-            springOptions={{ bounce: 0, duration: 2000 }}
-            value={currentAge}
+          <SlidingNumber
+            transition={{
+              type: "spring",
+              stiffness: 120,
+              damping: 20,
+              mass: 0.8,
+            }}
+            value={ageDisplay}
           />
           , from {weatherAdjective}
           <Image
@@ -368,17 +411,27 @@ export function ProfileBio() {
           ]}
         />
         to{" "}
-        <AnimatedNumber
+        <SlidingNumber
           className="text-black text-foreground dark:text-white"
-          springOptions={{ bounce: 0, duration: 3000 }}
-          value={players}
+          transition={{
+            type: "spring",
+            stiffness: 120,
+            damping: 20,
+            mass: 0.8,
+          }}
+          value={playersDisplay}
         />
         <span className="text-black text-foreground dark:text-white">k</span>{" "}
         unique players and{" "}
-        <AnimatedNumber
+        <SlidingNumber
           className="text-black text-foreground dark:text-white"
-          springOptions={{ bounce: 0, duration: 3000 }}
-          value={mau}
+          transition={{
+            type: "spring",
+            stiffness: 120,
+            damping: 20,
+            mass: 0.8,
+          }}
+          value={mauDisplay}
         />
         <span className="text-black text-foreground dark:text-white">k</span>{" "}
         monthly active users.

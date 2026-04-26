@@ -35,12 +35,12 @@ function Digit({
   }, [animatedValue, valueRoundedToPlace]);
 
   return (
-    <div className="relative inline-block w-[1ch] overflow-y-clip overflow-x-visible tabular-nums leading-none">
-      <div className="invisible">0</div>
+    <span className="relative inline-block w-[1ch] overflow-hidden tabular-nums leading-none">
+      <span className="invisible">0</span>
       {Array.from({ length: 10 }, (_, i) => (
         <Number key={i} mv={animatedValue} number={i} transition={transition} />
       ))}
-    </div>
+    </span>
   );
 }
 
@@ -114,7 +114,7 @@ export function SlidingNumber({
   );
 
   return (
-    <div className={`flex items-center ${className ?? ""}`}>
+    <span className={`inline-flex items-center ${className ?? ""}`}>
       {value < 0 && "-"}
       {integerDigits.map((_, index) => (
         <Digit
@@ -137,6 +137,6 @@ export function SlidingNumber({
           ))}
         </>
       )}
-    </div>
+    </span>
   );
 }
