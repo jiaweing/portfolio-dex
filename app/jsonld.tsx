@@ -1,83 +1,82 @@
-"use client";
-
-import Script from "next/script";
-
 export default function JsonLd() {
-  // Current year for copyright and date calculations
-  const currentYear = new Date().getFullYear();
-  const currentDate = new Date().toISOString().split("T")[0];
-
-  // Person schema with comprehensive details
-  const personSchema = {
+  const profilePageSchema = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Jia Wei Ng",
-    alternateName: "Jay",
+    "@type": "ProfilePage",
+    "@id": "https://jiaweing.com/#profilepage",
     url: "https://jiaweing.com",
-    image: "https://jiaweing.com/images/avatars/jiawei.png",
-    sameAs: [
-      "https://github.com/jiaweing",
-      "https://www.linkedin.com/in/jiaweing/",
-      "https://x.com/jiaweihq",
-      "https://www.threads.net/@jiaweihq",
-      "https://www.tiktok.com/@jiaweihq",
-      "https://www.youtube.com/@jiaweihq",
-    ],
-    jobTitle: "Software Engineer & Designer",
-    worksFor: [
-      {
-        "@type": "Organization",
-        name: "base07.com",
-        url: "https://base07.com",
+    name: "Jia Wei Ng — Portfolio",
+    mainEntity: {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://jiaweing.com/#person",
+      name: "Jia Wei Ng",
+      alternateName: "Jay",
+      url: "https://jiaweing.com",
+      image: {
+        "@type": "ImageObject",
+        url: "https://jiaweing.com/images/avatars/jiawei.png",
+        width: 400,
+        height: 400,
       },
-      {
-        "@type": "Organization",
-        name: "supply.tf",
-        url: "https://supply.tf",
+      sameAs: [
+        "https://github.com/jiaweing",
+        "https://www.linkedin.com/in/jiaweing/",
+        "https://x.com/jiaweihq",
+        "https://www.threads.net/@jiaweihq",
+        "https://www.tiktok.com/@jiaweihq",
+        "https://www.youtube.com/@jiaweihq",
+      ],
+      jobTitle: "Founder & CEO",
+      worksFor: [
+        {
+          "@type": "Organization",
+          name: "amajor.ai",
+          url: "https://amajor.ai",
+        },
+        {
+          "@type": "Organization",
+          name: "ryuhq.com",
+          url: "https://ryuhq.com",
+        },
+        {
+          "@type": "Organization",
+          name: "supply.tf",
+          url: "https://supply.tf",
+        },
+      ],
+      alumniOf: [
+        {
+          "@type": "EducationalOrganization",
+          name: "University of Glasgow",
+          url: "https://www.gla.ac.uk",
+        },
+        {
+          "@type": "EducationalOrganization",
+          name: "Singapore Institute of Technology",
+          url: "https://www.singaporetech.edu.sg",
+        },
+      ],
+      knowsAbout: [
+        "Software Engineering",
+        "Web Development",
+        "Artificial Intelligence",
+        "Blockchain",
+        "Game Development",
+        "Design",
+      ],
+      nationality: {
+        "@type": "Country",
+        name: "Singapore",
       },
-      {
-        "@type": "Organization",
-        name: "decosmic.com",
-        url: "https://decosmic.com",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "Singapore",
       },
-      {
-        "@type": "Organization",
-        name: "been.place",
-        url: "https://been.place",
-      },
-    ],
-    alumniOf: [
-      {
-        "@type": "EducationalOrganization",
-        name: "University of Glasgow",
-        url: "https://www.gla.ac.uk",
-      },
-      {
-        "@type": "EducationalOrganization",
-        name: "Singapore Institute of Technology",
-        url: "https://www.singaporetech.edu.sg",
-      },
-    ],
-    knowsAbout: [
-      "Software Engineering",
-      "Web Development",
-      "Artificial Intelligence",
-      "Blockchain",
-      "Game Development",
-      "Design",
-    ],
-    nationality: {
-      "@type": "Country",
-      name: "Singapore",
+      description:
+        "Founder & CEO at amajor.ai, building AI agent products. Co-founder of ryu. Based in Singapore.",
     },
-    address: {
-      "@type": "PostalAddress",
-      addressCountry: "Singapore",
-    },
-    description: "a founder, designer & engineer",
   };
 
-  // Website schema for better site representation
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -85,29 +84,27 @@ export default function JsonLd() {
     url: "https://jiaweing.com",
     author: {
       "@type": "Person",
+      "@id": "https://jiaweing.com/#person",
       name: "Jia Wei Ng",
       url: "https://jiaweing.com",
     },
-    description: "a founder, designer & engineer",
+    description:
+      "Founder & CEO at amajor.ai, building AI agent products. Co-founder of ryu. Based in Singapore.",
     publisher: {
       "@type": "Person",
+      "@id": "https://jiaweing.com/#person",
       name: "Jia Wei Ng",
     },
     inLanguage: "en-US",
-    copyrightYear: currentYear,
-    datePublished: "2023-01-01",
-    dateModified: currentDate,
   };
 
-  // Combine all schemas into an array
-  const schemas = [personSchema, websiteSchema];
+  const schemas = [profilePageSchema, websiteSchema];
 
   return (
     <>
       {schemas.map((schema, index) => (
-        <Script
+        <script
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          id={`json-ld-${index}`}
           key={`json-ld-${index}`}
           type="application/ld+json"
         />

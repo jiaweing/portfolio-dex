@@ -85,7 +85,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           className="object-cover"
                           fill
                           priority={index === 0}
-                          src={project.cover}
+                          src={`/api/notion-image?pageId=${project.id}&prop=cover`}
                         />
                       ) : (
                         <GenerativeGradient title={project.title} />
@@ -113,7 +113,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                       <AvatarImage
                         alt={activeProject.title}
                         className="object-cover"
-                        src={activeProject.logo}
+                        src={`/api/notion-image?pageId=${activeProject.id}&prop=logo`}
                       />
                       <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
                     </Avatar>
@@ -182,7 +182,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           className="object-cover"
                           fill
                           priority={index === 0}
-                          src={project.cover}
+                          src={`/api/notion-image?pageId=${project.id}&prop=cover`}
                         />
                       ) : (
                         <GenerativeGradient title={project.title} />
@@ -209,7 +209,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                       <AvatarImage
                         alt={activeProject.title}
                         className="object-cover"
-                        src={activeProject.logo}
+                        src={`/api/notion-image?pageId=${activeProject.id}&prop=logo`}
                       />
                       <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
                     </Avatar>

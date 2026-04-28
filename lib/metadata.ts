@@ -14,7 +14,8 @@ interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Jia Wei Ng",
-  description: "a founder, designer & engineer",
+  description:
+    "Jia Wei Ng — founder, designer & engineer in Singapore. CEO at amajor.ai (AI agents), co-founder of ryu. Google APAC Top 1 Singapore 2025.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://jiaweing.com",
   ogImage: "https://jiaweing.com/og/index.png",
   links: {
@@ -157,7 +158,9 @@ export function generateBlogMetadata(post: BlogPost): Metadata {
   return generateMetadata({
     title: post.title,
     description: post.description,
-    image: post.cover || dynamicOg.toString(),
+    image: post.cover
+      ? `${siteConfig.url}/api/notion-image?pageId=${post.id}&prop=cover`
+      : dynamicOg.toString(),
     url: `/blog/${post.slug}`,
     type: "article",
     publishedTime: post.date,
@@ -178,7 +181,9 @@ export function generateProjectMetadata(project: Project): Metadata {
   return generateMetadata({
     title: project.title,
     description: project.description,
-    image: project.cover || dynamicOg.toString(),
+    image: project.cover
+      ? `${siteConfig.url}/api/notion-image?pageId=${project.id}&prop=cover`
+      : dynamicOg.toString(),
     url: `/projects/${project.slug}`,
     type: "article",
     category: "project",
@@ -190,7 +195,9 @@ export function generatePageMetadata(page: Page): Metadata {
   return generateMetadata({
     title: page.title,
     description: page.description,
-    image: page.cover,
+    image: page.cover
+      ? `${siteConfig.url}/api/notion-image?pageId=${page.id}&prop=cover`
+      : undefined,
     url: `/${page.slug}`, // Assuming generic pages are at root or need adjustment based on route
     modifiedTime: page.lastEdited,
   });

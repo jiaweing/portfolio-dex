@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <img
                 alt={post.title}
                 className="h-full w-full object-cover"
-                src={post.cover}
+                src={`/api/notion-image?pageId=${post.id}&prop=cover`}
               />
             </div>
           </FadeIn>
@@ -216,18 +216,65 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "BlogPosting",
+              "@id": `${siteConfig.url}/blog/${post.slug}#article`,
               headline: post.title,
-              description: post.description,
+              ...(post.description ? { description: post.description } : {}),
+              url: `${siteConfig.url}/blog/${post.slug}`,
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `${siteConfig.url}/blog/${post.slug}`,
+              },
               author: [
                 {
                   "@type": "Person",
+                  "@id": "https://jiaweing.com/#person",
                   name: "Jia Wei Ng",
                   url: "https://jiaweing.com",
                 },
               ],
+              publisher: {
+                "@type": "Person",
+                "@id": "https://jiaweing.com/#person",
+                name: "Jia Wei Ng",
+                url: siteConfig.url,
+              },
               datePublished: post.date,
               dateModified: post.date,
-              image: post.cover ? [post.cover] : undefined,
+              inLanguage: "en-US",
+              image: post.cover
+                ? [
+                    `${siteConfig.url}/api/notion-image?pageId=${post.id}&prop=cover`,
+                  ]
+                : undefined,
+            }),
+          }}
+          type="application/ld+json"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: siteConfig.url,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Writing",
+                  item: `${siteConfig.url}/blog`,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: post.title,
+                  item: `${siteConfig.url}/blog/${post.slug}`,
+                },
+              ],
             }),
           }}
           type="application/ld+json"

@@ -1,0 +1,13 @@
+# Jia Wei Ng — jiaweing.com
+> Founder & CEO at amajor.ai (AI agents), co-founder of ryu. Based in Singapore.
+
+## About
+- jiaweing.com — personal portfolio and writing
+
+## Blog
+- /blog — essays on AI, software, and building companies
+
+## Projects
+- /projects — software and design projects
+
+Allow: *

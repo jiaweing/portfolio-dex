@@ -1,11 +1,14 @@
 import type { MetadataRoute } from "next";
-import { getPages, getProjects } from "@/lib/notion";
+import { getBlogPosts, getPages, getProjects } from "@/lib/notion";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://jiaweing.com";
 
-  const pages = await getPages();
-  const projects = await getProjects();
+  const [pages, projects, posts] = await Promise.all([
+    getPages(),
+    getProjects(),
+    getBlogPosts(),
+  ]);
 
   const pageUrls = pages.map((page) => ({
     url: `${baseUrl}/${page.slug}`,
@@ -17,6 +20,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
   }));
 
+  const postUrls = posts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+  }));
+
   return [
     {
       url: baseUrl,
@@ -26,7 +34,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/projects`,
       lastModified: new Date(),
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+    },
     ...pageUrls,
     ...projectUrls,
+    ...postUrls,
   ];
 }

@@ -47,6 +47,18 @@ export default async function Home() {
   return (
     <>
       <JsonLd />
+      <p className="sr-only">
+        Jia Wei Ng (Jay) is a Singapore-based founder, software engineer, and
+        designer. He is CEO of amajor.ai, building AI agent products including
+        ryu, a consumer AI assistant launching in 2026. He also founded
+        supply.tf (streetwear), hosts the Update Night podcast, and previously
+        built titan.tf which reached 470,000 unique players and 10,000 monthly
+        active users. Awards: Google APAC Solution Challenge 2025 Top 1
+        Singapore, two-time Dell Cloud Native Award winner (1st place), Dell
+        Innovatefest 2025 finalist (featured in Business Times), GovTech ×
+        OpenAI Hackathon 2024 top 10%. BSc Computing Science, University of
+        Glasgow / Singapore Institute of Technology.
+      </p>
       {/* Banner is absolute — sits in background, doesn't push content */}
       <div className="relative">
         <ContributionsBanner contributions={contributions} />

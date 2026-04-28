@@ -149,7 +149,7 @@ function ProjectCard({
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  src={project.cover}
+                  src={`/api/notion-image?pageId=${project.id}&prop=cover`}
                 />
               ) : (
                 <GenerativeGradient title={project.title} />
@@ -168,7 +168,7 @@ function ProjectCard({
                       className="h-full w-full object-cover"
                       fill
                       sizes="40px"
-                      src={project.logo}
+                      src={`/api/notion-image?pageId=${project.id}&prop=logo`}
                     />
                   </div>
                 ) : project.github ? (

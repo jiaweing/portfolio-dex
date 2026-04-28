@@ -174,7 +174,7 @@ function AppIcon({ project, index }: { project: Project; index: number }) {
               draggable={false}
               fill
               sizes="72px"
-              src={project.logo}
+              src={`/api/notion-image?pageId=${project.id}&prop=logo`}
             />
           ) : project.url && !faviconError ? (
             <FaviconIcon

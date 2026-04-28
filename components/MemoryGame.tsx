@@ -539,7 +539,10 @@ export function MemoryGame({ projects }: MemoryGameProps) {
     // Create pairs of cards
     const gamecards: GameCard[] = [];
     selectedProjects.forEach((project, idx) => {
-      const image = cardType === "cover" ? project.cover! : project.logo!;
+      const image =
+        cardType === "cover"
+          ? `/api/notion-image?pageId=${project.id}&prop=cover`
+          : `/api/notion-image?pageId=${project.id}&prop=logo`;
       // Create two cards for each project (a pair)
       for (let i = 0; i < 2; i++) {
         gamecards.push({

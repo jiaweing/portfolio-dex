@@ -59,7 +59,7 @@ export function SiteFooter() {
               nativeButton={false}
               render={
                 <a
-                  href="mailto:hey@jiaweing.com"
+                  href="https://www.notion.so/j14/4d94f7ab64b9464d93aa24902719d3d3?pvs=106"
                   rel="noopener noreferrer"
                   target="_blank"
                 />

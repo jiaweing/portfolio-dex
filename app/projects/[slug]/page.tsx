@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProjectContent } from "@/components/ProjectContent";
 import { FadeIn } from "@/components/ui/fade-in";
-import { generateProjectMetadata } from "@/lib/metadata";
+import { generateProjectMetadata, siteConfig } from "@/lib/metadata";
 import {
   extractDescriptionFromBlocks,
   getProject,
@@ -53,6 +53,56 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <article>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "@id": `${siteConfig.url}/projects/${project.slug}#project`,
+            name: project.title,
+            description: project.description,
+            url: project.url ?? `${siteConfig.url}/projects/${project.slug}`,
+            author: {
+              "@type": "Person",
+              "@id": "https://jiaweing.com/#person",
+              name: "Jia Wei Ng",
+              url: siteConfig.url,
+            },
+            applicationCategory: "WebApplication",
+            keywords: project.techStack.join(", "),
+          }),
+        }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: siteConfig.url,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Projects",
+                item: `${siteConfig.url}/projects`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: project.title,
+                item: `${siteConfig.url}/projects/${project.slug}`,
+              },
+            ],
+          }),
+        }}
+        type="application/ld+json"
+      />
       <div className="space-y-8">
         {/* Back Link */}
         <FadeIn>

@@ -73,7 +73,10 @@ export function BlogPostHoverCard({ post, children }: BlogPostHoverCardProps) {
       : pos.x + offsetX;
   const top = pos.y + offsetY;
 
-  const cover = preview?.cover ?? post.cover;
+  const cover =
+    (preview?.cover ?? post.cover)
+      ? `/api/notion-image?pageId=${post.id}&prop=cover`
+      : null;
 
   return (
     <>

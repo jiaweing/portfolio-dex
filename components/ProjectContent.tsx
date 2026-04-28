@@ -40,7 +40,7 @@ export function ProjectContent({
                       <AvatarImage
                         alt={project.title}
                         className="object-cover"
-                        src={project.logo}
+                        src={`/api/notion-image?pageId=${project.id}&prop=logo`}
                       />
                       <AvatarFallback>{project.title[0]}</AvatarFallback>
                     </Avatar>
@@ -124,9 +124,15 @@ export function ProjectContent({
         (project.screenshots && project.screenshots.length > 0)) && (
         <FadeIn delay={0.3}>
           <ProjectGallery
-            images={[project.cover, ...(project.screenshots || [])].filter(
-              (img): img is string => !!img
-            )}
+            images={[
+              project.cover
+                ? `/api/notion-image?pageId=${project.id}&prop=cover`
+                : null,
+              ...(project.screenshots || []).map(
+                (_, i) =>
+                  `/api/notion-image?pageId=${project.id}&prop=screenshot&index=${i}`
+              ),
+            ].filter((img): img is string => !!img)}
           />
         </FadeIn>
       )}
