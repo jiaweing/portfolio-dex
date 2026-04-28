@@ -6,7 +6,6 @@ export default function JsonLd() {
     url: "https://jiaweing.com",
     name: "Jia Wei Ng — Portfolio",
     mainEntity: {
-      "@context": "https://schema.org",
       "@type": "Person",
       "@id": "https://jiaweing.com/#person",
       name: "Jia Wei Ng",
@@ -22,14 +21,17 @@ export default function JsonLd() {
         "https://github.com/jiaweing",
         "https://www.linkedin.com/in/jiaweing/",
         "https://x.com/jiaweihq",
+        "https://www.instagram.com/jiaweihq",
         "https://www.threads.net/@jiaweihq",
         "https://www.tiktok.com/@jiaweihq",
         "https://www.youtube.com/@jiaweihq",
+        "https://www.youtube.com/@j14wei",
       ],
       jobTitle: "Founder & CEO",
       worksFor: [
         {
           "@type": "Organization",
+          "@id": "https://amajor.ai/#organization",
           name: "amajor.ai",
           url: "https://amajor.ai",
         },
@@ -98,7 +100,40 @@ export default function JsonLd() {
     inLanguage: "en-US",
   };
 
-  const schemas = [profilePageSchema, websiteSchema];
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://amajor.ai/#organization",
+    name: "amajor.ai",
+    url: "https://amajor.ai",
+    founder: {
+      "@type": "Person",
+      "@id": "https://jiaweing.com/#person",
+      name: "Jia Wei Ng",
+    },
+    description: "AI agent products company.",
+  };
+
+  const podcastSchema = {
+    "@context": "https://schema.org",
+    "@type": "PodcastSeries",
+    name: "Update Night",
+    url: "https://updatenight.com",
+    author: {
+      "@type": "Person",
+      "@id": "https://jiaweing.com/#person",
+      name: "Jia Wei Ng",
+    },
+    description: "Weekly tech podcast hosted by Jia Wei Ng.",
+    inLanguage: "en-US",
+  };
+
+  const schemas = [
+    profilePageSchema,
+    websiteSchema,
+    organizationSchema,
+    podcastSchema,
+  ];
 
   return (
     <>

@@ -17,26 +17,44 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const projectUrls = projects.map((project) => ({
     url: `${baseUrl}/projects/${project.slug}`,
-    lastModified: new Date(),
+    lastModified: new Date(project.lastEdited ?? "2025-01-01"),
   }));
 
   const postUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
+    lastModified: new Date(post.lastEdited ?? post.date),
   }));
 
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: new Date("2025-01-01"),
     },
     {
       url: `${baseUrl}/projects`,
-      lastModified: new Date(),
+      lastModified: new Date("2025-01-01"),
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: posts[0]?.date
+        ? new Date(posts[0].date)
+        : new Date("2025-01-01"),
+    },
+    {
+      url: `${baseUrl}/books`,
+      lastModified: new Date("2025-01-01"),
+    },
+    {
+      url: `${baseUrl}/setup`,
+      lastModified: new Date("2025-01-01"),
+    },
+    {
+      url: `${baseUrl}/contributions`,
+      lastModified: new Date("2025-01-01"),
+    },
+    {
+      url: `${baseUrl}/wrapped`,
+      lastModified: new Date("2025-01-01"),
     },
     ...pageUrls,
     ...projectUrls,

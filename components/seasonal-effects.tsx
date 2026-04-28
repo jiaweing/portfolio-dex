@@ -1,11 +1,13 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import Confetti from "react-confetti";
-import Snowfall from "react-snowfall";
 import { useSeasonalEffect } from "@/hooks/use-seasonal-effect";
 
 export { SEASONAL_EVENT } from "@/hooks/use-seasonal-effect";
+
+const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
+const Snowfall = dynamic(() => import("react-snowfall"), { ssr: false });
 
 export function SeasonalEffects() {
   const effect = useSeasonalEffect();

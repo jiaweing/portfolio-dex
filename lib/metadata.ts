@@ -62,7 +62,12 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
 
   const pageDescription = description || siteConfig.description;
   const pageImage = image || siteConfig.ogImage;
-  const pageUrl = url ? new URL(url, siteConfig.url) : siteConfig.url;
+  const pageUrl =
+    url === "/"
+      ? siteConfig.url
+      : url
+        ? new URL(url, siteConfig.url)
+        : siteConfig.url;
 
   // Construct static OG image URL from public/og folder
   // Matches logic in scripts/generate-og.ts: / -> index, /foo/bar -> foo-bar
@@ -164,7 +169,7 @@ export function generateBlogMetadata(post: BlogPost): Metadata {
     url: `/blog/${post.slug}`,
     type: "article",
     publishedTime: post.date,
-    modifiedTime: post.date,
+    modifiedTime: post.lastEdited ?? post.date,
     authors: authorNames,
     tags: post.tags,
     category: "blog",

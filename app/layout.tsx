@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
+import JsonLd from "./jsonld";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -103,7 +104,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -135,27 +139,10 @@ export default function RootLayout({
           />
         )}
         {/* Performance optimizations */}
-        <link href="https://fonts.googleapis.com" rel="preconnect" />
-        <link
-          crossOrigin="anonymous"
-          href="https://fonts.gstatic.com"
-          rel="preconnect"
-        />
         <link href="https://github.com" rel="dns-prefetch" />
         <link href="https://images.unsplash.com" rel="dns-prefetch" />
         <link href="https://stats.jiaweing.com" rel="dns-prefetch" />
-
-        {/* Preload critical fonts */}
-        <link
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
-          rel="preload"
-        />
-        <link
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap"
-          rel="preload"
-        />
+        <JsonLd />
 
         {/* PWA and app metadata */}
         <meta content="Jia Wei Ng" name="application-name" />

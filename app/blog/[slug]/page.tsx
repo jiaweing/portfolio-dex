@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 />
               </div>
               <div className="mb-2 flex items-center gap-2">
-                <h3 className="font-semibold">{post.title}</h3>
+                <h1 className="font-semibold">{post.title}</h1>
                 {post.tags && post.tags.length > 0 && (
                   <TooltipProvider>
                     <div className="flex items-center gap-1.5">
@@ -239,7 +239,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 url: siteConfig.url,
               },
               datePublished: post.date,
-              dateModified: post.date,
+              dateModified: post.lastEdited ?? post.date,
               inLanguage: "en-US",
               image: post.cover
                 ? [

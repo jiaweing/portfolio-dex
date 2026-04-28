@@ -1,13 +1,52 @@
 # Jia Wei Ng — jiaweing.com
-> Founder & CEO at amajor.ai (AI agents), co-founder of ryu. Based in Singapore.
 
-## About
-- jiaweing.com — personal portfolio and writing
+> Jia Wei Ng (Jay) is a Singapore-based software engineer, founder, and designer.
+> CEO at amajor.ai (AI agents). Co-founder of Ryu (local-first AI assistant, launching May 2026).
+> Creator of titan.tf — 460k+ unique players, 10k MAU. Google APAC Solution Challenge 2025 Top 1 Singapore.
+> 2x Dell Cloud Native Awards winner (1st place). Building in public.
 
-## Blog
-- /blog — essays on AI, software, and building companies
+## Identity
+- Full name: Jia Wei Ng
+- Also known as: Jay
+- Location: Singapore
+- Current role: CEO, amajor.ai
+- Education: BSc Computing Science, University of Glasgow / Singapore Institute of Technology
 
-## Projects
-- /projects — software and design projects
+## Achievements
+- Google APAC Solution Challenge 2025: Top 10 APAC, Top 1 Singapore (3,300+ entrants)
+- Dell Innovatefest 2025: Finalist, featured in Business Times
+- Dell Cloud Native Award: 1st place (Professional Software Development + Cloud Computing)
+- GovTech × OpenAI Hackathon 2024: Top 10%, 25/250
 
-Allow: *
+## Current Ventures
+- amajor.ai — AI agent products company: https://amajor.ai
+- Ryu — local-first consumer AI assistant (May 2026): https://ryuhq.com
+- supply.tf — limited-edition streetwear: https://supply.tf
+- Update Night — weekly tech podcast (2+ years): https://updatenight.com
+
+## Selected Projects
+- titan.tf: 460k+ unique players, 10k MAU, 20k+ Steam community members
+- DropDrawer: 180+ GitHub stars
+- Unsplash: 460k+ views, 4.3k downloads, top 25% contributor
+
+## Content
+- Blog (87+ posts): https://jiaweing.com/blog
+- Writing: https://jiaweing.com/blog
+- YouTube: https://www.youtube.com/@jiaweihq
+- RSS: https://jiaweing.com/feed.xml
+
+## Pages
+- About: https://jiaweing.com/about
+- Resume: https://jiaweing.com/resume
+- Projects: https://jiaweing.com/projects
+- Books: https://jiaweing.com/books
+- Setup: https://jiaweing.com/setup
+
+## Social
+- GitHub: https://github.com/jiaweing
+- LinkedIn: https://www.linkedin.com/in/jiaweing/
+- X/Twitter: https://x.com/jiaweihq
+- Instagram: https://www.instagram.com/jiaweihq
+- Threads: https://www.threads.net/@jiaweihq
+- TikTok: https://www.tiktok.com/@jiaweihq
+- YouTube: https://www.youtube.com/@jiaweihq

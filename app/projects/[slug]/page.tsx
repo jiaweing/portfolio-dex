@@ -69,6 +69,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               url: siteConfig.url,
             },
             applicationCategory: "WebApplication",
+            operatingSystem: "Web",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
             keywords: project.techStack.join(", "),
           }),
         }}

@@ -7,21 +7,51 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
   runtimeCaching: [
     {
-      // Use NetworkFirst for HTML navigation so new content is always fetched
       urlPattern: ({ request }: { request: Request }) =>
         request.mode === "navigate",
-      handler: "NetworkFirst",
+      handler: "StaleWhileRevalidate",
       options: {
         cacheName: "pages",
-        networkTimeoutSeconds: 10,
       },
     },
   ],
 });
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  async redirects() {
+    return [
+      {
+        source: "/index",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/writing",
+        destination: "/blog",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
       {
         source: "/",
         headers: [
@@ -42,29 +72,28 @@ const nextConfig: NextConfig = {
   experimental: {
     staleTimes: {
       dynamic: 0,
-      static: 60, // seconds; re-fetch static pages after 60s instead of 5min
+      static: 60,
     },
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 2_592_000,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
-      // legacy S3 regional endpoints like s3-us-west-2.amazonaws.com
       {
         protocol: "https",
         hostname: "s3-*.amazonaws.com",
         pathname: "**",
       },
-      // virtual-hosted–style buckets: bucket.s3.amazonaws.com
       {
         protocol: "https",
         hostname: "*.s3.amazonaws.com",
         pathname: "**",
       },
-      // regional virtual-hosted–style buckets: bucket.s3.us-west-2.amazonaws.com
       {
         protocol: "https",
         hostname: "*.s3.*.amazonaws.com",

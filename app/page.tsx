@@ -18,7 +18,6 @@ import {
 import { getCachedContributions } from "@/lib/get-cached-contributions";
 import { generateMetadata } from "@/lib/metadata";
 import { getBlogPosts, getProjects } from "@/lib/notion";
-import JsonLd from "./jsonld";
 
 export const metadata = generateMetadata({
   title: "a founder, designer & engineer",
@@ -46,7 +45,7 @@ export default async function Home() {
 
   return (
     <>
-      <JsonLd />
+      <h1 className="sr-only">Jia Wei Ng</h1>
       <p className="sr-only">
         Jia Wei Ng (Jay) is a Singapore-based founder, software engineer, and
         designer. He is CEO of amajor.ai, building AI agent products including

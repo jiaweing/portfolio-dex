@@ -30,6 +30,7 @@ export interface BlogPost {
   slug: string;
   title: string;
   date: string;
+  lastEdited?: string;
   description: string;
   authors: { name: string; avatar?: string }[];
   tags: string[];
@@ -63,6 +64,7 @@ export interface Project {
   logo?: string;
   year: string;
   screenshots: string[];
+  lastEdited?: string;
 }
 
 // Helper: Block to Plain Text
@@ -905,6 +907,7 @@ export const fetchBlogPosts = async (options?: {
           slug: getProperty(page, "Slug", "rich_text") || "",
           title: getTitle(page),
           date: getProperty(page, "Date", "date") || page.created_time,
+          lastEdited: page.last_edited_time,
           description: getProperty(page, "Excerpt", "rich_text") || "",
           authors: getProperty(page, "Author", "people") || [],
           tags,
@@ -1184,6 +1187,7 @@ export const fetchProjects = async (): Promise<Project[]> => {
           page.properties?.Screenshots?.files?.map(
             (file: any) => file.file?.url || file.external?.url
           ) || [],
+        lastEdited: page.last_edited_time,
       }))
       .filter((p: Project) => p.title);
   } catch (e) {
