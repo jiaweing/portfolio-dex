@@ -78,6 +78,16 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2_592_000,
+    localPatterns: [
+      {
+        pathname: "/api/notion-image",
+        search: "**",
+      },
+      {
+        pathname: "/api/og",
+        search: "**",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
