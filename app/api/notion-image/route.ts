@@ -41,7 +41,7 @@ const fetchNotionImageUrl = unstable_cache(
     return null;
   },
   ["notion-image-url"],
-  { revalidate: 1500 }
+  { revalidate: 3600 }
 );
 
 export async function GET(request: NextRequest) {
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.redirect(url, {
       headers: {
-        "Cache-Control": "public, max-age=1500, stale-while-revalidate=300",
+        "Cache-Control": "no-store",
       },
     });
   } catch {

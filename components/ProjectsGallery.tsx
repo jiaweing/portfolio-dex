@@ -150,6 +150,7 @@ function ProjectCard({
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+                  unoptimized
                 />
               ) : (
                 <GenerativeGradient title={project.title} />
@@ -169,6 +170,7 @@ function ProjectCard({
                       fill
                       sizes="40px"
                       src={`/api/notion-image?pageId=${project.id}&prop=logo`}
+                      unoptimized
                     />
                   </div>
                 ) : project.github ? (

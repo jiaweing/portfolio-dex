@@ -75,7 +75,8 @@ export function ProjectCard({ project }: { project: Project }) {
               className="h-full w-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:filter"
               height={533}
               src={`/api/notion-image?pageId=${project.id}&prop=cover`}
-              width={400} // Adjusted for 3:4 aspect ratio
+              unoptimized
+              width={400}
             />
           ) : (
             <div

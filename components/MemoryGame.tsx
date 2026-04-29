@@ -198,6 +198,7 @@ function MemoryCard({
             fill
             sizes="(max-width: 768px) 25vw, 15vw"
             src={card.image}
+            unoptimized
           />
           {card.isMatched && (
             <div className="absolute inset-0 flex items-center justify-center bg-green-500/20">

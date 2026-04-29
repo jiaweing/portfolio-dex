@@ -80,12 +80,16 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 2_592_000,
     localPatterns: [
       {
+        pathname: "/images/**",
+      },
+      {
+        pathname: "/logos/**",
+      },
+      {
         pathname: "/api/notion-image",
-        search: "**",
       },
       {
         pathname: "/api/og",
-        search: "**",
       },
     ],
     remotePatterns: [

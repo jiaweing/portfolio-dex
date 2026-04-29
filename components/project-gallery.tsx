@@ -159,6 +159,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
                     fill
                     priority={index === 0}
                     src={url}
+                    unoptimized
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-colors hover:bg-black/10 hover:opacity-100">
                     <ZoomIn className="h-12 w-12 text-white drop-shadow-md" />
@@ -206,6 +207,7 @@ export default function ProjectGallery({ images }: ProjectGalleryProps) {
                         fill
                         priority={index === initialSlide}
                         src={url}
+                        unoptimized
                       />
                     </div>
                   </CarouselItem>

@@ -86,6 +86,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           fill
                           priority={index === 0}
                           src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+                          unoptimized
                         />
                       ) : (
                         <GenerativeGradient title={project.title} />
@@ -183,6 +184,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           fill
                           priority={index === 0}
                           src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+                          unoptimized
                         />
                       ) : (
                         <GenerativeGradient title={project.title} />
