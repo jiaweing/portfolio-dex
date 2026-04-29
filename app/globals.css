@@ -8,6 +8,11 @@
 @custom-variant open (&[data-state="open"]);
 @custom-variant closed (&[data-state="closed"]);
 
+.dark [data-sileo-icon] {
+  --sileo-tone: #171717;
+  --sileo-tone-bg: transparent;
+}
+
 @property --top-mask-height {
   syntax: "<length>";
   inherits: true;

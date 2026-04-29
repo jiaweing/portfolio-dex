@@ -11,7 +11,15 @@ export function SileoToaster() {
     <Toaster
       options={
         isDark
-          ? undefined
+          ? {
+              styles: {
+                title: "text-neutral-900!",
+                description: "text-neutral-900/75!",
+                badge: "bg-neutral-900/10!",
+                button:
+                  "bg-neutral-900/10! hover:bg-neutral-900/15! text-neutral-900!",
+              },
+            }
           : {
               fill: "#171717",
               styles: {
