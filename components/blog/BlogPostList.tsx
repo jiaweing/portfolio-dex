@@ -1,5 +1,6 @@
 "use client";
 
+import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -13,6 +14,7 @@ import {
 } from "date-fns";
 import {
   CalendarDays,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   List,
@@ -22,6 +24,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
+import { ScrollProgress } from "@/components/core/scroll-progress";
 import { FadeIn } from "@/components/ui/fade-in";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
@@ -36,12 +39,35 @@ import { getTagColorClass } from "@/lib/tag-colors";
 import { cn } from "@/lib/utils";
 
 interface BlogPostListProps {
-  posts: BlogPost[];
+  allPosts: BlogPost[];
 }
 
+const PAGE_SIZE = 10;
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export function BlogPostList({ posts }: BlogPostListProps) {
+async function fetchPostsPage({
+  search,
+  category,
+  tags,
+  offset,
+}: {
+  search: string;
+  category: string[];
+  tags: string[];
+  offset: number;
+}): Promise<{ posts: BlogPost[]; nextOffset: number | null; total: number }> {
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (category.length > 0) params.set("category", category.join(","));
+  if (tags.length > 0) params.set("tags", tags.join(","));
+  params.set("offset", String(offset));
+  params.set("limit", String(PAGE_SIZE));
+  const res = await fetch(`/api/blog/posts?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch posts");
+  return res.json();
+}
+
+export function BlogPostList({ allPosts }: BlogPostListProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -49,6 +75,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   const urlSearch = searchParams.get("search") ?? "";
   const [inputValue, setInputValue] = useState(urlSearch);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   const viewMode = (
     searchParams.get("view") === "calendar" ? "calendar" : "list"
@@ -73,12 +100,10 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [pickerYear, setPickerYear] = useState(() => new Date().getFullYear());
 
-  // Sync input with URL on popstate (back/forward navigation)
   useEffect(() => {
     setInputValue(urlSearch);
   }, [urlSearch]);
 
-  // Debounce URL updates
   useEffect(() => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
@@ -108,12 +133,18 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
   const search = urlSearch;
   const selectedTags = useMemo(() => {
-    const tags = searchParams.get("tags");
-    if (!tags) {
-      return [];
-    }
-
+    const tags = searchParams.get("category");
+    if (!tags) return [];
     return tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+  }, [searchParams]);
+
+  const selectedPostTags = useMemo(() => {
+    const posttags = searchParams.get("tags");
+    if (!posttags) return [];
+    return posttags
       .split(",")
       .map((tag) => tag.trim())
       .filter(Boolean);
@@ -121,19 +152,27 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    for (const post of posts) {
+    for (const post of allPosts) {
       for (const tag of post.tags ?? []) {
         tags.add(tag);
       }
     }
-
     return [...tags].sort((a, b) => a.localeCompare(b));
-  }, [posts]);
+  }, [allPosts]);
+
+  const allPostTags = useMemo(() => {
+    const tags = new Set<string>();
+    for (const post of allPosts) {
+      for (const tag of post.postTags ?? []) {
+        tags.add(tag);
+      }
+    }
+    return [...tags].sort((a, b) => a.localeCompare(b));
+  }, [allPosts]);
 
   const tagColors = useMemo(() => {
     const colorMap: Record<string, string> = {};
-
-    for (const post of posts) {
+    for (const post of allPosts) {
       for (const tag of post.tags ?? []) {
         const color = post.tagColors?.[tag];
         if (color && !colorMap[tag]) {
@@ -141,39 +180,85 @@ export function BlogPostList({ posts }: BlogPostListProps) {
         }
       }
     }
-
     return colorMap;
-  }, [posts]);
+  }, [allPosts]);
 
-  const filteredPosts = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase();
+  // Category counts: filtered by active postTags only (cross-filter)
+  const tagCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const post of allPosts) {
+      const matchesPostTags =
+        selectedPostTags.length === 0 ||
+        selectedPostTags.some((t) => post.postTags?.includes(t));
+      if (!matchesPostTags) continue;
+      for (const tag of post.tags ?? []) {
+        counts[tag] = (counts[tag] ?? 0) + 1;
+      }
+    }
+    return counts;
+  }, [allPosts, selectedPostTags]);
 
-    return posts.filter((post) => {
-      const matchesSearch =
-        normalizedSearch.length === 0 ||
-        post.title.toLowerCase().includes(normalizedSearch) ||
-        post.description.toLowerCase().includes(normalizedSearch) ||
-        post.tags?.some((tag) => tag.toLowerCase().includes(normalizedSearch));
-
-      const matchesTags =
+  // Tag counts: filtered by active category only (cross-filter)
+  const postTagCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const post of allPosts) {
+      const matchesCat =
         selectedTags.length === 0 ||
-        selectedTags.some((selectedTag) => post.tags?.includes(selectedTag));
+        selectedTags.some((t) => post.tags?.includes(t));
+      if (!matchesCat) continue;
+      for (const tag of post.postTags ?? []) {
+        counts[tag] = (counts[tag] ?? 0) + 1;
+      }
+    }
+    return counts;
+  }, [allPosts, selectedTags]);
 
-      return matchesSearch && matchesTags;
+  const [tagsExpanded, setTagsExpanded] = useState(
+    () => selectedPostTags.length > 0
+  );
+
+  const hasActiveFilters =
+    search.trim().length > 0 ||
+    selectedTags.length > 0 ||
+    selectedPostTags.length > 0;
+
+  // Infinite query for list view
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: [
+        "blog-posts",
+        search,
+        selectedTags.join(","),
+        selectedPostTags.join(","),
+      ],
+      queryFn: ({ pageParam }) =>
+        fetchPostsPage({
+          search,
+          category: selectedTags,
+          tags: selectedPostTags,
+          offset: pageParam as number,
+        }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.nextOffset ?? undefined,
+      enabled: viewMode === "list",
     });
-  }, [posts, search, selectedTags]);
+
+  const listPosts = useMemo(
+    () => data?.pages.flatMap((p) => p.posts) ?? [],
+    [data]
+  );
 
   const { pinnedPosts, groups } = useMemo(() => {
     const pinned: BlogPost[] = [];
     const grouped: { label: string; posts: BlogPost[] }[] = [];
 
-    for (const post of filteredPosts) {
-      // Add to pinned list if pinned
-      if (post.pinned) {
-        pinned.push(post);
+    if (!hasActiveFilters) {
+      for (const post of allPosts) {
+        if (post.pinned) pinned.push(post);
       }
+    }
 
-      // Add to date groups (pinned posts appear in both)
+    for (const post of listPosts) {
       const label = post.date
         ? formatDate(new Date(post.date), "MMM yyyy")
         : "Unknown";
@@ -186,12 +271,30 @@ export function BlogPostList({ posts }: BlogPostListProps) {
     }
 
     return { pinnedPosts: pinned, groups: grouped };
-  }, [filteredPosts]);
+  }, [listPosts, allPosts, hasActiveFilters]);
 
-  // All posts by day (unfiltered) — used to determine which days have any posts
+  // IntersectionObserver to trigger next page
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Calendar data uses allPosts directly (needs full set for all-month dots)
   const postsByDay = useMemo(() => {
     const map = new Map<string, BlogPost[]>();
-    for (const post of posts) {
+    for (const post of allPosts) {
       if (!post.date) continue;
       const key = formatDate(new Date(post.date), "yyyy-MM-dd");
       const existing = map.get(key);
@@ -202,20 +305,26 @@ export function BlogPostList({ posts }: BlogPostListProps) {
       }
     }
     return map;
-  }, [posts]);
+  }, [allPosts]);
 
-  // Tag-filtered posts by day — used for dots, counts, and expanded list
   const filteredPostsByDay = useMemo(() => {
-    if (selectedTags.length === 0) return postsByDay;
+    if (selectedTags.length === 0 && selectedPostTags.length === 0)
+      return postsByDay;
     const map = new Map<string, BlogPost[]>();
     for (const [key, dayPosts] of postsByDay) {
-      const filtered = dayPosts.filter((post) =>
-        selectedTags.some((tag) => post.tags?.includes(tag))
-      );
+      const filtered = dayPosts.filter((post) => {
+        const matchesCat =
+          selectedTags.length === 0 ||
+          selectedTags.some((tag) => post.tags?.includes(tag));
+        const matchesPostTags =
+          selectedPostTags.length === 0 ||
+          selectedPostTags.some((tag) => post.postTags?.includes(tag));
+        return matchesCat && matchesPostTags;
+      });
       if (filtered.length > 0) map.set(key, filtered);
     }
     return map;
-  }, [postsByDay, selectedTags]);
+  }, [postsByDay, selectedTags, selectedPostTags]);
 
   const calendarDays = useMemo(() => {
     const monthStart = startOfMonth(calendarDate);
@@ -241,7 +350,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
   }, [calendarDate, filteredPostsByDay]);
 
   const { minMonth, maxMonth } = useMemo(() => {
-    const dates = posts
+    const dates = allPosts
       .filter((p) => p.date)
       .map((p) => startOfMonth(new Date(p.date!)));
     const min =
@@ -249,14 +358,30 @@ export function BlogPostList({ posts }: BlogPostListProps) {
         ? dates.reduce((a, b) => (a < b ? a : b))
         : startOfMonth(new Date());
     return { minMonth: min, maxMonth: startOfMonth(new Date()) };
-  }, [posts]);
-
-  const hasActiveFilters = search.trim().length > 0 || selectedTags.length > 0;
+  }, [allPosts]);
 
   const toggleTag = (tag: string) => {
     const nextTags = selectedTags.includes(tag)
       ? selectedTags.filter((value) => value !== tag)
       : [...selectedTags, tag];
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (nextTags.length > 0) {
+      params.set("category", nextTags.join(","));
+    } else {
+      params.delete("category");
+    }
+
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  };
+
+  const togglePostTag = (tag: string) => {
+    const nextTags = selectedPostTags.includes(tag)
+      ? selectedPostTags.filter((value) => value !== tag)
+      : [...selectedPostTags, tag];
 
     const params = new URLSearchParams(searchParams.toString());
     if (nextTags.length > 0) {
@@ -300,6 +425,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
   return (
     <div className="space-y-6 pt-3 pb-10 text-sm leading-relaxed">
+      <ScrollProgress className="fixed top-0 left-0 z-50 w-full bg-[#0090FF]" />
       <FadeIn delay={0}>
         <div className="mb-4 flex items-center gap-2">
           <h3 className="font-semibold">writing</h3>
@@ -342,26 +468,86 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
       <div className="space-y-3">
         <FadeIn delay={0}>
-          <div className="relative z-0 mx-2 -mb-4 flex flex-wrap justify-center rounded-xl rounded-b-none bg-muted/50 px-1 py-2">
-            {allTags.map((tag) => (
-              <Toggle
-                aria-label={`Filter by ${tag}`}
-                className="h-7 gap-1.5 border-0 px-2 text-foreground text-xs shadow-none hover:text-current"
-                key={tag}
-                onPressedChange={() => toggleTag(tag)}
-                pressed={selectedTags.includes(tag)}
-                size="sm"
-                variant="default"
-              >
-                <span
-                  className={cn(
-                    "h-1.5 w-1.5 rounded-full",
-                    getTagColorClass(tag, tagColors[tag])
-                  )}
-                />
-                <span className="capitalize">{tag}</span>
-              </Toggle>
-            ))}
+          <div className="relative z-0 mx-2 -mb-4 rounded-xl rounded-b-none bg-muted/50">
+            <div className="flex flex-wrap items-center justify-center px-1 py-2">
+              {allTags
+                .filter(
+                  (tag) =>
+                    (tagCounts[tag] ?? 0) > 0 || selectedTags.includes(tag)
+                )
+                .sort((a, b) => (tagCounts[b] ?? 0) - (tagCounts[a] ?? 0))
+                .map((tag) => (
+                  <Toggle
+                    aria-label={`Filter by ${tag}`}
+                    className="h-7 gap-1.5 border-0 px-2 text-foreground text-xs shadow-none hover:text-current"
+                    key={tag}
+                    onPressedChange={() => toggleTag(tag)}
+                    pressed={selectedTags.includes(tag)}
+                    size="sm"
+                    variant="default"
+                  >
+                    <span
+                      className={cn(
+                        "h-1.5 w-1.5 rounded-full",
+                        getTagColorClass(tag, tagColors[tag])
+                      )}
+                    />
+                    <span className="capitalize">{tag}</span>
+                    {(tagCounts[tag] ?? 0) > 0 && (
+                      <span className="text-muted-foreground/40">
+                        {tagCounts[tag]}
+                      </span>
+                    )}
+                  </Toggle>
+                ))}
+              {allPostTags.length > 0 && (
+                <button
+                  aria-label={tagsExpanded ? "Collapse tags" : "Expand tags"}
+                  className="flex h-7 items-center gap-0.5 rounded px-2 text-muted-foreground/50 text-xs transition-colors hover:text-muted-foreground"
+                  onClick={() => setTagsExpanded((v) => !v)}
+                  type="button"
+                >
+                  <ChevronDown
+                    className={cn(
+                      "h-3 w-3 transition-transform",
+                      tagsExpanded && "rotate-180"
+                    )}
+                  />
+                </button>
+              )}
+            </div>
+
+            {allPostTags.length > 0 && tagsExpanded && (
+              <div className="flex flex-wrap justify-center border-muted-foreground/10 border-t px-1 py-2">
+                {allPostTags
+                  .filter(
+                    (tag) =>
+                      (postTagCounts[tag] ?? 0) > 0 ||
+                      selectedPostTags.includes(tag)
+                  )
+                  .sort(
+                    (a, b) => (postTagCounts[b] ?? 0) - (postTagCounts[a] ?? 0)
+                  )
+                  .map((tag) => (
+                    <Toggle
+                      aria-label={`Filter by tag ${tag}`}
+                      className="h-7 gap-1.5 border-0 px-2 text-foreground text-xs shadow-none hover:text-current"
+                      key={tag}
+                      onPressedChange={() => togglePostTag(tag)}
+                      pressed={selectedPostTags.includes(tag)}
+                      size="sm"
+                      variant="default"
+                    >
+                      <span className="capitalize">{tag}</span>
+                      {(postTagCounts[tag] ?? 0) > 0 && (
+                        <span className="text-muted-foreground/40">
+                          {postTagCounts[tag]}
+                        </span>
+                      )}
+                    </Toggle>
+                  ))}
+              </div>
+            )}
           </div>
         </FadeIn>
         <FadeIn delay={0.05}>
@@ -637,7 +823,15 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                                   />
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                  <p className="capitalize">{tag}</p>
+                                  <div className="flex flex-col gap-0.5">
+                                    <p className="capitalize">{tag}</p>
+                                    {post.postTags &&
+                                      post.postTags.length > 0 && (
+                                        <p className="text-muted-foreground/70">
+                                          {post.postTags.join(", ")}
+                                        </p>
+                                      )}
+                                  </div>
                                 </TooltipContent>
                               </Tooltip>
                             ))}
@@ -655,7 +849,7 @@ export function BlogPostList({ posts }: BlogPostListProps) {
 
       {viewMode === "list" && (
         <>
-          {groups.length === 0 && (
+          {!isLoading && groups.length === 0 && (
             <p className="text-muted-foreground text-sm">No posts found.</p>
           )}
 
@@ -691,7 +885,15 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                                       />
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                      <p className="capitalize">{tag}</p>
+                                      <div className="flex flex-col gap-0.5">
+                                        <p className="capitalize">{tag}</p>
+                                        {post.postTags &&
+                                          post.postTags.length > 0 && (
+                                            <p className="text-muted-foreground/70">
+                                              {post.postTags.join(", ")}
+                                            </p>
+                                          )}
+                                      </div>
                                     </TooltipContent>
                                   </Tooltip>
                                 ))}
@@ -764,7 +966,15 @@ export function BlogPostList({ posts }: BlogPostListProps) {
                                     />
                                   </TooltipTrigger>
                                   <TooltipContent>
-                                    <p className="capitalize">{tag}</p>
+                                    <div className="flex flex-col gap-0.5">
+                                      <p className="capitalize">{tag}</p>
+                                      {post.postTags &&
+                                        post.postTags.length > 0 && (
+                                          <p className="text-muted-foreground/70">
+                                            {post.postTags.join(", ")}
+                                          </p>
+                                        )}
+                                    </div>
                                   </TooltipContent>
                                 </Tooltip>
                               ))}
@@ -778,6 +988,22 @@ export function BlogPostList({ posts }: BlogPostListProps) {
               </div>
             </TooltipProvider>
           </FadeIn>
+
+          {/* Infinite scroll sentinel */}
+          <div className="h-4" ref={sentinelRef} />
+          {hasNextPage && (
+            <div className="flex justify-center">
+              <button
+                className="flex items-center gap-1.5 text-muted-foreground text-xs transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+                type="button"
+              >
+                <ChevronDown className="h-3.5 w-3.5" />
+                {isFetchingNextPage ? "Loading…" : "Load more"}
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

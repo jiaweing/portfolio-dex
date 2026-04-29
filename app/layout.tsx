@@ -27,6 +27,8 @@ const geistMono = Geist_Mono({
 
 import { Toaster } from "sileo";
 import { AgentationProvider } from "@/components/agentation-provider";
+import { BackToTop } from "@/components/BackToTop";
+import { QueryProvider } from "@/components/QueryProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { WebMCPProvider } from "@/components/WebMCPProvider";
 import { siteConfig } from "@/lib/metadata";
@@ -156,50 +158,53 @@ export default function RootLayout({
         <link href="/.well-known/llms.txt" rel="llms" />
       </head>
       <body className="overflow-x-hidden pb-20 antialiased lg:pb-0">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          disableTransitionOnChange
-          enableSystem
-        >
-          <PlausibleWrapper>
-            <div className="relative flex min-h-screen flex-col">
-              <div>
-                <section className="relative z-10 min-h-screen bg-background lg:mb-[400px]">
-                  <LayoutWidthWrapper>
-                    <div className="relative z-[100] mx-auto max-w-2xl space-y-4 leading-relaxed">
-                      <SiteHeader />
-                    </div>
-                    <ProgressiveBlur
-                      height="100px"
-                      position="top"
-                      useThemeBackground
-                    />
-                    <div className="flex-1 pt-20">{children}</div>
-                    <ProgressiveBlur
-                      height="100px"
-                      position="bottom"
-                      useThemeBackground
-                    />
-                  </LayoutWidthWrapper>
-                </section>
+        <QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            disableTransitionOnChange
+            enableSystem
+          >
+            <PlausibleWrapper>
+              <div className="relative flex min-h-screen flex-col">
+                <div>
+                  <section className="relative z-10 min-h-screen bg-background lg:mb-[400px]">
+                    <LayoutWidthWrapper>
+                      <div className="relative z-[100] mx-auto max-w-2xl space-y-4 leading-relaxed">
+                        <SiteHeader />
+                      </div>
+                      <ProgressiveBlur
+                        height="100px"
+                        position="top"
+                        useThemeBackground
+                      />
+                      <div className="flex-1 pt-20">{children}</div>
+                      <ProgressiveBlur
+                        height="100px"
+                        position="bottom"
+                        useThemeBackground
+                      />
+                    </LayoutWidthWrapper>
+                  </section>
+                </div>
               </div>
-            </div>
-          </PlausibleWrapper>
+            </PlausibleWrapper>
 
-          <MobileBottomNav />
-          <SiteFooter />
-          {modal}
-          <ThemeToggle />
-          <TailwindIndicator />
-          <AgentationProvider />
-          <SeasonalEffects />
-          <Toaster position="bottom-right" theme="system" />
-          {/* <OpenSourceToast /> */}
-          <SmoothScroll />
-          <WebMCPProvider />
-          <GoogleAnalytics gaId="G-MJ0F694R8J" />
-        </ThemeProvider>
+            <MobileBottomNav />
+            <SiteFooter />
+            {modal}
+            <ThemeToggle />
+            <TailwindIndicator />
+            <AgentationProvider />
+            <SeasonalEffects />
+            <Toaster position="bottom-right" theme="system" />
+            {/* <OpenSourceToast /> */}
+            <BackToTop />
+            <SmoothScroll />
+            <WebMCPProvider />
+            <GoogleAnalytics gaId="G-MJ0F694R8J" />
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

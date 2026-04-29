@@ -150,9 +150,7 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
 }
 
 export function generateBlogMetadata(post: BlogPost): Metadata {
-  const authorNames = post.authors?.map((author) => author.name) || [
-    siteConfig.name,
-  ];
+  const authorNames = [siteConfig.name];
 
   const dynamicOg = new URL("/api/og", siteConfig.url);
   dynamicOg.searchParams.set("title", post.title);

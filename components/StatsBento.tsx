@@ -37,6 +37,7 @@ type StatDef = {
   wide?: boolean;
   tall?: boolean;
   decimals?: number;
+  href?: string;
 };
 
 const YTIcon = (
@@ -128,6 +129,7 @@ const STATS: StatDef[] = [
     ),
     wide: true,
     tall: true,
+    href: "/projects",
   },
   {
     target: 2,
@@ -151,12 +153,14 @@ const STATS: StatDef[] = [
         />
       </span>
     ),
+    href: "https://amajor.ai",
   },
   {
     target: 10,
     label: "years shipping software",
     sublabel: "since titan.tf at 15",
     icon: TitanIcon,
+    href: "https://titan.tf",
   },
   // ── Career ───────────────────────────────────────────────
   {
@@ -167,6 +171,7 @@ const STATS: StatDef[] = [
     icon: <Briefcase className="h-4 w-4" />,
     wide: true,
     decimals: 1,
+    href: "https://www.linkedin.com/in/jiaweing",
   },
   // ── Hackathons ───────────────────────────────────────────
   {
@@ -189,6 +194,7 @@ const STATS: StatDef[] = [
     label: "photo views",
     sublabel: "Unsplash — top 25%",
     icon: UnsplashIcon,
+    href: "https://unsplash.com/@jiaweing",
   },
   // ── YouTube ──────────────────────────────────────────────
   {
@@ -197,6 +203,7 @@ const STATS: StatDef[] = [
     label: "YouTube views",
     sublabel: "across channels",
     icon: YTIcon,
+    href: "https://www.youtube.com/@jiaweihq",
   },
   {
     target: 860,
@@ -204,6 +211,7 @@ const STATS: StatDef[] = [
     label: "YouTube subscribers",
     sublabel: "lifestyle channel",
     icon: YTIcon,
+    href: "https://www.youtube.com/@j14wei",
   },
   {
     target: 52,
@@ -211,6 +219,7 @@ const STATS: StatDef[] = [
     label: "LinkedIn impressions",
     sublabel: "past year",
     icon: LinkedInIcon,
+    href: "https://www.linkedin.com/in/jiaweing",
   },
   // ── Social reach ─────────────────────────────────────────
   {
@@ -221,6 +230,7 @@ const STATS: StatDef[] = [
     icon: ThreadsIcon,
     wide: true,
     tall: true,
+    href: "https://www.threads.net/@jiaweihq",
   },
   {
     target: 27,
@@ -228,6 +238,7 @@ const STATS: StatDef[] = [
     label: "Threads views",
     sublabel: "past 90 days",
     icon: ThreadsIcon,
+    href: "https://www.threads.net/@jiaweihq",
   },
   {
     target: 6.2,
@@ -236,6 +247,7 @@ const STATS: StatDef[] = [
     sublabel: "past 90 days",
     icon: InstagramIcon,
     decimals: 1,
+    href: "https://www.instagram.com/jiaweihq",
   },
 ];
 
@@ -262,15 +274,10 @@ function StatCard({ stat, value }: { stat: StatDef; value: number }) {
     );
   }, [springVal, factor]);
 
-  return (
-    <motion.div
-      className={cn(
-        "group flex flex-col justify-between gap-4 rounded-2xl border bg-background/50 p-5 transition-colors hover:bg-muted/30",
-        wide && "col-span-2",
-        tall && "row-span-2"
-      )}
-      variants={itemVariants}
-    >
+  const isExternal = stat.href?.startsWith("http");
+
+  const inner = (
+    <>
       <span className="flex items-center gap-1.5 text-muted-foreground">
         {stat.icon}
         <span className="text-xs">{stat.sublabel}</span>
@@ -302,6 +309,31 @@ function StatCard({ stat, value }: { stat: StatDef; value: number }) {
         </p>
         <p className="mt-2 text-muted-foreground text-sm">{stat.label}</p>
       </div>
+    </>
+  );
+
+  const className = cn(
+    "group flex h-full flex-col justify-between gap-4 rounded-2xl bg-muted/30 p-5 transition-colors hover:bg-muted/50",
+    stat.href && "cursor-pointer"
+  );
+
+  return (
+    <motion.div
+      className={cn("h-full", wide && "col-span-2", tall && "row-span-2")}
+      variants={itemVariants}
+    >
+      {stat.href ? (
+        <a
+          className={className}
+          href={stat.href}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          target={isExternal ? "_blank" : undefined}
+        >
+          {inner}
+        </a>
+      ) : (
+        <div className={className}>{inner}</div>
+      )}
     </motion.div>
   );
 }

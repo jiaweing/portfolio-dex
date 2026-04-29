@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ScrollProgress } from "@/components/core/scroll-progress";
 import { NotionRenderer } from "@/components/NotionRenderer";
 import { FadeIn } from "@/components/ui/fade-in";
 import { generatePageMetadata } from "@/lib/metadata";
@@ -61,6 +62,7 @@ export default async function GenericPage({
 
   return (
     <>
+      <ScrollProgress className="fixed top-0 left-0 z-50 w-full bg-[#0090FF]" />
       <FadeIn>
         <div className="my-8 flex flex-col">
           <div className="flex flex-col items-start gap-4">

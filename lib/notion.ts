@@ -32,9 +32,9 @@ export interface BlogPost {
   date: string;
   lastEdited?: string;
   description: string;
-  authors: { name: string; avatar?: string }[];
   tags: string[];
   tagColors?: Record<string, string>;
+  postTags?: string[];
   cover?: string;
   readingTime: number; // in minutes
   pinned?: boolean;
@@ -197,7 +197,8 @@ const getProperty = (
 const getTagsWithColors = (
   page: any
 ): { name: string; color: string | undefined }[] => {
-  const preferredTagProps = ["Tags", "Tag", "Categories", "Category"];
+  // Category column (renamed from Tag) — used for dot indicators
+  const preferredTagProps = ["Category", "Tag", "Categories"];
 
   for (const prop of preferredTagProps) {
     const property = page.properties?.[prop];
@@ -220,24 +221,15 @@ const getTagsWithColors = (
     }
   }
 
-  if (!page.properties) return [];
+  return [];
+};
 
-  for (const key in page.properties) {
-    const property = page.properties[key];
-    if (property?.type === "select" && property.select?.name) {
-      return [{ name: property.select.name, color: property.select.color }];
-    }
-    if (
-      property?.type === "multi_select" &&
-      property.multi_select?.length > 0
-    ) {
-      return property.multi_select.map((option: any) => ({
-        name: option.name,
-        color: option.color,
-      }));
-    }
+const getPostTagsFromNotion = (page: any): string[] => {
+  const property = page.properties?.["Tags"];
+  if (!property) return [];
+  if (property.type === "multi_select" && property.multi_select?.length > 0) {
+    return property.multi_select.map((option: any) => option.name as string);
   }
-
   return [];
 };
 
@@ -909,9 +901,9 @@ export const fetchBlogPosts = async (options?: {
           date: getProperty(page, "Date", "date") || page.created_time,
           lastEdited: page.last_edited_time,
           description: getProperty(page, "Excerpt", "rich_text") || "",
-          authors: getProperty(page, "Author", "people") || [],
           tags,
           tagColors,
+          postTags: getPostTagsFromNotion(page),
           cover: banner,
           readingTime: 0, // calculated on individual post page
           pinned: getProperty(page, "Pinned", "checkbox"),
@@ -1003,9 +995,9 @@ export const getBlogPost = unstable_cache(
         title: getTitle(page),
         date: getProperty(page, "Date", "date") || page.created_time,
         description: getProperty(page, "Excerpt", "rich_text") || "",
-        authors: getProperty(page, "Author", "people") || [],
         tags,
         tagColors,
+        postTags: getPostTagsFromNotion(page),
         cover: banner,
         readingTime: 0, // placeholder, will be set after fetching blocks
       };

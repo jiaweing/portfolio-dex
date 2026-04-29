@@ -11,7 +11,7 @@ export const metadata = generateMetadata({
 });
 
 export default async function BlogPage() {
-  const posts = await getBlogPosts();
+  const allPosts = await getBlogPosts();
 
-  return <BlogPostList posts={posts} />;
+  return <BlogPostList allPosts={allPosts} />;
 }

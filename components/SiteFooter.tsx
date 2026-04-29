@@ -52,7 +52,7 @@ export function SiteFooter() {
           <div className="space-y-2">
             <p className="font-medium text-sm">{siteConfig.name}</p>
             <p className="text-muted-foreground text-xs">
-              {siteConfig.description}
+              founder, designer & engineer in Singapore
             </p>
             <Button
               className="mt-3 normal-case"
