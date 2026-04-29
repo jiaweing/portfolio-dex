@@ -25,10 +25,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import { Toaster } from "sileo";
 import { AgentationProvider } from "@/components/agentation-provider";
 import { BackToTop } from "@/components/BackToTop";
+import { OpenSourceToast } from "@/components/open-source-toast";
 import { QueryProvider } from "@/components/QueryProvider";
+import { SileoToaster } from "@/components/SileoToaster";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { WebMCPProvider } from "@/components/WebMCPProvider";
 import { siteConfig } from "@/lib/metadata";
@@ -197,8 +198,8 @@ export default function RootLayout({
             <TailwindIndicator />
             <AgentationProvider />
             <SeasonalEffects />
-            <Toaster position="bottom-right" theme="system" />
-            {/* <OpenSourceToast /> */}
+            <SileoToaster />
+            <OpenSourceToast />
             <BackToTop />
             <SmoothScroll />
             <WebMCPProvider />

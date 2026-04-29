@@ -10,6 +10,8 @@ export const metadata = generateMetadata({
   url: "/setup",
 });
 
+export const revalidate = 1800;
+
 export default async function SetupPage() {
   const items = await getStackItems();
   return (

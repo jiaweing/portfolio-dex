@@ -1,48 +1,83 @@
 "use client";
 
-import { GithubIcon } from "hugeicons-react";
+import { useTheme } from "next-themes";
 import { useEffect } from "react";
-import { toast } from "sonner";
+import { sileo } from "sileo";
+import { GithubDark } from "@/components/ui/svgs/githubDark";
+import { GithubLight } from "@/components/ui/svgs/githubLight";
 
 const GITHUB_URL = "https://github.com/jiaweing/portfolio-dex";
 const STORAGE_KEY = "has-seen-open-source-toast";
 
 export function OpenSourceToast() {
-  useEffect(() => {
-    // Check if toast was dismissed/shown
-    const hasSeenToast = localStorage.getItem(STORAGE_KEY);
-    if (hasSeenToast) return;
+  const { resolvedTheme } = useTheme();
 
-    // Small delay to ensure the Toaster is mounted
+  useEffect(() => {
+    if (localStorage.getItem(STORAGE_KEY)) return;
+
+    const isDark = resolvedTheme === "dark";
+
     const timer = setTimeout(() => {
-      toast("Like my website? 🩷", {
-        description:
-          "It's open source and you can freely use the code for whatever you want, just give it a star ⭐",
-        duration: Number.POSITIVE_INFINITY,
-        dismissible: true,
-        onDismiss: () => {
-          localStorage.setItem(STORAGE_KEY, "true");
-        },
-        onAutoClose: () => {
-          localStorage.setItem(STORAGE_KEY, "true");
-        },
-        action: {
-          label: (
-            <span className="flex items-center gap-1.5">
-              <GithubIcon className="h-3.5 w-3.5" />
-              GitHub
+      let id: string;
+
+      const dismiss = () => {
+        sileo.dismiss(id);
+        localStorage.setItem(STORAGE_KEY, "true");
+      };
+
+      const openGitHub = () => {
+        localStorage.setItem(STORAGE_KEY, "true");
+        window.open(GITHUB_URL, "_blank");
+      };
+
+      // light theme: toast is dark (#171717), use white text/icons
+      // dark theme: toast is light (#f2f2f2), use dark text/icons
+      const GithubIcon = isDark ? GithubLight : GithubDark;
+      const githubBtnClass = isDark
+        ? "flex cursor-pointer items-center gap-1.5 rounded-full border-0 bg-black/10 px-3 py-1.5 text-xs font-medium text-black transition-colors hover:bg-black/20"
+        : "flex cursor-pointer items-center gap-1.5 rounded-full border-0 bg-white/15 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/25";
+      const dismissBtnClass = isDark
+        ? "flex cursor-pointer items-center justify-center rounded-full border border-black/15 bg-transparent px-3 py-1.5 text-xs font-medium text-black/75 transition-colors hover:bg-black/10"
+        : "flex cursor-pointer items-center justify-center rounded-full border border-white/15 bg-transparent px-3 py-1.5 text-xs font-medium text-white/75 transition-colors hover:bg-white/10";
+
+      id = sileo.show({
+        title: "This site is open source",
+        description: (
+          <span className="flex flex-col gap-3">
+            <span>
+              Built in public. Explore the code, learn from it, or give it a
+              star if you find it useful ⭐
             </span>
-          ) as unknown as string,
-          onClick: () => {
-            localStorage.setItem(STORAGE_KEY, "true");
-            window.open(GITHUB_URL, "_blank");
-          },
-        },
+            <span className="flex items-center justify-center gap-2">
+              <button
+                className={githubBtnClass}
+                onClick={openGitHub}
+                type="button"
+              >
+                <GithubIcon className="h-3.5 w-3.5" />
+                GitHub
+              </button>
+              <button
+                className={dismissBtnClass}
+                onClick={dismiss}
+                type="button"
+              >
+                Dismiss
+              </button>
+            </span>
+          </span>
+        ),
+        duration: null,
+        icon: isDark ? (
+          <GithubLight className="h-5 w-5" />
+        ) : (
+          <GithubDark className="h-5 w-5" />
+        ),
       });
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [resolvedTheme]);
 
   return null;
 }

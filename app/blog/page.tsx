@@ -13,5 +13,5 @@ export const metadata = generateMetadata({
 export default async function BlogPage() {
   const allPosts = await getBlogPosts();
 
-  return <BlogPostList allPosts={allPosts} />;
+  return <BlogPostList allPosts={allPosts} ssrGeneratedAt={Date.now()} />;
 }

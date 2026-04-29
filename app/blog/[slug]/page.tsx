@@ -254,6 +254,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <FadeIn delay={0.3}>
           <div className="mt-16 space-y-8 text-sm">
+            {post.postTags && post.postTags.length > 0 && (
+              <div className="flex flex-wrap gap-3 text-muted-foreground">
+                {post.postTags.map((tag) => (
+                  <Link
+                    className="transition-colors hover:text-foreground"
+                    href={`/blog?tags=${encodeURIComponent(tag)}`}
+                    key={tag}
+                  >
+                    {tag}
+                    {postTagCounts[tag] && (
+                      <span className="ml-1 text-muted-foreground/40">
+                        {postTagCounts[tag]}
+                      </span>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            )}
+
             {(prevPost || nextPost) && (
               <div className="flex w-full items-center justify-between gap-4 text-muted-foreground">
                 {prevPost ? (
@@ -281,25 +300,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             )}
 
-            {post.postTags && post.postTags.length > 0 && (
-              <div className="flex flex-wrap gap-3 text-muted-foreground">
-                {post.postTags.map((tag) => (
-                  <Link
-                    className="transition-colors hover:text-foreground"
-                    href={`/blog?tags=${encodeURIComponent(tag)}`}
-                    key={tag}
-                  >
-                    {tag}
-                    {postTagCounts[tag] && (
-                      <span className="ml-1 text-muted-foreground/40">
-                        {postTagCounts[tag]}
-                      </span>
-                    )}
-                  </Link>
-                ))}
-              </div>
-            )}
-
             {relevantPosts.length > 0 && (
               <div className="pt-2">
                 <p className="mb-3 font-medium text-muted-foreground text-xs">
@@ -322,7 +322,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             </time>
                           )}
                           <Link
-                            className="min-w-0 truncate leading-relaxed hover:underline"
+                            className="min-w-0 truncate leading-relaxed"
                             href={`/blog/${p.slug}`}
                           >
                             {p.title}

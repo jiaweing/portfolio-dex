@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -40,34 +40,13 @@ import { cn } from "@/lib/utils";
 
 interface BlogPostListProps {
   allPosts: BlogPost[];
+  ssrGeneratedAt: number;
 }
 
 const PAGE_SIZE = 10;
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-async function fetchPostsPage({
-  search,
-  category,
-  tags,
-  offset,
-}: {
-  search: string;
-  category: string[];
-  tags: string[];
-  offset: number;
-}): Promise<{ posts: BlogPost[]; nextOffset: number | null; total: number }> {
-  const params = new URLSearchParams();
-  if (search) params.set("search", search);
-  if (category.length > 0) params.set("category", category.join(","));
-  if (tags.length > 0) params.set("tags", tags.join(","));
-  params.set("offset", String(offset));
-  params.set("limit", String(PAGE_SIZE));
-  const res = await fetch(`/api/blog/posts?${params}`);
-  if (!res.ok) throw new Error("Failed to fetch posts");
-  return res.json();
-}
-
-export function BlogPostList({ allPosts }: BlogPostListProps) {
+export function BlogPostList({ allPosts, ssrGeneratedAt }: BlogPostListProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -150,29 +129,49 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
       .filter(Boolean);
   }, [searchParams]);
 
+  const { data } = useQuery<{ posts: BlogPost[]; generatedAt: number }>({
+    queryKey: ["blog-posts-full"],
+    queryFn: async () => {
+      const res = await fetch("/api/content/blog");
+      if (!res.ok) throw new Error("Failed to fetch posts");
+      return res.json();
+    },
+    initialData: { posts: allPosts, generatedAt: ssrGeneratedAt },
+    initialDataUpdatedAt: ssrGeneratedAt,
+    staleTime: 1_800_000,
+  });
+
+  const posts = data.posts;
+
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    setDisplayCount(PAGE_SIZE);
+  }, [search, selectedTags.join(","), selectedPostTags.join(",")]);
+
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    for (const post of allPosts) {
+    for (const post of posts) {
       for (const tag of post.tags ?? []) {
         tags.add(tag);
       }
     }
     return [...tags].sort((a, b) => a.localeCompare(b));
-  }, [allPosts]);
+  }, [posts]);
 
   const allPostTags = useMemo(() => {
     const tags = new Set<string>();
-    for (const post of allPosts) {
+    for (const post of posts) {
       for (const tag of post.postTags ?? []) {
         tags.add(tag);
       }
     }
     return [...tags].sort((a, b) => a.localeCompare(b));
-  }, [allPosts]);
+  }, [posts]);
 
   const tagColors = useMemo(() => {
     const colorMap: Record<string, string> = {};
-    for (const post of allPosts) {
+    for (const post of posts) {
       for (const tag of post.tags ?? []) {
         const color = post.tagColors?.[tag];
         if (color && !colorMap[tag]) {
@@ -181,12 +180,11 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
       }
     }
     return colorMap;
-  }, [allPosts]);
+  }, [posts]);
 
-  // Category counts: filtered by active postTags only (cross-filter)
   const tagCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    for (const post of allPosts) {
+    for (const post of posts) {
       const matchesPostTags =
         selectedPostTags.length === 0 ||
         selectedPostTags.some((t) => post.postTags?.includes(t));
@@ -196,12 +194,11 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
       }
     }
     return counts;
-  }, [allPosts, selectedPostTags]);
+  }, [posts, selectedPostTags]);
 
-  // Tag counts: filtered by active category only (cross-filter)
   const postTagCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    for (const post of allPosts) {
+    for (const post of posts) {
       const matchesCat =
         selectedTags.length === 0 ||
         selectedTags.some((t) => post.tags?.includes(t));
@@ -211,7 +208,7 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
       }
     }
     return counts;
-  }, [allPosts, selectedTags]);
+  }, [posts, selectedTags]);
 
   const [tagsExpanded, setTagsExpanded] = useState(
     () => selectedPostTags.length > 0
@@ -222,43 +219,37 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
     selectedTags.length > 0 ||
     selectedPostTags.length > 0;
 
-  // Infinite query for list view
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery({
-      queryKey: [
-        "blog-posts",
-        search,
-        selectedTags.join(","),
-        selectedPostTags.join(","),
-      ],
-      queryFn: ({ pageParam }) =>
-        fetchPostsPage({
-          search,
-          category: selectedTags,
-          tags: selectedPostTags,
-          offset: pageParam as number,
-        }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage) => lastPage.nextOffset ?? undefined,
-      enabled: viewMode === "list",
+  const filteredPosts = useMemo(() => {
+    return posts.filter((post) => {
+      const matchesSearch =
+        search.length === 0 ||
+        post.title.toLowerCase().includes(search) ||
+        post.description.toLowerCase().includes(search) ||
+        post.tags?.some((t) => t.toLowerCase().includes(search));
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((t) => post.tags?.includes(t));
+      const matchesPostTags =
+        selectedPostTags.length === 0 ||
+        selectedPostTags.some((t) => post.postTags?.includes(t));
+      return matchesSearch && matchesTags && matchesPostTags;
     });
+  }, [posts, search, selectedTags, selectedPostTags]);
 
-  const listPosts = useMemo(
-    () => data?.pages.flatMap((p) => p.posts) ?? [],
-    [data]
-  );
+  const visiblePosts = filteredPosts.slice(0, displayCount);
+  const hasMore = displayCount < filteredPosts.length;
 
   const { pinnedPosts, groups } = useMemo(() => {
     const pinned: BlogPost[] = [];
     const grouped: { label: string; posts: BlogPost[] }[] = [];
 
     if (!hasActiveFilters) {
-      for (const post of allPosts) {
+      for (const post of posts) {
         if (post.pinned) pinned.push(post);
       }
     }
 
-    for (const post of listPosts) {
+    for (const post of visiblePosts) {
       const label = post.date
         ? formatDate(new Date(post.date), "MMM yyyy")
         : "Unknown";
@@ -271,17 +262,16 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
     }
 
     return { pinnedPosts: pinned, groups: grouped };
-  }, [listPosts, allPosts, hasActiveFilters]);
+  }, [visiblePosts, posts, hasActiveFilters]);
 
-  // IntersectionObserver to trigger next page
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
+        if (entries[0].isIntersecting && hasMore) {
+          setDisplayCount((c) => c + PAGE_SIZE);
         }
       },
       { threshold: 0.1 }
@@ -289,12 +279,11 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [hasMore]);
 
-  // Calendar data uses allPosts directly (needs full set for all-month dots)
   const postsByDay = useMemo(() => {
     const map = new Map<string, BlogPost[]>();
-    for (const post of allPosts) {
+    for (const post of posts) {
       if (!post.date) continue;
       const key = formatDate(new Date(post.date), "yyyy-MM-dd");
       const existing = map.get(key);
@@ -305,7 +294,7 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
       }
     }
     return map;
-  }, [allPosts]);
+  }, [posts]);
 
   const filteredPostsByDay = useMemo(() => {
     if (selectedTags.length === 0 && selectedPostTags.length === 0)
@@ -350,7 +339,7 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
   }, [calendarDate, filteredPostsByDay]);
 
   const { minMonth, maxMonth } = useMemo(() => {
-    const dates = allPosts
+    const dates = posts
       .filter((p) => p.date)
       .map((p) => startOfMonth(new Date(p.date!)));
     const min =
@@ -358,7 +347,7 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
         ? dates.reduce((a, b) => (a < b ? a : b))
         : startOfMonth(new Date());
     return { minMonth: min, maxMonth: startOfMonth(new Date()) };
-  }, [allPosts]);
+  }, [posts]);
 
   const toggleTag = (tag: string) => {
     const nextTags = selectedTags.includes(tag)
@@ -500,6 +489,26 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
                     )}
                   </Toggle>
                 ))}
+              {hasActiveFilters && (
+                <button
+                  aria-label="Clear all filters"
+                  className="flex h-7 items-center rounded px-2 text-muted-foreground/50 text-xs transition-colors hover:text-muted-foreground"
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete("search");
+                    params.delete("category");
+                    params.delete("tags");
+                    setInputValue("");
+                    const query = params.toString();
+                    router.replace(query ? `${pathname}?${query}` : pathname, {
+                      scroll: false,
+                    });
+                  }}
+                  type="button"
+                >
+                  ×
+                </button>
+              )}
               {allPostTags.length > 0 && (
                 <button
                   aria-label={tagsExpanded ? "Collapse tags" : "Expand tags"}
@@ -849,7 +858,7 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
 
       {viewMode === "list" && (
         <>
-          {!isLoading && groups.length === 0 && (
+          {groups.length === 0 && (
             <p className="text-muted-foreground text-sm">No posts found.</p>
           )}
 
@@ -991,16 +1000,15 @@ export function BlogPostList({ allPosts }: BlogPostListProps) {
 
           {/* Infinite scroll sentinel */}
           <div className="h-4" ref={sentinelRef} />
-          {hasNextPage && (
+          {hasMore && (
             <div className="flex justify-center">
               <button
-                className="flex items-center gap-1.5 text-muted-foreground text-xs transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-                disabled={isFetchingNextPage}
-                onClick={() => fetchNextPage()}
+                className="flex items-center gap-1.5 text-muted-foreground text-xs transition-colors hover:text-foreground"
+                onClick={() => setDisplayCount((c) => c + PAGE_SIZE)}
                 type="button"
               >
                 <ChevronDown className="h-3.5 w-3.5" />
-                {isFetchingNextPage ? "Loading…" : "Load more"}
+                Load more
               </button>
             </div>
           )}
