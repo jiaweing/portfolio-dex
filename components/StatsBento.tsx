@@ -211,7 +211,7 @@ const STATS: StatDef[] = [
     label: "YouTube subscribers",
     sublabel: "lifestyle channel",
     icon: YTIcon,
-    href: "https://www.youtube.com/@j14wei",
+    href: "https://www.youtube.com/@iam_jiawei",
   },
   {
     target: 52,

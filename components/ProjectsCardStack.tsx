@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { ProjectContent } from "@/components/ProjectContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { GithubDark } from "@/components/ui/svgs/githubDark";
 import type { Project } from "@/lib/notion";
 import "swiper/css";
 import "swiper/css/effect-cards";
@@ -120,7 +119,12 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                     </Avatar>
                   ) : activeProject.github ? (
                     <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
-                      <GithubDark className="h-5 w-5" />
+                      <Image
+                        alt="GitHub"
+                        height={20}
+                        src="/logos/github_white.svg"
+                        width={20}
+                      />
                     </div>
                   ) : activeProject.url && !faviconError ? (
                     <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
@@ -217,7 +221,12 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                     </Avatar>
                   ) : activeProject.github ? (
                     <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
-                      <GithubDark className="h-5 w-5" />
+                      <Image
+                        alt="GitHub"
+                        height={20}
+                        src="/logos/github_white.svg"
+                        width={20}
+                      />
                     </div>
                   ) : activeProject.url && !faviconError ? (
                     <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">

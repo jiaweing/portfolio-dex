@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { FadeIn } from "@/components/ui/fade-in";
-import { GithubDark } from "@/components/ui/svgs/githubDark";
 import type { Project } from "@/lib/notion";
 
 interface ProjectsGalleryProps {
@@ -175,7 +174,12 @@ function ProjectCard({
                   </div>
                 ) : project.github ? (
                   <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">
-                    <GithubDark className="h-6 w-6" />
+                    <Image
+                      alt="GitHub"
+                      height={24}
+                      src="/logos/github_white.svg"
+                      width={24}
+                    />
                   </div>
                 ) : project.url && !faviconError ? (
                   <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-black/20 backdrop-blur-sm">

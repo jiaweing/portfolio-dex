@@ -1,6 +1,6 @@
 "use client";
 
-import { PartyPopper, Snowflake, X } from "lucide-react";
+import { Mail, PartyPopper, Snowflake, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -54,20 +54,44 @@ export function SiteFooter() {
             <p className="text-muted-foreground text-xs">
               founder, designer & engineer in Singapore
             </p>
-            <Button
-              className="mt-3 normal-case"
-              nativeButton={false}
-              render={
-                <a
-                  href="https://www.notion.so/j14/4d94f7ab64b9464d93aa24902719d3d3?pvs=106"
-                  rel="noopener noreferrer"
-                  target="_blank"
+            <div className="mt-3 flex items-center gap-2">
+              <Button
+                className="normal-case"
+                nativeButton={false}
+                render={
+                  <a
+                    href="https://www.notion.so/jiaweing/4d94f7ab64b9464d93aa24902719d3d3?pvs=106"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  />
+                }
+                size="sm"
+              >
+                contact me
+              </Button>
+              <a
+                aria-label="Email"
+                className="text-muted-foreground opacity-60 transition-all hover:opacity-100"
+                href="mailto:hey@jiaweing.com"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
+              <a
+                aria-label="Telegram"
+                className="opacity-60 transition-all hover:opacity-100"
+                href="https://t.me/jiaweihq"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <Image
+                  alt="Telegram"
+                  className="h-4 w-4"
+                  height={16}
+                  src="/logos/telegram.svg"
+                  width={16}
                 />
-              }
-              size="sm"
-            >
-              contact me
-            </Button>
+              </a>
+            </div>
           </div>
           <TooltipProvider delay={0}>
             <div className="flex items-center gap-3">

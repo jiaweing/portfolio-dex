@@ -25,7 +25,7 @@ export default function JsonLd() {
         "https://www.threads.net/@jiaweihq",
         "https://www.tiktok.com/@jiaweihq",
         "https://www.youtube.com/@jiaweihq",
-        "https://www.youtube.com/@j14wei",
+        "https://www.youtube.com/@iam_jiawei",
       ],
       jobTitle: "Founder & CEO",
       worksFor: [

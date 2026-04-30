@@ -1,10 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
 import { sileo } from "sileo";
-import { GithubDark } from "@/components/ui/svgs/githubDark";
-import { GithubLight } from "@/components/ui/svgs/githubLight";
 
 const GITHUB_URL = "https://github.com/jiaweing/portfolio-dex";
 const STORAGE_KEY = "has-seen-open-source-toast";
@@ -30,9 +29,11 @@ export function OpenSourceToast() {
         window.open(GITHUB_URL, "_blank");
       };
 
-      // light theme: toast is dark (#171717), use white text/icons
-      // dark theme: toast is light (#f2f2f2), use dark text/icons
-      const GithubIcon = isDark ? GithubLight : GithubDark;
+      // light theme: toast is dark (#171717), use white icons
+      // dark theme: toast is light (#f2f2f2), use dark icons
+      const githubIconSrc = isDark
+        ? "/logos/github_light.svg"
+        : "/logos/github_white.svg";
       const githubBtnClass = isDark
         ? "flex cursor-pointer items-center gap-1.5 rounded-full border-0 bg-black/10 px-3 py-1.5 text-xs font-medium text-black transition-colors hover:bg-black/20"
         : "flex cursor-pointer items-center gap-1.5 rounded-full border-0 bg-white/15 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/25";
@@ -54,7 +55,12 @@ export function OpenSourceToast() {
                 onClick={openGitHub}
                 type="button"
               >
-                <GithubIcon className="h-3.5 w-3.5" />
+                <Image
+                  alt="GitHub"
+                  height={14}
+                  src={githubIconSrc}
+                  width={14}
+                />
                 GitHub
               </button>
               <button
@@ -68,11 +74,7 @@ export function OpenSourceToast() {
           </span>
         ),
         duration: null,
-        icon: isDark ? (
-          <GithubLight className="h-5 w-5" />
-        ) : (
-          <GithubDark className="h-5 w-5" />
-        ),
+        icon: <Image alt="GitHub" height={20} src={githubIconSrc} width={20} />,
       });
     }, 1000);
 
