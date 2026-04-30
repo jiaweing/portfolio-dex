@@ -24,9 +24,8 @@ export function OpenSourceToast() {
         localStorage.setItem(STORAGE_KEY, "true");
       };
 
-      const openGitHub = () => {
+      const onGitHubClick = () => {
         localStorage.setItem(STORAGE_KEY, "true");
-        window.open(GITHUB_URL, "_blank");
       };
 
       // light theme: toast is dark (#171717), use white icons
@@ -50,10 +49,12 @@ export function OpenSourceToast() {
               star if you find it useful ⭐
             </span>
             <span className="flex items-center justify-center gap-2">
-              <button
+              <a
                 className={githubBtnClass}
-                onClick={openGitHub}
-                type="button"
+                href={GITHUB_URL}
+                onClick={onGitHubClick}
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 <Image
                   alt="GitHub"
@@ -62,7 +63,7 @@ export function OpenSourceToast() {
                   width={14}
                 />
                 GitHub
-              </button>
+              </a>
               <button
                 className={dismissBtnClass}
                 onClick={dismiss}
