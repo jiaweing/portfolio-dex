@@ -19,12 +19,14 @@ export function OpenSourceToast() {
     const timer = setTimeout(() => {
       let id: string;
 
-      const dismiss = () => {
+      const dismiss = (e: React.MouseEvent) => {
+        e.stopPropagation();
         sileo.dismiss(id);
         localStorage.setItem(STORAGE_KEY, "true");
       };
 
-      const onGitHubClick = () => {
+      const onGitHubClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         localStorage.setItem(STORAGE_KEY, "true");
       };
 
@@ -64,13 +66,15 @@ export function OpenSourceToast() {
                 />
                 GitHub
               </a>
-              <button
+              <span
                 className={dismissBtnClass}
                 onClick={dismiss}
-                type="button"
+                onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && dismiss(e as unknown as React.MouseEvent)}
+                role="button"
+                tabIndex={0}
               >
                 Dismiss
-              </button>
+              </span>
             </span>
           </span>
         ),
