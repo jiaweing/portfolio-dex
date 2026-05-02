@@ -19,12 +19,14 @@ export function OpenSourceToast() {
     const timer = setTimeout(() => {
       let id: string;
 
-      const dismiss = () => {
+      const dismiss = (e: React.MouseEvent) => {
+        e.stopPropagation();
         sileo.dismiss(id);
         localStorage.setItem(STORAGE_KEY, "true");
       };
 
-      const onGitHubClick = () => {
+      const onGitHubClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         localStorage.setItem(STORAGE_KEY, "true");
       };
 
