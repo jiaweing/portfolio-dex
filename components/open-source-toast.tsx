@@ -64,13 +64,15 @@ export function OpenSourceToast() {
                 />
                 GitHub
               </a>
-              <button
+              <span
                 className={dismissBtnClass}
                 onClick={dismiss}
-                type="button"
+                onKeyDown={(e) => e.key === "Enter" && dismiss()}
+                role="button"
+                tabIndex={0}
               >
                 Dismiss
-              </button>
+              </span>
             </span>
           </span>
         ),

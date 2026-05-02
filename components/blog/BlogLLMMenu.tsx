@@ -20,17 +20,18 @@ interface BlogLLMMenuProps {
 interface LLMLogoProps {
   alt: string;
   src: string;
+  colored?: boolean;
 }
 
 const createPrompt = ({ title, url }: { title: string; url: string }) =>
   `I'm reading this blog post by Jia Wei Ng.\n\nTitle: ${title}\nURL: ${url}\n\nUnderstand the topic and be ready to answer questions I ask about it.\n\nWhen you reply, keep it concise and practical:\n1) Give me a 5-bullet summary\n2) Explain key ideas in plain language\n3) Flag assumptions or trade-offs\n4) Suggest 3 follow-up questions I should ask next`;
 
-function LLMLogo({ alt, src }: LLMLogoProps) {
+function LLMLogo({ alt, src, colored }: LLMLogoProps) {
   return (
     <span className="mr-2 flex h-4 w-5 shrink-0 items-center justify-center">
       <Image
         alt={alt}
-        className="h-4 w-auto object-contain dark:invert"
+        className={`h-4 w-auto object-contain${colored ? "" : "dark:invert"}`}
         height={16}
         src={src}
         width={24}
@@ -102,13 +103,13 @@ export function BlogLLMMenu({
           Open in ChatGPT
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://claude.ai/new?q=")}>
-          <LLMLogo alt="Claude" src="/logos/claude.svg" />
+          <LLMLogo alt="Claude" colored src="/logos/claude.svg" />
           Open in Claude
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => openLLM("https://gemini.google.com/app?prompt=")}
         >
-          <LLMLogo alt="Gemini" src="/logos/gemini.svg" />
+          <LLMLogo alt="Gemini" colored src="/logos/gemini.svg" />
           Open in Gemini
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => openLLM("https://t3.chat/?q=")}>

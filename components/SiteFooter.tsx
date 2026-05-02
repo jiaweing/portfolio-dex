@@ -85,7 +85,7 @@ export function SiteFooter() {
               >
                 <Image
                   alt="Telegram"
-                  className="h-4 w-4"
+                  className="h-4 w-4 grayscale transition-all hover:grayscale-0"
                   height={16}
                   src="/logos/telegram.svg"
                   width={16}
