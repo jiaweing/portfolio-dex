@@ -32,8 +32,14 @@ interface LiveStatus {
 const MIN_W = 240;
 const ASPECT = 9 / 16;
 const DEFAULT_W = 480;
+const PANEL_MARGIN = 16; // px gap from screen edges on mobile
 const AVATAR_H = 40; // size-10
 const GAP = 8;
+
+function clampWidth(w: number) {
+  if (typeof window === "undefined") return w;
+  return Math.min(w, window.innerWidth - PANEL_MARGIN);
+}
 
 const SIMULATE_VIDEO_ID = "jfKfPfyJRdk";
 
@@ -140,7 +146,7 @@ export function YouTubeLiveFloat() {
   });
   const [replayOpen, setReplayOpen] = useState(false);
   const [liveOpen, setLiveOpen] = useState(simulateLive);
-  const [panelWidth, setPanelWidth] = useState(DEFAULT_W);
+  const [panelWidth, setPanelWidth] = useState(() => clampWidth(DEFAULT_W));
   const [direction, setDirection] = useState<"up" | "down">(() =>
     typeof window !== "undefined" && window.innerWidth >= 1024 ? "down" : "up"
   );
@@ -175,8 +181,10 @@ export function YouTubeLiveFloat() {
   }, [effectiveStatus.startedAt]);
 
   useEffect(() => {
-    const update = () =>
+    const update = () => {
       setDirection(window.innerWidth >= 1024 ? "down" : "up");
+      setPanelWidth((w) => clampWidth(w));
+    };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -224,7 +232,15 @@ export function YouTubeLiveFloat() {
       const startX = e.clientX;
       const startW = panelWidth;
       const onMove = (ev: PointerEvent) =>
-        setPanelWidth(Math.max(MIN_W, startW + (ev.clientX - startX)));
+        setPanelWidth(
+          Math.max(
+            MIN_W,
+            Math.min(
+              startW + (ev.clientX - startX),
+              window.innerWidth - PANEL_MARGIN
+            )
+          )
+        );
       const onUp = () => {
         window.removeEventListener("pointermove", onMove);
         window.removeEventListener("pointerup", onUp);

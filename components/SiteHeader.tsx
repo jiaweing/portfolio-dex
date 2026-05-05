@@ -6,6 +6,7 @@ import {
   Bookmark02Icon as Computer,
   FolderLibraryIcon,
   Globe02Icon,
+  Home01Icon as HomeIcon,
   UserSquareIcon,
 } from "hugeicons-react";
 import Link from "next/link";
@@ -26,6 +27,7 @@ export function SiteHeader() {
     path === "/" ? pathname === "/" : pathname.startsWith(path);
 
   const items = [
+    { href: "/", icon: HomeIcon, label: "Home" },
     { href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
     { href: "/about", icon: UserSquareIcon, label: "About" },
     { href: "/blog", icon: BookOpen, label: "Writing" },
