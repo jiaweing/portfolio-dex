@@ -11,7 +11,6 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
-import { SantaAvatar } from "@/components/SantaAvatar";
 import { ProgressiveBlur } from "@/components/ui/skiper-ui/progressive-blur";
 import { WrappedBanner } from "@/components/wrapped/wrapped-banner";
 import { WrappedGiftIcon } from "@/components/wrapped/wrapped-gift-icon";
@@ -38,13 +37,6 @@ export function SiteHeader() {
 
   return (
     <>
-      <Link
-        className="group fixed top-6 left-9 z-[200] hidden lg:block"
-        href="/"
-      >
-        <SantaAvatar className="size-10" />
-      </Link>
-
       <div className="fixed top-6 left-1/2 z-[100] w-[calc(100%-2rem)] -translate-x-1/2 md:w-auto">
         <WrappedBanner onHoverChange={setIsBannerHovered} />
       </div>

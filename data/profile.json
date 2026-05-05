@@ -217,6 +217,11 @@
       "icon": "/logos/tiktok.svg"
     },
     {
+      "name": "Twitch",
+      "url": "https://www.twitch.tv/jiaweihq",
+      "icon": "/logos/twitch.svg"
+    },
+    {
       "name": "YouTube (Tech)",
       "url": "https://amajor.link/jy",
       "icon": "/logos/youtube.svg"

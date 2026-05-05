@@ -25,13 +25,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { Suspense } from "react";
 import { AgentationProvider } from "@/components/agentation-provider";
 import { BackToTop } from "@/components/BackToTop";
 import { OpenSourceToast } from "@/components/open-source-toast";
 import { QueryProvider } from "@/components/QueryProvider";
 import { SileoToaster } from "@/components/SileoToaster";
-import { SmoothScroll } from "@/components/SmoothScroll";
 import { WebMCPProvider } from "@/components/WebMCPProvider";
+import { YouTubeLiveFloat } from "@/components/YouTubeLiveFloat";
 import { siteConfig } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -158,7 +159,7 @@ export default function RootLayout({
         <link href="/manifest.webmanifest" rel="manifest" />
         <link href="/.well-known/llms.txt" rel="llms" />
       </head>
-      <body className="overflow-x-hidden pb-20 antialiased lg:pb-0">
+      <body className="overflow-x-clip pb-20 antialiased lg:pb-0">
         <QueryProvider>
           <ThemeProvider
             attribute="class"
@@ -201,7 +202,9 @@ export default function RootLayout({
             <SileoToaster />
             <OpenSourceToast />
             <BackToTop />
-            <SmoothScroll />
+            <Suspense>
+              <YouTubeLiveFloat />
+            </Suspense>
             <WebMCPProvider />
             <GoogleAnalytics gaId="G-MJ0F694R8J" />
           </ThemeProvider>

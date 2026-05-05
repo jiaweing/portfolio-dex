@@ -3,7 +3,7 @@
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -17,6 +17,7 @@ import { SlidingNumber } from "./motion-primitives/sliding-number";
 import { TextShimmer } from "./motion-primitives/text-shimmer";
 import { SantaAvatar } from "./SantaAvatar";
 import { Favicon } from "./ui/Favicon";
+import { YouTubeLiveBanner } from "./YouTubeLiveBanner";
 
 function getAge(birthDateString: string) {
   const today = new Date();
@@ -437,7 +438,7 @@ export function ProfileBio() {
         monthly active users.
       </motion.p>
 
-      <motion.p variants={itemVariants}>
+      {/* <motion.p variants={itemVariants}>
         I love{" "}
         <Link
           className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
@@ -473,7 +474,38 @@ export function ProfileBio() {
           src="/images/icons/Milky Way.png"
           width={30}
         />
-      </motion.p>
+      </motion.p> */}
+
+      <motion.div variants={itemVariants}>
+        <p>
+          I livestream{" "}
+          <Link
+            className="border-muted-foreground/40 border-b border-dashed text-black text-foreground transition-colors duration-300 hover:border-foreground dark:text-white"
+            href="https://amajor.link/live"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            every weekday 2–5PM Singapore time
+          </Link>
+          <StackedFavicons
+            items={[
+              {
+                url: "https://www.twitch.tv/jiaweihq",
+                src: "/logos/twitch.svg",
+                name: "Twitch",
+              },
+              {
+                url: "https://amajor.link/jy",
+                src: "/logos/youtube.svg",
+                name: "YouTube (Tech)",
+              },
+            ]}
+          />
+        </p>
+        <Suspense>
+          <YouTubeLiveBanner />
+        </Suspense>
+      </motion.div>
 
       <motion.div className="space-y-1.5" variants={itemVariants}>
         <p>

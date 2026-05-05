@@ -184,7 +184,7 @@ export function SiteFooter() {
 
       <div className="w-full overflow-hidden px-3 pb-4">
         <p
-          className="bg-gradient-to-r from-foreground/[0.12] via-foreground/[0.06] to-foreground/[0.02] bg-clip-text text-center font-bold text-transparent leading-none tracking-tight dark:from-foreground/[0.10] dark:via-foreground/[0.05] dark:to-transparent"
+          className="select-none bg-gradient-to-r from-foreground/[0.12] via-foreground/[0.06] to-foreground/[0.02] bg-clip-text text-center font-bold text-transparent leading-none tracking-tight dark:from-foreground/[0.10] dark:via-foreground/[0.05] dark:to-transparent"
           style={{ fontSize: "11vw" }}
         >
           jiawei

@@ -19,28 +19,20 @@ export function OpenSourceToast() {
     const timer = setTimeout(() => {
       let id: string;
 
-      const dismiss = (e: React.MouseEvent) => {
-        e.stopPropagation();
+      const dismiss = (e?: React.MouseEvent | React.KeyboardEvent) => {
+        e?.stopPropagation();
         sileo.dismiss(id);
         localStorage.setItem(STORAGE_KEY, "true");
       };
 
-      const onGitHubClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        localStorage.setItem(STORAGE_KEY, "true");
-      };
-
-      // light theme: toast is dark (#171717), use white icons
-      // dark theme: toast is light (#f2f2f2), use dark icons
       const githubIconSrc = isDark
         ? "/logos/github_light.svg"
         : "/logos/github_white.svg";
       const githubBtnClass = isDark
         ? "flex cursor-pointer items-center gap-1.5 rounded-full border-0 bg-black/10 px-3 py-1.5 text-xs font-medium text-black transition-colors hover:bg-black/20"
         : "flex cursor-pointer items-center gap-1.5 rounded-full border-0 bg-white/15 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/25";
-      const dismissBtnClass = isDark
-        ? "flex cursor-pointer items-center justify-center rounded-full border border-black/15 bg-transparent px-3 py-1.5 text-xs font-medium text-black/75 transition-colors hover:bg-black/10"
-        : "flex cursor-pointer items-center justify-center rounded-full border border-white/15 bg-transparent px-3 py-1.5 text-xs font-medium text-white/75 transition-colors hover:bg-white/10";
+      const dismissBtnClass =
+        "flex cursor-pointer items-center justify-center rounded-full bg-transparent px-3 py-1.5 text-xs font-medium text-muted-foreground transition-opacity hover:opacity-70";
 
       id = sileo.show({
         title: "This site is open source",
@@ -54,7 +46,11 @@ export function OpenSourceToast() {
               <a
                 className={githubBtnClass}
                 href={GITHUB_URL}
-                onClick={onGitHubClick}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  localStorage.setItem(STORAGE_KEY, "true");
+                }}
+                onPointerDown={(e) => e.stopPropagation()}
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -69,7 +65,8 @@ export function OpenSourceToast() {
               <span
                 className={dismissBtnClass}
                 onClick={dismiss}
-                onKeyDown={(e) => e.key === "Enter" && dismiss()}
+                onKeyDown={(e) => e.key === "Enter" && dismiss(e)}
+                onPointerDown={(e) => e.stopPropagation()}
                 role="button"
                 tabIndex={0}
               >
