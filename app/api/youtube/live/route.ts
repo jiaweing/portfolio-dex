@@ -59,37 +59,34 @@ async function checkLive(): Promise<{
   };
 
   try {
-    // YouTube no longer redirects — fetch the /live page HTML directly
-    const res = await fetch(`https://www.youtube.com/@${HANDLE}/live`, {
-      headers: { "User-Agent": UA },
-      next: { revalidate: 60 },
-    });
+    // Use RSS feed with CHANNEL_ID — more reliable than scraping /live page
+    // which returns recommended streams from other channels on datacenter IPs
+    const res = await fetch(
+      `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`,
+      { next: { revalidate: 60 } }
+    );
     if (!res.ok) return notLive;
 
-    const html = await res.text();
+    const xml = await res.text();
+    const entries = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)];
 
-    // Must confirm actually live
-    if (!/"isLive"\s*:\s*true/.test(html)) return notLive;
+    for (const entry of entries) {
+      const block = entry[1];
+      const videoIdMatch = block.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+      const broadcastMatch = block.match(
+        /<yt:liveBroadcastContent>([^<]+)<\/yt:liveBroadcastContent>/
+      );
+      if (!videoIdMatch) continue;
+      if (broadcastMatch?.[1]?.trim() !== "live") continue;
 
-    // Extract video ID — canonical/og:url points to the actual stream, not recommendations
-    const videoIdMatch =
-      html.match(
-        /<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})"/
-      ) ??
-      html.match(
-        /<meta property="og:url" content="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})"/
-      ) ??
-      html.match(/watch\?v=([a-zA-Z0-9_-]{11})/) ??
-      html.match(/"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"/);
-    const videoId = videoIdMatch?.[1] ?? null;
-    if (!videoId) return notLive;
+      const videoId = videoIdMatch[1];
+      const publishedMatch = block.match(/<published>([^<]+)<\/published>/);
+      const startedAt = publishedMatch?.[1] ?? null;
+      const meta = await getOEmbed(videoId);
+      return { isLive: true, videoId, startedAt, ...meta };
+    }
 
-    // Extract stream start time
-    const startedAtMatch = html.match(/"startTimestamp"\s*:\s*"([^"]+)"/);
-    const startedAt = startedAtMatch?.[1] ?? null;
-
-    const meta = await getOEmbed(videoId);
-    return { isLive: true, videoId, startedAt, ...meta };
+    return notLive;
   } catch {
     return notLive;
   }
