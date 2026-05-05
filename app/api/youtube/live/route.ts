@@ -43,6 +43,88 @@ async function getOEmbed(
   }
 }
 
+// Extract ytInitialPlayerResponse JSON from a YouTube page HTML
+function extractPlayerResponse(html: string): Record<string, unknown> | null {
+  const marker = "ytInitialPlayerResponse = ";
+  const start = html.indexOf(marker);
+  if (start === -1) return null;
+
+  let depth = 0;
+  let jsonStart = -1;
+  let jsonEnd = -1;
+  for (let i = start + marker.length; i < html.length; i++) {
+    const ch = html[i];
+    if (ch === "{") {
+      if (depth === 0) jsonStart = i;
+      depth++;
+    } else if (ch === "}") {
+      depth--;
+      if (depth === 0) {
+        jsonEnd = i;
+        break;
+      }
+    }
+  }
+
+  if (jsonStart === -1 || jsonEnd === -1) return null;
+
+  try {
+    return JSON.parse(html.slice(jsonStart, jsonEnd + 1)) as Record<
+      string,
+      unknown
+    >;
+  } catch {
+    return null;
+  }
+}
+
+// Check if a specific video is currently live and belongs to our channel
+async function checkVideoPageIsLive(videoId: string): Promise<{
+  isLive: boolean;
+  title: string | null;
+  channelName: string | null;
+  startedAt: string | null;
+}> {
+  const notLive = {
+    isLive: false,
+    title: null,
+    channelName: null,
+    startedAt: null,
+  };
+  try {
+    const res = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+      headers: { "User-Agent": UA },
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return notLive;
+
+    const html = await res.text();
+    const playerData = extractPlayerResponse(html);
+    if (!playerData) return notLive;
+
+    const videoDetails = playerData.videoDetails as
+      | Record<string, unknown>
+      | undefined;
+    if (!videoDetails) return notLive;
+    // Only accept videos from our channel
+    if (videoDetails.channelId !== CHANNEL_ID) return notLive;
+    if (!videoDetails.isLive) return notLive;
+
+    const mf = (playerData.microformat as Record<string, unknown> | undefined)
+      ?.playerMicroformatRenderer as Record<string, unknown> | undefined;
+    const lbd = mf?.liveBroadcastDetails as Record<string, unknown> | undefined;
+
+    return {
+      isLive: true,
+      title: (videoDetails.title as string) ?? null,
+      channelName: (videoDetails.author as string) ?? null,
+      startedAt: (lbd?.startTimestamp as string) ?? null,
+    };
+  } catch {
+    return notLive;
+  }
+}
+
 async function checkLive(): Promise<{
   isLive: boolean;
   videoId: string | null;
@@ -59,8 +141,6 @@ async function checkLive(): Promise<{
   };
 
   try {
-    // Use RSS feed with CHANNEL_ID — more reliable than scraping /live page
-    // which returns recommended streams from other channels on datacenter IPs
     const res = await fetch(
       `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`,
       { next: { revalidate: 60 } }
@@ -70,6 +150,7 @@ async function checkLive(): Promise<{
     const xml = await res.text();
     const entries = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)];
 
+    // Pass 1: RSS explicit liveBroadcastContent=live entries
     for (const entry of entries) {
       const block = entry[1];
       const videoIdMatch = block.match(/<yt:videoId>([^<]+)<\/yt:videoId>/);
@@ -84,6 +165,72 @@ async function checkLive(): Promise<{
       const startedAt = publishedMatch?.[1] ?? null;
       const meta = await getOEmbed(videoId);
       return { isLive: true, videoId, startedAt, ...meta };
+    }
+
+    // Pass 2: verify top 3 recent RSS entries directly via their video pages.
+    // Handles active streams that RSS hasn't tagged with liveBroadcastContent yet.
+    const topIds = entries
+      .slice(0, 3)
+      .map((e) => e[1].match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1])
+      .filter((id): id is string => !!id);
+
+    const checks = await Promise.all(
+      topIds.map(async (videoId) => ({
+        videoId,
+        ...(await checkVideoPageIsLive(videoId)),
+      }))
+    );
+
+    for (const check of checks) {
+      if (check.isLive) {
+        return {
+          isLive: true,
+          videoId: check.videoId,
+          title: check.title,
+          channelName: check.channelName,
+          startedAt: check.startedAt,
+        };
+      }
+    }
+
+    // Pass 3: scrape the channel /live page as final fallback for streams not yet in RSS.
+    // Use channel ID URL to avoid handle resolution issues.
+    // ytInitialPlayerResponse lets us verify channelId to reject datacenter recommendations.
+    const livePage = await fetch(
+      `https://www.youtube.com/channel/${CHANNEL_ID}/live`,
+      {
+        headers: { "User-Agent": UA },
+        next: { revalidate: 60 },
+      }
+    );
+    if (livePage.ok) {
+      const liveHtml = await livePage.text();
+      const playerData = extractPlayerResponse(liveHtml);
+      const videoDetails = playerData?.videoDetails as
+        | Record<string, unknown>
+        | undefined;
+
+      if (
+        videoDetails &&
+        videoDetails.channelId === CHANNEL_ID &&
+        videoDetails.isLive
+      ) {
+        const videoId = videoDetails.videoId as string;
+        const mf = (
+          playerData!.microformat as Record<string, unknown> | undefined
+        )?.playerMicroformatRenderer as Record<string, unknown> | undefined;
+        const lbd = mf?.liveBroadcastDetails as
+          | Record<string, unknown>
+          | undefined;
+
+        return {
+          isLive: true,
+          videoId,
+          title: (videoDetails.title as string) ?? null,
+          channelName: (videoDetails.author as string) ?? null,
+          startedAt: (lbd?.startTimestamp as string) ?? null,
+        };
+      }
     }
 
     return notLive;
@@ -138,7 +285,6 @@ async function getLatestReplayFromStreamsPage(): Promise<VideoMeta | null> {
     if (!res.ok) return null;
 
     const html = await res.text();
-    // Extract unique video IDs from the page (11-char YouTube IDs)
     const matches = [...html.matchAll(/"videoId":"([a-zA-Z0-9_-]{11})"/g)];
     const seen = new Set<string>();
     for (const m of matches) {
