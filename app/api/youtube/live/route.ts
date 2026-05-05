@@ -71,8 +71,14 @@ async function checkLive(): Promise<{
     // Must confirm actually live
     if (!/"isLive"\s*:\s*true/.test(html)) return notLive;
 
-    // Extract video ID
+    // Extract video ID — canonical/og:url points to the actual stream, not recommendations
     const videoIdMatch =
+      html.match(
+        /<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})"/
+      ) ??
+      html.match(
+        /<meta property="og:url" content="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})"/
+      ) ??
       html.match(/watch\?v=([a-zA-Z0-9_-]{11})/) ??
       html.match(/"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"/);
     const videoId = videoIdMatch?.[1] ?? null;
