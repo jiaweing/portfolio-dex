@@ -22,7 +22,7 @@ const CACHE_HEADERS = {
 };
 
 const HANDLE = process.env.YOUTUBE_HANDLE ?? "jiaweihq";
-const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID ?? "UCfTsoYa7MDAXv5CG2ceUT8g";
+const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID ?? "UCOReq1qWCsrNRvlq8S1n57Q";
 
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
