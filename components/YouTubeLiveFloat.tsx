@@ -266,7 +266,7 @@ export function YouTubeLiveFloat() {
             />
           )}
         </FloatPanel>
-        <TooltipProvider delayDuration={300}>
+        <TooltipProvider delay={300}>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -299,7 +299,7 @@ export function YouTubeLiveFloat() {
   if (!effectiveStatus.isLive) {
     return (
       <div className={wrapperCls}>
-        <TooltipProvider delayDuration={300}>
+        <TooltipProvider delay={300}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link aria-label="Home" href="/">
@@ -333,7 +333,7 @@ export function YouTubeLiveFloat() {
           />
         )}
       </FloatPanel>
-      <TooltipProvider delayDuration={300}>
+      <TooltipProvider delay={300}>
         <Tooltip>
           <TooltipTrigger asChild>
             <button

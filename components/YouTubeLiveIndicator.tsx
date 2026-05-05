@@ -56,6 +56,7 @@ function EmbedPopoverContent({
   videoId: string;
   title: string | null;
   autoplay: boolean;
+  showSchedule?: boolean;
 }) {
   return (
     <>
@@ -118,7 +119,7 @@ export function YouTubeLiveIndicator() {
   // Offline with replay
   if (!status.isLive && status.latestReplay) {
     return (
-      <TooltipProvider delayDuration={200}>
+      <TooltipProvider delay={200}>
         <Tooltip>
           <Popover onOpenChange={setReplayOpen} open={replayOpen}>
             <TooltipTrigger asChild>
@@ -165,7 +166,7 @@ export function YouTubeLiveIndicator() {
   // Offline without replay
   if (!status.isLive) {
     return (
-      <TooltipProvider delayDuration={200}>
+      <TooltipProvider delay={200}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
@@ -188,7 +189,7 @@ export function YouTubeLiveIndicator() {
 
   // Live
   return (
-    <TooltipProvider delayDuration={200}>
+    <TooltipProvider delay={200}>
       <Tooltip>
         <Popover onOpenChange={setLiveOpen} open={liveOpen}>
           <TooltipTrigger asChild>
