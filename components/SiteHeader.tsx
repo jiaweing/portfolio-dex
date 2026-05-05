@@ -27,8 +27,8 @@ export function SiteHeader() {
     path === "/" ? pathname === "/" : pathname.startsWith(path);
 
   const items = [
-    { href: "/", icon: HomeIcon, label: "Home" },
     { href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
+    { href: "/", icon: HomeIcon, label: "Home" },
     { href: "/about", icon: UserSquareIcon, label: "About" },
     { href: "/blog", icon: BookOpen, label: "Writing" },
     { href: "/projects", icon: Globe02Icon, label: "Projects" },
