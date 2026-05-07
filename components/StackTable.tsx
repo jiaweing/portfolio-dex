@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -267,27 +268,30 @@ export function StackTable({ items }: StackTableProps) {
                           <ChevronDownIcon className="size-3.5" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
-                          <DropdownMenuLabel>
-                            Filter by Category
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {allCategories.map((category) => (
-                            <DropdownMenuCheckboxItem
-                              checked={selectedCategories.includes(category)}
-                              key={category}
-                              onCheckedChange={() => toggleCategory(category)}
-                              onSelect={(e) => e.preventDefault()}
-                            >
-                              <span
-                                className={cn(
-                                  "mr-2 h-2 w-2 rounded-full",
-                                  NOTION_COLOR_MAP[categoryColors[category]] ??
-                                    NOTION_COLOR_MAP.default
-                                )}
-                              />
-                              {category}
-                            </DropdownMenuCheckboxItem>
-                          ))}
+                          <DropdownMenuGroup>
+                            <DropdownMenuLabel>
+                              Filter by Category
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {allCategories.map((category) => (
+                              <DropdownMenuCheckboxItem
+                                checked={selectedCategories.includes(category)}
+                                key={category}
+                                onCheckedChange={() => toggleCategory(category)}
+                                onSelect={(e) => e.preventDefault()}
+                              >
+                                <span
+                                  className={cn(
+                                    "mr-2 h-2 w-2 rounded-full",
+                                    NOTION_COLOR_MAP[
+                                      categoryColors[category]
+                                    ] ?? NOTION_COLOR_MAP.default
+                                  )}
+                                />
+                                {category}
+                              </DropdownMenuCheckboxItem>
+                            ))}
+                          </DropdownMenuGroup>
                           {selectedCategories.length > 0 && (
                             <>
                               <DropdownMenuSeparator />
@@ -319,27 +323,30 @@ export function StackTable({ items }: StackTableProps) {
                           <ChevronDownIcon className="size-3.5" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
-                          <DropdownMenuLabel>
-                            Filter by Platform
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {allPlatforms.map((platform) => (
-                            <DropdownMenuCheckboxItem
-                              checked={selectedPlatforms.includes(platform)}
-                              key={platform}
-                              onCheckedChange={() => togglePlatform(platform)}
-                              onSelect={(e) => e.preventDefault()}
-                            >
-                              <span
-                                className={cn(
-                                  "mr-2 h-2 w-2 rounded-full",
-                                  NOTION_COLOR_MAP[platformColors[platform]] ??
-                                    NOTION_COLOR_MAP.default
-                                )}
-                              />
-                              {platform}
-                            </DropdownMenuCheckboxItem>
-                          ))}
+                          <DropdownMenuGroup>
+                            <DropdownMenuLabel>
+                              Filter by Platform
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {allPlatforms.map((platform) => (
+                              <DropdownMenuCheckboxItem
+                                checked={selectedPlatforms.includes(platform)}
+                                key={platform}
+                                onCheckedChange={() => togglePlatform(platform)}
+                                onSelect={(e) => e.preventDefault()}
+                              >
+                                <span
+                                  className={cn(
+                                    "mr-2 h-2 w-2 rounded-full",
+                                    NOTION_COLOR_MAP[
+                                      platformColors[platform]
+                                    ] ?? NOTION_COLOR_MAP.default
+                                  )}
+                                />
+                                {platform}
+                              </DropdownMenuCheckboxItem>
+                            ))}
+                          </DropdownMenuGroup>
                           {selectedPlatforms.length > 0 && (
                             <>
                               <DropdownMenuSeparator />
@@ -428,7 +435,7 @@ export function StackTable({ items }: StackTableProps) {
           )}
         >
           <Input
-            className="h-14 rounded-3xl border-0 bg-background/70 pl-6 shadow-none backdrop-blur-xl"
+            className="h-14 rounded-3xl border-0 bg-muted pl-6 shadow-none backdrop-blur-xl"
             onBlur={() => setIsSearchFocused(false)}
             onChange={(event) => setInputValue(event.target.value)}
             onFocus={() => setIsSearchFocused(true)}
