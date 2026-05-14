@@ -5,6 +5,7 @@ import { AppDeck } from "@/components/AppDeck";
 import { PostTags } from "@/components/blog/PostTags";
 import { ContributionsBanner } from "@/components/ContributionsBanner";
 import { ExperienceSection } from "@/components/ExperienceSection";
+import { BuiltInPublicBanner } from "@/components/growth/BuiltInPublicBanner";
 import { ProfileBio } from "@/components/ProfileBio";
 import { StatsBento } from "@/components/StatsBento";
 import { FadeIn } from "@/components/ui/fade-in";
@@ -62,6 +63,7 @@ export default async function Home() {
       <div className="relative">
         <ContributionsBanner contributions={contributions} />
         <div className="relative z-10">
+          <BuiltInPublicBanner />
           <ProfileBio />
           <FadeIn delay={0.2}>
             <div className="mt-16">

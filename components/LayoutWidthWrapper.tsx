@@ -13,7 +13,8 @@ export function LayoutWidthWrapper({
   const pathname = usePathname();
   const isWidePage =
     pathname?.startsWith("/projects") || pathname === "/wrapped";
-  const isFullWidthPage = pathname?.startsWith("/setup");
+  const isFullWidthPage =
+    pathname?.startsWith("/setup") || pathname === "/analytics";
 
   return (
     <div

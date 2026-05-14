@@ -1,6 +1,6 @@
 "use client";
 
-import { BookMarked, BookOpen, FolderGit2, Home, User } from "lucide-react";
+import { BookOpen, FolderGit2, Home, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,8 +10,8 @@ const LEFT_ITEMS = [
 ];
 
 const RIGHT_ITEMS = [
+  { name: "Analytics", href: "/analytics", icon: TrendingUp },
   { name: "About", href: "/about", icon: User },
-  { name: "Books", href: "/books", icon: BookMarked },
 ];
 
 export function MobileBottomNav() {
