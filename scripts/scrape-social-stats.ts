@@ -264,7 +264,8 @@ async function main() {
     x: ${x ?? prev?.x ?? 0},
   },`;
 
-  const updated = source.replace(/^];\s*$/m, `${newEntry}\n];`);
+  const lastBracket = source.lastIndexOf("];");
+  const updated = source.slice(0, lastBracket) + `${newEntry}\n];\n`;
 
   writeFileSync(dataPath, updated, "utf8");
   console.log(`Added Day ${nextDay} stats.`);
