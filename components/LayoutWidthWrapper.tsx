@@ -19,8 +19,12 @@ export function LayoutWidthWrapper({
   return (
     <div
       className={cn(
-        "relative mx-auto px-6 py-6 pb-20",
-        isFullWidthPage ? "max-w-none" : isWidePage ? "max-w-7xl" : "max-w-2xl",
+        "relative mx-auto py-6 pb-20",
+        isFullWidthPage
+          ? "max-w-none"
+          : isWidePage
+            ? "max-w-7xl px-6"
+            : "max-w-2xl px-6",
         className
       )}
     >

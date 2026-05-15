@@ -33,11 +33,11 @@ export default async function AnalyticsPage() {
   return (
     <FadeIn>
       <div className="space-y-10 pb-10">
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-2xl px-6">
           <GrowthDashboard projects={currentProjects} />
         </div>
 
-        <div className="-mr-6 -ml-6">
+        <div>
           <GrowthChart data={socialGrowthData} />
         </div>
       </div>

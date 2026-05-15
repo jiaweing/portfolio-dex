@@ -18,7 +18,7 @@ export default async function SetupPage() {
     <>
       <JsonLd />
       <FadeIn>
-        <div className="-mx-6 w-screen overflow-x-auto">
+        <div className="w-screen overflow-x-auto">
           <StackTable items={items} />
         </div>
       </FadeIn>

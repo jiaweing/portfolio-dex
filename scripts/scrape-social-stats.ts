@@ -23,7 +23,10 @@ const HANDLES = {
 
 type Browser = Awaited<ReturnType<typeof puppeteerExtra.launch>>;
 
-async function scrapeYouTube(browser: Browser, handle: string): Promise<number | null> {
+async function scrapeYouTube(
+  browser: Browser,
+  handle: string
+): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.youtube.com/@${handle}`, {
@@ -76,7 +79,10 @@ async function fetchTwitchFollowers(handle: string): Promise<number | null> {
   }
 }
 
-async function scrapeTikTok(browser: Browser, handle: string): Promise<number | null> {
+async function scrapeTikTok(
+  browser: Browser,
+  handle: string
+): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.tiktok.com/@${handle}`, {
@@ -96,7 +102,10 @@ async function scrapeTikTok(browser: Browser, handle: string): Promise<number | 
   }
 }
 
-async function scrapeInstagram(browser: Browser, handle: string): Promise<number | null> {
+async function scrapeInstagram(
+  browser: Browser,
+  handle: string
+): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.instagram.com/${handle}/`, {
@@ -120,7 +129,10 @@ async function scrapeInstagram(browser: Browser, handle: string): Promise<number
   }
 }
 
-async function scrapeThreads(browser: Browser, handle: string): Promise<number | null> {
+async function scrapeThreads(
+  browser: Browser,
+  handle: string
+): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.threads.net/@${handle}`, {
@@ -146,7 +158,10 @@ async function scrapeThreads(browser: Browser, handle: string): Promise<number |
   }
 }
 
-async function scrapeX(browser: Browser, handle: string): Promise<number | null> {
+async function scrapeX(
+  browser: Browser,
+  handle: string
+): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://x.com/${handle}`, {
@@ -163,7 +178,9 @@ async function scrapeX(browser: Browser, handle: string): Promise<number | null>
         }
       }
       // fallback: aria-label on stat cells
-      for (const el of document.querySelectorAll('[data-testid="UserProfileHeader_Items"] a')) {
+      for (const el of document.querySelectorAll(
+        '[data-testid="UserProfileHeader_Items"] a'
+      )) {
         const label = el.getAttribute("aria-label") ?? "";
         const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
         if (match) return match[1];
@@ -190,8 +207,11 @@ function parseCount(raw: string): number | null {
   return Math.round(num);
 }
 
-function getLastSnapshot(source: string): Record<string, number | string> | null {
-  const snapshotSection = source.match(/socialGrowthData[^[]*\[([\s\S]*)\]/)?.[1] ?? "";
+function getLastSnapshot(
+  source: string
+): Record<string, number | string> | null {
+  const snapshotSection =
+    source.match(/socialGrowthData[^[]*\[([\s\S]*)\]/)?.[1] ?? "";
   const blocks = [...snapshotSection.matchAll(/\{([^}]+)\}/g)];
   if (!blocks.length) return null;
   const last = blocks[blocks.length - 1][1];
@@ -223,7 +243,11 @@ async function main() {
 
   const browser = await puppeteerExtra.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-blink-features=AutomationControlled"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-blink-features=AutomationControlled",
+    ],
   });
 
   console.log("Scraping social stats...");
