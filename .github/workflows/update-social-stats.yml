@@ -36,5 +36,5 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/social-growth.ts
-          git diff --staged --quiet || git commit -m "chore: update social stats [skip ci]"
+          git diff --staged --quiet || git commit --no-verify -m "chore: update social stats [skip ci]"
           git push

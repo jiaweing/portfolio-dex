@@ -50,10 +50,12 @@ export function GrowthDashboard({ projects }: Props) {
 
       {/* Title + story */}
       <div className="space-y-2">
-        <h1 className="font-bold text-3xl tracking-tight">Built in Public</h1>
+        <h1 className="font-bold text-3xl tracking-tight">
+          Building in Public
+        </h1>
         <p className="text-muted-foreground text-sm leading-relaxed">
           The leverage in AI right now is knowing what&apos;s out there. So
-          I&apos;m currently building{" "}
+          I&apos;m building in public{" "}
           <span className="font-medium text-foreground">Update Night</span>, the
           searchable home for every tool, framework, SDK and library worth
           knowing. Livestreaming every step, from zero, for one year.{" "}
@@ -72,7 +74,7 @@ export function GrowthDashboard({ projects }: Props) {
       {/* Current projects from Notion */}
       {projects.length > 0 && (
         <div className="space-y-3">
-          <p className="font-medium text-sm">I&apos;m currently building</p>
+          <p className="font-medium text-sm">I&apos;m building in public</p>
           <div className="flex flex-col gap-2 sm:flex-row">
             {projects.map((p) => {
               const inner = (

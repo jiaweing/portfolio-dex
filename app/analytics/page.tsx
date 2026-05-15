@@ -16,6 +16,13 @@ export default async function AnalyticsPage() {
   const allProjects = await getProjects();
   const currentProjects = allProjects.filter((p) => {
     const t = p.title.toLowerCase();
+    if (
+      t.includes("update night agent") ||
+      t.includes("updatenight agent") ||
+      t.includes("update night podcast") ||
+      t.includes("updatenight podcast")
+    )
+      return false;
     return (
       t.includes("backstage") ||
       t.includes("update night") ||
