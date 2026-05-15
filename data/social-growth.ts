@@ -78,8 +78,17 @@ export const PLATFORMS: Platform[] = [
   "instagram",
   "threads",
   "x",
+  {
+    day: 10,
+    date: "2026-05-15",
+    tiktok: 21,
+    twitch: 8,
+    youtube: 38,
+    instagram: 24,
+    threads: 55,
+    x: 211,
+  },
 ];
-
 export const socialGrowthData: SocialSnapshot[] = [
   {
     day: 1,
