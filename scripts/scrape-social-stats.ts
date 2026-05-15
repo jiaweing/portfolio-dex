@@ -7,7 +7,10 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import puppeteer from "puppeteer";
+import puppeteerExtra from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+
+puppeteerExtra.use(StealthPlugin());
 
 const HANDLES = {
   youtube: process.env.YOUTUBE_HANDLE || "jiaweihq",
@@ -18,43 +21,21 @@ const HANDLES = {
   x: process.env.X_HANDLE || "jiaweihq",
 };
 
-async function scrapeYouTube(
-  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
-  handle: string
-): Promise<number | null> {
+type Browser = Awaited<ReturnType<typeof puppeteerExtra.launch>>;
+
+async function scrapeYouTube(browser: Browser, handle: string): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.youtube.com/@${handle}`, {
-      waitUntil: "networkidle2",
-      timeout: 30_000,
-    });
-    await page.waitForSelector("#subscriber-count", { timeout: 10_000 });
-    const text = await page.$eval(
-      "#subscriber-count",
-      (el) => el.textContent ?? ""
-    );
-    return parseCount(text);
-  } catch {
-    return null;
-  } finally {
-    await page.close();
-  }
-}
-
-async function scrapeTwitch(
-  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
-  handle: string
-): Promise<number | null> {
-  const page = await browser.newPage();
-  try {
-    await page.goto(`https://www.twitch.tv/${handle}`, {
-      waitUntil: "networkidle2",
+      waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
     await new Promise((r) => setTimeout(r, 3000));
     const text = await page.evaluate(() => {
-      const el = document.querySelector('[data-a-target="followers-count"]');
-      return el?.textContent ?? null;
+      const el =
+        document.querySelector("#subscriber-count") ??
+        document.querySelector("yt-formatted-string#subscriber-count");
+      return el?.textContent?.trim() ?? null;
     });
     return text ? parseCount(text) : null;
   } catch {
@@ -64,23 +45,48 @@ async function scrapeTwitch(
   }
 }
 
-async function scrapeTikTok(
-  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
-  handle: string
-): Promise<number | null> {
+async function fetchTwitchFollowers(handle: string): Promise<number | null> {
+  try {
+    const res = await fetch("https://gql.twitch.tv/gql", {
+      method: "POST",
+      headers: {
+        "Client-Id": "kimne78kx3ncx6brgo4mv6wki5h1ko",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([
+        {
+          operationName: "ChannelShell",
+          variables: { login: handle },
+          extensions: {
+            persistedQuery: {
+              version: 1,
+              sha256Hash:
+                "580ab410bcd0c1ad194224957ae2241e5d252b2c5173d8e0cce9d32d5bb14efe",
+            },
+          },
+        },
+      ]),
+    });
+    const data = (await res.json()) as Array<{
+      data?: { userOrError?: { followers?: { totalCount?: number } } };
+    }>;
+    return data[0]?.data?.userOrError?.followers?.totalCount ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function scrapeTikTok(browser: Browser, handle: string): Promise<number | null> {
   const page = await browser.newPage();
   try {
-    await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    );
     await page.goto(`https://www.tiktok.com/@${handle}`, {
-      waitUntil: "networkidle2",
+      waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 4000));
     const text = await page.evaluate(() => {
       const el = document.querySelector('[data-e2e="followers-count"]');
-      return el?.textContent ?? null;
+      return el?.textContent?.trim() ?? null;
     });
     return text ? parseCount(text) : null;
   } catch {
@@ -90,25 +96,19 @@ async function scrapeTikTok(
   }
 }
 
-async function scrapeInstagram(
-  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
-  handle: string
-): Promise<number | null> {
+async function scrapeInstagram(browser: Browser, handle: string): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.instagram.com/${handle}/`, {
-      waitUntil: "networkidle2",
+      waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 4000));
     const text = await page.evaluate(() => {
-      const metas = document.querySelectorAll("meta");
-      for (const m of metas) {
+      for (const m of document.querySelectorAll("meta")) {
         const content = m.getAttribute("content") ?? "";
-        if (content.includes("Followers")) {
-          const match = content.match(/^([\d,KkMm.]+)\s*Followers/);
-          return match?.[1] ?? null;
-        }
+        const match = content.match(/([\d,.KkMm]+)\s*Followers/);
+        if (match) return match[1];
       }
       return null;
     });
@@ -120,23 +120,20 @@ async function scrapeInstagram(
   }
 }
 
-async function scrapeThreads(
-  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
-  handle: string
-): Promise<number | null> {
+async function scrapeThreads(browser: Browser, handle: string): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.threads.net/@${handle}`, {
-      waitUntil: "networkidle2",
+      waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 4000));
     const text = await page.evaluate(() => {
       const spans = document.querySelectorAll("span");
       for (const span of spans) {
         if (/followers/i.test(span.textContent ?? "")) {
           const prev = span.previousElementSibling;
-          if (prev) return prev.textContent;
+          if (prev) return prev.textContent?.trim() ?? null;
         }
       }
       return null;
@@ -149,26 +146,27 @@ async function scrapeThreads(
   }
 }
 
-async function scrapeX(
-  browser: Awaited<ReturnType<typeof puppeteer.launch>>,
-  handle: string
-): Promise<number | null> {
+async function scrapeX(browser: Browser, handle: string): Promise<number | null> {
   const page = await browser.newPage();
   try {
     await page.goto(`https://x.com/${handle}`, {
-      waitUntil: "networkidle2",
+      waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 3000));
+    await new Promise((r) => setTimeout(r, 5000));
     const text = await page.evaluate(() => {
-      const links = document.querySelectorAll('a[href$="/followers"]');
-      for (const link of links) {
-        const spans = link.querySelectorAll("span");
-        for (const span of spans) {
-          if (/^[\d,.KkMm]+$/.test(span.textContent?.trim() ?? "")) {
-            return span.textContent ?? null;
-          }
+      // followers link approach
+      for (const link of document.querySelectorAll('a[href$="/followers"]')) {
+        for (const span of link.querySelectorAll("span")) {
+          const t = span.textContent?.trim() ?? "";
+          if (/^[\d,.KkMm]+$/.test(t)) return t;
         }
+      }
+      // fallback: aria-label on stat cells
+      for (const el of document.querySelectorAll('[data-testid="UserProfileHeader_Items"] a')) {
+        const label = el.getAttribute("aria-label") ?? "";
+        const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
+        if (match) return match[1];
       }
       return null;
     });
@@ -192,12 +190,24 @@ function parseCount(raw: string): number | null {
   return Math.round(num);
 }
 
+function getLastSnapshot(source: string): Record<string, number | string> | null {
+  const snapshotSection = source.match(/socialGrowthData[^[]*\[([\s\S]*)\]/)?.[1] ?? "";
+  const blocks = [...snapshotSection.matchAll(/\{([^}]+)\}/g)];
+  if (!blocks.length) return null;
+  const last = blocks[blocks.length - 1][1];
+  const result: Record<string, number | string> = {};
+  for (const match of last.matchAll(/(\w+):\s*([^\n,]+)/g)) {
+    const val = match[2].trim().replace(/['"]/g, "");
+    result[match[1]] = Number.isNaN(Number(val)) ? val : Number(val);
+  }
+  return result;
+}
+
 async function main() {
   const __dirname = dirname(fileURLToPath(import.meta.url));
   const dataPath = join(__dirname, "..", "data", "social-growth.ts");
   const source = readFileSync(dataPath, "utf8");
 
-  // Find the last day number
   const dayMatches = [...source.matchAll(/day:\s*(\d+)/g)];
   const lastDay = dayMatches.length
     ? Math.max(...dayMatches.map((m) => Number.parseInt(m[1])))
@@ -206,52 +216,32 @@ async function main() {
 
   const today = new Date().toISOString().slice(0, 10);
 
-  // Skip if already have today's data
   if (source.includes(`date: "${today}"`)) {
     console.log("Already have today's data, skipping.");
     return;
   }
 
-  const browser = await puppeteer.launch({
+  const browser = await puppeteerExtra.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-blink-features=AutomationControlled"],
   });
 
   console.log("Scraping social stats...");
 
-  const [youtube, twitch, tiktok, instagram, threads, x] = await Promise.all([
+  const [youtube, tiktok, instagram, threads, x, twitch] = await Promise.all([
     scrapeYouTube(browser, HANDLES.youtube),
-    scrapeTwitch(browser, HANDLES.twitch),
     scrapeTikTok(browser, HANDLES.tiktok),
     scrapeInstagram(browser, HANDLES.instagram),
     scrapeThreads(browser, HANDLES.threads),
     scrapeX(browser, HANDLES.x),
+    fetchTwitchFollowers(HANDLES.twitch),
   ]);
 
   await browser.close();
 
   console.log({ youtube, twitch, tiktok, instagram, threads, x });
 
-  // Fall back to previous day values for any failed scrapes
-  const lastSnapshotMatch = source.match(/\{[\s\S]*?\}/g);
-  const snapshots = lastSnapshotMatch
-    ? lastSnapshotMatch
-        .map((s) => {
-          try {
-            return Function(`"use strict"; return (${s})`)() as Record<
-              string,
-              number | string
-            >;
-          } catch {
-            return null;
-          }
-        })
-        .filter(Boolean)
-    : [];
-  const prev = snapshots[snapshots.length - 1] as Record<
-    string,
-    number | string
-  > | null;
+  const prev = getLastSnapshot(source);
 
   const newEntry = `  {
     day: ${nextDay},
