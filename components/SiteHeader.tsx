@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Analytics01Icon,
   BookOpen02Icon as BookOpen,
   Bookmark02Icon as Computer,
   FolderLibraryIcon,
@@ -36,7 +35,6 @@ export function SiteHeader() {
 
     { href: "/books", icon: FolderLibraryIcon, label: "Books" },
     { href: "/setup", icon: Computer, label: "Setup" },
-    { href: "/analytics", icon: Analytics01Icon, label: "Analytics" },
   ];
 
   return (

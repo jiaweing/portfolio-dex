@@ -50,7 +50,7 @@ export function GrowthDashboard({ projects }: Props) {
 
       {/* Title + story */}
       <div className="space-y-2">
-        <h1 className="font-bold text-3xl tracking-tight">
+        <h1 className="font-medium text-3xl tracking-tight">
           Building in Public
         </h1>
         <p className="text-muted-foreground text-sm leading-relaxed">
