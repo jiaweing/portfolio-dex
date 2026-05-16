@@ -5,7 +5,7 @@ import PlausibleProvider from "next-plausible";
 export function PlausibleWrapper({ children }: { children: React.ReactNode }) {
   return (
     <PlausibleProvider
-      customDomain="https://stats.jiaweing.com"
+      customDomain="https://data.amajor.ai"
       domain="jiaweing.com"
     >
       {children}
