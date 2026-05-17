@@ -196,41 +196,33 @@ async function scrapeThreads(
   }
 }
 
-const NITTER_INSTANCES = [
-  "nitter.net",
-  "nitter.privacydev.net",
-  "nitter.poast.org",
-  "nitter.1d4.us",
-];
-
 async function scrapeX(
   browser: Browser,
   handle: string
 ): Promise<number | null> {
   const page = await browser.newPage();
   try {
-    // X hides follower counts behind login — use nitter (open-source X frontend)
-    for (const instance of NITTER_INSTANCES) {
-      try {
-        await page.goto(`https://${instance}/${handle}`, {
-          waitUntil: "domcontentloaded",
-          timeout: 15_000,
-        });
-        await new Promise((r) => setTimeout(r, 2000));
-        const text = await page.evaluate(() => {
-          const el = document.querySelector(".followers .profile-stat-num");
-          return el?.textContent?.trim() ?? null;
-        });
-        if (text) {
-          console.log(`[X] got followers from nitter (${instance}):`, text);
-          return parseCount(text);
+    await page.goto(`https://x.com/${handle}`, {
+      waitUntil: "domcontentloaded",
+      timeout: 30_000,
+    });
+    // Wait for the followers link to appear (href ends in /followers or /verified_followers)
+    await page.waitForSelector(`a[href*="/${handle}/verified_followers"], a[href*="/${handle}/followers"]`, {
+      timeout: 15_000,
+    }).catch(() => null);
+    const text = await page.evaluate((handle) => {
+      for (const link of document.querySelectorAll(
+        `a[href*="/${handle}/verified_followers"], a[href*="/${handle}/followers"]`
+      )) {
+        for (const span of link.querySelectorAll("span")) {
+          const t = span.textContent?.trim() ?? "";
+          if (/^[\d,.KkMm]+$/.test(t)) return t;
         }
-      } catch {
-        console.warn(`[X] nitter instance ${instance} failed, trying next`);
       }
-    }
-    console.warn("[X] all nitter instances failed, x follower count unavailable");
-    return null;
+      return null;
+    }, handle);
+    console.log("[X] followers text:", text);
+    return text ? parseCount(text) : null;
   } catch (e) {
     console.warn("X scrape failed:", e);
     return null;
