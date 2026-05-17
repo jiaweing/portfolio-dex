@@ -30,28 +30,49 @@ async function scrapeYouTube(
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.youtube.com/@${handle}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000,
+      waitUntil: "networkidle2",
+      timeout: 45_000,
     });
     await new Promise((r) => setTimeout(r, 4000));
-    const text = await page.evaluate(() => {
-      // Primary: ytInitialData is injected by YouTube and survives redesigns
+    const debug = await page.evaluate(() => {
       const data = (window as any).ytInitialData;
-      const header = data?.header?.c4TabbedHeaderRenderer;
-      const subText =
-        header?.subscriberCountText?.simpleText ??
-        header?.subscriberCountText?.runs?.[0]?.text;
-      if (subText) return subText as string;
-      // Fallback: DOM selectors
-      return (
+      const headerKeys = data?.header ? Object.keys(data.header) : [];
+      // c4TabbedHeaderRenderer (older layout)
+      const c4 = data?.header?.c4TabbedHeaderRenderer;
+      const c4Sub =
+        c4?.subscriberCountText?.simpleText ??
+        c4?.subscriberCountText?.runs?.[0]?.text ??
+        null;
+      // pageHeaderRenderer (newer layout ~2023+)
+      const ph = data?.header?.pageHeaderRenderer;
+      const metadata =
+        ph?.content?.pageHeaderViewModel?.metadata?.contentMetadataViewModel;
+      let phSub: string | null = null;
+      for (const row of metadata?.metadataRows ?? []) {
+        for (const part of row?.metadataParts ?? []) {
+          const t = part?.text?.content ?? "";
+          if (/subscriber/i.test(t)) {
+            phSub = t;
+            break;
+          }
+        }
+        if (phSub) break;
+      }
+      // DOM fallback
+      const domSub =
         document.querySelector("#subscriber-count")?.textContent?.trim() ??
         document
           .querySelector("yt-formatted-string#subscriber-count")
           ?.textContent?.trim() ??
-        null
-      );
+        null;
+      return { headerKeys, c4Sub, phSub, domSub, title: document.title };
     });
-    return text ? parseCount(text) : null;
+    console.log("[YouTube debug]", JSON.stringify(debug));
+    const raw = debug.c4Sub ?? debug.phSub ?? debug.domSub;
+    if (!raw) return null;
+    // Subscriber text may be "44 subscribers" or "1.5K subscribers" — extract leading count
+    const match = raw.match(/^([\d,.]+[KkMmBb]?)/i);
+    return match ? parseCount(match[1]) : null;
   } catch (e) {
     console.warn("YouTube scrape failed:", e);
     return null;
@@ -185,33 +206,22 @@ async function scrapeX(
       waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 6000));
+    // Wait for the followers link to appear (href ends in /followers or /verified_followers)
+    await page.waitForSelector(`a[href*="/${handle}/verified_followers"], a[href*="/${handle}/followers"]`, {
+      timeout: 15_000,
+    }).catch(() => null);
     const text = await page.evaluate((handle) => {
-      // followers link — use href*= to match /handle/followers
       for (const link of document.querySelectorAll(
-        `a[href*="/${handle}/followers"], a[href$="/followers"]`
+        `a[href*="/${handle}/verified_followers"], a[href*="/${handle}/followers"]`
       )) {
         for (const span of link.querySelectorAll("span")) {
           const t = span.textContent?.trim() ?? "";
           if (/^[\d,.KkMm]+$/.test(t)) return t;
         }
       }
-      // aria-label fallback on profile header stat cells
-      for (const el of document.querySelectorAll(
-        '[data-testid="UserProfileHeader_Items"] a'
-      )) {
-        const label = el.getAttribute("aria-label") ?? "";
-        const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
-        if (match) return match[1];
-      }
-      // Last resort: meta description
-      for (const m of document.querySelectorAll("meta")) {
-        const content = m.getAttribute("content") ?? "";
-        const match = content.match(/([\d,.KkMm]+)\s*[Ff]ollowers/);
-        if (match) return match[1];
-      }
       return null;
     }, handle);
+    console.log("[X] followers text:", text);
     return text ? parseCount(text) : null;
   } catch (e) {
     console.warn("X scrape failed:", e);
