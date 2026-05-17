@@ -68,8 +68,11 @@ async function scrapeYouTube(
       return { headerKeys, c4Sub, phSub, domSub, title: document.title };
     });
     console.log("[YouTube debug]", JSON.stringify(debug));
-    const text = debug.c4Sub ?? debug.phSub ?? debug.domSub;
-    return text ? parseCount(text) : null;
+    const raw = debug.c4Sub ?? debug.phSub ?? debug.domSub;
+    if (!raw) return null;
+    // Subscriber text may be "44 subscribers" or "1.5K subscribers" — extract leading count
+    const match = raw.match(/^([\d,.]+[KkMmBb]?)/i);
+    return match ? parseCount(match[1]) : null;
   } catch (e) {
     console.warn("YouTube scrape failed:", e);
     return null;
@@ -200,11 +203,11 @@ async function scrapeX(
   const page = await browser.newPage();
   try {
     await page.goto(`https://x.com/${handle}`, {
-      waitUntil: "networkidle2",
-      timeout: 45_000,
+      waitUntil: "domcontentloaded",
+      timeout: 30_000,
     });
     await new Promise((r) => setTimeout(r, 8000));
-    const result = await page.evaluate((handle) => {
+    const { debug, result } = await page.evaluate((handle) => {
       const followerLinks = [
         ...document.querySelectorAll(
           `a[href*="/${handle}/followers"], a[href$="/followers"]`
@@ -223,17 +226,13 @@ async function scrapeX(
       const metas = [...document.querySelectorAll("meta")]
         .map((m) => m.getAttribute("content"))
         .filter((c) => c && /follower/i.test(c ?? ""));
-
-      console.log(
-        "[X debug]",
-        JSON.stringify({
-          title: document.title,
-          followerLinks,
-          ariaLabels,
-          metas,
-          bodySnippet: document.body?.innerText?.slice(0, 200),
-        })
-      );
+      const debug = {
+        title: document.title,
+        followerLinks,
+        ariaLabels,
+        metas,
+        bodySnippet: document.body?.innerText?.slice(0, 300),
+      };
 
       // followers link
       for (const link of document.querySelectorAll(
@@ -241,7 +240,7 @@ async function scrapeX(
       )) {
         for (const span of link.querySelectorAll("span")) {
           const t = span.textContent?.trim() ?? "";
-          if (/^[\d,.KkMm]+$/.test(t)) return t;
+          if (/^[\d,.KkMm]+$/.test(t)) return { debug, result: t };
         }
       }
       // aria-label fallback
@@ -250,16 +249,17 @@ async function scrapeX(
       )) {
         const label = el.getAttribute("aria-label") ?? "";
         const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
-        if (match) return match[1];
+        if (match) return { debug, result: match[1] };
       }
       // meta fallback
       for (const m of document.querySelectorAll("meta")) {
         const content = m.getAttribute("content") ?? "";
         const match = content.match(/([\d,.KkMm]+)\s*[Ff]ollowers/);
-        if (match) return match[1];
+        if (match) return { debug, result: match[1] };
       }
-      return null;
+      return { debug, result: null };
     }, handle);
+    console.log("[X debug]", JSON.stringify(debug));
     return result ? parseCount(result) : null;
   } catch (e) {
     console.warn("X scrape failed:", e);
