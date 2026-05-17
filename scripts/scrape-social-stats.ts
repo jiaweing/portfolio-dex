@@ -30,27 +30,45 @@ async function scrapeYouTube(
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.youtube.com/@${handle}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000,
+      waitUntil: "networkidle2",
+      timeout: 45_000,
     });
     await new Promise((r) => setTimeout(r, 4000));
-    const text = await page.evaluate(() => {
-      // Primary: ytInitialData is injected by YouTube and survives redesigns
+    const debug = await page.evaluate(() => {
       const data = (window as any).ytInitialData;
-      const header = data?.header?.c4TabbedHeaderRenderer;
-      const subText =
-        header?.subscriberCountText?.simpleText ??
-        header?.subscriberCountText?.runs?.[0]?.text;
-      if (subText) return subText as string;
-      // Fallback: DOM selectors
-      return (
+      const headerKeys = data?.header ? Object.keys(data.header) : [];
+      // c4TabbedHeaderRenderer (older layout)
+      const c4 = data?.header?.c4TabbedHeaderRenderer;
+      const c4Sub =
+        c4?.subscriberCountText?.simpleText ??
+        c4?.subscriberCountText?.runs?.[0]?.text ??
+        null;
+      // pageHeaderRenderer (newer layout ~2023+)
+      const ph = data?.header?.pageHeaderRenderer;
+      const metadata =
+        ph?.content?.pageHeaderViewModel?.metadata?.contentMetadataViewModel;
+      let phSub: string | null = null;
+      for (const row of metadata?.metadataRows ?? []) {
+        for (const part of row?.metadataParts ?? []) {
+          const t = part?.text?.content ?? "";
+          if (/subscriber/i.test(t)) {
+            phSub = t;
+            break;
+          }
+        }
+        if (phSub) break;
+      }
+      // DOM fallback
+      const domSub =
         document.querySelector("#subscriber-count")?.textContent?.trim() ??
         document
           .querySelector("yt-formatted-string#subscriber-count")
           ?.textContent?.trim() ??
-        null
-      );
+        null;
+      return { headerKeys, c4Sub, phSub, domSub, title: document.title };
     });
+    console.log("[YouTube debug]", JSON.stringify(debug));
+    const text = debug.c4Sub ?? debug.phSub ?? debug.domSub;
     return text ? parseCount(text) : null;
   } catch (e) {
     console.warn("YouTube scrape failed:", e);
@@ -182,12 +200,42 @@ async function scrapeX(
   const page = await browser.newPage();
   try {
     await page.goto(`https://x.com/${handle}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000,
+      waitUntil: "networkidle2",
+      timeout: 45_000,
     });
-    await new Promise((r) => setTimeout(r, 6000));
-    const text = await page.evaluate((handle) => {
-      // followers link — use href*= to match /handle/followers
+    await new Promise((r) => setTimeout(r, 8000));
+    const result = await page.evaluate((handle) => {
+      const followerLinks = [
+        ...document.querySelectorAll(
+          `a[href*="/${handle}/followers"], a[href$="/followers"]`
+        ),
+      ].map((a) => ({
+        href: (a as HTMLAnchorElement).href,
+        spans: [...a.querySelectorAll("span")].map((s) =>
+          s.textContent?.trim()
+        ),
+      }));
+      const ariaLabels = [
+        ...document.querySelectorAll(
+          '[data-testid="UserProfileHeader_Items"] a'
+        ),
+      ].map((a) => a.getAttribute("aria-label"));
+      const metas = [...document.querySelectorAll("meta")]
+        .map((m) => m.getAttribute("content"))
+        .filter((c) => c && /follower/i.test(c ?? ""));
+
+      console.log(
+        "[X debug]",
+        JSON.stringify({
+          title: document.title,
+          followerLinks,
+          ariaLabels,
+          metas,
+          bodySnippet: document.body?.innerText?.slice(0, 200),
+        })
+      );
+
+      // followers link
       for (const link of document.querySelectorAll(
         `a[href*="/${handle}/followers"], a[href$="/followers"]`
       )) {
@@ -196,7 +244,7 @@ async function scrapeX(
           if (/^[\d,.KkMm]+$/.test(t)) return t;
         }
       }
-      // aria-label fallback on profile header stat cells
+      // aria-label fallback
       for (const el of document.querySelectorAll(
         '[data-testid="UserProfileHeader_Items"] a'
       )) {
@@ -204,7 +252,7 @@ async function scrapeX(
         const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
         if (match) return match[1];
       }
-      // Last resort: meta description
+      // meta fallback
       for (const m of document.querySelectorAll("meta")) {
         const content = m.getAttribute("content") ?? "";
         const match = content.match(/([\d,.KkMm]+)\s*[Ff]ollowers/);
@@ -212,7 +260,7 @@ async function scrapeX(
       }
       return null;
     }, handle);
-    return text ? parseCount(text) : null;
+    return result ? parseCount(result) : null;
   } catch (e) {
     console.warn("X scrape failed:", e);
     return null;
