@@ -196,71 +196,41 @@ async function scrapeThreads(
   }
 }
 
+const NITTER_INSTANCES = [
+  "nitter.net",
+  "nitter.privacydev.net",
+  "nitter.poast.org",
+  "nitter.1d4.us",
+];
+
 async function scrapeX(
   browser: Browser,
   handle: string
 ): Promise<number | null> {
   const page = await browser.newPage();
   try {
-    await page.goto(`https://x.com/${handle}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000,
-    });
-    await new Promise((r) => setTimeout(r, 8000));
-    const { debug, result } = await page.evaluate((handle) => {
-      const followerLinks = [
-        ...document.querySelectorAll(
-          `a[href*="/${handle}/followers"], a[href$="/followers"]`
-        ),
-      ].map((a) => ({
-        href: (a as HTMLAnchorElement).href,
-        spans: [...a.querySelectorAll("span")].map((s) =>
-          s.textContent?.trim()
-        ),
-      }));
-      const ariaLabels = [
-        ...document.querySelectorAll(
-          '[data-testid="UserProfileHeader_Items"] a'
-        ),
-      ].map((a) => a.getAttribute("aria-label"));
-      const metas = [...document.querySelectorAll("meta")]
-        .map((m) => m.getAttribute("content"))
-        .filter((c) => c && /follower/i.test(c ?? ""));
-      const debug = {
-        title: document.title,
-        followerLinks,
-        ariaLabels,
-        metas,
-        bodySnippet: document.body?.innerText?.slice(0, 300),
-      };
-
-      // followers link
-      for (const link of document.querySelectorAll(
-        `a[href*="/${handle}/followers"], a[href$="/followers"]`
-      )) {
-        for (const span of link.querySelectorAll("span")) {
-          const t = span.textContent?.trim() ?? "";
-          if (/^[\d,.KkMm]+$/.test(t)) return { debug, result: t };
+    // X hides follower counts behind login — use nitter (open-source X frontend)
+    for (const instance of NITTER_INSTANCES) {
+      try {
+        await page.goto(`https://${instance}/${handle}`, {
+          waitUntil: "domcontentloaded",
+          timeout: 15_000,
+        });
+        await new Promise((r) => setTimeout(r, 2000));
+        const text = await page.evaluate(() => {
+          const el = document.querySelector(".followers .profile-stat-num");
+          return el?.textContent?.trim() ?? null;
+        });
+        if (text) {
+          console.log(`[X] got followers from nitter (${instance}):`, text);
+          return parseCount(text);
         }
+      } catch {
+        console.warn(`[X] nitter instance ${instance} failed, trying next`);
       }
-      // aria-label fallback
-      for (const el of document.querySelectorAll(
-        '[data-testid="UserProfileHeader_Items"] a'
-      )) {
-        const label = el.getAttribute("aria-label") ?? "";
-        const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
-        if (match) return { debug, result: match[1] };
-      }
-      // meta fallback
-      for (const m of document.querySelectorAll("meta")) {
-        const content = m.getAttribute("content") ?? "";
-        const match = content.match(/([\d,.KkMm]+)\s*[Ff]ollowers/);
-        if (match) return { debug, result: match[1] };
-      }
-      return { debug, result: null };
-    }, handle);
-    console.log("[X debug]", JSON.stringify(debug));
-    return result ? parseCount(result) : null;
+    }
+    console.warn("[X] all nitter instances failed, x follower count unavailable");
+    return null;
   } catch (e) {
     console.warn("X scrape failed:", e);
     return null;
