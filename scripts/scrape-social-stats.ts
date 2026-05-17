@@ -41,7 +41,8 @@ async function scrapeYouTube(
       return el?.textContent?.trim() ?? null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("YouTube scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -74,7 +75,8 @@ async function fetchTwitchFollowers(handle: string): Promise<number | null> {
       data?: { userOrError?: { followers?: { totalCount?: number } } };
     }>;
     return data[0]?.data?.userOrError?.followers?.totalCount ?? null;
-  } catch {
+  } catch (e) {
+    console.warn("Twitch fetch failed:", e);
     return null;
   }
 }
@@ -95,7 +97,8 @@ async function scrapeTikTok(
       return el?.textContent?.trim() ?? null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("TikTok scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -122,7 +125,8 @@ async function scrapeInstagram(
       return null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("Instagram scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -151,7 +155,8 @@ async function scrapeThreads(
       return null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("Threads scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -188,7 +193,8 @@ async function scrapeX(
       return null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("X scrape failed:", e);
     return null;
   } finally {
     await page.close();
