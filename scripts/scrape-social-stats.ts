@@ -258,7 +258,7 @@ async function main() {
   const today = now.toISOString().slice(0, 10);
   const dayOfWeek = now.getUTCDay(); // 0 = Sunday, 6 = Saturday
 
-  if (dayOfWeek === 0 || dayOfWeek === 6) {
+  if ((dayOfWeek === 0 || dayOfWeek === 6) && !process.env.FORCE_SCRAPE) {
     console.log("Weekend — skipping scrape.");
     return;
   }
@@ -280,6 +280,7 @@ async function main() {
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-blink-features=AutomationControlled",
+      "--ignore-certificate-errors",
     ],
   });
 
