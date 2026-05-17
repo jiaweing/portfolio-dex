@@ -234,7 +234,14 @@ async function main() {
     : 0;
   const nextDay = lastDay + 1;
 
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const dayOfWeek = now.getUTCDay(); // 0 = Sunday, 6 = Saturday
+
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    console.log("Weekend — skipping scrape.");
+    return;
+  }
 
   if (source.includes(`date: "${today}"`)) {
     console.log("Already have today's data, skipping.");
