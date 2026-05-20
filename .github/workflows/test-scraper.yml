@@ -1,0 +1,30 @@
+name: Test Scraper (no save)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Run scraper (dry run, no commit)
+        run: FORCE_SCRAPE=1 bun scripts/scrape-social-stats.ts
+        env:
+          YOUTUBE_HANDLE: jiaweihq
+          TWITCH_HANDLE: jiaweihq
+          TIKTOK_HANDLE: jiaweihq
+          INSTAGRAM_HANDLE: jiaweihq
+          THREADS_HANDLE: jiaweihq
+          X_HANDLE: jiaweihq
+
+      - name: Show what would be written (diff only, no commit)
+        run: git diff data/social-growth.ts

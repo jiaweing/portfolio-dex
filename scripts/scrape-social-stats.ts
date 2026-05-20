@@ -30,52 +30,81 @@ async function scrapeYouTube(
   const page = await browser.newPage();
   try {
     await page.goto(`https://www.youtube.com/@${handle}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 30_000,
+      waitUntil: "networkidle2",
+      timeout: 45_000,
     });
-    await new Promise((r) => setTimeout(r, 3000));
-    const text = await page.evaluate(() => {
-      const el =
-        document.querySelector("#subscriber-count") ??
-        document.querySelector("yt-formatted-string#subscriber-count");
-      return el?.textContent?.trim() ?? null;
+    await new Promise((r) => setTimeout(r, 4000));
+    const debug = await page.evaluate(() => {
+      const data = (window as any).ytInitialData;
+      const headerKeys = data?.header ? Object.keys(data.header) : [];
+      // c4TabbedHeaderRenderer (older layout)
+      const c4 = data?.header?.c4TabbedHeaderRenderer;
+      const c4Sub =
+        c4?.subscriberCountText?.simpleText ??
+        c4?.subscriberCountText?.runs?.[0]?.text ??
+        null;
+      // pageHeaderRenderer (newer layout ~2023+)
+      const ph = data?.header?.pageHeaderRenderer;
+      const metadata =
+        ph?.content?.pageHeaderViewModel?.metadata?.contentMetadataViewModel;
+      let phSub: string | null = null;
+      for (const row of metadata?.metadataRows ?? []) {
+        for (const part of row?.metadataParts ?? []) {
+          const t = part?.text?.content ?? "";
+          if (/subscriber/i.test(t)) {
+            phSub = t;
+            break;
+          }
+        }
+        if (phSub) break;
+      }
+      // DOM fallback
+      const domSub =
+        document.querySelector("#subscriber-count")?.textContent?.trim() ??
+        document
+          .querySelector("yt-formatted-string#subscriber-count")
+          ?.textContent?.trim() ??
+        null;
+      return { headerKeys, c4Sub, phSub, domSub, title: document.title };
     });
-    return text ? parseCount(text) : null;
-  } catch {
+    console.log("[YouTube debug]", JSON.stringify(debug));
+    const raw = debug.c4Sub ?? debug.phSub ?? debug.domSub;
+    if (!raw) return null;
+    // Subscriber text may be "44 subscribers" or "1.5K subscribers" — extract leading count
+    const match = raw.match(/^([\d,.]+[KkMmBb]?)/i);
+    return match ? parseCount(match[1]) : null;
+  } catch (e) {
+    console.warn("YouTube scrape failed:", e);
     return null;
   } finally {
     await page.close();
   }
 }
 
-async function fetchTwitchFollowers(handle: string): Promise<number | null> {
+async function scrapeTwitch(
+  browser: Browser,
+  handle: string
+): Promise<number | null> {
+  const page = await browser.newPage();
   try {
-    const res = await fetch("https://gql.twitch.tv/gql", {
-      method: "POST",
-      headers: {
-        "Client-Id": "kimne78kx3ncx6brgo4mv6wki5h1ko",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify([
-        {
-          operationName: "ChannelShell",
-          variables: { login: handle },
-          extensions: {
-            persistedQuery: {
-              version: 1,
-              sha256Hash:
-                "580ab410bcd0c1ad194224957ae2241e5d252b2c5173d8e0cce9d32d5bb14efe",
-            },
-          },
-        },
-      ]),
+    // Use the about page which surfaces follower count in the stats panel
+    await page.goto(`https://www.twitch.tv/${handle}/about`, {
+      waitUntil: "domcontentloaded",
+      timeout: 30_000,
     });
-    const data = (await res.json()) as Array<{
-      data?: { userOrError?: { followers?: { totalCount?: number } } };
-    }>;
-    return data[0]?.data?.userOrError?.followers?.totalCount ?? null;
-  } catch {
+    await new Promise((r) => setTimeout(r, 6000));
+    const text = await page.evaluate(() => {
+      // Search the full page text for a "N followers" pattern
+      const bodyText = document.body.innerText;
+      const match = bodyText.match(/([\d,.]+[KkMm]?)\s*[Ff]ollowers/);
+      return match?.[1] ?? null;
+    });
+    return text ? parseCount(text) : null;
+  } catch (e) {
+    console.warn("Twitch scrape failed:", e);
     return null;
+  } finally {
+    await page.close();
   }
 }
 
@@ -95,7 +124,8 @@ async function scrapeTikTok(
       return el?.textContent?.trim() ?? null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("TikTok scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -122,7 +152,8 @@ async function scrapeInstagram(
       return null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("Instagram scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -139,10 +170,16 @@ async function scrapeThreads(
       waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 4000));
+    await new Promise((r) => setTimeout(r, 5000));
     const text = await page.evaluate(() => {
-      const spans = document.querySelectorAll("span");
-      for (const span of spans) {
+      // Meta tags are populated before the login gate renders
+      for (const m of document.querySelectorAll("meta")) {
+        const content = m.getAttribute("content") ?? "";
+        const match = content.match(/([\d,.KkMm]+)\s*[Ff]ollowers/);
+        if (match) return match[1];
+      }
+      // DOM fallback: span adjacent to a "followers" label
+      for (const span of document.querySelectorAll("span")) {
         if (/followers/i.test(span.textContent ?? "")) {
           const prev = span.previousElementSibling;
           if (prev) return prev.textContent?.trim() ?? null;
@@ -151,7 +188,8 @@ async function scrapeThreads(
       return null;
     });
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("Threads scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -168,27 +206,30 @@ async function scrapeX(
       waitUntil: "domcontentloaded",
       timeout: 30_000,
     });
-    await new Promise((r) => setTimeout(r, 5000));
-    const text = await page.evaluate(() => {
-      // followers link approach
-      for (const link of document.querySelectorAll('a[href$="/followers"]')) {
+    // Wait for the followers link to appear (href ends in /followers or /verified_followers)
+    await page
+      .waitForSelector(
+        `a[href*="/${handle}/verified_followers"], a[href*="/${handle}/followers"]`,
+        {
+          timeout: 15_000,
+        }
+      )
+      .catch(() => null);
+    const text = await page.evaluate((handle) => {
+      for (const link of document.querySelectorAll(
+        `a[href*="/${handle}/verified_followers"], a[href*="/${handle}/followers"]`
+      )) {
         for (const span of link.querySelectorAll("span")) {
           const t = span.textContent?.trim() ?? "";
           if (/^[\d,.KkMm]+$/.test(t)) return t;
         }
       }
-      // fallback: aria-label on stat cells
-      for (const el of document.querySelectorAll(
-        '[data-testid="UserProfileHeader_Items"] a'
-      )) {
-        const label = el.getAttribute("aria-label") ?? "";
-        const match = label.match(/^([\d,.KkMm]+)\s*Followers/i);
-        if (match) return match[1];
-      }
       return null;
-    });
+    }, handle);
+    console.log("[X] followers text:", text);
     return text ? parseCount(text) : null;
-  } catch {
+  } catch (e) {
+    console.warn("X scrape failed:", e);
     return null;
   } finally {
     await page.close();
@@ -228,18 +269,25 @@ async function main() {
   const dataPath = join(__dirname, "..", "data", "social-growth.ts");
   const source = readFileSync(dataPath, "utf8");
 
-  const dayMatches = [...source.matchAll(/day:\s*(\d+)/g)];
-  const lastDay = dayMatches.length
-    ? Math.max(...dayMatches.map((m) => Number.parseInt(m[1])))
-    : 0;
-  const nextDay = lastDay + 1;
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const dayOfWeek = now.getUTCDay(); // 0 = Sunday, 6 = Saturday
 
-  const today = new Date().toISOString().slice(0, 10);
+  if ((dayOfWeek === 0 || dayOfWeek === 6) && !process.env.FORCE_SCRAPE) {
+    console.log("Weekend — skipping scrape.");
+    return;
+  }
 
   if (source.includes(`date: "${today}"`)) {
     console.log("Already have today's data, skipping.");
     return;
   }
+
+  const dayMatches = [...source.matchAll(/day:\s*(\d+)/g)];
+  const lastDay = dayMatches.length
+    ? Math.max(...dayMatches.map((m) => Number.parseInt(m[1])))
+    : 0;
+  const nextDay = lastDay + 1;
 
   const browser = await puppeteerExtra.launch({
     headless: true,
@@ -247,6 +295,7 @@ async function main() {
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-blink-features=AutomationControlled",
+      "--ignore-certificate-errors",
     ],
   });
 
@@ -258,7 +307,7 @@ async function main() {
     scrapeInstagram(browser, HANDLES.instagram),
     scrapeThreads(browser, HANDLES.threads),
     scrapeX(browser, HANDLES.x),
-    fetchTwitchFollowers(HANDLES.twitch),
+    scrapeTwitch(browser, HANDLES.twitch),
   ]);
 
   await browser.close();
