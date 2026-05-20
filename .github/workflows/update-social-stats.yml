@@ -2,8 +2,8 @@ name: Update Social Stats
 
 on:
   schedule:
-    # Runs daily at 10:00 UTC (6 PM SGT)
-    - cron: "0 10 * * *"
+    # Runs daily at 6:00 UTC (2 PM SGT), accounting for GitHub's ~4hr delay to land around 6 PM SGT
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 jobs:
