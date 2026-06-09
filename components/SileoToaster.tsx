@@ -9,6 +9,7 @@ export function SileoToaster() {
 
   return (
     <Toaster
+      offset={{ bottom: "var(--sileo-mobile-bottom-offset)" }}
       options={
         isDark
           ? {

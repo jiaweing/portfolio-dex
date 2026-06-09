@@ -17,7 +17,7 @@ jobs:
         run: bun install
 
       - name: Run scraper (dry run, no commit)
-        run: FORCE_SCRAPE=1 bun scripts/scrape-social-stats.ts
+        run: FORCE_SCRAPE=1 DRY_RUN=1 bun scripts/scrape-social-stats.ts
         env:
           YOUTUBE_HANDLE: jiaweihq
           TWITCH_HANDLE: jiaweihq

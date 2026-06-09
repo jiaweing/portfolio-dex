@@ -13,6 +13,16 @@
   --sileo-tone-bg: transparent;
 }
 
+:root {
+  --sileo-mobile-bottom-offset: 0px;
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --sileo-mobile-bottom-offset: calc(6rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @property --top-mask-height {
   syntax: "<length>";
   inherits: true;

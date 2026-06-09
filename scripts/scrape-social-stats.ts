@@ -4,7 +4,8 @@
  * Called daily by .github/workflows/update-social-stats.yml
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteerExtra from "puppeteer-extra";
@@ -119,11 +120,18 @@ async function scrapeTikTok(
       timeout: 30_000,
     });
     await new Promise((r) => setTimeout(r, 4000));
-    const text = await page.evaluate(() => {
+    const result = await page.evaluate(() => {
+      const pageText = document.body.innerText;
+      if (
+        /couldn.?t find this account/i.test(`${document.title}\n${pageText}`)
+      ) {
+        return { unavailable: true, text: null };
+      }
       const el = document.querySelector('[data-e2e="followers-count"]');
-      return el?.textContent?.trim() ?? null;
+      return { unavailable: false, text: el?.textContent?.trim() ?? null };
     });
-    return text ? parseCount(text) : null;
+    if (result.unavailable) return 0;
+    return result.text ? parseCount(result.text) : null;
   } catch (e) {
     console.warn("TikTok scrape failed:", e);
     return null;
@@ -289,8 +297,10 @@ async function main() {
     : 0;
   const nextDay = lastDay + 1;
 
+  const userDataDir = mkdtempSync(join(tmpdir(), "portfolio-social-stats-"));
   const browser = await puppeteerExtra.launch({
     headless: true,
+    userDataDir,
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
@@ -315,6 +325,27 @@ async function main() {
   console.log({ youtube, twitch, tiktok, instagram, threads, x });
 
   const prev = getLastSnapshot(source);
+  const scraped = { youtube, twitch, tiktok, instagram, threads, x };
+  const carriedForward = Object.fromEntries(
+    Object.entries(scraped).filter(([, value]) => value === null)
+  );
+
+  if (prev) {
+    console.log("Previous snapshot:", prev);
+    console.log(
+      "Current deltas:",
+      Object.fromEntries(
+        Object.entries(scraped).map(([key, value]) => [
+          key,
+          value === null ? null : value - Number(prev[key] ?? 0),
+        ])
+      )
+    );
+  }
+
+  if (Object.keys(carriedForward).length) {
+    console.warn("Using previous values for failed scrapes:", carriedForward);
+  }
 
   const newEntry = `  {
     day: ${nextDay},
@@ -329,6 +360,12 @@ async function main() {
 
   const lastBracket = source.lastIndexOf("];");
   const updated = source.slice(0, lastBracket) + `${newEntry}\n];\n`;
+
+  if (process.env.DRY_RUN) {
+    console.log("DRY_RUN set; not writing data/social-growth.ts.");
+    console.log(newEntry);
+    return;
+  }
 
   writeFileSync(dataPath, updated, "utf8");
   console.log(`Added Day ${nextDay} stats.`);
