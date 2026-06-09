@@ -259,7 +259,7 @@ export function ProfileBio() {
   return (
     <motion.div
       animate={isInView ? "show" : "hidden"}
-      className="mx-auto max-w-2xl space-y-8 pt-4 text-muted-foreground text-xl leading-relaxed md:text-2xl"
+      className="mx-auto max-w-2xl space-y-8 pt-4 text-muted-foreground text-xl leading-relaxed md:text-2xl lg:pt-16"
       initial="hidden"
       ref={ref}
       variants={containerVariants}
