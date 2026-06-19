@@ -400,4 +400,14 @@ export const socialGrowthData: SocialSnapshot[] = [
     threads: 91,
     x: 219,
   },
+  {
+    day: 33,
+    date: "2026-06-19",
+    tiktok: 0,
+    twitch: 16,
+    youtube: 147,
+    instagram: 51,
+    threads: 91,
+    x: 219,
+  },
 ];
