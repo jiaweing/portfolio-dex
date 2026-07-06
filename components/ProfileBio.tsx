@@ -485,7 +485,7 @@ export function ProfileBio() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            every weekday 2–5PM Singapore time
+            every Tuesday and Thursday 2–5PM Singapore time
           </Link>
           <StackedFavicons
             items={[

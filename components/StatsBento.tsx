@@ -109,9 +109,10 @@ const UnsplashIcon = (
 // Row 2: [18 ventures 2×2] [10 years]
 // Row 3: [4000 jobs wide ] [5 hackathons tall]
 // Row 4: [2 wins][460k   ] [5 hackathons tall]
-// Row 5: [100k YT][860sub] [52k LinkedIn     ]
-// Row 6: [300k Threads 2×2][16800 Threads    ]
-// Row 7: [300k Threads 2×2][6200 Instagram   ]
+// Row 5: [100k YT][870sub] [60k LinkedIn     ]
+// Row 6: [150sub][600k Threads 2×2]
+// Row 7: [320k Threads][600k Threads 2×2]
+// Row 8: [15k Instagram]
 const STATS: StatDef[] = [
   // ── Building ─────────────────────────────────────────────
   {
@@ -206,7 +207,7 @@ const STATS: StatDef[] = [
     href: "https://www.youtube.com/@jiaweihq",
   },
   {
-    target: 860,
+    target: 870,
     suffix: "+",
     label: "YouTube subscribers",
     sublabel: "lifestyle channel",
@@ -214,16 +215,24 @@ const STATS: StatDef[] = [
     href: "https://www.youtube.com/@iam_jiawei",
   },
   {
-    target: 52,
+    target: 60,
     suffix: "k",
     label: "LinkedIn impressions",
     sublabel: "past year",
     icon: LinkedInIcon,
     href: "https://www.linkedin.com/in/jiaweing",
   },
+  {
+    target: 150,
+    suffix: "+",
+    label: "YouTube subscribers",
+    sublabel: "tech channel",
+    icon: YTIcon,
+    href: "https://www.youtube.com/@jiaweihq",
+  },
   // ── Social reach ─────────────────────────────────────────
   {
-    target: 300,
+    target: 600,
     suffix: "k",
     label: "Threads lifetime views",
     sublabel: "and growing",
@@ -233,7 +242,7 @@ const STATS: StatDef[] = [
     href: "https://www.threads.net/@jiaweihq",
   },
   {
-    target: 27,
+    target: 320,
     suffix: "k",
     label: "Threads views",
     sublabel: "past 90 days",
@@ -241,12 +250,11 @@ const STATS: StatDef[] = [
     href: "https://www.threads.net/@jiaweihq",
   },
   {
-    target: 6.2,
+    target: 15,
     suffix: "k",
     label: "Instagram views",
     sublabel: "past 90 days",
     icon: InstagramIcon,
-    decimals: 1,
     href: "https://www.instagram.com/jiaweihq",
   },
 ];
