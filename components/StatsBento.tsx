@@ -124,7 +124,7 @@ const STATS: StatDef[] = [
         alt="Jia Wei"
         className="h-4 w-4 rounded-full object-cover"
         height={16}
-        src="/images/avatars/jiawei.jpg"
+        src="/images/avatars/jiawei2.png"
         width={16}
       />
     ),
@@ -223,7 +223,7 @@ const STATS: StatDef[] = [
     href: "https://www.linkedin.com/in/jiaweing",
   },
   {
-    target: 150,
+    target: 160,
     suffix: "+",
     label: "YouTube subscribers",
     sublabel: "tech channel",
@@ -232,8 +232,9 @@ const STATS: StatDef[] = [
   },
   // ── Social reach ─────────────────────────────────────────
   {
-    target: 600,
-    suffix: "k",
+    target: 1.3,
+    suffix: "m",
+    decimals: 1,
     label: "Threads lifetime views",
     sublabel: "and growing",
     icon: ThreadsIcon,
@@ -242,7 +243,7 @@ const STATS: StatDef[] = [
     href: "https://www.threads.net/@jiaweihq",
   },
   {
-    target: 320,
+    target: 737,
     suffix: "k",
     label: "Threads views",
     sublabel: "past 90 days",

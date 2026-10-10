@@ -17,24 +17,31 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export function GitHubContributions({
   contributions,
   githubProfileUrl,
   hideLabels = false,
+  blockSize = 11,
+  blockMargin = 3,
+  className,
 }: {
   contributions: Promise<Activity[]>;
   githubProfileUrl: string;
   hideLabels?: boolean;
+  blockSize?: number;
+  blockMargin?: number;
+  className?: string;
 }) {
   const data = use(contributions);
 
   return (
     <ContributionGraph
-      blockMargin={3}
+      blockMargin={blockMargin}
       blockRadius={2}
-      blockSize={11}
-      className="mx-auto py-2"
+      blockSize={blockSize}
+      className={cn("mx-auto py-2", className)}
       data={data}
     >
       <ContributionGraphCalendar

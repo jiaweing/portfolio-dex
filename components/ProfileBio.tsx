@@ -269,7 +269,7 @@ export function ProfileBio() {
         <span className="font-normal text-muted-foreground">Hi, I&apos;m </span>
         <TapEgg className="mr-1 align-middle" id="poke">
           <SantaAvatar
-            className="corner-squircle inline-block size-5 align-middle md:size-6.5"
+            className="inline-block size-5 align-middle md:size-6.5"
             hatClassName="-top-3 -left-1 size-7"
           />
         </TapEgg>
@@ -485,6 +485,7 @@ export function ProfileBio() {
       </motion.p> */}
 
       <motion.div variants={itemVariants}>
+        {/* Temporarily hidden
         <p>
           I livestream{" "}
           <Link
@@ -510,6 +511,7 @@ export function ProfileBio() {
             ]}
           />
         </p>
+        */}
         <Suspense>
           <YouTubeLiveBanner />
         </Suspense>

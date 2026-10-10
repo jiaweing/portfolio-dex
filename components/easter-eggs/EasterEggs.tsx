@@ -143,9 +143,13 @@ export function EasterEggs() {
     };
 
     const onFound = (e: Event) => {
-      const { id, count } = (e as CustomEvent<{ id: EggId; count: number }>)
-        .detail;
-      if (count >= TOTAL_EGGS) {
+      const { id, count, seasonal } = (
+        e as CustomEvent<{ id: EggId; count: number; seasonal: boolean }>
+      ).detail;
+      if (seasonal) {
+        setQueue((q) => [...q, { id, count, seasonal }]);
+        setCelebrate((c) => c ?? "small");
+      } else if (count >= TOTAL_EGGS) {
         setQueue([]);
         setRewardOpen(true);
         setCelebrate("big");

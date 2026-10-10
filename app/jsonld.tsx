@@ -13,9 +13,9 @@ export default function JsonLd() {
       url: "https://jiaweing.com",
       image: {
         "@type": "ImageObject",
-        url: "https://jiaweing.com/images/avatars/jiawei.png",
-        width: 400,
-        height: 400,
+        url: "https://jiaweing.com/images/avatars/jiawei2.png",
+        width: 512,
+        height: 512,
       },
       sameAs: [
         "https://github.com/jiaweing",

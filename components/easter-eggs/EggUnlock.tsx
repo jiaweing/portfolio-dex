@@ -5,7 +5,7 @@ import { Egg, Sparkles } from "lucide-react";
 import { useEffect } from "react";
 import { EGGS, type EggId, TOTAL_EGGS } from "@/lib/easter-eggs";
 
-export type Unlock = { id: EggId; count: number };
+export type Unlock = { id: EggId; count: number; seasonal?: boolean };
 
 const DISPLAY_MS = 4500;
 const CRACK_DELAY = 0.7;
@@ -93,7 +93,7 @@ export function EggUnlock({
             <CrackingEgg still={still} />
             <div className="min-w-0 flex-1">
               <p className="font-medium text-[10px] text-muted-foreground uppercase tracking-widest">
-                Easter egg found
+                {unlock.seasonal ? "Seasonal egg found" : "Easter egg found"}
               </p>
               <p className="truncate font-semibold text-lg leading-tight">
                 {egg.name}
@@ -101,26 +101,30 @@ export function EggUnlock({
               <p className="line-clamp-2 text-muted-foreground text-xs leading-snug">
                 {egg.found}
               </p>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-                  <motion.div
-                    animate={{ width: `${(unlock.count / TOTAL_EGGS) * 100}%` }}
-                    className="h-full rounded-full bg-foreground"
-                    initial={{
-                      width: `${((unlock.count - 1) / TOTAL_EGGS) * 100}%`,
-                    }}
-                    transition={{
-                      delay: still ? 0 : CRACK_DELAY + 0.2,
-                      type: "spring",
-                      stiffness: 120,
-                      damping: 16,
-                    }}
-                  />
+              {!unlock.seasonal && (
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                    <motion.div
+                      animate={{
+                        width: `${(unlock.count / TOTAL_EGGS) * 100}%`,
+                      }}
+                      className="h-full rounded-full bg-foreground"
+                      initial={{
+                        width: `${((unlock.count - 1) / TOTAL_EGGS) * 100}%`,
+                      }}
+                      transition={{
+                        delay: still ? 0 : CRACK_DELAY + 0.2,
+                        type: "spring",
+                        stiffness: 120,
+                        damping: 16,
+                      }}
+                    />
+                  </div>
+                  <span className="text-muted-foreground text-xs tabular-nums">
+                    {unlock.count}/{TOTAL_EGGS}
+                  </span>
                 </div>
-                <span className="text-muted-foreground text-xs tabular-nums">
-                  {unlock.count}/{TOTAL_EGGS}
-                </span>
-              </div>
+              )}
             </div>
           </motion.button>
         )}

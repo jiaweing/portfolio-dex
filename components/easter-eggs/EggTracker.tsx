@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Egg, Lock, Trophy } from "lucide-react";
+import { Check, Lock, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Popover,
@@ -8,17 +8,68 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  EGGS,
+  CORE_EGGS,
+  countCore,
+  type Egg,
+  type EggId,
+  isSeason,
   OPEN_TRACKER_EVENT,
+  SEASON_LABEL,
+  SEASONAL_EGGS,
   TOTAL_EGGS,
   useFoundEggs,
 } from "@/lib/easter-eggs";
 import { cn } from "@/lib/utils";
 import { RewardCard } from "./EggReward";
+import { SeasonalEggIcon } from "./SeasonalEggIcon";
+
+function EggRow({ egg, found }: { egg: Egg; found: EggId[] }) {
+  const isFound = found.includes(egg.id);
+  const inSeason = egg.season ? isSeason(egg.season) : true;
+  return (
+    <li className="flex items-start gap-2.5 rounded-xl px-2 py-1.5">
+      <span
+        className={cn(
+          "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[11px]",
+          isFound
+            ? "bg-foreground text-background"
+            : "bg-muted text-muted-foreground"
+        )}
+      >
+        {isFound ? <Check className="size-3" /> : <Lock className="size-2.5" />}
+      </span>
+      <div className="min-w-0 flex-1">
+        <p
+          className={cn(
+            "flex items-center gap-1.5 font-medium text-xs",
+            !isFound && "text-muted-foreground"
+          )}
+        >
+          {isFound ? egg.name : "???"}
+          {egg.season && (
+            <span
+              className={cn(
+                "rounded-full px-1.5 py-px font-normal text-[10px]",
+                inSeason
+                  ? "bg-orange-500/15 text-orange-600 dark:text-orange-400"
+                  : "bg-muted text-muted-foreground"
+              )}
+            >
+              {inSeason ? "in season" : SEASON_LABEL[egg.season]}
+            </span>
+          )}
+        </p>
+        <p className="text-muted-foreground text-xs leading-snug">
+          {isFound ? egg.found : egg.hint}
+        </p>
+      </div>
+    </li>
+  );
+}
 
 export function EggTracker() {
   const found = useFoundEggs();
-  const count = found.length;
+  const count = countCore(found);
   const complete = count >= TOTAL_EGGS;
   const [open, setOpen] = useState(false);
 
@@ -37,7 +88,7 @@ export function EggTracker() {
         {complete ? (
           <Trophy className="size-4" />
         ) : (
-          <Egg className={cn("size-4", count > 0 && "text-foreground")} />
+          <SeasonalEggIcon className={cn(count > 0 && "text-foreground")} />
         )}
         <span className="hidden sm:inline">
           {count}/{TOTAL_EGGS}
@@ -69,48 +120,24 @@ export function EggTracker() {
 
         {complete && <RewardCard />}
 
-        <ul
-          className="-mx-1 max-h-[min(50vh,360px)] space-y-0.5 overflow-y-auto"
+        <div
+          className="-mx-1 max-h-[min(50vh,360px)] overflow-y-auto"
           data-lenis-prevent
         >
-          {EGGS.map((egg) => {
-            const isFound = found.includes(egg.id);
-            return (
-              <li
-                className="flex items-start gap-2.5 rounded-xl px-2 py-1.5"
-                key={egg.id}
-              >
-                <span
-                  className={cn(
-                    "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[11px]",
-                    isFound
-                      ? "bg-foreground text-background"
-                      : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {isFound ? (
-                    <Check className="size-3" />
-                  ) : (
-                    <Lock className="size-2.5" />
-                  )}
-                </span>
-                <div className="min-w-0">
-                  <p
-                    className={cn(
-                      "font-medium text-xs",
-                      !isFound && "text-muted-foreground"
-                    )}
-                  >
-                    {isFound ? egg.name : "???"}
-                  </p>
-                  <p className="text-muted-foreground text-xs leading-snug">
-                    {isFound ? egg.found : egg.hint}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+          <ul className="space-y-0.5">
+            {CORE_EGGS.map((egg) => (
+              <EggRow egg={egg} found={found} key={egg.id} />
+            ))}
+          </ul>
+          <p className="mt-3 mb-1 px-2 font-medium text-[10px] text-muted-foreground uppercase tracking-widest">
+            Seasonal bonus
+          </p>
+          <ul className="space-y-0.5">
+            {SEASONAL_EGGS.map((egg) => (
+              <EggRow egg={egg} found={found} key={egg.id} />
+            ))}
+          </ul>
+        </div>
       </PopoverContent>
     </Popover>
   );

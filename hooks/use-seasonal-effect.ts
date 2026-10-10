@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 
 export const SEASONAL_EVENT = "seasonalEffectChange";
 
-export type SeasonalEffect = "snow" | "confetti" | null;
+export type SeasonalEffect = "snow" | "confetti" | "embers" | null;
 
 function getDateEffect(): SeasonalEffect {
   const now = new Date();
   const month = now.getMonth();
   const date = now.getDate();
+  if (month === 9) return "embers";
   if (month === 11 && date <= 30) return "snow";
   if ((month === 11 && date === 31) || (month === 0 && date === 1))
     return "confetti";

@@ -1,6 +1,9 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { isSeason, type Season } from "@/lib/seasons";
+
+export { isSeason, type Season } from "@/lib/seasons";
 
 export type EggId =
   | "konami"
@@ -16,13 +19,18 @@ export type EggId =
   | "capsule"
   | "bookworm"
   | "comeback"
-  | "copycat";
+  | "copycat"
+  | "ghostbuster"
+  | "hohoho"
+  | "countdown";
 
 export interface Egg {
   id: EggId;
   name: string;
   hint: string;
   found: string;
+  /** Seasonal eggs only unlock on real dates and are a bonus on top of the reward */
+  season?: Season;
 }
 
 export const EGGS: Egg[] = [
@@ -110,9 +118,47 @@ export const EGGS: Egg[] = [
     hint: "Good artists copy.",
     found: "Copied something off the site. Great artists steal.",
   },
+  {
+    id: "ghostbuster",
+    name: "Ghostbuster",
+    hint: "Halloween only. Something is floating up the page. Catch it.",
+    found: "Caught a ghost mid float. Who you gonna call?",
+    season: "halloween",
+  },
+  {
+    id: "hohoho",
+    name: "Ho Ho Ho",
+    hint: "Christmas only. Someone is wearing a festive hat. Give it a tap.",
+    found: "Tapped the Santa hat. Merry Christmas!",
+    season: "christmas",
+  },
+  {
+    id: "countdown",
+    name: "Countdown",
+    hint: "New Year only. Party hats are made for tapping.",
+    found: "Tapped the party hat. Happy new year!",
+    season: "newyear",
+  },
 ];
 
-export const TOTAL_EGGS = EGGS.length;
+export const CORE_EGGS = EGGS.filter((e) => !e.season);
+export const SEASONAL_EGGS = EGGS.filter((e) => e.season);
+export const TOTAL_EGGS = CORE_EGGS.length;
+const CORE_IDS = new Set(CORE_EGGS.map((e) => e.id));
+
+export const SEASON_LABEL: Record<Season, string> = {
+  halloween: "October",
+  christmas: "December",
+  newyear: "Dec 31 to Jan 1",
+};
+
+// Seasonal eggs can only be found while their season is on
+export function findSeasonalEgg(id: EggId, season: Season) {
+  if (isSeason(season)) findEgg(id);
+}
+
+export const countCore = (ids: EggId[]) =>
+  ids.filter((id) => CORE_IDS.has(id)).length;
 export const EGG_FOUND_EVENT = "easterEggFound";
 export const OPEN_TRACKER_EVENT = "easterEggsOpenTracker";
 
@@ -156,7 +202,9 @@ export function findEgg(id: EggId) {
   const next = [...current, id];
   write(next);
   window.dispatchEvent(
-    new CustomEvent(EGG_FOUND_EVENT, { detail: { id, count: next.length } })
+    new CustomEvent(EGG_FOUND_EVENT, {
+      detail: { id, count: countCore(next), seasonal: !CORE_IDS.has(id) },
+    })
   );
 }
 
