@@ -1,19 +1,19 @@
 "use client";
 
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import * as React from "react";
-import { SpeechHighlightProvider } from "@/components/notion/SpeechHighlightContext";
+import { SpeechHighlightProvider } from "@/components/content/SpeechHighlightContext";
 import { FadeIn } from "@/components/ui/fade-in";
 import { useSpeechSynthesis } from "@/hooks/use-speech-synthesis";
+import type { Block } from "@/lib/blocks";
 import { toSpeechText } from "@/lib/speech-text";
 import { TextToSpeechControls } from "./TextToSpeechControls";
 
 interface BlogTextToSpeechProps {
-  blocks: BlockObjectResponse[];
+  blocks: Block[];
   children: React.ReactNode;
 }
 
-function extractTextFromBlocks(blocks: BlockObjectResponse[]): string {
+function extractTextFromBlocks(blocks: Block[]): string {
   let text = "";
 
   for (const block of blocks) {

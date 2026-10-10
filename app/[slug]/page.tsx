@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ContentRenderer } from "@/components/ContentRenderer";
 import { ScrollProgress } from "@/components/core/scroll-progress";
-import { NotionRenderer } from "@/components/NotionRenderer";
 import { FadeIn } from "@/components/ui/fade-in";
+import { extractDescriptionFromBlocks, getPage, getPages } from "@/lib/content";
 import { generatePageMetadata } from "@/lib/metadata";
-import { extractDescriptionFromBlocks, getPage, getPages } from "@/lib/notion";
 import { highlightCode } from "@/lib/shiki";
 
 export const revalidate = 3600;
@@ -79,7 +79,7 @@ export default async function GenericPage({
       {blocks && blocks.length > 0 && (
         <FadeIn delay={0.2} duration={0.5}>
           <div className="mb-16">
-            <NotionRenderer
+            <ContentRenderer
               blocks={blocks}
               highlightedCodeMap={highlightedCodeMap}
             />

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getBlogPosts } from "@/lib/notion";
+import { getBlogPosts } from "@/lib/content";
 
 export const revalidate = 1800;
 

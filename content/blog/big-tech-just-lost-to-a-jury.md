@@ -1,0 +1,62 @@
+---
+title: "Big Tech just lost to a jury"
+date: "2026-03-27"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["Tech"]
+tagColors: {"Tech":"orange"}
+postTags: []
+---
+
+On March 25, 2026, a Los Angeles jury did something no jury had done before: it found Meta and Google negligent for designing social media platforms that harmed a child. The plaintiff, a 20-year-old woman identified as Kaley (K.G.M.), was awarded \$6 million, split between \$3 million in compensatory damages and \$3 million in punitive damages. Meta shouldered 70% of the liability, YouTube the remaining 30%.
+The dollar figure is almost beside the point. This was a bellwether trial, the first of more than 20 scheduled over the next two years, drawn from a consolidated group of over 1,600 plaintiffs including more than 350 families and 250 school districts. TikTok and Snap settled with the plaintiff before the trial even began. The verdict is expected to shape the trajectory of roughly 2,000 pending lawsuits.
+This is the moment social media stops being "just a platform."
+## Why bellwether verdicts matter
+A bellwether trial is a legal test case. Courts use them in mass litigation to gauge how juries react to the core arguments before hundreds or thousands of similar cases go forward. The outcome sets expectations for both sides, often accelerating settlements or defining the legal theories that will dominate future proceedings.
+In this case, the jury found that Meta and YouTube were negligent in the design and operation of their platforms, that their negligence was a substantial factor in causing harm, and that they failed to adequately warn users of the dangers. Ten of twelve jurors agreed on each count.
+The next bellwether trial is scheduled for July. A separate series of federal lawsuits with hundreds of plaintiffs is set to begin in San Francisco in June. The legal pipeline is full, and the first data point now favors the plaintiffs.
+## The "platform vs. publisher" defense is crumbling
+For years, tech companies have leaned on Section 230 of the Communications Decency Act, which broadly shields online platforms from liability for content posted by users. The argument: we are platforms, not publishers, and we cannot be held responsible for what people share.
+But the plaintiffs in this trial did something clever. They focused on platform design rather than content. The claim was not that Meta or Google published harmful material. It was that they engineered products with features like infinite scroll, autoplay, algorithmic recommendations, and notification systems that were deliberately designed to maximize engagement, and that these design choices made the platforms addictive and dangerous for young users.
+This reframing matters. When the liability attaches to the product's design rather than to any specific piece of content, Section 230's protections become far less relevant. As Reuters noted, the plaintiff's focus on platform design "may make liability harder to avert for companies" going forward.
+Google's defense, that "YouTube is a responsibly built streaming platform, not a social media site," and Meta's argument that "teen mental health is profoundly complex and cannot be linked to a single app," did not persuade the jury. Both companies have said they plan to appeal.
+## The tobacco playbook
+The comparisons to Big Tobacco are not just rhetorical. CNN called the verdict a "Big Tobacco moment." Public Citizen declared it "Social Media's Big Tobacco Moment." PBS noted that experts see the reckoning as "reminiscent of cases against tobacco and opioid markets."
+The arc is familiar. For decades, tobacco companies denied the health risks of smoking, funded counter-research, and lobbied against regulation. Then came the lawsuits. Individual cases turned into class actions. State attorneys general piled on. The 1998 Master Settlement Agreement forced the industry to pay \$206 billion over 25 years and fundamentally changed how cigarettes were marketed and sold.
+Social media appears to be mid-arc. The denial phase, where companies insisted their products were neutral tools, is ending. Internal documents showing that companies understood the harms have surfaced (Meta's own research on Instagram's effects on teen girls being a notable example). Now the courtroom phase has begun in earnest.
+The timeline is compressed, though. Tobacco litigation took decades to produce systemic change. Social media companies face a much faster-moving legal and regulatory environment, with multiple jurisdictions acting simultaneously.
+## The real defendant is the algorithm
+Here is the irony that makes this verdict particularly significant: the core liability is not about the content users post. It is about the AI-powered recommendation engines that decide what users see.
+Kaley's lawyers argued that features like algorithmic feeds, infinite scroll, and autoplay were designed to be as addictive as "digital casinos." The platforms did not just host content, they actively curated and pushed it in ways optimized for engagement rather than wellbeing.
+This distinction has implications far beyond social media. If recommendation algorithms can create product liability, the legal exposure extends to any platform that uses AI to surface, prioritize, or personalize content. The Algorithm Accountability Act, introduced in the U.S. Senate, already seeks to amend Section 230 to impose a "duty of care" on companies that use recommendation-based algorithms.
+The shift is from "what did the user post?" to "what did the algorithm promote, and why?"
+## Second-order effects
+The direct financial impact of this verdict is modest. Six million dollars is rounding error for companies with combined market capitalizations in the trillions. But the downstream consequences could be substantial.
+**Insurance and risk pricing.** As verdicts accumulate, the cost of insuring platform companies against design liability will rise. Directors and officers insurance, product liability coverage, and general commercial policies will all need to account for a new category of legal exposure.
+**Design changes driven by legal risk.** Companies are more likely to implement meaningful safety features when the alternative is billions in potential liability. Expect to see more friction in onboarding for minors, more conservative algorithmic defaults for younger users, and more aggressive age verification, not because of ethical awakening, but because of actuarial math.
+**Compliance costs as barrier to entry.** This is where the verdict gets interesting for startups. Building social features now comes with a growing compliance burden: age verification, content moderation, algorithmic auditing, and the legal overhead to defend against design liability claims. These costs are manageable for Meta and Google. They are potentially prohibitive for a five-person startup trying to build the next social app. The verdict may inadvertently entrench incumbents by raising the floor for what it costs to operate in this space.
+## The Singapore angle
+Singapore has been ahead of the curve on platform accountability, taking a regulatory rather than litigation-driven approach.
+The Online Safety (Relief and Accountability) Act 2025, passed in November 2025, establishes the Office of the Commissioner of Online Safety and gives victims the right to claim directly against online platforms for specified harms. The existing Code of Practice for Online Safety, in effect since 2023, already requires social media platforms to provide restricted account settings and parental management tools, with fines of up to S\$1 million for non-compliance.
+By March 2026, Google was required to implement age assurance restrictions on products including Search, Maps, and Gemini in Singapore, automatically filtering explicit content for users estimated to be under 18. Malaysia has gone further, announcing a ban on social media accounts for children under 16.
+The US verdict and Singapore's regulatory approach represent two different theories of change. The US relies on litigation, letting juries determine liability case by case, which is slow, expensive, and unpredictable but can produce enormous financial penalties. Singapore relies on proactive regulation, setting rules before harm occurs, which is faster and more systematic but depends on the government's ability to anticipate the right requirements.
+Neither approach is clearly superior. But the US verdict may accelerate the global trend toward the Singapore model. When courts start assigning billion-dollar liabilities, companies tend to prefer the certainty of regulation to the uncertainty of juries.
+## What happens next
+This verdict will not be the end of Big Tech. Meta and Google will appeal. They will adapt their products, their legal strategies, and their lobbying efforts. They have the resources to absorb significant legal costs while continuing to operate.
+The more important question is what kind of adaptation this forces. If the legal pressure primarily produces cosmetic safety features, parental controls that are easy to bypass, age gates that are trivially defeated, then the verdict will be remembered as a symbolic moment rather than a structural one.
+But if the accumulation of verdicts, settlements, and regulatory actions shifts the fundamental incentive structure, if engagement-maximizing algorithms become genuine legal liabilities rather than abstract ethical concerns, then March 25, 2026, may be remembered as the day the social media industry's relationship with accountability permanently changed.
+The jury has spoken. Now we wait to see if anyone actually listens.
+## References
+1. [Jury orders Meta and Google to pay woman \$6 million in social media addiction trial](https://www.npr.org/2026/03/25/nx-s1-5746125/meta-youtube-social-media-trial-verdict), NPR, March 25, 2026
+2. [Meta, Google lose US case over social media harm to kids](https://www.reuters.com/legal/litigation/jury-reaches-verdict-meta-google-trial-social-media-addiction-2026-03-25/), Reuters, March 25, 2026
+3. [Meta and YouTube found liable in landmark social media addiction trial](https://www.bbc.com/news/articles/c747x7gz249o), BBC News, March 25, 2026
+4. [Meta and YouTube designed addictive products that harmed young people, jury finds](https://www.theguardian.com/media/2026/mar/25/jury-verdict-us-first-social-media-addiction-trial-meta-youtube), The Guardian, March 25, 2026
+5. [Meta and YouTube Found Negligent in Landmark Social Media Addiction Trial](https://www.nytimes.com/2026/03/25/technology/social-media-trial-verdict.html), The New York Times, March 25, 2026
+6. [Big Tech critics hail 'Big Tobacco moment' in landmark social media verdict](https://edition.cnn.com/2026/03/25/media/meta-google-social-media-verdict-advocates), CNN, March 25, 2026
+7. [Historic California Verdict Against Meta and Google Marks Social Media's Big Tobacco Moment](https://www.citizen.org/news/historic-california-verdict-against-meta-and-google-marks-social-medias-big-tobacco-moment/), Public Citizen, March 25, 2026
+8. [Jury finds Meta and YouTube negligent in landmark lawsuit on social media safety](https://www.nbcnews.com/tech/tech-news/verdict-reached-landmark-social-media-addiction-trial-rcna263421), NBC News, March 25, 2026
+9. [Jury in Los Angeles finds Meta, YouTube negligent in social media addiction trial](https://www.cnbc.com/2026/03/25/meta-youtube-los-angeles-california-verdict.html), CNBC, March 25, 2026
+10. [Instagram and YouTube found liable in landmark social media addiction trial in California](https://www.pbs.org/newshour/nation/instagram-and-youtube-found-liable-in-landmark-social-media-addiction-trial-in-california), PBS News, March 25, 2026
+11. [Singapore's Online Safety (Relief and Accountability) Act 2025](https://sso.agc.gov.sg/Act/OSRAA2025), Singapore Statutes Online
+12. [Liability for Algorithmic Recommendations](https://www.congress.gov/crs-product/R47753), Congressional Research Service
+13. [Congressman Patronis Urges Congress to Repeal Section 230 After Social Media Negligence Verdict](https://patronis.house.gov/media/press-releases/congressman-patronis-urges-congress-to-repeal-section-230-after-social-media-negligence-verdict), March 25, 2026
+14. [Google to screen, block S'pore users under 18 from inappropriate apps by March 2026](https://www.straitstimes.com/singapore/google-to-screen-block-users-under-18-from-inappropriate-apps-by-march-2026), The Straits Times

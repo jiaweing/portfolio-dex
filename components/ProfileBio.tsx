@@ -13,6 +13,7 @@ import {
 import profileData from "@/data/profile.json";
 import { cn } from "@/lib/utils";
 import { Quotes } from "./core/quotes";
+import { HoldEgg, TapEgg } from "./easter-eggs/EggTriggers";
 import { SlidingNumber } from "./motion-primitives/sliding-number";
 import { TextShimmer } from "./motion-primitives/text-shimmer";
 import { SantaAvatar } from "./SantaAvatar";
@@ -266,11 +267,16 @@ export function ProfileBio() {
     >
       <motion.p variants={itemVariants}>
         <span className="font-normal text-muted-foreground">Hi, I&apos;m </span>
-        <SantaAvatar
-          className="corner-squircle mr-1 inline-block size-5 align-middle md:size-6.5"
-          hatClassName="-top-3 -left-1 size-7"
-        />
-        <span className="text-black text-foreground dark:text-white">
+        <TapEgg className="mr-1 align-middle" id="poke">
+          <SantaAvatar
+            className="corner-squircle inline-block size-5 align-middle md:size-6.5"
+            hatClassName="-top-3 -left-1 size-7"
+          />
+        </TapEgg>
+        <HoldEgg
+          className="text-black text-foreground dark:text-white"
+          id="hold"
+        >
           <TextShimmer
             className="inline-block"
             duration={1.2}
@@ -278,7 +284,7 @@ export function ProfileBio() {
           >
             Jia Wei Ng
           </TextShimmer>
-        </span>{" "}
+        </HoldEgg>{" "}
         <span className="whitespace-nowrap text-lg text-muted-foreground">
           (Jay,{" "}
           <SlidingNumber
@@ -301,13 +307,15 @@ export function ProfileBio() {
           Singapore)
         </span>
         , a founder, designer & engineer
-        <Image
-          alt="Fire"
-          className="corner-squircle mx-1 inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
-          height={30}
-          src="/images/icons/Fire.png"
-          width={30}
-        />
+        <TapEgg className="mx-1 align-text-bottom" effect="flare" id="fire">
+          <Image
+            alt="Fire"
+            className="corner-squircle inline-block align-text-bottom transition-transform duration-300 hover:scale-110"
+            height={30}
+            src="/images/icons/Fire.png"
+            width={30}
+          />
+        </TapEgg>
       </motion.p>
 
       <motion.p variants={itemVariants}>

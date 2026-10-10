@@ -28,6 +28,7 @@ const geistMono = Geist_Mono({
 import { Suspense } from "react";
 import { AgentationProvider } from "@/components/agentation-provider";
 import { BackToTop } from "@/components/BackToTop";
+import { EasterEggs } from "@/components/easter-eggs/EasterEggs";
 import { OpenSourceToast } from "@/components/open-source-toast";
 import { QueryProvider } from "@/components/QueryProvider";
 import { SileoToaster } from "@/components/SileoToaster";
@@ -202,6 +203,7 @@ export default function RootLayout({
             <SileoToaster />
             <OpenSourceToast />
             <BackToTop />
+            <EasterEggs />
             <Suspense>
               <YouTubeLiveFloat />
             </Suspense>

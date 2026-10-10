@@ -1,0 +1,65 @@
+---
+title: "Anthropic was winning.. until"
+date: "2026-04-06T22:13:00.000+08:00"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: []
+---
+
+A few months ago, the narrative was clean. Anthropic was the developer's company. Claude was the better model. Claude Code was the better tool. OpenAI was scrambling to catch up, bloated by its own ambitions, distracted by video generators and billion-dollar Disney deals. The story wrote itself.
+Then Anthropic started making it really hard to root for them. And OpenAI, briefly, looked like they might actually figure it out. And then they didn't.
+This is the story of two companies that keep getting in their own way.
+## Anthropic's lead was real
+The numbers from early 2026 were staggering. According to Ramp's AI Index, Anthropic was winning roughly 70% of head-to-head matchups against OpenAI among businesses purchasing AI services for the first time. A year earlier, only one in 25 businesses on the platform paid for Anthropic. By March 2026, it was nearly one in four.
+Claude Code had become the default coding tool for serious developers. Not because of marketing, but because it worked where developers already lived, in the terminal, with minimal friction. Boris Cherny, head of Claude Code, described the philosophy to Wired: "We built the simplest possible thing." No elaborate IDE plugins. No cloud orchestration layer. Just an agent that reads your codebase and helps you code.
+Wired published a feature titled "Inside OpenAI's Race to Catch Up to Claude Code." The biggest name in AI was playing catch-up in the most valuable AI use case. Anthropic had none of OpenAI's distribution advantages, no ChatGPT-scale user base, no household name recognition, no deep enterprise relationships, and they were winning anyway.
+Sometimes product experience is so good it becomes distribution.
+## Then they started sneaking around
+I wrote about this in detail in a previous post, but the short version is: Anthropic spent the first quarter of 2026 systematically undermining the trust they had built with developers.
+They quietly updated their Claude Code documentation to restrict OAuth tokens to only Claude Code and [Claude.ai](http://Claude.ai), effectively banning their own Agent SDK from working with subscription plans. When the developer community panicked, Anthropic said "nothing is changing." Then they blocked third-party tools like OpenCode, Cline, and RooCode from authenticating with subscription tokens overnight. They sent legal demands to OpenCode, a project with over 125,000 GitHub stars, forcing them to strip all Claude subscription authentication.
+The usage limits saga was worse. Developers reported burning through weekly limits in two days of normal usage. I experienced this myself, vanilla Claude Code on Sonnet, no plugins, no MCP, no skills. Just coding. Gone in two days. Their response was that people kept using Opus. The Register reported claims of a roughly 60% reduction in token limits, with speculation it was tied to cost cuts ahead of a potential IPO.
+Then their entire Claude Code source leaked via a npm package, revealing "Undercover Mode," a system that tells the model to never disclose it's an AI when Anthropic employees contribute to open-source repos. The system built to prevent leaks became the leak.
+Each incident alone might be forgivable. Together, they paint a picture of a company that says one thing and does another.
+## OpenAI's brief moment of clarity
+While Anthropic was busy alienating developers, something interesting happened at OpenAI. They actually started shipping good developer tools.
+Codex went from a rough prototype to a legitimately competitive coding agent. GPT-5 brought meaningful improvements to code quality, and developers in real-world comparisons started noting that Codex had "caught up BIG time." One developer testing both tools on a 500,000-line codebase said they "even preferred it to Claude Code in some implementations."
+OpenAI doubled Codex rate limits for a two-month promotional period from February to April 2026. Developers on the OpenAI forums were genuinely enthusiastic after the April 1st reset, with one heavy user reporting they could push through 30+ deep tasks without hitting the 5-hour limit. The developer experience improved dramatically, with plugins support, MCP integration, and a multi-interface approach covering CLI, web, and IDE.
+For a brief window, OpenAI looked like a company that had found its focus. The enterprise pivot was working. Codex was generating over \$1 billion in annualized revenue. The developer experience gap was closing.
+Then they did what OpenAI always does.
+## Sora, Atlas, and the pattern
+On March 24, 2026, OpenAI announced it was shutting down Sora, its AI video generation tool, just six months after launching it with enormous fanfare. The \$1 billion Disney deal that was supposed to anchor the platform? Cancelled. Disney's investment remained unpaid and no formal licensing agreement had been reached.
+According to the Wall Street Journal, the real explanation was straightforward: Sora was a money pit that nobody was using, and keeping it alive was costing OpenAI the AI race. The company that raised \$122 billion at an \$852 billion valuation couldn't sustain a video product that didn't find its audience.
+Then there's Atlas, OpenAI's ChatGPT browser that launched with ambitions to rethink how we use the web. Prior to December 2025, Atlas received regular updates. Since December 18, it hasn't received a single one. For a Chromium-based browser, that's not just negligence, it's a security liability. Users on Reddit are openly asking whether OpenAI has abandoned it.
+This is the OpenAI pattern. Launch with spectacle, lose interest, quietly let it rot. Remember the hype around GPT Store? The plugins ecosystem? The voice mode that was supposed to change everything? OpenAI announces products like a country announces infrastructure projects: with great ceremony and questionable follow-through.
+## I tried both, here's the truth
+I've been running real tasks through both Claude Code and Codex for weeks now, not benchmarks, not toy projects, actual production work across the same codebases.
+Claude is still better at almost everything.
+For greenfield projects, Claude Code gets into a flow state that Codex can't match. Opus is significantly faster than GPT-5 in visible output. The model understands context better, writes more production-ready code, and handles complex multi-file refactoring with less hand-holding. On SWE-Bench Verified, Claude Opus 4.6 leads at 80.8% compared to Codex's 64.7%.
+Codex has real strengths, particularly in debugging and code review. Developers have found that GPT-5 catches logical errors that Claude sometimes misses. And the rate limits are genuinely more generous right now. But the overall experience of building with Claude is still ahead, not by the margin it was six months ago, but meaningfully.
+The frustrating part is that Anthropic's product advantage keeps getting undermined by Anthropic's business decisions. You can have the best model in the world, but if your paying customers can't reliably use it because you've slashed their limits and locked down their tooling, the benchmark scores don't matter.
+## Two companies, same problem
+Here's the thing nobody wants to admit: both companies are kind of a mess right now.
+Anthropic has the better product and the worse business practices. They built the trust, then spent Q1 2026 burning it down. Silent limit reductions, legal threats against open-source projects, a source code leak that revealed they were hiding AI contributions in public repos. The model is great. The company behind it is making it really hard to justify the subscription.
+OpenAI has the bigger platform and the shorter attention span. They doubled Codex limits and improved the developer experience, showing they can execute when focused. Then they killed Sora, abandoned Atlas, and reminded everyone that OpenAI's strategy is to throw products at the wall and see what sticks, while running a projected \$14 billion loss in 2026.
+Developers are stuck in the middle. The tool that works best comes from a company you can't quite trust. The company with more resources keeps getting distracted. And neither one can seem to maintain the consistency that professional developers need to build reliable workflows around.
+## Where this actually goes
+The optimistic read is that competition fixes these problems. Anthropic sees developers defecting to Codex over rate limits and reverses course. OpenAI sees Anthropic's product quality and doubles down on Codex instead of launching more doomed side projects. Developers benefit from both companies trying harder.
+The realistic read is that we're in the awkward middle phase of the AI tools market, where the products are good enough to build workflows around but the companies behind them are still figuring out their business models in real time. Rate limits will keep changing. Terms of service will keep shifting. Products will keep launching and dying.
+The practical takeaway is simple: don't bet everything on one provider. Use Claude Code for the complex work where it excels. Use Codex for review and debugging where GPT-5 shines. Keep your workflows portable. And don't get too attached to any company's promises about what their product will look like next month.
+Because if the first quarter of 2026 has taught us anything, it's that Anthropic was winning, until they decided to stop acting like it. And OpenAI was catching up, until they remembered they'd rather build five things badly than one thing well.
+## References
+1. Ramp, "AI Index March 2026 update" ([https://ramp.com/velocity/ai-index-march-2026](https://ramp.com/velocity/ai-index-march-2026))
+2. Maxwell Zeff, "Inside OpenAI's Race to Catch Up to Claude Code," Wired, March 11, 2026 ([https://www.wired.com/story/openai-codex-race-claude-code/](https://www.wired.com/story/openai-codex-race-claude-code/))
+3. Maxwell Zeff, "How Claude Code Is Reshaping Software, and Anthropic," Wired, 2026 ([https://www.wired.com/story/claude-code-success-anthropic-business-model/](https://www.wired.com/story/claude-code-success-anthropic-business-model/))
+4. "Claude devs complain about surprise usage limits," The Register, January 2026 ([https://www.theregister.com/2026/01/05/claude_devs_usage_limits/](https://www.theregister.com/2026/01/05/claude_devs_usage_limits/))
+5. "Here's what that Claude Code source leak reveals about Anthropic's plans," Ars Technica, April 2026 ([https://arstechnica.com/ai/2026/04/heres-what-that-claude-code-source-leak-reveals-about-anthropics-plans/](https://arstechnica.com/ai/2026/04/heres-what-that-claude-code-source-leak-reveals-about-anthropics-plans/))
+6. "Anthropic cracks down on unauthorized Claude usage by third-party harnesses and rivals," VentureBeat ([https://venturebeat.com/technology/anthropic-cracks-down-on-unauthorized-claude-usage-by-third-party-harnesses](https://venturebeat.com/technology/anthropic-cracks-down-on-unauthorized-claude-usage-by-third-party-harnesses))
+7. "Why OpenAI really shut down Sora," TechCrunch, March 29, 2026 ([https://techcrunch.com/2026/03/29/why-openai-really-shut-down-sora/](https://techcrunch.com/2026/03/29/why-openai-really-shut-down-sora/))
+8. "OpenAI Is Shutting Down Sora, Its A.I. Video Generator," The New York Times, March 24, 2026 ([https://www.nytimes.com/2026/03/24/technology/openai-shutting-down-sora.html](https://www.nytimes.com/2026/03/24/technology/openai-shutting-down-sora.html))
+9. "Is Atlas still in development?" Reddit r/OpenAI ([https://www.reddit.com/r/OpenAI/comments/1qbs9zh/is_atlas_still_in_development/](https://www.reddit.com/r/OpenAI/comments/1qbs9zh/is_atlas_still_in_development/))
+10. "CODEX LIMITS, FINALLY GOOD after April 1st reset," OpenAI Developer Community, April 2026 ([https://community.openai.com/t/codex-limits-finally-good-after-april-1st-reset/1378333](https://community.openai.com/t/codex-limits-finally-good-after-april-1st-reset/1378333))
+11. "Codex vs Claude Code: The Complete 2026 Comparison for Developers," Leanware ([https://www.leanware.co/insights/codex-vs-claude-code](https://www.leanware.co/insights/codex-vs-claude-code))
+12. "Codex CLI vs Claude Code (adding features to a 500k codebase)," Reddit r/ChatGPTCoding ([https://www.reddit.com/r/ChatGPTCoding/comments/1n8c82u/codex_cli_vs_claude_code_adding_features_to_a/](https://www.reddit.com/r/ChatGPTCoding/comments/1n8c82u/codex_cli_vs_claude_code_adding_features_to_a/))
+13. OpenAI, "OpenAI's own forecast predicts \$14 billion loss in 2026," Yahoo Finance ([https://finance.yahoo.com/news/openais-own-forecast-predicts-14-150445813.html](https://finance.yahoo.com/news/openais-own-forecast-predicts-14-150445813.html))
+14. "OpenAI Enters Its Focus Era by Killing Sora," Wired, March 2026 ([https://www.wired.com/story/openai-shuts-down-sora-ipo-ai-superapp/](https://www.wired.com/story/openai-shuts-down-sora-ipo-ai-superapp/))

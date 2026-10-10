@@ -1,0 +1,59 @@
+---
+title: "The model size arms race is over"
+date: "2026-04-06"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: []
+---
+
+Claude Mythos 5 has 10 trillion parameters. Google's TurboQuant compression algorithm cuts memory needs by 6x. These two headlines landed in the same news cycle, and only one of them points to where AI is actually going.
+For years, the AI industry has operated under a simple assumption: bigger is better. More parameters, more data, more compute. And for a while, that was true. Scaling up models from millions to billions of parameters delivered genuine leaps in capability. But we've entered a new phase, one where the scoreboard is changing and the players who understand efficiency will win.
+## The diminishing returns of scale
+The original scaling laws were intoxicating. Double the parameters, get meaningfully better outputs. Research teams raced to build bigger models, and each new release came with a headline about how many billions (now trillions) of parameters it contained.
+But the math has shifted. A growing body of research shows that the relationship between model size and performance follows a curve of diminishing returns. The jump from 1 billion to 10 billion parameters was transformative. The jump from 1 trillion to 10 trillion? Much less so. A 2026 MIT study found that algorithmic progress in LLMs doubles effective computational resources roughly every eight months, meaning that smaller models with better algorithms are rapidly closing the gap with their massive counterparts.
+Anthropic's leaked Claude Mythos, described internally as "a step change" in AI performance, is reportedly the most capable model they've ever built. But the interesting question isn't how big it is. It's whether the capabilities it demonstrates could have been achieved more efficiently, and when that efficiency threshold will arrive.
+## Google's TurboQuant is the real story
+While everyone was debating parameter counts, Google Research quietly dropped TurboQuant, a compression algorithm that achieves a 6x reduction in key-value cache memory and up to 8x faster attention computation on H100 GPUs. No retraining needed. No fine-tuning. It works on existing models like Gemma and Mistral out of the box.
+That last point matters enormously. TurboQuant isn't a theoretical improvement that requires rebuilding your infrastructure. It's a software-level breakthrough that makes every existing model more efficient overnight. The technique uses a novel form of vector quantization to clear cache bottlenecks in AI processing, essentially allowing models to remember more information while using less space and maintaining accuracy.
+The market noticed. Memory chip stocks dropped after the announcement because the entire "we need more HBM" narrative suddenly had a crack in it. If a software breakthrough can eliminate 6x of your hardware demand, the economics of the industry shift beneath your feet.
+## We've seen this movie before
+The computing industry has played out this exact pattern before. In the early days of processors, the CISC (Complex Instruction Set Computing) philosophy dominated. Pack more instructions into each chip, make each instruction do more. Raw power was the metric that mattered.
+Then RISC (Reduced Instruction Set Computing) came along in the 1980s and flipped the script. By simplifying instructions and optimizing for speed per cycle, RISC processors achieved better real-world performance with less complexity. The IBM 801, the Stanford MIPS project, and Berkeley's RISC research all proved the same thing: doing less per instruction but doing it faster and more efficiently won in the end.
+The same shift happened with mainframes to distributed systems, with monolithic software to microservices, and with early digital cameras where more megapixels was the only spec that mattered until it wasn't. Every technology follows the same arc: early growth rewards raw scale, and maturity rewards efficiency.
+AI is entering its maturity phase.
+## Small models are quietly winning
+Google's Gemma 4 family is a perfect case study. The 31-billion-parameter model currently ranks as the #3 open model on the Arena AI text leaderboard. The smaller E4B edge model exceeds Gemma 3 27B on most benchmarks at roughly one-sixth the size. On the AIME 2026 math benchmark, the 31B model scores 89.2% compared to 20.8% for the previous generation's 27B model.
+Read that again: a model that's roughly the same size as its predecessor scores four times higher on a challenging math benchmark. That's not a scaling victory. That's an architecture and training victory.
+Gartner predicts that by 2027, organizations will use small, task-specific AI models at least three times more than general-purpose LLMs. The reasons are straightforward: lower cost, faster inference, better accuracy within their domain, and the ability to run on edge devices without cloud dependency.
+I keep coming back to a principle I think about a lot: one agent, one job. You don't need 10 trillion parameters to summarize a meeting. You don't need a model that can write poetry, debug Rust, and generate legal briefs if all you need is a customer support assistant that handles refund requests. Right-sizing your model to the task isn't a compromise. It's good engineering.
+## The real competition has moved
+The metrics that matter now aren't parameter counts. They're inference cost per query, latency at scale, reliability across edge cases, and how cleanly a model integrates into existing workflows. These are the boring, practical things that determine whether AI actually delivers value, or just makes for impressive demos.
+Consider the economics. If TurboQuant-style compression becomes standard (and there's no reason it won't, since it's open research), then running a 30-billion-parameter model becomes dramatically cheaper. Combine that with architectural improvements like Gemma 4's hybrid attention mechanism, which interleaves local sliding window attention with full global attention, and you get models that are simultaneously smaller, faster, and smarter.
+The companies that win in the next phase of AI won't be the ones with the biggest models. They'll be the ones that deliver the most intelligence per dollar, per watt, per millisecond.
+## The marketing problem
+There's a reason the arms race persisted as long as it did: bigger numbers are easier to sell. "10 trillion parameters" is a headline. "6x more efficient memory utilization through novel vector quantization" is a whitepaper.
+This is the megapixel problem all over again. For years, camera companies sold consumers on the idea that more megapixels meant better photos. Doubling from 5 to 10 megapixels sounds like it should double your image quality, but in practice it only adds about 20% more area to each edge of the print. The real improvements, sensor quality, lens optics, image processing, were harder to quantify and harder to market.
+AI is in the same spot. The public-facing narrative is still dominated by parameter counts because they're easy to compare. But the practitioners, the people actually building and deploying these systems, have already moved on. They're optimizing for throughput, cost, and task-specific accuracy.
+## Don't dismiss scale entirely
+To be clear, this isn't an argument that large models are useless. Some tasks genuinely benefit from scale. Complex multi-step reasoning, broad world knowledge, nuanced creative writing, these capabilities tend to improve with model size. Claude Mythos, whatever its final form, will likely excel at tasks that smaller models can't touch.
+The point isn't that small is always better. It's that the industry's default assumption, that bigger is always better, is breaking down. The right question is no longer "how big is your model?" but "how well does your model fit the job?"
+Within two years, bragging about parameter count will feel like bragging about megapixels. The spec sheet will still list the number, but nobody who understands the technology will use it as their primary decision criterion.
+## What this means in practice
+If you're building with AI today, the shift toward efficiency creates real opportunities:
+- **Evaluate small models first.** A fine-tuned GPT-4o-mini can match GPT-4o accuracy on specific tasks at 2% of the cost. Start small and scale up only when the task demands it.
+- **Watch the compression space.** TurboQuant is just the beginning. Quantization and pruning techniques are advancing rapidly, and they compound with each other.
+- **Think about deployment, not just training.** The models that matter are the ones that run reliably in production, not the ones that top leaderboards in controlled benchmarks.
+- **Bet on efficiency curves.** The cost of running inference is dropping faster than the cost of training new models. Optimize for where the economics are heading, not where they are today.
+The model size arms race served its purpose. It pushed the frontier of what AI could do and proved that intelligence could emerge from scale. But that chapter is closing. The next chapter belongs to the engineers and researchers who can do more with less, and that's always been the more interesting story.
+## References
+1. Sapien, "When Bigger Isn't Better: The Diminishing Returns of Scaling AI Models" [https://www.sapien.io/blog/when-bigger-isnt-better-the-diminishing-returns-of-scaling-ai-models](https://www.sapien.io/blog/when-bigger-isnt-better-the-diminishing-returns-of-scaling-ai-models)
+2. MIT IDE, "AI: Why Meek, Low-Budget Models Could Soon..." (January 2026) [https://ide.mit.edu/wp-content/uploads/2026/01/Meek_Models_Jan2026.pdf](https://ide.mit.edu/wp-content/uploads/2026/01/Meek_Models_Jan2026.pdf)
+3. Google Research, "TurboQuant: Redefining AI Efficiency with Extreme Compression" [https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/](https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/)
+4. Ars Technica, "Google's TurboQuant AI-compression algorithm can reduce LLM memory usage by 6x" [https://arstechnica.com/ai/2026/03/google-says-new-turboquant-compression-can-lower-ai-memory-usage-without-sacrificing-quality/](https://arstechnica.com/ai/2026/03/google-says-new-turboquant-compression-can-lower-ai-memory-usage-without-sacrificing-quality/)
+5. Fortune, "Exclusive: Anthropic acknowledges testing new AI model representing 'step change' in capabilities" (March 2026) [https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/](https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/)
+6. Google Blog, "Gemma 4: Our most capable open models to date" [https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/](https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/)
+7. Forbes, "Google's Gemma 4 Runs Frontier AI On A Single GPU" [https://www.forbes.com/sites/janakirammsv/2026/04/04/googles-gemma-4-runs-frontier-ai-on-a-single-gpu/](https://www.forbes.com/sites/janakirammsv/2026/04/04/googles-gemma-4-runs-frontier-ai-on-a-single-gpu/)
+8. Intelegain, "SLMs vs LLMs in 2026: Why Businesses Are Choosing Smaller, Specialized AI Models" [https://www.intelegain.com/slms-vs-llms-in-2026-why-businesses-are-choosing-smaller-specialized-ai-models/](https://www.intelegain.com/slms-vs-llms-in-2026-why-businesses-are-choosing-smaller-specialized-ai-models/)
+9. arXiv, "The Race to Efficiency: A New Perspective on AI Scaling Laws" [https://arxiv.org/abs/2501.02156](https://arxiv.org/abs/2501.02156)
+10. OpenAI, "Model Selection Guide" [https://platform.openai.com/docs/guides/model-selection](https://platform.openai.com/docs/guides/model-selection)

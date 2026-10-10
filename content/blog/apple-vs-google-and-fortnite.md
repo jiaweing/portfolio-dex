@@ -1,0 +1,46 @@
+---
+title: "Apple vs Google and.. Fortnite?"
+date: "2026-04-03T20:08:00.000+08:00"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["Tech"]
+tagColors: {"Tech":"orange"}
+postTags: []
+---
+
+In August 2020, Epic Games did something nobody expected. It deliberately broke the rules of both Apple's App Store and Google's Play Store by adding a direct payment option to Fortnite, bypassing the platforms' 30% commission. Within hours, both Apple and Google removed Fortnite from their stores. Within days, Epic had filed lawsuits against both companies.
+What followed was a five-year legal saga that has fundamentally reshaped how mobile app stores work, and revealed just how differently Apple and Google have responded to the same existential threat to their walled gardens.
+## The 30% tax
+For over a decade, both Apple and Google charged developers a 30% commission on in-app purchases. If you bought a \$10 skin in Fortnite, \$3 went to the platform. For context, payment processors like Stripe charge roughly 3% for the same transaction. That is a 10x markup, and developers had no choice but to accept it because the App Store and Play Store were the only way to reach users on iOS and Android.
+Epic's CEO Tim Sweeney had been vocal about this for years. But in 2020, he decided to force the issue. Epic added its own direct payment option in Fortnite, offering players a 20% discount for bypassing Apple and Google's payment systems. It was a calculated move designed to provoke exactly the response it got.
+## Two lawsuits, two very different outcomes
+### Apple: the harder wall
+The Apple case went to a bench trial in 2021. The district court ruled that Apple was not a monopolist under federal antitrust law, but that its "anti-steering" provisions violated California's Unfair Competition Law. In plain terms, Apple could keep its 30% fee, but it could not stop developers from telling users about cheaper ways to pay outside the app.
+Both sides appealed. In January 2024, the Supreme Court declined to hear the case, leaving the lower court ruling in place. But Apple dragged its feet on compliance. In 2025, the court found Apple in contempt for its half-hearted implementation, and an appeals court upheld that finding in December 2025, ruling that Apple could no longer collect fees on purchases made outside of apps.
+As of early 2026, the dust is still settling. Developers can now link to external payment options in their iOS apps, but Apple continues to push back on the boundaries of what it owes and what it can still charge.
+### Google: the smarter exit
+Google's case took a different path. A San Francisco jury sided with Epic in December 2023, finding that Google had illegally maintained a monopoly over Android app distribution. An appeals court upheld that verdict in 2025, and a judge began enforcing structural remedies that would have forced Google to open up the Play Store in ways it never wanted.
+Rather than fight to the bitter end, Google chose to settle. In March 2026, Google and Epic announced a comprehensive agreement that reshaped the Play Store's economics. Here is the clever part: Google split its old 30% fee into two distinct charges. A 20% "service fee" for the privilege of distributing through the Play Store, and an optional 5% "billing fee" for using Google's payment processing. Subscriptions dropped to a 10% service fee plus the optional 5% billing fee.
+The message is clear. If a developer wants to use Stripe or another payment processor to avoid Google's billing fee, they are welcome to do so. But they still owe Google 20% for distribution. That is still far more expensive than Stripe's roughly 3%, but it reframes the conversation. Google is no longer charging for payment processing. It is charging for access to hundreds of millions of Android users, for Play Store search ranking, for automatic updates, for security reviews.
+It is a smart move because it makes the comparison to Stripe irrelevant. Stripe is a payment processor. Google is positioning itself as a distribution platform. You would not compare a landlord's rent to a credit card processing fee.
+## Walled gardens, different bricks
+Apple and Google both built walled gardens, but the walls are made of different materials.
+Apple's wall is architectural. iOS simply does not allow sideloading apps or alternative app stores (except under regulatory pressure in the EU). If you want to reach iPhone users, you go through Apple. Period.
+Google's wall was always more economic than technical. Android has always allowed sideloading. You can install apps from anywhere. But Google made the Play Store so convenient, and the alternatives so friction-filled with scary security warnings, that most users never bothered. The monopoly was maintained not through technical lockdown but through design choices that steered behavior.
+This difference explains why Google was more willing to settle. Its moat was never as deep as Apple's. Once a court ordered Google to stop making alternative stores feel dangerous, the game changed. Google's best move was to lower prices just enough to keep developers from leaving, while restructuring fees in a way that still extracts significant value.
+## What it means for developers
+The practical impact is already visible. Stripe published guides showing iOS developers how to implement external payment flows, potentially saving up to 90% in fees compared to Apple's old system. On Android, developers can now choose their own payment processor while still distributing through the Play Store.
+But "cheaper" does not mean "free." Using Stripe means building and maintaining your own checkout experience, handling customer support for payment issues, and managing the complexity of multiple payment flows. For small developers, the simplicity of letting Apple or Google handle everything might still be worth the premium. For larger developers processing millions in transactions, the math tips heavily toward alternative payment processors.
+## The bigger picture
+What started as a fight about Fortnite skins has become a referendum on platform economics. The core question is simple: how much should a platform charge for access to its users?
+Apple's answer is still "as much as we can get away with," and it is fighting every inch of regulatory and judicial ground. Google's answer has evolved into something more nuanced: "enough to reflect the value of distribution, but not so much that developers and regulators come after us again."
+Epic did not win everything it wanted. Fortnite is back on both platforms, but neither Apple nor Google was forced to allow fully unrestricted app distribution. The walled gardens still stand. They just have a few more gates now, and the toll to pass through them is a little lower.
+For consumers, the effects will be gradual. Lower platform fees should eventually translate into lower prices or better content, but only if competitive pressure keeps pushing in that direction. For now, the most tangible change is that you can buy your Fortnite V-Bucks without a 30% markup baked into the price.
+## References
+1. Epic Games, Inc. v. Apple Inc., No. 4:20-cv-05640 (N.D. Cal.), [https://law.justia.com/cases/federal/appellate-courts/ca9/25-2935/25-2935-2025-12-11.html](https://law.justia.com/cases/federal/appellate-courts/ca9/25-2935/25-2935-2025-12-11.html)
+2. Epic Games v. Google, Wikipedia, [https://en.wikipedia.org/wiki/Epic_Games_v._Google](https://en.wikipedia.org/wiki/Epic_Games_v._Google)
+3. "Google settles with Epic Games with offer to lower its app store commissions," Associated Press, March 4, 2026, [https://abc7.com/post/fortnite-maker-epic-games-google-say-settling-5-year-legal-fight-android-app-store/18116677/](https://abc7.com/post/fortnite-maker-epic-games-google-say-settling-5-year-legal-fight-android-app-store/18116677/)
+4. "Google embraces third party app stores and payments," The Register, March 5, 2026, [https://www.theregister.com/2026/03/05/google_play_store_concessios/](https://www.theregister.com/2026/03/05/google_play_store_concessios/)
+5. "Stripe shows iOS developers how to avoid Apple's App Store commission," TechCrunch, May 1, 2025, [https://techcrunch.com/2025/05/01/stripe-shows-ios-developers-how-to-avoid-apples-app-store-commission/](https://techcrunch.com/2025/05/01/stripe-shows-ios-developers-how-to-avoid-apples-app-store-commission/)
+6. "Apple wins partial reversal of sanctions in Epic Games antitrust lawsuit," Reuters, December 11, 2025, [https://www.reuters.com/sustainability/boards-policy-regulation/us-appeals-court-partly-reverses-sanctions-against-apple-epic-games-antitrust-2025-12-11/](https://www.reuters.com/sustainability/boards-policy-regulation/us-appeals-court-partly-reverses-sanctions-against-apple-epic-games-antitrust-2025-12-11/)
+7. "Stripe vs App Stores: Fee Structures Compared," Mirava, [https://www.mirava.io/blog/stripe-vs-app-stores-fee-structures-compared](https://www.mirava.io/blog/stripe-vs-app-stores-fee-structures-compared)
+8. "Changes to Google Play Store Rules," Stripe Support, [https://support.stripe.com/questions/changes-to-google-play-store-rules](https://support.stripe.com/questions/changes-to-google-play-store-rules)

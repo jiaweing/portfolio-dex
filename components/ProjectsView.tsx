@@ -1,15 +1,15 @@
 "use client";
 
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { Gamepad2, Layers, WalletCards } from "lucide-react";
 import { MemoryGame } from "@/components/MemoryGame";
 import { ProjectsCardStack } from "@/components/ProjectsCardStack";
 import { ProjectsGallery } from "@/components/ProjectsGallery";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Project } from "@/lib/notion";
+import type { Block } from "@/lib/blocks";
+import type { Project } from "@/lib/content";
 
 interface ProjectsViewProps {
-  projects: (Project & { blocks: BlockObjectResponse[] })[];
+  projects: (Project & { blocks: Block[] })[];
 }
 
 export function ProjectsView({ projects }: ProjectsViewProps) {

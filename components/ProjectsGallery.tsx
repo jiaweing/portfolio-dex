@@ -1,16 +1,16 @@
 "use client";
 
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { FadeIn } from "@/components/ui/fade-in";
-import type { Project } from "@/lib/notion";
+import type { Block } from "@/lib/blocks";
+import type { Project } from "@/lib/content";
 
 interface ProjectsGalleryProps {
-  projects: (Project & { blocks: BlockObjectResponse[] })[];
+  projects: (Project & { blocks: Block[] })[];
 }
 
 export function ProjectsGallery({ projects }: ProjectsGalleryProps) {
@@ -89,7 +89,7 @@ function ProjectCard({
   project,
   index,
 }: {
-  project: Project & { blocks: BlockObjectResponse[] };
+  project: Project & { blocks: Block[] };
   index: number;
 }) {
   // Motion values for 3D tilt
@@ -148,7 +148,7 @@ function ProjectCard({
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+                  src={project.cover}
                   unoptimized
                 />
               ) : (
@@ -168,7 +168,7 @@ function ProjectCard({
                       className="h-full w-full object-cover"
                       fill
                       sizes="40px"
-                      src={`/api/notion-image?pageId=${project.id}&prop=logo`}
+                      src={project.logo}
                       unoptimized
                     />
                   </div>

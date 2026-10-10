@@ -9,7 +9,10 @@ const LEFT_ITEMS = [
   { name: "Projects", href: "/projects", icon: FolderGit2 },
 ];
 
-const RIGHT_ITEMS = [{ name: "About", href: "/about", icon: User }];
+const RIGHT_ITEMS = [
+  { name: "Books", href: "/books", icon: BookOpen },
+  { name: "About", href: "/about", icon: User },
+];
 
 export function MobileBottomNav() {
   const pathname = usePathname();

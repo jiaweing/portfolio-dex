@@ -1,7 +1,7 @@
 import { ProjectsView } from "@/components/ProjectsView";
 import { FadeIn } from "@/components/ui/fade-in";
+import { getProject, getProjects } from "@/lib/content";
 import { generateMetadata } from "@/lib/metadata";
-import { getProject, getProjects } from "@/lib/notion";
 
 export const metadata = generateMetadata({
   title: "Projects",

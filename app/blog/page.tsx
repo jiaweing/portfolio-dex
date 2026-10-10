@@ -1,6 +1,6 @@
 import { BlogPostList } from "@/components/blog/BlogPostList";
+import { getBlogPosts } from "@/lib/content";
 import { generateMetadata } from "@/lib/metadata";
-import { getBlogPosts } from "@/lib/notion";
 
 export const revalidate = 3600;
 

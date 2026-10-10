@@ -15,9 +15,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getBlogPosts, getProjects } from "@/lib/content";
 import { getCachedContributions } from "@/lib/get-cached-contributions";
 import { generateMetadata } from "@/lib/metadata";
-import { getBlogPosts, getProjects } from "@/lib/notion";
 
 export const metadata = generateMetadata({
   title: "a founder, designer & engineer",

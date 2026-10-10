@@ -1,7 +1,7 @@
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 
-// Map Notion language names → Shiki lang IDs
+// Map code block language names to Shiki lang IDs
 const LANGUAGE_MAP: Partial<Record<string, BundledLanguage>> = {
   abap: "abap",
   bash: "bash",
@@ -67,28 +67,28 @@ const LANGUAGE_MAP: Partial<Record<string, BundledLanguage>> = {
   "java/c/c++/c#": "java",
 };
 
-function resolveLanguage(notionLang: string): BundledLanguage | null {
+function resolveLanguage(lang: string): BundledLanguage | null {
   if (
-    !notionLang ||
-    notionLang === "plain text" ||
-    notionLang === "ascii art" ||
-    notionLang === "notion formula" ||
-    notionLang === "bnf" ||
-    notionLang === "ebnf" ||
-    notionLang === "glsl" ||
-    notionLang === "livescript" ||
-    notionLang === "llvm ir"
+    !lang ||
+    lang === "plain text" ||
+    lang === "ascii art" ||
+    lang === "notion formula" ||
+    lang === "bnf" ||
+    lang === "ebnf" ||
+    lang === "glsl" ||
+    lang === "livescript" ||
+    lang === "llvm ir"
   ) {
     return null;
   }
-  return LANGUAGE_MAP[notionLang.toLowerCase()] ?? null;
+  return LANGUAGE_MAP[lang.toLowerCase()] ?? null;
 }
 
 export async function highlightCode(
   code: string,
-  notionLang: string
+  language: string
 ): Promise<string | null> {
-  const lang = resolveLanguage(notionLang);
+  const lang = resolveLanguage(language);
   if (!lang) return null;
 
   try {

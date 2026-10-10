@@ -1,14 +1,12 @@
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { blockToPlainText } from "@/lib/notion";
+import type { Block } from "@/lib/blocks";
+import { blockToPlainText } from "@/lib/content";
 
-function renderBlocks(blocks: BlockObjectResponse[], depth = 0): string[] {
+function renderBlocks(blocks: Block[], depth = 0): string[] {
   const lines: string[] = [];
 
   for (const block of blocks) {
     const children =
-      "children" in block
-        ? (block.children as BlockObjectResponse[] | undefined)
-        : undefined;
+      "children" in block ? (block.children as Block[] | undefined) : undefined;
 
     switch (block.type) {
       case "heading_1":
@@ -71,7 +69,7 @@ export function createBlogMarkdown(params: {
   date: string;
   tags: string[];
   url: string;
-  blocks: BlockObjectResponse[];
+  blocks: Block[];
 }): string {
   const frontmatter = [
     "---",

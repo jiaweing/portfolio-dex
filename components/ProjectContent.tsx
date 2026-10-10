@@ -1,18 +1,18 @@
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import {
   ArrowRight01Icon as ArrowRight,
   LinkSquare02Icon as ExternalLink,
 } from "hugeicons-react";
 import Link from "next/link";
-import { NotionRenderer } from "@/components/NotionRenderer";
+import { ContentRenderer } from "@/components/ContentRenderer";
 import ProjectGallery from "@/components/project-gallery";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FadeIn } from "@/components/ui/fade-in";
-import type { Project } from "@/lib/notion";
+import type { Block } from "@/lib/blocks";
+import type { Project } from "@/lib/content";
 
 interface ProjectContentProps {
   project: Project;
-  blocks: BlockObjectResponse[];
+  blocks: Block[];
   showHeader?: boolean;
   showLink?: boolean;
 }
@@ -40,7 +40,7 @@ export function ProjectContent({
                       <AvatarImage
                         alt={project.title}
                         className="object-cover"
-                        src={`/api/notion-image?pageId=${project.id}&prop=logo`}
+                        src={project.logo}
                       />
                       <AvatarFallback>{project.title[0]}</AvatarFallback>
                     </Avatar>
@@ -125,12 +125,9 @@ export function ProjectContent({
         <FadeIn delay={0.3}>
           <ProjectGallery
             images={[
-              project.cover
-                ? `/api/notion-image?pageId=${project.id}&prop=cover`
-                : null,
+              project.cover ? project.cover : null,
               ...(project.screenshots || []).map(
-                (_, i) =>
-                  `/api/notion-image?pageId=${project.id}&prop=screenshot&index=${i}`
+                (_, i) => project.screenshots[i]
               ),
             ].filter((img): img is string => !!img)}
           />
@@ -141,7 +138,7 @@ export function ProjectContent({
       {blocks && blocks.length > 0 && (
         <FadeIn delay={0.5}>
           <div className="mt-12">
-            <NotionRenderer blocks={blocks} />
+            <ContentRenderer blocks={blocks} />
           </div>
         </FadeIn>
       )}

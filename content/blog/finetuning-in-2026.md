@@ -1,0 +1,58 @@
+---
+title: "Finetuning in 2026"
+date: "2026-03-25T13:03:00.000+08:00"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: []
+---
+
+For the past couple of years, the default answer to "how do I customize an LLM?" has been the same: just use RAG. Retrieval-augmented generation became the Swiss Army knife of AI engineering, and for good reason. It is flexible, relatively simple to set up, and keeps your model's knowledge fresh without retraining anything.
+But somewhere along the way, the conversation around finetuning went quiet. Teams stopped asking whether they should finetune and started assuming they shouldn't. RAG became the hammer, and every problem looked like a nail.
+In 2026, that assumption is worth revisiting. The landscape has shifted. Finetuning costs have dropped dramatically, tooling has matured to the point where you don't need a PhD to run a training job, and the frontier model improvements are flattening out. For the first time, there is a compelling case that finetuning is not just useful, but necessary for certain classes of problems.
+## Why RAG became the default
+RAG earned its dominance fairly. The core idea is elegant: instead of baking knowledge into model weights, you retrieve relevant documents at inference time and inject them into the prompt. This means your system can answer questions using the freshest data available without ever touching the model itself.
+For enterprise use cases, this was a revelation. Support teams could wire up their knowledge bases. Legal departments could query contract databases. Product teams could search internal documentation. All without the expense, complexity, or risk of modifying a foundation model.
+RAG also offered something finetuning could not: auditability. When a RAG system produces an answer, you can trace it back to the exact passages that were retrieved. This makes debugging straightforward and governance significantly easier.
+The practical result was that most teams settled into a pattern: pick a frontier model, build a retrieval pipeline, iterate on chunking and embedding strategies, and call it done. For many applications, this worked well enough.
+## Where RAG falls short
+The problem is that "well enough" has a ceiling, and many teams are hitting it.
+RAG struggles when the issue is not about what the model knows, but how the model behaves. If your application needs a very specific output format, a consistent tone, domain-specific reasoning patterns, or the ability to follow complex multi-step instructions reliably, retrieval cannot solve those problems. You can stuff context windows with examples and system prompts, but you are fighting the model's defaults rather than reshaping them.
+There are also latency and cost concerns. Every RAG call requires a retrieval step, reranking, context assembly, and then a longer prompt with all that injected context. At scale, those extra tokens add up. Some production systems report that 60 to 80 percent of their token spend is context, not generation.
+Perhaps most importantly, RAG introduces architectural complexity that compounds over time. Chunking strategies, embedding model selection, vector database maintenance, reranking pipelines, metadata filtering, all of these are surfaces where things can quietly degrade. When retrieval quality dips, the model appears to hallucinate, even though the model itself is fine.
+## The case for finetuning in 2026
+Finetuning solves a fundamentally different problem than RAG. Where RAG augments what a model can access, finetuning changes what a model is. It modifies the weights themselves so the model natively understands your domain vocabulary, follows your output conventions, and reasons in patterns specific to your use case.
+The argument against finetuning used to be straightforward: it was expensive, required specialized expertise, and any investment could be obsoleted within months by the next frontier model release. All three of those objections have weakened considerably.
+On cost, parameter-efficient techniques like LoRA and QLoRA have made it possible to finetune models on a single consumer GPU. You are not retraining billions of parameters. You are training a small set of adapter weights that modify the model's behavior while leaving the vast majority of the original weights frozen. The practical cost of a finetuning run has dropped from tens of thousands of dollars to hundreds, sometimes less.
+On expertise, tooling has caught up. Frameworks like Unsloth, Axolotl, and TorchTune have streamlined the training pipeline to the point where the hardest part is curating a good dataset, not configuring the infrastructure.
+On obsolescence, the pace of frontier model improvement has slowed. The jump from GPT-3 to GPT-4 was transformative. The jump from GPT-4 to GPT-5 was incremental. Meanwhile, open-weights models from Meta, Alibaba, and others have closed much of the gap. If the base model you finetune today is still competitive in six months, your investment in training data and adapter weights carries forward.
+Laurie Voss captured this shift well in late 2025, predicting that 2026 would be "the year of fine-tuned small models." His argument is that as frontier model improvements diminish, companies will seek differentiation by finetuning smaller, cheaper models on proprietary data, rather than competing on UX around the same foundation model everyone else is using.
+There is evidence this is already happening. Cursor uses multiple small, finetuned models for different parts of the coding workflow. Airbnb has publicly discussed finetuning for specific internal tasks. The pattern is the same: use a smaller model that is deeply adapted to your problem, rather than a massive general-purpose model that approximates it.
+## Unsloth Studio and the democratization of finetuning
+One of the clearest signals that finetuning has crossed a usability threshold is the release of Unsloth Studio in March 2026. Unsloth was already well-known in the open-source community for its training library, which delivers 2x faster training speeds and 70% less VRAM usage through custom Triton kernels. Studio takes that foundation and wraps it in a no-code, browser-based interface.
+The pitch is simple: you can go from a raw PDF or CSV to a finetuned model without writing a single line of code. Studio handles dataset creation through what it calls "Data Recipes," a visual node-based workflow that transforms unstructured documents into properly formatted training data. It supports supervised finetuning as well as GRPO, the reinforcement learning technique behind DeepSeek-R1's reasoning capabilities.
+What makes Studio notable is not any single feature, but the overall reduction in friction. You load a base model, upload your documents, configure training with sensible defaults, monitor loss curves in real time, and export the result to GGUF or safetensors for deployment. The entire loop, from data to deployed model, runs locally on a single machine.
+This matters because the bottleneck for finetuning was never really the algorithm. It was the toolchain. Setting up CUDA environments, managing dependencies, writing data preprocessing scripts, debugging mysterious training failures, all of that overhead pushed finetuning out of reach for most teams. When the tooling removes that overhead, finetuning becomes a practical option for anyone with a GPU and a dataset.
+## When to finetune and when to retrieve
+The honest answer is that RAG and finetuning are not competing approaches. They solve different problems, and the most effective systems in 2026 tend to use both.
+Finetuning is the right choice when your problem is behavioral. If the model needs to consistently produce a specific output format, use domain terminology correctly, follow a particular reasoning pattern, or maintain a voice and tone that prompt engineering cannot reliably enforce, finetuning addresses those issues at the weight level. It is also the right choice when you are optimizing for latency and cost at scale, since a finetuned model can internalize patterns that would otherwise require long system prompts and retrieved context.
+RAG is the right choice when your problem is informational. If the model needs access to knowledge that changes frequently, if traceability is important for compliance, or if the scope of possible queries is broad enough that no training set could cover it, retrieval is the more practical architecture.
+The hybrid pattern, which has become the default recommendation among practitioners, looks like this: finetune for style and reasoning, retrieve for facts. The finetuned model knows how to behave. The retrieval layer tells it what to talk about. This separation of concerns keeps each component focused and independently improvable.
+A practical decision framework comes down to a few questions:
+1. **Is the failure about knowledge or behavior?** If the model gives wrong facts, improve retrieval. If it gives right facts in the wrong format or tone, consider finetuning.
+2. **How stable is your domain?** If your data changes weekly, retrieval handles that naturally. If your behavioral requirements are stable, a finetuned model can serve them reliably for months.
+3. **What is your query volume?** At low volumes, the overhead of finetuning may not be justified. At high volumes, the per-query savings from a smaller, finetuned model can be substantial.
+4. **Do you have good training data?** Finetuning is only as good as your dataset. If you do not have hundreds of high-quality examples of the behavior you want, start with RAG and prompt engineering while you build that dataset.
+## The practical path forward
+If you have been defaulting to RAG for everything, 2026 is a good year to reconsider. Start by auditing your failure modes. If your system is struggling with consistency, format compliance, or domain-specific reasoning despite good retrieval, those are signals that finetuning could help.
+You do not need to go all-in. The parameter-efficient approach means you can run a finetuning experiment in a day on a single GPU, compare the results against your current system, and make a data-driven decision. Tools like Unsloth Studio have reduced the barrier to entry enough that finetuning is no longer a major infrastructure project. It is an experiment you can run this week.
+The models are cheaper. The tools are better. The frontier is flattening. If there was ever a time to revisit finetuning, it is now.
+## References
+1. [Unsloth Studio documentation](https://unsloth.ai/docs/new/studio)
+2. [Unsloth AI Releases Studio: A Local No-Code Interface for High-Performance LLM Fine-Tuning, MarkTechPost](https://www.marktechpost.com/2026/03/17/unsloth-ai-releases-studio-a-local-no-code-interface-for-high-performance-llm-fine-tuning-with-70-less-vram-usage/)
+3. [2026 is the year of fine-tuned small models, Laurie Voss](https://seldo.com/posts/2026-is-the-year-of-fine-tuned-small-models/)
+4. [RAG vs Fine-Tuning: When to Use Each Approach in 2026, ArtificialPlaza](https://artificialplaza.com/rag-vs-fine-tuning-when-to-use-each-approach-2026/)
+5. [RAG vs. Fine-Tuning vs. Hybrid: Choosing the Right AI Architecture, Actian](https://www.actian.com/blog/databases/should-you-use-rag-or-fine-tune-your-llm/)
+6. [How to Fine-Tune LLMs in 2026: Costs, GPUs, and Code, Spheron](https://www.spheron.network/blog/how-to-fine-tune-llm-2026/)
+7. [Prompting vs. RAG vs. fine-tuning: Why it's not a ladder, The New Stack](https://thenewstack.io/prompting-vs-rag-vs-fine-tuning-why-its-not-a-ladder/)
+8. [RAG vs. fine-tuning vs. prompt engineering, IBM](https://www.ibm.com/think/topics/rag-vs-fine-tuning-vs-prompt-engineering)

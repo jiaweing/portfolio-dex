@@ -4,12 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProjectContent } from "@/components/ProjectContent";
 import { FadeIn } from "@/components/ui/fade-in";
-import { generateProjectMetadata, siteConfig } from "@/lib/metadata";
 import {
   extractDescriptionFromBlocks,
   getProject,
   getProjects,
-} from "@/lib/notion";
+} from "@/lib/content";
+import { generateProjectMetadata, siteConfig } from "@/lib/metadata";
 
 export const revalidate = 60; // Revalidate every minute
 

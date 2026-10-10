@@ -30,6 +30,7 @@ import {
   CommandList,
   CommandShortcut,
 } from "@/components/ui/command";
+import { findEgg } from "@/lib/easter-eggs";
 
 interface CommandPaletteProps {
   open: boolean;
@@ -158,7 +159,12 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
       open={open}
       title="Search"
     >
-      <CommandInput placeholder="Search pages..." />
+      <CommandInput
+        onValueChange={(value) => {
+          if (value.trim().toLowerCase().includes("ryu")) findEgg("search");
+        }}
+        placeholder="Search pages..."
+      />
       <CommandList className="relative z-10 -mt-4 max-h-none overflow-y-hidden rounded-2xl border-foreground/10 border-t bg-popover bg-clip-padding sm:border-b [&_[cmdk-group-heading]]:px-4 [&_[cmdk-group]]:p-0 [&_[cmdk-item]]:rounded-none [&_[cmdk-item]]:px-4">
         <ScrollFadeEffect className="max-h-[min(60vh,420px)]">
           <CommandEmpty>No results found.</CommandEmpty>

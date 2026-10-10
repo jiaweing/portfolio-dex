@@ -1,23 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
-import type { Project } from "@/lib/notion";
+import type { Project } from "@/lib/content";
 
 interface AppDeckProps {
   projects: Project[];
 }
 
+const HOME_PROJECT_LIMIT = 32;
+
 export function AppDeck({ projects }: AppDeckProps) {
   const mainProjects = projects.filter(
     (p) => p.status?.toLowerCase() !== "open source"
-  );
-  const openSource = projects.filter(
-    (p) => p.status?.toLowerCase() === "open source"
   );
 
   return (
@@ -32,7 +29,7 @@ export function AppDeck({ projects }: AppDeckProps) {
             all {mainProjects.length} →
           </Link>
         </div>
-        <AppGrid offset={0} projects={mainProjects} />
+        <AppGrid projects={mainProjects.slice(0, HOME_PROJECT_LIMIT)} />
       </div>
 
       {/* open source section temporarily hidden
@@ -55,142 +52,66 @@ export function AppDeck({ projects }: AppDeckProps) {
   );
 }
 
-function AppGrid({
-  projects,
-  offset,
-}: {
-  projects: Project[];
-  offset: number;
-}) {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const [placeholders, setPlaceholders] = useState(0);
-
-  useEffect(() => {
-    const el = gridRef.current;
-    if (!el) return;
-    const update = () => {
-      const cols = getComputedStyle(el).gridTemplateColumns.split(" ").length;
-      const rem = projects.length % cols;
-      setPlaceholders(rem === 0 ? 0 : cols - rem);
-    };
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [projects.length]);
-
+function AppGrid({ projects }: { projects: Project[] }) {
   return (
-    <>
-      <div
-        className="grid grid-cols-4 gap-x-3 gap-y-5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8"
-        ref={gridRef}
-      >
-        {projects.map((project, index) => (
-          <AppIcon index={offset + index} key={project.id} project={project} />
-        ))}
-        {Array.from({ length: placeholders }).map((_, i) => (
-          <HolePlaceholder
-            index={offset + projects.length + i}
-            key={`hole-${i}`}
-          />
-        ))}
-      </div>
-    </>
+    <div className="grid grid-cols-4 gap-x-3 gap-y-5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8">
+      {projects.map((project, index) => (
+        <AppIcon isEager={index < 8} key={project.id} project={project} />
+      ))}
+    </div>
   );
 }
 
-function HolePlaceholder({ index }: { index: number }) {
-  return (
-    <motion.div
-      animate={{ opacity: 1 }}
-      className="flex flex-col items-center gap-1.5"
-      initial={{ opacity: 0 }}
-      transition={{ delay: index * 0.04, duration: 0.4 }}
-    >
-      <div className="aspect-square w-full rounded-[22%] bg-muted" />
-      <div className="h-[13px]" />
-    </motion.div>
-  );
-}
-
-function AppIcon({ project, index }: { project: Project; index: number }) {
+function AppIcon({ project, isEager }: { project: Project; isEager: boolean }) {
   const [faviconError, setFaviconError] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [hasMoved, setHasMoved] = useState(false);
-  const router = useRouter();
   const href = `/projects/${project.slug}`;
+  let icon = <GenerativeGradient title={project.title} />;
+
+  if (project.logo) {
+    icon = (
+      <Image
+        alt={project.title}
+        className="pointer-events-none h-full w-full object-cover"
+        draggable={false}
+        fill
+        priority={isEager}
+        sizes="72px"
+        src={project.logo}
+        unoptimized
+      />
+    );
+  } else if (project.url && !faviconError) {
+    icon = (
+      <FaviconIcon
+        onError={() => setFaviconError(true)}
+        title={project.title}
+        url={project.url}
+      />
+    );
+  }
 
   return (
-    // Outer cell: holds space in grid, hole lives here absolutely behind
     <div className="relative flex flex-col items-center gap-1.5">
-      {/* Hole — absolute, revealed when icon lifts */}
-      <div
-        className="absolute top-0 right-0 left-0 aspect-square rounded-[22%] bg-muted transition-opacity duration-150"
-        style={{
-          opacity: isDragging || hasMoved ? 1 : 0,
-        }}
-      />
-
-      <motion.div
-        animate={{ opacity: 1 }}
-        className="relative w-full cursor-grab active:cursor-grabbing"
-        drag
-        initial={{ opacity: 0 }}
-        onDragEnd={(_, info) => {
-          setIsDragging(false);
-          if (Math.abs(info.offset.x) < 4 && Math.abs(info.offset.y) < 4) {
-            setHasMoved(false);
-            router.push(href);
-          } else {
-            setHasMoved(true);
-          }
-        }}
-        onDragStart={() => setIsDragging(true)}
-        style={{ zIndex: isDragging ? 9999 : hasMoved ? 100 : 1 }}
-        transition={{ delay: index * 0.04, duration: 0.4 }}
-        whileDrag={{ scale: 1.15 }}
-        whileHover={{
-          scale: 1.1,
-          transition: { type: "spring", stiffness: 400, damping: 15 },
-        }}
-        whileTap={{ scale: 0.9 }}
+      <Link
+        className="relative block w-full transition-transform duration-150 hover:scale-105 active:scale-95"
+        href={href}
       >
         <div
           className="relative aspect-square w-full select-none overflow-hidden rounded-[22%]"
-          onDragStart={(e) => e.preventDefault()}
           style={
             {
-              boxShadow: isDragging
-                ? "0 12px 32px rgba(0,0,0,0.28), 0 4px 8px rgba(0,0,0,0.18)"
-                : "0 2px 8px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)",
+              boxShadow:
+                "0 2px 8px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12)",
               WebkitUserDrag: "none",
             } as React.CSSProperties
           }
         >
-          {project.logo ? (
-            <Image
-              alt={project.title}
-              className="pointer-events-none h-full w-full object-cover"
-              draggable={false}
-              fill
-              sizes="72px"
-              src={`/api/notion-image?pageId=${project.id}&prop=logo`}
-              unoptimized
-            />
-          ) : project.url && !faviconError ? (
-            <FaviconIcon
-              onError={() => setFaviconError(true)}
-              title={project.title}
-              url={project.url}
-            />
-          ) : (
-            <GenerativeGradient title={project.title} />
-          )}
+          {icon}
         </div>
         <p className="mt-1 w-full select-none truncate text-center font-medium text-[11px] text-foreground/80 leading-tight">
           {project.title}
         </p>
-      </motion.div>
+      </Link>
     </div>
   );
 }

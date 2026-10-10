@@ -1,15 +1,15 @@
 "use client";
 
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
 import { ProjectContent } from "@/components/ProjectContent";
-import type { Project } from "@/lib/notion";
+import type { Block } from "@/lib/blocks";
+import type { Project } from "@/lib/content";
 
 interface ProjectModalProps {
   project: Project;
-  blocks: BlockObjectResponse[];
+  blocks: Block[];
 }
 
 export function ProjectModal({ project, blocks }: ProjectModalProps) {

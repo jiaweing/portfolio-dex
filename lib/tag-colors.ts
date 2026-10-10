@@ -15,7 +15,7 @@ const TAG_COLOR_CLASSES = [
   "bg-rose-500",
 ] as const;
 
-const NOTION_TAG_COLOR_CLASS_MAP: Record<string, string> = {
+const TAG_COLOR_CLASS_MAP: Record<string, string> = {
   default: "bg-gray-500",
   gray: "bg-gray-500",
   brown: "bg-amber-700",
@@ -28,12 +28,9 @@ const NOTION_TAG_COLOR_CLASS_MAP: Record<string, string> = {
   red: "bg-red-500",
 };
 
-export function getTagColorClass(
-  tag: string,
-  notionColor?: string | null
-): string {
-  if (notionColor) {
-    const mapped = NOTION_TAG_COLOR_CLASS_MAP[notionColor.toLowerCase()];
+export function getTagColorClass(tag: string, color?: string | null): string {
+  if (color) {
+    const mapped = TAG_COLOR_CLASS_MAP[color.toLowerCase()];
     if (mapped) return mapped;
   }
 

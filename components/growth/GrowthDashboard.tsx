@@ -9,7 +9,7 @@ import {
   PLATFORMS,
   socialGrowthData,
 } from "@/data/social-growth";
-import type { Project } from "@/lib/notion";
+import type { Project } from "@/lib/content";
 
 interface Props {
   projects: Project[];
@@ -71,7 +71,7 @@ export function GrowthDashboard({ projects }: Props) {
         </p>
       </div>
 
-      {/* Current projects from Notion */}
+      {/* Current projects */}
       {projects.length > 0 && (
         <div className="space-y-3">
           <p className="font-medium text-sm">I&apos;m building in public</p>
@@ -84,7 +84,7 @@ export function GrowthDashboard({ projects }: Props) {
                       alt={p.title}
                       className="rounded-lg"
                       height={36}
-                      src={`/api/notion-image?pageId=${p.id}&prop=logo`}
+                      src={p.logo}
                       width={36}
                     />
                   ) : (

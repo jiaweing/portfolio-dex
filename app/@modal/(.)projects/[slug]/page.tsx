@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { ProjectModal } from "@/components/ProjectModal";
-import { getProject, getProjects } from "@/lib/notion";
+import { getProject, getProjects } from "@/lib/content";
 
 interface ProjectModalProps {
   params: Promise<{

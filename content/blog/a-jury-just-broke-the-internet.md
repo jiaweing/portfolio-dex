@@ -1,0 +1,72 @@
+---
+title: "A jury just broke the internet"
+date: "2026-03-28"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["Tech"]
+tagColors: {"Tech":"orange"}
+postTags: []
+---
+
+On March 25, 2026, a Los Angeles jury found Meta and YouTube liable for harming a young user through the addictive design of their platforms. It is the first time a U.S. jury has held major social media companies responsible for creating products that fuel compulsive use and damage mental health.
+The dollar figure, \$6 million in combined compensatory and punitive damages, is a rounding error for companies with annual capital spending north of \$100 billion each. But the money was never the point. What matters is the legal reasoning: a jury decided that platform design choices are product decisions, and product decisions carry liability. That distinction changes everything.
+## The verdict
+The plaintiff, identified in court as Kaley G.M., is now 20 years old. She alleged that she became addicted to Instagram, Facebook, and YouTube as a child, and that the platforms' design features, including infinite scroll, autoplay, algorithmic recommendations, and variable reward mechanisms, exacerbated her depression, anxiety, and suicidal ideation.
+After a seven-week trial in Los Angeles Superior Court that featured testimony from top executives including Meta CEO Mark Zuckerberg, the 12-person jury deliberated for nearly nine days and more than 44 hours. Ten jurors voted in favor of the plaintiff. They found both companies negligent and liable for failure to warn.
+Compensatory damages were set at \$3 million, with Meta bearing 70% of responsibility and YouTube the remaining 30%. Punitive damages added another \$3 million, bringing Meta's total to \$4.2 million and YouTube's to \$1.8 million.
+Both companies have said they disagree with the verdict and intend to appeal.
+## Why Section 230 didn't save them
+For decades, Section 230 of the Communications Decency Act has been the tech industry's legal shield. Passed in 1996, it protects online platforms from liability for content posted by their users. Hundreds of lawsuits against social media companies have been dismissed on this basis.
+This case was different because it wasn't about content. The plaintiff's legal team framed the claims around product liability: design defect, negligent design, and failure to warn. The argument was not that Meta and YouTube hosted harmful posts, but that they engineered their products to be maximally addictive, and that this engineering constitutes a defective product.
+By shifting the legal theory from publisher liability to product liability, the plaintiff's attorneys navigated around Section 230 entirely. The jury was asked to evaluate whether the design of the product, not the speech it carried, caused harm. That reframing is the most consequential aspect of the verdict.
+## The "neutral platform" defense is over
+Social media companies have long maintained that they are neutral intermediaries. They host content; users create it. They provide tools; users choose how to engage. This framing has been central to their regulatory and legal strategy for over two decades.
+A jury just rejected that framing wholesale.
+The evidence presented at trial showed that platforms deliberately design for engagement. Infinite scroll removes natural stopping points. Autoplay keeps content flowing without user intent. Recommendation algorithms optimize for time-on-platform, not user wellbeing. Variable reward schedules, the same psychological mechanism behind slot machines, keep users returning in anticipation of dopamine-triggering content.
+These are not neutral features. They are product design choices made by engineering teams, validated by A/B tests, and optimized for metrics that directly correlate with revenue. The jury's verdict says that when you make those choices, you own the consequences.
+## A bellwether for thousands of cases
+This trial was selected as a bellwether, a test case designed to signal how thousands of similar lawsuits are likely to play out. The cases are consolidated in California state courts and in a federal multidistrict litigation (MDL 3047) in the Northern District of California.
+The verdict landed alongside a separate decision in New Mexico, where a jury found Meta liable for failing to protect children from online predators and sexual exploitation, ordering the company to pay \$375 million in civil penalties.
+Taken together, these rulings represent a fundamental shift. Plaintiffs now have a proven legal framework, and defense attorneys at Meta and Google now have a loss on the record. Settlement pressure across the remaining cases will be enormous.
+## Social media's "Big Tobacco" moment
+The comparisons to the tobacco industry started before the verdict was in. California Attorney General Rob Bonta equated social media companies to tobacco firms the day before the ruling, accusing them of prioritizing profit over safety by marketing addictive products to children. After the verdict, advocacy groups like the Social Media Victims Law Center called it "social media's Big Tobacco moment."
+The analogy is imperfect but instructive. In the 1990s, internal documents revealed that tobacco companies knew their products were addictive and harmful, yet continued marketing them aggressively. The resulting litigation didn't just produce massive settlements. It reshaped public perception, drove regulatory action, and fundamentally altered business models.
+Social media is following a similar arc. Internal research from Meta, leaked by whistleblower Frances Haugen in 2021, showed the company was aware that Instagram was worsening body image issues among teenage girls. The parallel to tobacco's suppressed research is hard to miss.
+But there are important differences. Tobacco produces a single, well-understood harm: addiction to nicotine and its downstream health effects. Social media's harms are more diffuse, harder to isolate, and intertwined with genuine benefits like connection, information access, and community building. Courts and regulators will need to grapple with this complexity as more cases proceed.
+## What this means for ad-funded business models
+The core business model of social media is attention. Platforms are free to use because users pay with their time and data, which are then monetized through targeted advertising. Every design feature that increases engagement, time on platform, or return visits directly increases revenue.
+If liability now attaches to the design decisions that drive engagement, that model has a problem. The features that make platforms maximally profitable are the same features a jury just called harmful.
+This doesn't mean ad-funded social media disappears overnight. But it does mean that the cost calculus has changed. Companies must now weigh the revenue generated by addictive design features against potential legal exposure. If bellwether verdicts hold and settlement costs accumulate, some features may become more expensive to maintain than they are worth.
+The market is already pricing in this risk. Big Tech stocks saw selling pressure in the days surrounding the verdict, with analysts citing regulatory and litigation exposure as contributing factors.
+## The algorithm question
+If the algorithm is liable, what about the AI that powers it?
+Recommendation algorithms are increasingly driven by machine learning models that optimize for engagement signals. These models are not hand-coded rule sets. They are trained systems that evolve based on user behavior data. When a recommendation algorithm surfaces content that keeps a user scrolling for hours, the "decision" to show that content was made by a model, not a human engineer.
+The verdict in this case didn't specifically address AI-driven recommendations as distinct from other design features. But the legal framework it establishes, that platform design choices carry product liability, has natural extensions. If a recommendation model is trained to maximize engagement and that optimization causes harm, the company that deployed the model bears responsibility for the product it built.
+This has implications well beyond social media. Any AI system that optimizes for a proxy metric (engagement, clicks, conversions) while generating downstream harm could face similar product liability arguments. The precedent being set here may matter as much for AI companies as it does for social media platforms.
+## How Singapore approaches it differently
+While the U.S. has relied largely on litigation to hold platforms accountable, Singapore has taken a more regulatory approach. The Protection from Online Falsehoods and Manipulation Act (POFMA), enacted in 2019, gives the government direct authority to issue correction directions, order content takedowns, and pursue criminal charges related to false information online.
+POFMA is designed to address misinformation rather than addictive design, so it targets a different problem. But the underlying philosophy is similar: platforms are not neutral pipes, and the government has a role in managing the consequences of how they operate.
+Singapore's approach trades litigation risk for regulatory control. Platforms operating in Singapore know the rules upfront and face swift, direct enforcement rather than years of civil litigation. The tradeoff is that regulatory power concentrated in government hands raises concerns about overreach, particularly when correction orders are used against political speech and dissent.
+Neither model is perfect. The U.S. approach is slow, expensive, and depends on individual plaintiffs bearing enormous burdens. Singapore's approach is faster but raises accountability questions about who decides what constitutes harm. What the L.A. verdict suggests is that the U.S. may be converging toward accountability through a different mechanism: the courtroom rather than the regulator, but accountability nonetheless.
+## What comes next
+This is one verdict. Appeals will follow, and Meta and Google have the resources to litigate for years. The immediate financial impact is negligible for companies of this scale.
+But bellwether cases are designed to create momentum, and this one has. The legal framework, product liability for platform design, is now validated by a jury. Thousands of similar cases are waiting. State attorneys general are lining up. Congress, which has failed to pass meaningful social media regulation for over a decade, now has a jury verdict to point to.
+The most likely near-term outcome is a wave of settlements. Litigation is expensive, and the defense just got harder. Companies may find it cheaper to settle than to fight thousands of cases with a loss already on the books.
+The longer-term outcome is more uncertain but potentially more significant. If liability for addictive design becomes established law, companies will need to redesign their products. That means less infinite scroll, fewer autoplay defaults, weaker recommendation loops, and more user control over algorithmic feeds. It means building products that are less addictive and, inevitably, less profitable.
+For two decades, the question was whether anyone could hold social media companies accountable for the products they built. A jury of twelve people in Los Angeles just answered yes.
+## References
+1. [Meta and YouTube Found Negligent in Landmark Social Media Addiction Trial](https://www.nytimes.com/2026/03/25/technology/social-media-trial-verdict.html), The New York Times, March 25, 2026
+2. [Jury finds Meta and YouTube negligent in landmark lawsuit on social media addiction](https://www.nbcnews.com/tech/tech-news/verdict-reached-landmark-social-media-addiction-trial-rcna263421), NBC News, March 25, 2026
+3. [Meta, Google lose US case over social media harm to kids](https://www.reuters.com/legal/litigation/jury-reaches-verdict-meta-google-trial-social-media-addiction-2026-03-25/), Reuters, March 25, 2026
+4. [Jury in Los Angeles finds Meta, YouTube negligent in social media addiction trial](https://www.cnbc.com/2026/03/25/meta-youtube-los-angeles-california-verdict.html), CNBC, March 25, 2026
+5. [Meta, YouTube found liable for social media addiction in landmark trial](https://www.politico.com/news/2026/03/25/meta-youtube-found-liable-for-social-media-addiction-in-landmark-trial-00844625), Politico, March 25, 2026
+6. [Meta and YouTube found liable in social media addiction trial](https://www.bbc.com/news/articles/c747x7gz249o), BBC News, March 26, 2026
+7. [Meta and YouTube found liable on all charges in landmark social media addiction trial](https://www.cbsnews.com/news/meta-youtube-social-media-addiction-lawsuit-verdict/), CBS News, March 25, 2026
+8. [Jury orders Meta and Google to pay woman \$3 million in social media addiction trial](https://www.npr.org/2026/03/25/nx-s1-5746125/meta-youtube-social-media-trial-verdict), NPR, March 25, 2026
+9. [Big Tech critics hail 'Big Tobacco moment' in landmark social media verdict](https://kvia.com/news/business-technology/cnn-business-consumer/2026/03/25/big-tech-critics-hail-big-tobacco-moment-in-landmark-social-media-verdict/), CNN, March 25, 2026
+10. [Meta, Google Risk Big Tobacco-Like Fallout After Addiction Trial](https://www.bloomberg.com/news/articles/2026-03-26/meta-google-risk-big-tobacco-like-fallout-after-addiction-trial), Bloomberg, March 26, 2026
+11. [California AG says social media's 'hypocrisy' on kids' safety echoes tobacco companies](https://www.politico.com/news/2026/03/24/california-ag-rob-bonta-equates-social-media-giants-to-big-tobacco-00843120), Politico, March 24, 2026
+12. [Jury finds Instagram and YouTube addictive in lawsuit poised to reshape social media](https://theconversation.com/jury-finds-instagram-and-youtube-addictive-in-lawsuit-poised-to-reshape-social-media-platform-design-meets-product-liability-277066), The Conversation, March 6, 2026
+13. [Landmark verdict targets social media design, awards \$6 million](https://www.dailyjournal.com/articles/390405-landmark-verdict-targets-social-media-design-awards-6-million), Daily Journal, March 26, 2026
+14. [Protection from Online Falsehoods and Manipulation Act](https://en.wikipedia.org/wiki/Protection_from_Online_Falsehoods_and_Manipulation_Act_2019), Wikipedia
+15. [Liability for Algorithmic Recommendations](https://www.congress.gov/crs-product/R47753), Congressional Research Service
+16. [Section 230: An Overview](https://www.congress.gov/crs-product/R46751), Congressional Research Service

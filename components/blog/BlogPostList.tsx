@@ -34,7 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { BlogPost } from "@/lib/notion";
+import type { BlogPost } from "@/lib/content";
 import { getTagColorClass } from "@/lib/tag-colors";
 import { cn } from "@/lib/utils";
 

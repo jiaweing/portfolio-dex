@@ -1,0 +1,66 @@
+---
+title: "You already forgot how to remember"
+date: "2026-04-23"
+lastEdited: "2026-04-29T12:31:00.000Z"
+tags: ["Psychology"]
+tagColors: {"Psychology":"pink"}
+postTags: ["Memory","Learning","Privacy","Regulation","ChatGPT","Notion","Safety"]
+---
+
+We're pouring billions into teaching AI how to forget. Researchers call it "machine unlearning," a growing field dedicated to making models selectively erase training data they shouldn't have memorized in the first place. The irony? While we engineer forgetting into our machines, we're quietly engineering remembering out of ourselves.
+Every time you ask an AI to summarize a meeting, look up a fact, or draft a note, you're making a small trade. You get convenience. You lose a repetition your brain would have used to encode that information. Do this enough times and you're not augmenting your memory. You're replacing it.
+## The machine unlearning problem
+A recent *Science* article highlighted how AI models can memorize data they were never supposed to retain, including personal information, copyrighted text, and sensitive records baked into training sets. The EU's "right to be forgotten" regulation and growing copyright enforcement have made this a legal problem, not just a technical one.
+The challenge is that you can't simply delete a data point from a neural network the way you'd delete a row from a database. The information is distributed across billions of parameters, entangled with everything else the model learned. Retraining from scratch is expensive and often impractical. So researchers have developed approximate methods, essentially teaching models to behave as if they never saw certain data, without the cost of starting over.
+Stanford's Ken Ziyu Liu categorizes these approaches into exact unlearning (computationally expensive but provably correct), differential privacy methods, and empirical techniques that try to scrub specific knowledge from a model's weights. A 2024 paper from researchers across multiple institutions argued that machine unlearning "doesn't do what you think," identifying fundamental mismatches between what policymakers expect unlearning to achieve and what current techniques can actually deliver.
+The field is growing fast. But here's what struck me: we're building an entire research discipline around the problem of machines remembering too much, while barely acknowledging that humans are developing the opposite problem.
+## The GPS precedent
+We've seen this pattern before. A 2020 study published in *Scientific Reports* found that habitual GPS users had measurably worse spatial memory when navigating without assistance. The effect wasn't limited to people who were already bad at directions. Even participants with previously strong spatial skills showed declines over time.
+This makes neurological sense. Navigation without GPS activates the hippocampus, the brain region critical for spatial memory and cognitive mapping. A study published in *Nature Communications* found that people following spoken GPS directions had significantly less hippocampal activity than those navigating on their own. The classic example: London taxi drivers, who spend years memorizing the city's labyrinthine streets, develop measurably larger hippocampi than the general population.
+The mechanism is straightforward. Use it or lose it. When you outsource a cognitive function to a tool, the neural pathways that would have handled that function get less exercise. They don't disappear overnight, but they atrophy.
+GPS was just navigation. AI is everything else.
+## From offloading to outsourcing
+Psychologists distinguish between cognitive offloading and cognitive outsourcing. Offloading is when you use a tool to assist your thinking, like writing notes during a lecture. Outsourcing is when the tool replaces your thinking entirely, like having AI generate the notes while you zone out.
+A 2025 paper in *Frontiers in Psychology* mapped this onto a spectrum: assistive (the tool supports cognition without interfering), substitutive (the tool replaces cognitive processing), and disruptive (the tool creates passive interaction patterns that erode your capacity for reflection). The concern isn't that any single act of delegation is harmful. It's that substitutive and disruptive offloading, done habitually, reshapes how your brain allocates effort.
+The "Google effect," first documented by Betsy Sparrow and colleagues in 2011, showed that people are less likely to remember information they believe is easily accessible online. A meta-analysis confirmed the finding: frequent internet searching correlates with measurable changes in cognitive and memory mechanisms. We don't bother encoding what we know we can look up.
+AI takes this several steps further. You don't even need to formulate a search query. You can ask a question in natural language and get a synthesized answer. You don't need to read five articles and form a conclusion. The model does that for you. Each layer of convenience removes another point where your brain would have done the work of processing, connecting, and storing.
+Nataliya Kosmyna at MIT's Media Lab noticed that her students were forgetting content more easily than in previous years. Her research, published in 2025, found evidence of what she calls "cognitive debt," an accumulation of unprocessed information that results from relying on AI assistants for tasks that would otherwise require active cognitive engagement. A BBC report summarized the concern: AI tools "exploit cracks in the architecture of human cognition" because the brain naturally conserves energy and takes available shortcuts.
+The Harvard Gazette put it more bluntly: AI may be dulling our minds.
+## The second brain paradox
+Tools like Notion, Obsidian, and Roam Research popularized the idea of a "second brain," an external system where you capture, organize, and retrieve information. The promise was augmentation: your biological memory handles the thinking, the tool handles the storage.
+AI changes the equation. With AI-powered search, summarization, and generation, you don't even need to capture the information yourself. The system can ingest a meeting recording, produce a summary, extract action items, and file everything in the right place. You were technically present for the meeting, but your brain may have encoded almost nothing from it.
+This matters because memory isn't just retrieval. It's synthesis. Some of the best ideas come from unexpected collisions between things you've stored in your head, a concept from one domain bumping into a problem from another. If those memories live only in an external system, the collisions happen there, on the system's terms, through its search algorithms and recommendation patterns. You lose the serendipity of your own associative memory.
+Daniel Wegner's concept of transactive memory systems, developed in the 1980s, described how groups distribute memory across individuals. You remember that your colleague knows the sales numbers; you don't need to know them yourself. This works well in teams because each person still actively processes and contributes knowledge. The worry with AI is that we're creating a transactive memory system where one partner (the human) gradually stops contributing to the shared knowledge base.
+## The generational fault line
+People who grew up with encyclopedias had to physically search for information, read surrounding context, and manually extract what they needed. That friction was also encoding. People who grew up with Wikipedia got faster access but still had to read, evaluate, and synthesize. People growing up with ChatGPT can skip almost all of that.
+This isn't a moral judgment. Each generation's relationship with knowledge tools is shaped by what's available. But the cognitive implications are real. A 2024 study involving roughly 1,000 high school students found that while AI tools boosted short-term test scores, they undermined longer-term learning and retention. The students who used AI performed better in the moment but retained less afterward.
+A 2026 study in *Scientific Reports* found that cognitive offloading through digital tools reduces internal memory processing even in children, suggesting these effects begin early and compound over time.
+## The privacy dimension
+There's another layer to this. When your memory lives in the cloud, your thoughts become someone else's data. The machine unlearning problem exists partly because AI systems absorbed information they shouldn't have. If your notes, reflections, and half-formed ideas all flow through AI systems, they become training signal, or at minimum, data stored on infrastructure you don't control.
+The irony completes itself: we need machine unlearning because AI remembers too much of our data, and we need it partly because we've stopped remembering that data ourselves.
+## A practical middle ground
+None of this means you should stop using AI tools. That ship has sailed, and frankly, these tools are genuinely useful. The question is whether you use them as a bicycle for the mind or a wheelchair.
+A few principles that help:
+**Retrieve before you ask.** Before prompting an AI, spend thirty seconds trying to recall the answer yourself. Even failed retrieval attempts strengthen memory traces. This is the "testing effect," one of the most robust findings in memory research.
+**Encode through output.** Writing, teaching, and explaining force your brain to process information actively. If AI summarizes a meeting for you, write a one-paragraph synthesis in your own words afterward. The summary is for your files. The paragraph is for your brain.
+**Maintain some friction.** Not every process needs to be frictionless. The effort of searching, reading, and connecting ideas is itself a form of cognitive exercise. Selectively preserve that effort for domains where you want to maintain expertise.
+**Separate storage from processing.** Using AI to store and organize information is relatively low-risk. Using it to do your thinking, to form opinions, draw conclusions, and make judgments on your behalf, is where the cognitive costs accumulate.
+**Stay the author.** When you use AI to draft something, rewrite it. When it gives you an answer, verify it. When it summarizes a document, read the original for the parts that matter most. Keep yourself in the loop of active cognition.
+The researchers working on machine unlearning are solving a real problem. AI systems that can't forget pose genuine risks to privacy and intellectual property. But the parallel problem, humans who are losing the practice of remembering, doesn't have a research field or a funding pipeline. It has you, deciding moment by moment whether to do the cognitive work or let the machine handle it.
+Both are memory management problems. Only one of them is yours to solve.
+## References
+1. [AIs can 'memorize' data they shouldn't. Can they be forced to forget?](https://www.science.org/content/article/ais-can-memorize-data-they-shouldn-t-can-they-be-forced-forget), *Science*, April 2026
+2. [Machine Unlearning in 2024](https://ai.stanford.edu/~kzliu/blog/unlearning/), Ken Ziyu Liu, Stanford University
+3. [Machine Unlearning Doesn't Do What You Think: Lessons for Generative AI Policy and Research](https://arxiv.org/abs/2412.06966), arXiv, December 2024
+4. [AI's next challenge: how to forget](https://www.politico.com/newsletters/digital-future-daily/2024/06/03/ai-machine-unlearning-forget-00161303), *Politico*, June 2024
+5. [Habitual use of GPS negatively impacts spatial memory during self-guided navigation](https://www.nature.com/articles/s41598-020-62877-0), *Scientific Reports*, 2020
+6. [How GPS Weakens Memory, and What We Can Do about It](https://www.scientificamerican.com/article/how-gps-weakens-memory-mdash-and-what-we-can-do-about-it/), *Scientific American*
+7. [Outsourcing cognition: the psychological costs of AI-era convenience](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1645237/full), *Frontiers in Psychology*, 2025
+8. [Google effects on memory: a meta-analytical review](https://pmc.ncbi.nlm.nih.gov/articles/PMC10830778/), *PMC*, 2024
+9. [Your Brain on ChatGPT: Accumulation of Cognitive Debt](https://www.media.mit.edu/publications/your-brain-on-chatgpt/), MIT Media Lab, 2025
+10. [AI chatbots could be making you stupider](https://www.bbc.com/future/article/20260417-ai-chatbots-could-be-making-you-stupider), *BBC Future*, April 2026
+11. [Is AI dulling our minds?](https://news.harvard.edu/gazette/story/2025/11/is-ai-dulling-our-minds/), *Harvard Gazette*, November 2025
+12. [AI is creating the first generation of cognitively outsourced humans](https://www.fastcompany.com/91513823/ai-is-creating-the-first-generation-of-cognitively-outsourced-humans), *Fast Company*, 2026
+13. [Cognitive offloading reduces internal memory processing in children](https://www.nature.com/articles/s41598-026-44574-6), *Scientific Reports*, 2026
+14. [How AI Vaporizes Long-Term Learning](https://www.edutopia.org/video/how-ai-vaporizes-long-term-learning/), *Edutopia*, January 2025
+15. [The cognitive paradox of AI in education: between enhancement and erosion](https://pmc.ncbi.nlm.nih.gov/articles/PMC12036037/), *PMC*

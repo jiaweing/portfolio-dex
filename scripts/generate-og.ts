@@ -2,7 +2,7 @@ import { type ChildProcess, spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import puppeteer from "puppeteer";
-import { fetchBlogPosts, fetchPages, fetchProjects } from "@/lib/notion";
+import { getBlogPosts, getPages, getProjects } from "@/lib/content";
 
 const PORT = 3456;
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || `http://localhost:${PORT}`;
@@ -65,9 +65,9 @@ async function main() {
   try {
     // 1. Gather paths
     console.log("Fetching routes...");
-    const pages = await fetchPages();
-    const projects = await fetchProjects();
-    const blogPosts = await fetchBlogPosts({ includeAll: true });
+    const pages = await getPages();
+    const projects = await getProjects();
+    const blogPosts = await getBlogPosts({ includeAll: true });
 
     const routes = [
       "/",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { BlogPost, Page, Project } from "@/lib/notion";
+import type { BlogPost, Page, Project } from "@/lib/content";
 
 interface SiteConfig {
   name: string;
@@ -161,9 +161,7 @@ export function generateBlogMetadata(post: BlogPost): Metadata {
   return generateMetadata({
     title: post.title,
     description: post.description,
-    image: post.cover
-      ? `${siteConfig.url}/api/notion-image?pageId=${post.id}&prop=cover`
-      : dynamicOg.toString(),
+    image: post.cover ? `${siteConfig.url}${post.cover}` : dynamicOg.toString(),
     url: `/blog/${post.slug}`,
     type: "article",
     publishedTime: post.date,
@@ -185,7 +183,7 @@ export function generateProjectMetadata(project: Project): Metadata {
     title: project.title,
     description: project.description,
     image: project.cover
-      ? `${siteConfig.url}/api/notion-image?pageId=${project.id}&prop=cover`
+      ? `${siteConfig.url}${project.cover}`
       : dynamicOg.toString(),
     url: `/projects/${project.slug}`,
     type: "article",
@@ -198,9 +196,7 @@ export function generatePageMetadata(page: Page): Metadata {
   return generateMetadata({
     title: page.title,
     description: page.description,
-    image: page.cover
-      ? `${siteConfig.url}/api/notion-image?pageId=${page.id}&prop=cover`
-      : undefined,
+    image: page.cover ? `${siteConfig.url}${page.cover}` : undefined,
     url: `/${page.slug}`, // Assuming generic pages are at root or need adjustment based on route
     modifiedTime: page.lastEdited,
   });
