@@ -16,6 +16,9 @@ export function SantaAvatar({
   const showHat = effect === "snow";
   const showWitchHat = effect === "embers";
   const showPartyHat = effect === "confetti";
+  const showBunnyEars = effect === "eggs";
+  const showHeart = effect === "hearts";
+  const showLantern = effect === "blossoms";
 
   return (
     <span className="group relative inline-flex">
@@ -105,6 +108,111 @@ export function SantaAvatar({
             d="M7.8 12 L16.2 12 L17.6 15 L6.4 15 Z"
           />
           <circle className="fill-yellow-300" cx="12" cy="3" r="2" />
+        </svg>
+      )}
+      {showBunnyEars && (
+        <svg
+          aria-label="Bunny Ears"
+          className="pointer-events-none absolute -top-[62%] left-[8%] z-10 size-[84%]"
+          fill="none"
+          viewBox="0 0 28 28"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Bunny Ears</title>
+          <ellipse
+            className="fill-white stroke-zinc-300"
+            cx="8.5"
+            cy="13"
+            rx="4"
+            ry="11"
+            strokeWidth="0.8"
+            transform="rotate(-12 8.5 13)"
+          />
+          <ellipse
+            className="fill-pink-300"
+            cx="8.5"
+            cy="14"
+            rx="2"
+            ry="8"
+            transform="rotate(-12 8.5 14)"
+          />
+          <ellipse
+            className="fill-white stroke-zinc-300"
+            cx="19.5"
+            cy="13"
+            rx="4"
+            ry="11"
+            strokeWidth="0.8"
+            transform="rotate(12 19.5 13)"
+          />
+          <ellipse
+            className="fill-pink-300"
+            cx="19.5"
+            cy="14"
+            rx="2"
+            ry="8"
+            transform="rotate(12 19.5 14)"
+          />
+        </svg>
+      )}
+      {showHeart && (
+        <svg
+          aria-label="Heart"
+          className="pointer-events-none absolute -top-[30%] -right-[30%] z-10 size-[60%] animate-pulse"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Heart</title>
+          <path
+            className="fill-rose-500"
+            d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 4.5 6.8 4.5c2.1 0 3.6 1.1 5.2 3 1.6-1.9 3.1-3 5.2-3 3.8 0 5.9 4 4.4 7.3C19.5 16.4 12 21 12 21Z"
+          />
+        </svg>
+      )}
+      {showLantern && (
+        <svg
+          aria-label="Lantern"
+          className="pointer-events-none absolute -top-[45%] -right-[28%] z-10 size-[70%]"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Lantern</title>
+          <line
+            className="stroke-yellow-500"
+            strokeWidth="1"
+            x1="12"
+            x2="12"
+            y1="0"
+            y2="4"
+          />
+          <rect
+            className="fill-yellow-500"
+            height="2"
+            rx="0.6"
+            width="7"
+            x="8.5"
+            y="4"
+          />
+          <ellipse className="fill-red-600" cx="12" cy="11.5" rx="7" ry="6" />
+          <path
+            className="stroke-red-800"
+            d="M12 5.5v12M8 6.5c-1.6 3-1.6 7 0 10M16 6.5c1.6 3 1.6 7 0 10"
+            fill="none"
+            strokeWidth="0.6"
+          />
+          <rect
+            className="fill-yellow-500"
+            height="2"
+            rx="0.6"
+            width="7"
+            x="8.5"
+            y="17"
+          />
+          <path
+            className="stroke-red-600"
+            d="M12 19v4M10.5 19.5v3M13.5 19.5v3"
+            strokeWidth="0.8"
+          />
         </svg>
       )}
       <Avatar

@@ -857,3 +857,80 @@
     pointer-events: inherit;
   }
 }
+
+/* Seasonal separator between the page and the footer */
+@keyframes seasonal-twinkle {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes seasonal-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+@keyframes seasonal-sway {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+@keyframes seasonal-beat {
+  0%,
+  70%,
+  100% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.18);
+  }
+}
+.seasonal-twinkle {
+  animation: seasonal-twinkle 1.6s ease-in-out infinite;
+}
+.seasonal-bob {
+  animation: seasonal-bob 2.6s ease-in-out infinite;
+}
+.seasonal-sway {
+  animation: seasonal-sway 3s ease-in-out infinite;
+}
+.seasonal-beat {
+  animation: seasonal-beat 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .seasonal-twinkle,
+  .seasonal-bob,
+  .seasonal-sway,
+  .seasonal-beat {
+    animation: none;
+  }
+}
+
+/* Seasonal colours for the compact contribution graph */
+[data-contrib-seasonal] rect[data-level="1"] {
+  fill: var(--contrib-1);
+  fill-opacity: 0.3;
+}
+[data-contrib-seasonal] rect[data-level="2"] {
+  fill: var(--contrib-2);
+  fill-opacity: 0.5;
+}
+[data-contrib-seasonal] rect[data-level="3"] {
+  fill: var(--contrib-3);
+  fill-opacity: 0.75;
+}
+[data-contrib-seasonal] rect[data-level="4"] {
+  fill: var(--contrib-4);
+  fill-opacity: 1;
+}

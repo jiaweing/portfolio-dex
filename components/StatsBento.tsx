@@ -5,6 +5,7 @@ import { Briefcase, Trophy } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { SlidingNumber } from "@/components/motion-primitives/sliding-number";
+import { SeasonalCardAccent } from "@/components/SeasonalCardAccent";
 import { cn } from "@/lib/utils";
 
 const containerVariants = {
@@ -287,6 +288,7 @@ function StatCard({ stat, value }: { stat: StatDef; value: number }) {
 
   const inner = (
     <>
+      <SeasonalCardAccent />
       <span className="flex items-center gap-1.5 text-muted-foreground">
         {stat.icon}
         <span className="text-xs">{stat.sublabel}</span>
@@ -322,7 +324,7 @@ function StatCard({ stat, value }: { stat: StatDef; value: number }) {
   );
 
   const className = cn(
-    "group flex h-full flex-col justify-between gap-4 rounded-2xl bg-muted/30 p-5 transition-colors hover:bg-muted/50",
+    "group relative flex h-full flex-col justify-between gap-4 overflow-hidden rounded-2xl bg-muted/30 p-5 transition-colors hover:bg-muted/50",
     stat.href && "cursor-pointer"
   );
 

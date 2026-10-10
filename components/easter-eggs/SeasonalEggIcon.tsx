@@ -20,6 +20,9 @@ const SPOT_COLORS: Record<NonNullable<SeasonalEffect>, string[]> = {
   embers: ["fill-orange-500", "fill-violet-500"],
   snow: ["fill-red-500", "fill-green-600"],
   confetti: ["fill-yellow-400", "fill-pink-500", "fill-sky-400"],
+  blossoms: ["fill-red-600", "fill-yellow-400"],
+  hearts: ["fill-rose-500", "fill-pink-400"],
+  eggs: ["fill-pink-300", "fill-sky-300", "fill-yellow-300", "fill-violet-300"],
 };
 
 // The lucide egg, decorated with spots in the colours of the current season

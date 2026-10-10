@@ -3,6 +3,7 @@
 import { ChevronDownIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { SeasonalSeparator } from "@/components/seasonal-separator";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -82,6 +83,16 @@ export function StackTable({ items }: StackTableProps) {
       }
     };
   }, [inputValue, urlSearch, searchParams, router, pathname]);
+
+  const headerRef = useRef<HTMLTableSectionElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(() => setHeaderHeight(el.offsetHeight));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const search = urlSearch;
   const selectedCategories = useMemo(() => {
@@ -241,186 +252,201 @@ export function StackTable({ items }: StackTableProps) {
           No items match your filters.
         </div>
       ) : (
-        <div className="w-full overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-y bg-muted/50 text-left text-xs">
-                <th className="w-[700px] px-4 py-2.5 font-semibold leading-relaxed lg:pl-[10rem]">
-                  Name
-                </th>
-                <th className="px-4 py-2.5 font-semibold leading-relaxed">
-                  Description
-                </th>
-                <th className="w-[350px] px-4 py-2.5 font-semibold">
-                  <div className="flex items-center gap-2">
-                    {allCategories.length > 0 && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
-                          Category
-                          {selectedCategories.length > 0 && (
-                            <Badge
-                              className="h-4 rounded-sm px-1.5 text-[10px]"
-                              variant="secondary"
-                            >
-                              {selectedCategories.length}
-                            </Badge>
-                          )}
-                          <ChevronDownIcon className="size-3.5" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
-                          <DropdownMenuGroup>
-                            <DropdownMenuLabel>
-                              Filter by Category
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            {allCategories.map((category) => (
-                              <DropdownMenuCheckboxItem
-                                checked={selectedCategories.includes(category)}
-                                key={category}
-                                onCheckedChange={() => toggleCategory(category)}
-                                onSelect={(e) => e.preventDefault()}
+        <div className="relative w-full">
+          {/* Garland hanging from the bottom of the header row */}
+          <div
+            className="pointer-events-none absolute inset-x-0"
+            style={{ top: headerHeight }}
+          >
+            <SeasonalSeparator className="hidden md:block" edge="top" />
+          </div>
+          <div className="w-full overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead ref={headerRef}>
+                <tr className="border-y bg-muted/50 text-left text-xs">
+                  <th className="w-[700px] px-4 py-2.5 font-semibold leading-relaxed lg:pl-[10rem]">
+                    Name
+                  </th>
+                  <th className="px-4 py-2.5 font-semibold leading-relaxed">
+                    Description
+                  </th>
+                  <th className="w-[350px] px-4 py-2.5 font-semibold">
+                    <div className="flex items-center gap-2">
+                      {allCategories.length > 0 && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
+                            Category
+                            {selectedCategories.length > 0 && (
+                              <Badge
+                                className="h-4 rounded-sm px-1.5 text-[10px]"
+                                variant="secondary"
                               >
-                                <span
-                                  className={cn(
-                                    "mr-2 h-2 w-2 rounded-full",
-                                    TAG_COLOR_MAP[categoryColors[category]] ??
-                                      TAG_COLOR_MAP.default
-                                  )}
-                                />
-                                {category}
-                              </DropdownMenuCheckboxItem>
-                            ))}
-                          </DropdownMenuGroup>
-                          {selectedCategories.length > 0 && (
-                            <>
+                                {selectedCategories.length}
+                              </Badge>
+                            )}
+                            <ChevronDownIcon className="size-3.5" />
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
+                            <DropdownMenuGroup>
+                              <DropdownMenuLabel>
+                                Filter by Category
+                              </DropdownMenuLabel>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem onClick={clearFilters}>
-                                Clear filters
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                    {allCategories.length === 0 && "Category"}
-                  </div>
-                </th>
-                <th className="w-[500px] px-4 py-2.5 font-medium">
-                  <div className="flex items-center gap-2">
-                    {allPlatforms.length > 0 && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
-                          Platforms
-                          {selectedPlatforms.length > 0 && (
-                            <Badge
-                              className="h-4 rounded-sm px-1.5 text-[10px]"
-                              variant="secondary"
-                            >
-                              {selectedPlatforms.length}
-                            </Badge>
-                          )}
-                          <ChevronDownIcon className="size-3.5" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
-                          <DropdownMenuGroup>
-                            <DropdownMenuLabel>
-                              Filter by Platform
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            {allPlatforms.map((platform) => (
-                              <DropdownMenuCheckboxItem
-                                checked={selectedPlatforms.includes(platform)}
-                                key={platform}
-                                onCheckedChange={() => togglePlatform(platform)}
-                                onSelect={(e) => e.preventDefault()}
-                              >
-                                <span
-                                  className={cn(
-                                    "mr-2 h-2 w-2 rounded-full",
-                                    TAG_COLOR_MAP[platformColors[platform]] ??
-                                      TAG_COLOR_MAP.default
+                              {allCategories.map((category) => (
+                                <DropdownMenuCheckboxItem
+                                  checked={selectedCategories.includes(
+                                    category
                                   )}
-                                />
-                                {platform}
-                              </DropdownMenuCheckboxItem>
-                            ))}
-                          </DropdownMenuGroup>
-                          {selectedPlatforms.length > 0 && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem onClick={clearFilters}>
-                                Clear filters
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                    {allPlatforms.length === 0 && "Platforms"}
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredItems.map((item) => (
-                <tr
-                  className={`border-border/60 border-b transition-colors hover:bg-muted/40 ${
-                    item.url ? "cursor-pointer" : ""
-                  }`}
-                  key={item.id}
-                  onClick={() => {
-                    if (item.url) {
-                      window.open(item.url, "_blank", "noopener,noreferrer");
-                    }
-                  }}
-                >
-                  <td className="w-[220px] px-4 py-4 lg:pl-[10rem]">
-                    <div className="flex items-center gap-3 font-medium">
-                      {!item.hideFavicon && item.url && (
-                        <Favicon
-                          className="corner-squircle size-7 shrink-0"
-                          url={item.url}
-                        />
+                                  key={category}
+                                  onCheckedChange={() =>
+                                    toggleCategory(category)
+                                  }
+                                  onSelect={(e) => e.preventDefault()}
+                                >
+                                  <span
+                                    className={cn(
+                                      "mr-2 h-2 w-2 rounded-full",
+                                      TAG_COLOR_MAP[categoryColors[category]] ??
+                                        TAG_COLOR_MAP.default
+                                    )}
+                                  />
+                                  {category}
+                                </DropdownMenuCheckboxItem>
+                              ))}
+                            </DropdownMenuGroup>
+                            {selectedCategories.length > 0 && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={clearFilters}>
+                                  Clear filters
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       )}
-                      <span className="truncate leading-relaxed">
-                        {item.name}
-                      </span>
+                      {allCategories.length === 0 && "Category"}
                     </div>
-                  </td>
-                  <td className="px-4 py-4 font-medium text-muted-foreground/80 leading-relaxed dark:text-muted-foreground/70">
-                    {item.description}
-                  </td>
-                  <td className="w-[140px] px-4 py-4">
-                    {item.category && (
-                      <span
-                        className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
-                          TAG_COLOR_MAP[item.categoryColor] ??
-                          TAG_COLOR_MAP.default
-                        }`}
-                      >
-                        {item.category}
-                      </span>
-                    )}
-                  </td>
-                  <td className="w-[220px] px-4 py-4">
-                    <div className="flex flex-wrap gap-1">
-                      {item.platforms.map((platform) => (
+                  </th>
+                  <th className="w-[500px] px-4 py-2.5 font-medium">
+                    <div className="flex items-center gap-2">
+                      {allPlatforms.length > 0 && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger className="flex items-center gap-1.5 font-semibold leading-relaxed transition-colors hover:text-foreground">
+                            Platforms
+                            {selectedPlatforms.length > 0 && (
+                              <Badge
+                                className="h-4 rounded-sm px-1.5 text-[10px]"
+                                variant="secondary"
+                              >
+                                {selectedPlatforms.length}
+                              </Badge>
+                            )}
+                            <ChevronDownIcon className="size-3.5" />
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="max-h-[300px] w-56 overflow-y-auto">
+                            <DropdownMenuGroup>
+                              <DropdownMenuLabel>
+                                Filter by Platform
+                              </DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              {allPlatforms.map((platform) => (
+                                <DropdownMenuCheckboxItem
+                                  checked={selectedPlatforms.includes(platform)}
+                                  key={platform}
+                                  onCheckedChange={() =>
+                                    togglePlatform(platform)
+                                  }
+                                  onSelect={(e) => e.preventDefault()}
+                                >
+                                  <span
+                                    className={cn(
+                                      "mr-2 h-2 w-2 rounded-full",
+                                      TAG_COLOR_MAP[platformColors[platform]] ??
+                                        TAG_COLOR_MAP.default
+                                    )}
+                                  />
+                                  {platform}
+                                </DropdownMenuCheckboxItem>
+                              ))}
+                            </DropdownMenuGroup>
+                            {selectedPlatforms.length > 0 && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={clearFilters}>
+                                  Clear filters
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+                      {allPlatforms.length === 0 && "Platforms"}
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredItems.map((item) => (
+                  <tr
+                    className={`border-border/60 border-b transition-colors hover:bg-muted/40 ${
+                      item.url ? "cursor-pointer" : ""
+                    }`}
+                    key={item.id}
+                    onClick={() => {
+                      if (item.url) {
+                        window.open(item.url, "_blank", "noopener,noreferrer");
+                      }
+                    }}
+                  >
+                    <td className="w-[220px] px-4 py-4 lg:pl-[10rem]">
+                      <div className="flex items-center gap-3 font-medium">
+                        {!item.hideFavicon && item.url && (
+                          <Favicon
+                            className="corner-squircle size-7 shrink-0"
+                            url={item.url}
+                          />
+                        )}
+                        <span className="truncate leading-relaxed">
+                          {item.name}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 font-medium text-muted-foreground/80 leading-relaxed dark:text-muted-foreground/70">
+                      {item.description}
+                    </td>
+                    <td className="w-[140px] px-4 py-4">
+                      {item.category && (
                         <span
                           className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
-                            TAG_COLOR_MAP[platform.color] ??
+                            TAG_COLOR_MAP[item.categoryColor] ??
                             TAG_COLOR_MAP.default
                           }`}
-                          key={platform.name}
                         >
-                          {platform.name}
+                          {item.category}
                         </span>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      )}
+                    </td>
+                    <td className="w-[220px] px-4 py-4">
+                      <div className="flex flex-wrap gap-1">
+                        {item.platforms.map((platform) => (
+                          <span
+                            className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
+                              TAG_COLOR_MAP[platform.color] ??
+                              TAG_COLOR_MAP.default
+                            }`}
+                            key={platform.name}
+                          >
+                            {platform.name}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

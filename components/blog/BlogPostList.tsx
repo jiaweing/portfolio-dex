@@ -25,6 +25,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BlogPostHoverCard } from "@/components/blog/BlogPostHoverCard";
 import { ScrollProgress } from "@/components/core/scroll-progress";
+import { SeasonalCardAccent } from "@/components/SeasonalCardAccent";
+import { SeasonalEmoji } from "@/components/SeasonalEmoji";
 import { FadeIn } from "@/components/ui/fade-in";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
@@ -417,7 +419,10 @@ export function BlogPostList({ allPosts, ssrGeneratedAt }: BlogPostListProps) {
       <ScrollProgress className="fixed top-0 left-0 z-50 w-full bg-[#0090FF]" />
       <FadeIn delay={0}>
         <div className="mb-4 flex items-center gap-2">
-          <h3 className="font-semibold">writing</h3>
+          <h3 className="flex items-center gap-1.5 font-semibold">
+            writing
+            <SeasonalEmoji size={16} />
+          </h3>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -457,7 +462,8 @@ export function BlogPostList({ allPosts, ssrGeneratedAt }: BlogPostListProps) {
 
       <div className="space-y-3">
         <FadeIn delay={0}>
-          <div className="relative z-0 mx-2 -mb-4 rounded-xl rounded-b-none bg-muted/50">
+          <div className="relative z-0 mx-2 -mb-4 overflow-hidden rounded-xl rounded-b-none bg-muted/50">
+            <SeasonalCardAccent />
             <div className="flex flex-wrap items-center justify-center px-1 py-2">
               {allTags
                 .filter(

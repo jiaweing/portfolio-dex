@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
+import { SeasonalCardAccent } from "@/components/SeasonalCardAccent";
 import { FadeIn } from "@/components/ui/fade-in";
 import type { Block } from "@/lib/blocks";
 import type { Project } from "@/lib/content";
@@ -157,6 +158,8 @@ function ProjectCard({
               {/* Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 opacity-60 transition-opacity group-hover:opacity-80" />
             </div>
+            {/* Drawn before the header so logos and buttons stay on top */}
+            <SeasonalCardAccent className="z-0" />
 
             {/* Top Content: Logo, Title, Year, Link */}
             <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-4">
