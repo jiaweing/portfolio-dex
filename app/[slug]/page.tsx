@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentRenderer } from "@/components/ContentRenderer";
 import { ScrollProgress } from "@/components/core/scroll-progress";
+import { SeasonalEmoji } from "@/components/SeasonalEmoji";
 import { FadeIn } from "@/components/ui/fade-in";
 import { extractDescriptionFromBlocks, getPage, getPages } from "@/lib/content";
 import { generatePageMetadata } from "@/lib/metadata";
@@ -66,7 +67,10 @@ export default async function GenericPage({
       <FadeIn>
         <div className="my-8 flex flex-col">
           <div className="flex flex-col items-start gap-4">
-            <h1 className="mb-2 font-semibold">{page.title}</h1>
+            <h1 className="mb-2 flex items-center gap-1.5 font-semibold">
+              {page.title}
+              <SeasonalEmoji size={18} />
+            </h1>
             {page.description && (
               <p className="text-muted-foreground text-xl">
                 {page.description}

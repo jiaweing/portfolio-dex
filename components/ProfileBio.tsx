@@ -11,6 +11,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import profileData from "@/data/profile.json";
+import { useSeasonalEffect } from "@/hooks/use-seasonal-effect";
+import { SEASONAL_EMOJI } from "@/lib/seasonal-assets";
 import { cn } from "@/lib/utils";
 import { Quotes } from "./core/quotes";
 import { HoldEgg, TapEgg } from "./easter-eggs/EggTriggers";
@@ -201,10 +203,26 @@ export function ProfileBio() {
     mass: 1.5,
   });
   const [mauDisplay, setMauDisplay] = useState(0);
-  const [singaporeIcon, setSingaporeIcon] = useState(
-    "/images/icons/Sun Behind Small Cloud.png"
-  );
-  const [weatherAdjective, setWeatherAdjective] = useState("sunny");
+  // Follows the active seasonal effect, so switching it from the footer updates this too
+  const effect = useSeasonalEffect();
+  const [isSunny, setIsSunny] = useState(true);
+  const [pick, setPick] = useState(0);
+  // Randomise after mount so server and client render the same first frame
+  useEffect(() => {
+    setIsSunny(Math.random() > 0.5);
+    setPick(Math.random());
+  }, []);
+  const seasonal = effect ? SEASONAL_EMOJI[effect] : null;
+  const singaporeIcon =
+    seasonal?.icon ??
+    (isSunny
+      ? "/images/icons/Sun Behind Small Cloud.png"
+      : "/images/icons/Umbrella with Rain Drops.png");
+  const weatherAdjective = seasonal
+    ? seasonal.adjectives[Math.floor(pick * seasonal.adjectives.length)]
+    : isSunny
+      ? "sunny"
+      : "rainy";
 
   useEffect(() => {
     return ageSpring.on("change", (v) => setAgeDisplay(Math.round(v)));
@@ -225,35 +243,6 @@ export function ProfileBio() {
       ageMotion.set(age);
       playersMotion.set(470);
       mauMotion.set(10);
-
-      // Singapore Icon Logic
-      const date = new Date();
-      const month = date.getMonth(); // 0-11
-
-      if (month === 9) {
-        // October
-        setSingaporeIcon("/images/icons/Jack-O-Lantern.png");
-        const adjectives = ["spooky"];
-        setWeatherAdjective(
-          adjectives[Math.floor(Math.random() * adjectives.length)]
-        );
-      } else if (month === 11) {
-        // December
-        setSingaporeIcon("/images/icons/Snowman.png");
-        const adjectives = ["snowy", "festive"];
-        setWeatherAdjective(
-          adjectives[Math.floor(Math.random() * adjectives.length)]
-        );
-      } else {
-        // Randomly pick Sun or Rain
-        const isSunny = Math.random() > 0.5;
-        setSingaporeIcon(
-          isSunny
-            ? "/images/icons/Sun Behind Small Cloud.png"
-            : "/images/icons/Umbrella with Rain Drops.png"
-        );
-        setWeatherAdjective(isSunny ? "sunny" : "rainy");
-      }
     }
   }, [isInView]);
 

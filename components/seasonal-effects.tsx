@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { Embers } from "@/components/embers";
+import { SeasonalParticles } from "@/components/seasonal-particles";
 import { useSeasonalEffect } from "@/hooks/use-seasonal-effect";
 
 export { SEASONAL_EVENT } from "@/hooks/use-seasonal-effect";
@@ -22,8 +22,13 @@ export function SeasonalEffects() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (effect === "embers") {
-    return <Embers />;
+  if (
+    effect === "embers" ||
+    effect === "eggs" ||
+    effect === "hearts" ||
+    effect === "blossoms"
+  ) {
+    return <SeasonalParticles effect={effect} />;
   }
 
   if (effect === "snow") {

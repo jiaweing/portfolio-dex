@@ -4,7 +4,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { currentSeason, type Season, seasonYear } from "@/lib/seasons";
+import {
+  SEASONAL_EVENT,
+  type SeasonalEffect,
+} from "@/hooks/use-seasonal-effect";
+import {
+  currentSeason,
+  type Season,
+  seasonForEffect,
+  seasonYear,
+} from "@/lib/seasons";
 
 // Bump these when a new Wrapped ships. For RECENT_DAYS after release the
 // Wrapped announcement wins over any seasonal greeting.
@@ -38,7 +47,7 @@ const GREETINGS: Record<
   {
     before: string;
     highlight: (year: number) => string;
-    after: string;
+    after: TrailingText;
     colors: string[];
   }
 > = {
@@ -59,11 +68,41 @@ const GREETINGS: Record<
   newyear: {
     before: "Happy",
     highlight: (year) => `New Year ${year}`,
-    after: "!",
+    after: "and cheers to more!",
     // Champagne gold, firework pink, midnight blue
     colors: ["rgb(250, 204, 21)", "rgb(236, 72, 153)", "rgb(59, 130, 246)"],
   },
+  lunarnewyear: {
+    before: "Happy",
+    highlight: () => "Lunar New Year",
+    after: "and huat ah!",
+    // Lantern red, gold, mandarin orange
+    colors: ["rgb(220, 38, 38)", "rgb(234, 179, 8)", "rgb(249, 115, 22)"],
+  },
+  valentines: {
+    before: "Happy",
+    highlight: () => "Valentine's Day",
+    after: "and spread the love!",
+    // Rose, pink, deep red
+    colors: ["rgb(244, 63, 94)", "rgb(236, 72, 153)", "rgb(190, 18, 60)"],
+  },
+  easter: {
+    before: "Happy",
+    highlight: () => "Easter",
+    after: "and happy egg hunting!",
+    // Pastel pink, yellow, sky, lilac
+    colors: [
+      "rgb(244, 114, 182)",
+      "rgb(250, 204, 21)",
+      "rgb(56, 189, 248)",
+      "rgb(167, 139, 250)",
+    ],
+  },
 };
+
+// Every greeting needs plain words after the gradient so it never ends on the
+// highlight alone, which looks cut off
+type TrailingText = `${string} ${string}`;
 
 type Announcement = {
   // Each announcement has its own dismiss key, so a new season shows again
@@ -76,7 +115,13 @@ type Announcement = {
   isWrapped: boolean;
 };
 
-function pickAnnouncement(now = new Date()): Announcement {
+// `season` comes from the active seasonal effect. A manual pick from the footer
+// always shows its greeting, the date based one gives way to a fresh Wrapped.
+function pickAnnouncement(
+  season: Season | null,
+  manual = false,
+  now = new Date()
+): Announcement {
   const wrapped: Announcement = {
     key: `wrapped-banner-dismissed-${WRAPPED_YEAR}`,
     href: "/wrapped",
@@ -88,8 +133,8 @@ function pickAnnouncement(now = new Date()): Announcement {
   };
   const sinceRelease =
     (now.getTime() - WRAPPED_RELEASED.getTime()) / 86_400_000;
-  const season = currentSeason(now);
-  if (!season || (sinceRelease >= 0 && sinceRelease < RECENT_DAYS)) {
+  const wrappedIsFresh = sinceRelease >= 0 && sinceRelease < RECENT_DAYS;
+  if (!season || (wrappedIsFresh && !manual)) {
     return wrapped;
   }
   const year = seasonYear(season, now);
@@ -112,13 +157,28 @@ export function WrappedBanner({
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
 
   useEffect(() => {
-    const next = pickAnnouncement();
-    try {
-      if (localStorage.getItem(next.key)) return;
-    } catch {
-      // Storage blocked, just show it
-    }
-    setAnnouncement(next);
+    const show = (next: Announcement, ignoreDismissed: boolean) => {
+      try {
+        if (!ignoreDismissed && localStorage.getItem(next.key)) {
+          setAnnouncement(null);
+          return;
+        }
+      } catch {
+        // Storage blocked, just show it
+      }
+      setAnnouncement(next);
+    };
+
+    show(pickAnnouncement(currentSeason()), false);
+
+    // Follow effects picked from the footer so the greeting matches what's on screen
+    const onEffect = (e: Event) => {
+      const { effect } = (e as CustomEvent<{ effect: SeasonalEffect }>).detail;
+      const season = seasonForEffect(effect);
+      show(pickAnnouncement(season, true), Boolean(season));
+    };
+    window.addEventListener(SEASONAL_EVENT, onEffect);
+    return () => window.removeEventListener(SEASONAL_EVENT, onEffect);
   }, []);
 
   const handleDismiss = (e: React.MouseEvent) => {
@@ -213,15 +273,9 @@ export function WrappedBanner({
                 >
                   <span>{announcement.highlight}</span>
                 </motion.div>
-                {announcement.after === "!" ? (
-                  <span className="-ml-2 text-zinc-600 dark:text-zinc-400">
-                    !
-                  </span>
-                ) : (
-                  <span className="text-zinc-600 dark:text-zinc-400">
-                    {announcement.after}
-                  </span>
-                )}
+                <span className="text-zinc-600 dark:text-zinc-400">
+                  {announcement.after}
+                </span>
               </div>
 
               {/* Dismiss Button */}

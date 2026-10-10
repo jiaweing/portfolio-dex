@@ -1,10 +1,11 @@
 "use client";
 
-import { Flame, Mail, PartyPopper, Snowflake, X } from "lucide-react";
+import { Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import type { Activity } from "@/components/contribution-graph";
+import { EffectPicker } from "@/components/EffectPicker";
 import {
   GitHubContributions,
   GitHubContributionsFallback,
@@ -16,7 +17,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { triggerSeasonalEffect } from "@/hooks/use-seasonal-effect";
 import { siteConfig } from "@/lib/metadata";
 
 const socialLinks = [
@@ -39,16 +39,6 @@ const socialLinks = [
     filterClass: "brightness-0 dark:brightness-0 dark:invert",
     sizeClass: "h-3 w-3",
   },
-];
-
-const seasonalButtons: {
-  effect: "snow" | "confetti" | "embers";
-  label: string;
-  Icon: React.ComponentType<{ className?: string }>;
-}[] = [
-  { effect: "snow", label: "Snow", Icon: Snowflake },
-  { effect: "confetti", label: "Confetti", Icon: PartyPopper },
-  { effect: "embers", label: "Embers", Icon: Flame },
 ];
 
 export function SiteFooter({
@@ -140,42 +130,7 @@ export function SiteFooter({
             © {new Date().getFullYear()} Jia Wei Ng. All rights reserved.
           </p>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              {seasonalButtons.map(({ effect, label, Icon }) => (
-                <TooltipProvider delay={0} key={effect}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        className="rounded-md p-1 text-muted-foreground opacity-40 transition-all hover:scale-125 hover:text-foreground hover:opacity-100"
-                        onClick={() => triggerSeasonalEffect(effect)}
-                        type="button"
-                      >
-                        <Icon className="h-3.5 w-3.5" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent className="px-2 py-1 text-xs" side="top">
-                      {label}
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ))}
-              <TooltipProvider delay={0}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      className="rounded-md p-1 text-muted-foreground opacity-40 transition-all hover:scale-125 hover:text-foreground hover:opacity-100"
-                      onClick={() => triggerSeasonalEffect(null)}
-                      type="button"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="px-2 py-1 text-xs" side="top">
-                    Clear effects
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+            <EffectPicker />
             <p className="text-muted-foreground text-xs">
               Designed &amp; built with{" "}
               <span className="relative inline-flex items-center justify-center transition-transform hover:scale-150">

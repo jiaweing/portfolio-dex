@@ -8,6 +8,7 @@ import { PlausibleWrapper } from "@/components/PlausibleWrapper";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SeasonalEffects } from "@/components/seasonal-effects";
+import { SeasonalSeparator } from "@/components/seasonal-separator";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
@@ -189,6 +190,7 @@ export default function RootLayout({
                         useThemeBackground
                       />
                     </LayoutWidthWrapper>
+                    <SeasonalSeparator />
                   </section>
                 </div>
               </div>

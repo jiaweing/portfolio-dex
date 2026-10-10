@@ -22,7 +22,10 @@ export type EggId =
   | "copycat"
   | "ghostbuster"
   | "hohoho"
-  | "countdown";
+  | "countdown"
+  | "goldenegg"
+  | "smitten"
+  | "huat";
 
 export interface Egg {
   id: EggId;
@@ -139,6 +142,27 @@ export const EGGS: Egg[] = [
     found: "Tapped the party hat. Happy new year!",
     season: "newyear",
   },
+  {
+    id: "huat",
+    name: "Huat Ah",
+    hint: "Lunar New Year only. Grab an ang bao while it drifts past.",
+    found: "Caught a red packet. Huat ah, gong xi fa cai!",
+    season: "lunarnewyear",
+  },
+  {
+    id: "smitten",
+    name: "Smitten",
+    hint: "Valentine's only. Love is in the air, literally. Catch some.",
+    found: "Caught a floating heart. Happy Valentine's!",
+    season: "valentines",
+  },
+  {
+    id: "goldenegg",
+    name: "Golden Egg",
+    hint: "Easter weekend only. One egg in the shower is not like the others.",
+    found: "Found the golden egg. An easter egg about Easter eggs.",
+    season: "easter",
+  },
 ];
 
 export const CORE_EGGS = EGGS.filter((e) => !e.season);
@@ -147,9 +171,12 @@ export const TOTAL_EGGS = CORE_EGGS.length;
 const CORE_IDS = new Set(CORE_EGGS.map((e) => e.id));
 
 export const SEASON_LABEL: Record<Season, string> = {
+  newyear: "Dec 31 to Jan 1",
+  lunarnewyear: "Lunar New Year",
+  valentines: "Feb 12 to 14",
+  easter: "Easter weekend",
   halloween: "October",
   christmas: "December",
-  newyear: "Dec 31 to Jan 1",
 };
 
 // Seasonal eggs can only be found while their season is on

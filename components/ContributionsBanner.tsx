@@ -31,9 +31,9 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-
 import type { Activity } from "@/components/contribution-graph";
 import { SlidingNumber } from "@/components/motion-primitives/sliding-number";
+import { useContribPalette } from "@/hooks/use-contrib-palette";
 
 const BLOCK = 13;
 const GAP = 4;
@@ -43,14 +43,6 @@ const RADIUS = 3;
 
 const REVEAL_DURATION = 1.0;
 const SWEEP_EDGE_PCT = 8;
-
-const GREEN: Record<number, string> = {
-  0: "rgba(34,197,94,0.04)",
-  1: "rgba(34,197,94,0.18)",
-  2: "rgba(34,197,94,0.35)",
-  3: "rgba(34,197,94,0.52)",
-  4: "rgba(34,197,94,0.70)",
-};
 
 type HoverState = {
   activity: Activity;
@@ -115,6 +107,7 @@ function YearBand({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "300px 0px" });
+  const palette = useContribPalette();
 
   const jitter = useMemo(() => {
     const map = new Map<string, number>();
@@ -188,7 +181,10 @@ function YearBand({
                   }
                 >
                   <rect
-                    fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                    fill={
+                      palette.banner[Math.min(activity.level, 4)] ??
+                      palette.banner[0]
+                    }
                     height={BLOCK}
                     rx={RADIUS}
                     ry={RADIUS}
@@ -203,7 +199,7 @@ function YearBand({
                       pointerEvents="none"
                       rx={RADIUS + 2}
                       ry={RADIUS + 2}
-                      stroke="rgba(34,197,94,0.9)"
+                      stroke={palette.highlight}
                       strokeWidth={1.5}
                       width={BLOCK + 4}
                       x={wi * CELL - 2}
@@ -233,6 +229,7 @@ function Wallpaper({
   fullPage?: boolean;
   reduced?: boolean;
 }) {
+  const palette = useContribPalette();
   const weeks = useMemo(() => buildWeeks(data), [data]);
   if (!weeks.length) return null;
 
@@ -352,7 +349,10 @@ function Wallpaper({
               }
             >
               <rect
-                fill={GREEN[Math.min(activity.level, 4)] ?? GREEN[0]}
+                fill={
+                  palette.banner[Math.min(activity.level, 4)] ??
+                  palette.banner[0]
+                }
                 height={BLOCK}
                 rx={RADIUS}
                 ry={RADIUS}
@@ -367,7 +367,7 @@ function Wallpaper({
                   pointerEvents="none"
                   rx={RADIUS + 2}
                   ry={RADIUS + 2}
-                  stroke="rgba(34,197,94,0.9)"
+                  stroke={palette.highlight}
                   strokeWidth={1.5}
                   width={BLOCK + 4}
                   x={wi * CELL - 2}

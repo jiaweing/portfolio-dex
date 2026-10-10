@@ -17,6 +17,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useContribPalette } from "@/hooks/use-contrib-palette";
 import { cn } from "@/lib/utils";
 
 export function GitHubContributions({
@@ -35,6 +36,16 @@ export function GitHubContributions({
   className?: string;
 }) {
   const data = use(contributions);
+  const { solid } = useContribPalette();
+  // Seasonal colours ride on CSS variables picked up in globals.css
+  const seasonalStyle = solid
+    ? ({
+        "--contrib-1": solid[0],
+        "--contrib-2": solid[1],
+        "--contrib-3": solid[2],
+        "--contrib-4": solid[3],
+      } as React.CSSProperties)
+    : undefined;
 
   return (
     <ContributionGraph
@@ -43,6 +54,8 @@ export function GitHubContributions({
       blockSize={blockSize}
       className={cn("mx-auto py-2", className)}
       data={data}
+      data-contrib-seasonal={solid ? "" : undefined}
+      style={seasonalStyle}
     >
       <ContributionGraphCalendar
         className="no-scrollbar px-2"
