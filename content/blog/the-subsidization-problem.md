@@ -1,0 +1,58 @@
+---
+title: "The subsidization problem"
+date: "2026-04-06T19:16:00.000+08:00"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["Business"]
+tagColors: {"Business":"red"}
+postTags: []
+pinned: true
+---
+
+Every major AI coding tool is running the same playbook right now: charge users a flat monthly fee, give them far more compute than that fee covers, and hope the math works out later. It doesn't.
+Cursor's Ultra plan costs \$200 per month and includes roughly \$400 in API usage. Anthropic's Max 20x plan charges the same \$200 and, according to internal analysis surfaced by Bearly AI, can consume up to \$5,000 in actual compute. OpenAI's Codex keeps expanding rate limits for paying subscribers. Windsurf launched generous quotas and then quietly restructured its pricing twice. Augment Code started with flat-rate messaging and pivoted to credits when the costs became untenable.
+The pattern is always the same. Launch with generous limits to attract users. Watch costs balloon. Quietly reduce what subscribers actually get. Apologize when caught. Repeat.
+This isn't a pricing problem. It's a subsidization problem. And it's one I've seen before, from the other side.
+## The math behind the curtain
+Let's be specific about what's happening. When you pay \$20 per month for Cursor Pro, you get \$20 in frontier model usage at API pricing. That sounds fair on paper, a dollar-for-dollar exchange. But the moment you upgrade to Pro+ at \$60, you get \$70 in usage. At Ultra (\$200), you get \$400. The higher you go, the more the company subsidizes your compute.
+Anthropic's structure is even more extreme. A Claude Pro subscriber at \$20 per month gets access to models that would cost hundreds of dollars through the API for equivalent usage. The Max plans multiply those limits by 5x or 20x, but they don't multiply the price proportionally. Last year, a \$200 Max subscription consumed roughly \$2,000 in compute. Now, with longer context windows, reasoning models, and agentic workflows, that same \$200 plan can burn through \$5,000.
+The subscription price stays flat. The compute consumed per user keeps climbing. Someone has to pay the difference.
+## The insurance company analogy
+The business model these companies are running is structurally identical to insurance. They're betting that most subscribers won't use their full allocation. The light users who pay \$20 and barely touch the service are supposed to offset the power users who burn through their limits in two days.
+Insurance companies have been doing this for centuries. They collect premiums from millions of people, bet that most won't file claims, and use the surplus to cover those who do. It sounds elegant in theory. But there's a critical difference: insurance companies have actuarial tables built on decades of mortality and risk data. AI companies have no equivalent.
+The usage patterns of AI coding tools are wildly unpredictable. A developer might use almost nothing for three weeks and then consume \$500 in compute during a single sprint. A team might onboard ten new users who all hit the tool hard in their first month. There's no stable baseline to model against, no historical data that reliably predicts how much compute a given subscriber will consume.
+This makes the insurance model far riskier for AI companies than it is for actual insurers. Your costs are unpredictable, but your revenue per user is fixed. Every month, you know exactly how much money is coming in. You have almost no idea how much is going out.
+## I've been on the other side of this
+I ran into the exact same problem with Decosmic. We offered multiple AI models out of the box, accessible through a single subscription. The idea was compelling: pay one price, get access to everything. But underneath, we were paying API costs for every model our users touched.
+We were competing with ChatGPT and Claude on subscription pricing while paying wholesale rates on the backend. The math never worked. The users who churned through models and ran complex queries cost us far more than their subscription covered. The users who barely logged in subsidized them, but there were never enough light users to balance the equation.
+The ones paying API rates will always lose to the platforms that own the models and can afford to subsidize access. You can't out-subsidize Anthropic or OpenAI. They have billions in funding and a strategic reason to keep prices artificially low. An independent company trying to compete on the same terms is just burning cash.
+## The rugpull pattern
+What makes this especially frustrating for users is the predictable cycle of generosity followed by contraction.
+Cursor launched with 500 fast requests per month on the Pro plan. In mid-2025, they switched to a \$20 usage credit model. Users revolted. Cursor apologized, issued refunds, and published a blog post titled "Clarifying our pricing." The CEO acknowledged they "didn't handle this pricing rollout well." Then they kept the new model anyway.
+Windsurf started with a credit-based system, restructured to daily and weekly quotas in March 2026, and launched a \$200 Max tier for power users. The messaging was careful: "The majority of Pro and Teams users will see no change." But the subtext was clear, the original pricing couldn't sustain the usage patterns they were seeing.
+Augment Code moved from per-message pricing to a credit pool in October 2025, explicitly citing the unfairness of treating every interaction as equal when tasks vary enormously in computational cost. Their blog post acknowledged what everyone in the industry already knew: "usage-based pricing is fast becoming the industry standard."
+Google's anti-gravity tool started with generous limits that included Claude Opus access. Then the limits were cut significantly. The community noticed and pushed back, but the reductions stuck.
+GitHub Copilot's student plan removed Claude Opus, Sonnet, and GPT-5.4 access in March 2026, citing "sustainability" concerns around serving nearly two million students. The practical value of the free plan dropped overnight.
+Every one of these follows the same arc. Generous launch, unsustainable costs, quiet reduction, public backlash, partial concession, new normal. The "rugpull," as the community has started calling it, isn't malicious. It's the inevitable consequence of a business model that was never designed to work at scale.
+## Who actually pays for this
+The uncomfortable answer is that API customers are funding subscription users. Companies and developers who pay per-token through the API are covering the full cost of inference. That revenue, combined with venture capital, is what allows Anthropic, OpenAI, and others to sell subscription plans at a fraction of the true cost.
+This creates a two-tier economy. Enterprise customers paying API rates are the profitable segment. Individual subscribers are the loss leader, brought in to build market share, gather usage data, and create switching costs. The strategy is rational from the provider's perspective: get developers hooked on the tool, then gradually move them toward usage-based pricing once they can't imagine working without it.
+But it's not sustainable in its current form. Ethan Ding described this dynamic as the "token short squeeze," a situation where per-token costs fall roughly 10x per year but actual serving costs keep climbing because the frontier models everyone wants never get cheaper. What gets cheaper is last year's model, which nobody wants. Meanwhile, reasoning models, agents, and long-running tasks have caused token consumption to explode.
+The result is a widening gap between what subscribers pay and what they consume. Someone fills that gap. Right now, it's API revenue and venture capital. Neither is infinite.
+## What happens when the subsidy ends
+There are really only three ways this plays out.
+The first is that usage-based pricing becomes universal. Every tool moves to a model where you pay for what you consume, with subscription tiers offering discounted rates rather than unlimited access. This is already happening. Cursor, Augment Code, and Windsurf have all shifted in this direction. The flat-rate "all you can eat" subscription is dying.
+The second is that the tools get good enough at efficiency that the subsidization gap shrinks. Better caching, smarter routing to cheaper models, and improved inference optimization could bring the actual cost of serving a subscriber closer to what they pay. Some of this is already happening, Cursor's Auto mode routes to the most cost-effective model for each task, but it's a slow process and frontier model costs keep resetting the equation.
+The third is consolidation. The companies that can't sustain the subsidization model get acquired or shut down. The ones with the deepest pockets, primarily the foundation model providers themselves, absorb the market. This is the most likely outcome for many of the smaller players.
+For users, the practical implication is straightforward. The era of paying \$20 for hundreds of dollars worth of AI compute is ending. It was never real pricing. It was a customer acquisition strategy dressed up as a subscription plan. The sooner we accept that, the sooner we can have honest conversations about what these tools actually cost and what they're actually worth.
+Because here's the thing: even at real prices, these tools are worth it. A developer who uses Claude Code or Cursor for serious work gets enormous productivity gains. The problem isn't the value, it's that the pricing was never designed to reflect reality. When it finally does, the tools will still be indispensable. They'll just cost what they actually cost.
+## References
+1. Cursor, "Clarifying our pricing," July 2025. [https://cursor.com/blog/june-2025-pricing](https://cursor.com/blog/june-2025-pricing)
+2. Cursor, "Models & Pricing," Cursor Docs. [https://cursor.com/docs/models-and-pricing](https://cursor.com/docs/models-and-pricing)
+3. Bearly AI, analysis of Anthropic subsidization of Claude Code, via X. [https://x.com/bearlyai/status/2030051147264970893](https://x.com/bearlyai/status/2030051147264970893)
+4. Augment Code, "Augment Code's pricing is changing on October 20, 2025." [https://www.augmentcode.com/blog/augment-codes-pricing-is-changing](https://www.augmentcode.com/blog/augment-codes-pricing-is-changing)
+5. Windsurf, "Introducing our new Windsurf pricing plans," March 2026. [https://windsurf.com/blog/windsurf-pricing-plans](https://windsurf.com/blog/windsurf-pricing-plans)
+6. Ethan Ding, "Tokens are getting more expensive," Substack, July 2025. [https://ethanding.substack.com/p/ai-subscriptions-get-short-squeezed](https://ethanding.substack.com/p/ai-subscriptions-get-short-squeezed)
+7. GitHub, Copilot student plan updates, March 2026. [https://github.com/orgs/community/discussions/189268](https://github.com/orgs/community/discussions/189268)
+8. TechCrunch, "Cursor apologizes for unclear pricing changes that upset users," July 2025. [https://techcrunch.com/2025/07/07/cursor-apologizes-for-unclear-pricing-changes-that-upset-users/](https://techcrunch.com/2025/07/07/cursor-apologizes-for-unclear-pricing-changes-that-upset-users/)
+9. Hustle Fund, "AI's Unsustainable Economics: The Path to Positive Margins." [https://www.hustlefund.vc/blog-posts-founders/one-thing-troubling-ai-companies](https://www.hustlefund.vc/blog-posts-founders/one-thing-troubling-ai-companies)
+10. SitePoint, "AI Coding Tools Cost Analysis 2026: ROI Calculator." [https://www.sitepoint.com/ai-coding-tools-cost-analysis-roi-calculator-2026/](https://www.sitepoint.com/ai-coding-tools-cost-analysis-roi-calculator-2026/)

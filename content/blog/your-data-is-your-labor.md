@@ -1,0 +1,59 @@
+---
+title: "Your data is your labor"
+date: "2026-05-02"
+lastEdited: "2026-05-01T16:04:00.000Z"
+tags: ["Tech"]
+tagColors: {"Tech":"orange"}
+postTags: ["Privacy","Regulation","Economics","Attention","Blockchain","Singapore","Philosophy","LLMs"]
+---
+
+On May 1st, 2026, something unusual happened. Alongside the familiar May Day marches and "no work, no school, no shopping" protests, organizers called for a digital walkout: no social media, no AI tools, no streaming services. They called it a data strike.
+"What the technocratic class doesn't want you to know is that your data is your labor too. Withhold it," the organizers wrote. It was a deliberate choice to frame this on International Workers' Day, not as a privacy campaign, but as a labor action.
+Whether or not the strike moved the needle on platform traffic is almost beside the point. What matters is the framing. For years, the conversation about data has been stuck in the language of privacy. The data strike reframed it as something people understand instinctively: unpaid work.
+## The platform business model is built on free labor
+Every post you write, every photo you upload, every click, scroll, and pause, these are acts of production. Platforms collect this output, refine it, package it, and sell it to advertisers or use it to train machine learning models. The value created is enormous. Meta, Alphabet, and Amazon together command trillions of dollars in market capitalization, built substantially on the data their users generate for free.
+This is not a new observation. Jaron Lanier and Glen Weyl made the case in their 2018 paper "Should We Treat Data as Labor?" published through the American Economic Association. Their argument was straightforward: in the digital economy, user data is typically treated as capital created by corporations observing willing individuals. But this framing ignores the users' active role in creating that data. If you reframe data as labor, then users are workers, and they deserve compensation.
+Lanier later expanded this into the concept of "data dignity," the idea that people should have meaningful control over when, how, and where their data is used, and should be paid for it. He has argued that reconceiving AI as a social collaboration between the people who provided training data would change how we think about economics, safety, and fairness in AI.
+## Why the labor framing hits harder than privacy
+Privacy arguments have been around for decades. GDPR, CCPA, cookie consent banners, we have an entire regulatory infrastructure built around the idea that your data should be protected. And yet most people click "accept all" without reading a word.
+The labor framing cuts differently. People understand exploitation. They understand working without getting paid. When you tell someone that their scrolling, posting, and chatting is generating billions of dollars for someone else, that registers in a way that "your metadata is being collected" does not.
+This is why the May Day framing was so effective. It connected digital behavior to a tradition of labor organizing that goes back over a century. You are not just a "user" whose privacy is being violated. You are a worker whose labor is being extracted.
+## AI made this personal
+The data-as-labor argument existed before generative AI, but the current wave of AI development has made it visceral. Every large language model is trained on text written by people. Every image model learned from art made by people. Every conversation you have with an AI chatbot becomes potential training data for the next version.
+The data strike explicitly targeted AI tools, not just social media. This was deliberate. The AI training pipeline makes the labor extraction more visible than advertising ever did. When a model generates text in the style of a specific writer, or produces images that closely resemble a specific artist's work, the connection between input labor and output value becomes hard to deny.
+Dr. Margaret Mitchell, chief ethics scientist at Hugging Face, has been advocating for AI companies to use their own technology to trace generative content back to its original creators, creating a technical foundation for compensation. Meanwhile, the Pulitzer Center has documented how the human labor behind AI, from data annotators earning \$12.50 an hour to subject-matter experts earning over \$100, remains largely invisible to end users.
+## The Singapore angle: protection vs. ownership
+Singapore's Personal Data Protection Act (PDPA) is often cited as a model for balanced data regulation. It recognizes both the need to protect individuals' personal data and the need of organisations to collect and use data for legitimate purposes. Recent amendments have strengthened enforcement, with fines now reaching up to 10% of annual revenue in Singapore for serious breaches.
+But the PDPA operates within a fundamentally different philosophical framework than the data-as-labor movement. The PDPA asks: how do we protect data while enabling business? The labor framing asks: who owns the value that data creates?
+These are not the same question. Data protection laws treat users as subjects to be shielded. The labor framing treats them as workers to be compensated. One is defensive, the other is assertive. Singapore's approach, like the EU's GDPR, assumes that with enough consent mechanisms and transparency requirements, the current arrangement can be made fair. The data-as-labor argument says the arrangement is structurally unfair, regardless of how many consent forms you sign.
+## Has anyone actually figured out how to pay people for their data?
+This is where the idealism runs into hard problems. Several attempts have been made, and most have stalled.
+Blockchain-based "data marketplace" projects proliferated during the crypto boom. The pitch was straightforward: tokenize data ownership, let users sell access to their data on decentralized exchanges. In practice, individual data points are worth fractions of a cent. The transaction costs of managing micro-payments overwhelmed the value being exchanged.
+Data cooperatives offer a more promising model. The concept, borrowed from agricultural and worker cooperatives, involves pooling data collectively and negotiating with companies as a group. The Data2X cooperative handbook and researchers at Stanford's Collective Intelligence Project have outlined how these could work: democratic governance, shared benefits, quality data incentives. Project Liberty has advocated for data co-ops as a scalable alternative to centralized platforms, arguing they should "scale out through networks, not scale up through monopolies."
+The EU's approach through the AI Act is more regulatory: it mandates that developers of general-purpose AI models publish summaries of their training data, creating at least the transparency needed for future compensation schemes. But transparency alone does not equal compensation.
+The honest answer is that no one has cracked this yet. Individual data is nearly worthless. Collective data is enormously valuable. The gap between those two facts is where every proposed solution gets stuck.
+## The irony writes itself
+The May Day data strike was organized on social media. It spread through Instagram posts, Reddit threads, and group chats on platforms owned by the very companies being protested. The call to withhold data was itself a data-generating event, one that likely provided useful signal about user sentiment, engagement patterns, and political attitudes.
+This is not a gotcha. It is the actual problem. The infrastructure of modern communication is so thoroughly captured by data-extractive platforms that even resistance to those platforms feeds them. You cannot coordinate a boycott of the attention economy without paying the attention economy for the privilege.
+## What the strike actually accomplished
+Did the May 1st data strike cause meaningful revenue loss for any platform? Almost certainly not. A single day of reduced usage, even if millions participated, barely registers against the scale of global data flows.
+But measuring the strike by traffic dips misses the point. The value was in the Overton window shift. A year ago, "data as labor" was an academic concept discussed in economics journals and tech policy circles. Today it was a protest slogan on International Workers' Day.
+The framing matters because it changes what solutions look like. If data is a privacy issue, the answer is better consent forms and regulation. If data is a labor issue, the answer is collective bargaining, unions, and compensation. The second set of answers is more ambitious, harder to implement, and ultimately more threatening to the current business model of the internet.
+We are still early in this shift. The infrastructure for data compensation does not exist yet. The legal frameworks are not in place. The cooperative models are experimental. But the fact that millions of people now think of their online activity as unpaid work, that is a change in consciousness that does not easily reverse.
+The platforms were built on the assumption that data is free. The moment enough people stop believing that, the economics have to change. Whether that moment is here or still coming, the May Day data strike made it feel closer than ever.
+## References
+1. [Calls for "data strike" on May 1st: no social media, no AI, no streaming services](https://cybernews.com/tech/data-strike-may/) (Cybernews, April 2026)
+2. [Should We Treat Data as Labor? Moving beyond "Free"](https://www.aeaweb.org/articles?id=10.1257/pandp.20181003) (American Economic Association, Arrieta-Ibarra, Goff, Jiménez-Hernández, Lanier, Weyl, 2018)
+3. [What is data dignity?](https://www.techtarget.com/searchenterpriseai/definition/data-dignity) (TechTarget)
+4. [Data Dignity and the Inversion of AI, Jaron Lanier](https://cdss.berkeley.edu/video/data-dignity-and-inversion-ai-jaron-lanier) (UC Berkeley CDSS)
+5. [A Blueprint for a Better Digital Society](https://hbr.org/2018/09/a-blueprint-for-a-better-digital-society) (Harvard Business Review, Lanier and Weyl, 2018)
+6. [You could get paid for everything you've ever posted online, says scientist](https://www.sciencefocus.com/news/ai-compensation-model) (BBC Science Focus, February 2026)
+7. [How We Investigated the Human Labor Behind AI](https://pulitzercenter.org/resource/how-we-investigated-human-labor-behind-ai) (Pulitzer Center)
+8. [AI model training needs are changing, with subject experts pushing aside generalist data labelers](https://www.businessinsider.com/ai-data-labeling-annotators-pay-subject-experts-generalists-gig-workers-2025-12) (Business Insider, December 2025)
+9. [PDPA Overview](https://www.pdpc.gov.sg/overview-of-pdpa/the-legislation/personal-data-protection-act) (Personal Data Protection Commission, Singapore)
+10. [How to Build a Data Cooperative](https://data2x.org/wp-content/uploads/2024/06/Data-Cooperative-Handbook.pdf) (Data2X)
+11. [Co-owning the Future with Data Cooperatives](https://www.cip.org/blog/data-cooperatives) (The Collective Intelligence Project, Stanford HAI)
+12. [Data Co-ops as a Scalable Alternative to the Centralized Digital Economy](https://www.projectliberty.io/news/data-coops-as-alternative-to-centralized-digital-economy/) (Project Liberty)
+13. [How Big AI Developers are Skirting a Mandate for Training Data Transparency](https://techpolicy.press/how-big-ai-developers-are-skirting-a-mandate-for-training-data-transparency) (Tech Policy Press)
+14. [US activists plan May Day economic blackout](https://www.theguardian.com/us-news/2026/apr/28/may-day-economic-blackout) (The Guardian, April 2026)
+15. [Should we treat data as labor? Let's open up the discussion](https://www.brookings.edu/articles/should-we-treat-data-as-labor-lets-open-up-the-discussion/) (Brookings Institution, 2018)

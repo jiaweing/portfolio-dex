@@ -13,7 +13,8 @@ import {
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactConfetti from "react-confetti";
-import type { Project } from "@/lib/notion";
+import type { Project } from "@/lib/content";
+import { findEgg } from "@/lib/easter-eggs";
 import { cn } from "@/lib/utils";
 
 // Types
@@ -540,10 +541,8 @@ export function MemoryGame({ projects }: MemoryGameProps) {
     // Create pairs of cards
     const gamecards: GameCard[] = [];
     selectedProjects.forEach((project, idx) => {
-      const image =
-        cardType === "cover"
-          ? `/api/notion-image?pageId=${project.id}&prop=cover`
-          : `/api/notion-image?pageId=${project.id}&prop=logo`;
+      // availableProjects is already filtered to ones with this image
+      const image = (cardType === "cover" ? project.cover : project.logo) ?? "";
       // Create two cards for each project (a pair)
       for (let i = 0; i < 2; i++) {
         gamecards.push({
@@ -661,6 +660,7 @@ export function MemoryGame({ projects }: MemoryGameProps) {
       setIsNewHighScore(isNew);
       setShowConfetti(true);
       setStatus("won");
+      findEgg("memory");
     }
   }, [cards, status, scoreMode, elapsedTime, moves, difficulty]);
 

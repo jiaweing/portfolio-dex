@@ -1,4 +1,7 @@
+import { createMDX } from "fumadocs-mdx/next";
 import type { NextConfig } from "next";
+
+const withMDX = createMDX();
 
 const withPWA = require("next-pwa")({
   dest: "public",
@@ -86,7 +89,7 @@ const nextConfig: NextConfig = {
         pathname: "/logos/**",
       },
       {
-        pathname: "/api/notion-image",
+        pathname: "/content/**",
       },
       {
         pathname: "/api/og",
@@ -128,4 +131,4 @@ const nextConfig: NextConfig = {
   turbopack: {},
 };
 
-export default withPWA(nextConfig);
+export default withMDX(withPWA(nextConfig));

@@ -1,7 +1,7 @@
 import { StackTable } from "@/components/StackTable";
 import { FadeIn } from "@/components/ui/fade-in";
+import { getStackItems } from "@/lib/content";
 import { generateMetadata } from "@/lib/metadata";
-import { getStackItems } from "@/lib/notion";
 import JsonLd from "../jsonld";
 
 export const metadata = generateMetadata({

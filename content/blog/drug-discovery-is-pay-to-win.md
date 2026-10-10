@@ -1,0 +1,63 @@
+---
+title: "Drug discovery is pay-to-win"
+date: "2026-05-05"
+lastEdited: "2026-05-04T16:01:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: ["OpenAI","LLMs","Models","Open Source","Anthropic","Google","Startups","Economics","Regulation"]
+---
+
+The pitch for AI in science has always been democratization. Make discovery faster, cheaper, more accessible. Let a scrappy lab in Nairobi compete with a pharmaceutical giant in Cambridge. That was the story, anyway.
+Then OpenAI launched GPT-Rosalind, and the fine print told a different story. The most powerful scientific AI model ever built is available through a "trusted access program" for "qualified enterprise customers." The launch partners? Amgen, Moderna, Novo Nordisk, Thermo Fisher Scientific. Not exactly underdogs.
+This isn't a hit piece on OpenAI. The problem is structural. When the best tools for scientific discovery are gated behind enterprise agreements, we're not democratizing science. We're accelerating a two-tier research system where the richest labs pull further ahead and everyone else falls behind.
+## What GPT-Rosalind actually does
+GPT-Rosalind is a frontier reasoning model built specifically for biology, drug discovery, and translational medicine. It launched in April 2026 as a research preview, named after Rosalind Franklin, the scientist whose work was essential to understanding the structure of DNA.
+The model is designed to handle the fragmented, time-intensive workflows that slow down pharmaceutical research. Drug discovery in the US takes roughly 10 to 15 years from target identification to regulatory approval. Only about one in ten drugs that enter clinical trials ever gets approved. Large pharma companies now spend more than \$6 billion on R&D per approved drug, compared to roughly \$40 million (in today's dollars) back in the 1950s.
+GPT-Rosalind tackles the early stages of that pipeline: synthesizing literature, generating hypotheses, planning experiments, and connecting insights across genomics, protein engineering, and biochemistry. OpenAI also released a free Life Sciences research plugin for Codex that connects to over 50 scientific tools and data sources. During the research preview, using the model doesn't consume existing API credits.
+That free plugin is a genuine contribution. But the core model, the one doing the heavy reasoning, is behind the gate.
+## The access problem
+The trusted access program is not unusual for frontier AI models. OpenAI has used similar rollout strategies before. But in drug discovery, access isn't just a business concern. It's a scientific equity concern.
+Consider who gets to use GPT-Rosalind at launch: Amgen (market cap \~\$300 billion), Moderna (\$40+ billion), Novo Nordisk (one of the most valuable companies in Europe). These are organizations that already have massive computational biology teams, proprietary datasets, and decades of institutional knowledge.
+Now consider who doesn't get access: university research labs running on NIH grants, hospitals in low-income countries trying to address neglected tropical diseases, biotech startups that haven't yet raised a Series A.
+This isn't unique to pharma. The same pattern plays out across legal AI, financial modeling, and enterprise coding tools. The most capable models go to the organizations that can pay the most for them. "Democratization" was the pitch. Enterprise pricing is the reality.
+## The gap is widening, not closing
+Academic researchers have been losing ground to industry for decades. The average NIH R01 grant provides roughly \$250,000 to \$500,000 per year. That's a rounding error in the budget of a company like Amgen. When AI tools require enterprise contracts, custom integrations, and dedicated support teams, the cost of entry isn't just the subscription fee. It's the entire infrastructure needed to make the tool useful.
+And the compounding effects matter. If a pharma giant uses GPT-Rosalind to identify a promising drug target six months faster than a university lab could, that's six months of head start on patents, clinical trials, and publication. Multiply that advantage across dozens of programs and years of iteration, and you get a widening gap that no amount of open-access journals can close.
+The competitive landscape makes this even more stark. Amazon launched its own AI drug discovery platform, Amazon Bio Discovery, within days of GPT-Rosalind's announcement. NVIDIA offers enterprise-scale drug discovery infrastructure. Alphabet has Isomorphic Labs. Anthropic is building similar capabilities. Every major tech company is racing to sell AI-powered discovery to the same pool of well-funded pharmaceutical companies.
+## The sequencing precedent
+There is a hopeful historical parallel. When genome sequencing first became possible, it was absurdly expensive. The Human Genome Project cost roughly \$3 billion and took 13 years to complete. James Watson's genome was sequenced for under \$1 million. By 2009, the cost dropped to \$100,000. Today, you can sequence a whole genome for around \$1,000.
+As costs fell, access expanded. Small labs, clinical researchers, and even consumer companies like 23andMe entered the space. The democratization of sequencing genuinely transformed biology.
+But there's a crucial difference. Sequencing machines are hardware. Once the technology improves and manufacturing scales, the cost drops for everyone. AI models are different. The cost of inference may fall, but the models themselves are controlled by a handful of companies that decide who gets access, at what price, and under what terms. The bottleneck isn't physics. It's business strategy.
+## Can open source compete?
+The open-source AI community has made impressive progress in biomedical applications. BioMistral, an open-source large language model built on Mistral and pre-trained on PubMed Central, has shown strong performance on medical question-answering benchmarks. Recursion Pharmaceuticals has released large-scale biological datasets to accelerate open research. Companies like Insilico Medicine and PsiThera are building integrated discovery platforms that combine AI with wet lab capabilities.
+But there's a gap between open-source medical Q&A and the kind of deep, multi-step scientific reasoning that GPT-Rosalind promises. Open models can help a researcher summarize literature or suggest hypotheses. They're not yet capable of the orchestrated workflows that connect hypothesis generation to experimental design to data analysis in a single pipeline.
+The real moat might not be the model itself but the training data. Pharmaceutical companies sit on decades of proprietary experimental data, failed trials, molecular libraries, and patient outcomes. An open-source model trained on PubMed abstracts is working with a fraction of the information available to a model fine-tuned on Amgen's internal datasets. Data asymmetry reinforces the access divide.
+## The Jevons paradox twist
+You might expect that as AI gets cheaper, more researchers will use it, and the access problem will solve itself. This is the logic of Jevons paradox: when the cost of a resource drops, demand for it increases, often so much that total consumption rises rather than falls.
+Satya Nadella invoked Jevons paradox after DeepSeek demonstrated that capable AI models could be built at lower cost. "As AI gets more efficient and accessible, we will see its use skyrocket," he wrote.
+But Jevons paradox assumes the resource actually becomes accessible. What we're seeing in scientific AI is something different: artificial scarcity. The cost of running inference may drop, but access is controlled through enterprise agreements, trusted access programs, and strategic partnerships. The efficiency gains don't flow to everyone equally. They flow to whoever can negotiate the best deal.
+This creates a peculiar dynamic. AI should make research cheaper and more abundant. Instead, the best AI tools create new forms of competitive advantage that entrench existing hierarchies. The labs that can afford GPT-Rosalind don't just do the same research faster. They do research that smaller labs simply cannot attempt.
+## What would actual democratization look like?
+If we're serious about AI democratizing drug discovery, a few things would need to change.
+First, tiered access models. Enterprise pricing for Pfizer is reasonable. But there should be meaningful academic pricing, not just a free plugin, but access to the full reasoning capabilities at rates that NIH-funded labs can afford.
+Second, open data mandates. If AI models trained on publicly funded research generate commercially valuable insights, some of that value should flow back to the public research ecosystem. The Bayh-Dole Act created a framework for this in the era of patents. We need an equivalent for the era of AI-generated discoveries.
+Third, investment in open-source scientific AI. Governments and foundations should fund the development of open models that can compete with proprietary ones on scientific reasoning tasks. Not just chatbots that can answer medical trivia, but genuine research tools.
+Fourth, data sharing requirements. The biggest advantage proprietary models have is access to proprietary data. Policies that encourage or require sharing of pre-competitive biological data would level the playing field more than any model release.
+## The stakes are higher than market share
+This isn't a typical tech industry access debate. When the best coding tools are expensive, some developers write less efficient code. When the best drug discovery tools are expensive, some diseases don't get cured.
+Neglected tropical diseases affect hundreds of millions of people in low-income countries. Rare diseases collectively affect 300 million people worldwide but individually attract little pharmaceutical investment because the markets are too small. These are exactly the areas where AI could make the biggest difference, where collapsing the cost of early-stage research could unlock programs that the market would never fund on its own.
+But only if researchers working on those problems can actually use the tools.
+The drug discovery pipeline was always expensive and slow. AI has the potential to change that. The question is whether that potential will be realized broadly or captured narrowly. Right now, the trajectory points toward capture. GPT-Rosalind is a remarkable piece of technology. It's also a reminder that the most powerful tools tend to go to the most powerful players, unless we deliberately build systems that work differently.
+## References
+1. [Introducing GPT-Rosalind for life sciences research](https://openai.com/index/introducing-gpt-rosalind/), OpenAI, April 2026
+2. [OpenAI introduces GPT-Rosalind, its drug discovery AI](https://pharmaphorum.com/news/openai-introduces-gpt-rosalind-its-drug-discovery-ai), Pharmaphorum, April 2026
+3. [OpenAI launches GPT-Rosalind AI model for drug discovery](https://qz.com/openai-gpt-rosalind-drug-discovery-life-sciences-041726), Quartz, April 2026
+4. [Novo Nordisk partners with OpenAI as AI drug discovery hopes mount](https://www.cnbc.com/2026/04/14/novo-nordisk-openai-ai-drug-discovery-healthcare-nvo.html), CNBC, April 2026
+5. [OpenAI launches biotech-specific AI model, GPT-Rosalind](https://www.fiercebiotech.com/biotech/openai-launches-biotech-specific-ai-model-gpt-rosalind), Fierce Biotech, April 2026
+6. [OpenAI launches AI model GPT-Rosalind for life sciences research](https://www.reuters.com/business/healthcare-pharmaceuticals/openai-launches-ai-model-gpt-rosalind-life-sciences-research-2026-04-16/), Reuters, April 2026
+7. [What if billions in AI funding led to the same number of drugs?](https://www.benchling.com/blog/what-if-billions-in-ai-funding-led-to-the-same-number-of-drugs), Benchling
+8. [The Cost of Sequencing a Human Genome](https://www.genome.gov/about-genomics/fact-sheets/Sequencing-Human-Genome-cost), National Human Genome Research Institute
+9. [BioMistral: A Collection of Open-Source Pretrained Large Language Models for Medical Domains](https://arxiv.org/abs/2402.10373), Labrak et al., 2024
+10. [Why the AI world is suddenly obsessed with Jevons paradox](https://www.npr.org/sections/planet-money/2025/02/04/g-s1-46018/ai-deepseek-economics-jevons-paradox), NPR Planet Money, February 2025
+11. [Open Source 'Floats All Boats' in AI-Driven Drug Discovery](https://www.bio-itworld.com/news/2026/03/17/open-source--floats-all-boats--in-ai-driven-drug-discovery), Bio-IT World, March 2026
+12. [The AI innovation-access gap in medicine](https://kevinmd.com/2025/12/the-ai-innovation-access-gap-in-medicine.html), KevinMD, December 2025

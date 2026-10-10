@@ -1,4 +1,4 @@
-import { getProjects } from "@/lib/notion";
+import { getProjects } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 

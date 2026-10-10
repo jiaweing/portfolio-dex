@@ -28,11 +28,13 @@ const geistMono = Geist_Mono({
 import { Suspense } from "react";
 import { AgentationProvider } from "@/components/agentation-provider";
 import { BackToTop } from "@/components/BackToTop";
+import { EasterEggs } from "@/components/easter-eggs/EasterEggs";
 import { OpenSourceToast } from "@/components/open-source-toast";
 import { QueryProvider } from "@/components/QueryProvider";
 import { SileoToaster } from "@/components/SileoToaster";
 import { WebMCPProvider } from "@/components/WebMCPProvider";
 import { YouTubeLiveFloat } from "@/components/YouTubeLiveFloat";
+import { getCachedContributions } from "@/lib/get-cached-contributions";
 import { siteConfig } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -170,7 +172,7 @@ export default function RootLayout({
             <PlausibleWrapper>
               <div className="relative flex min-h-screen flex-col">
                 <div>
-                  <section className="relative z-10 min-h-screen bg-background lg:mb-[400px]">
+                  <section className="relative z-10 min-h-screen bg-background lg:mb-[560px]">
                     <LayoutWidthWrapper>
                       <div className="relative z-[100] mx-auto max-w-2xl space-y-4 leading-relaxed">
                         <SiteHeader />
@@ -193,7 +195,7 @@ export default function RootLayout({
             </PlausibleWrapper>
 
             <MobileBottomNav />
-            <SiteFooter />
+            <SiteFooter contributions={getCachedContributions("jiaweing")} />
             {modal}
             <ThemeToggle />
             <TailwindIndicator />
@@ -202,6 +204,7 @@ export default function RootLayout({
             <SileoToaster />
             <OpenSourceToast />
             <BackToTop />
+            <EasterEggs />
             <Suspense>
               <YouTubeLiveFloat />
             </Suspense>

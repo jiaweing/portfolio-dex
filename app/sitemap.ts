@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getBlogPosts, getPages, getProjects } from "@/lib/notion";
+import { getBlogPosts, getPages, getProjects } from "@/lib/content";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://jiaweing.com";

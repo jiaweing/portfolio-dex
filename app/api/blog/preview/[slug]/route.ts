@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { extractDescriptionFromBlocks, getBlogPost } from "@/lib/notion";
+import { extractDescriptionFromBlocks, getBlogPost } from "@/lib/content";
 
 export async function GET(
   _request: NextRequest,

@@ -7,7 +7,9 @@ import {
 } from "hugeicons-react";
 import { Search } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { EggTracker } from "@/components/easter-eggs/EggTracker";
+import { createBurst, findEgg } from "@/lib/easter-eggs";
 import { CommandPalette } from "./search/command-palette";
 import { Button } from "./ui/button";
 
@@ -15,6 +17,10 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const themeBurst = useMemo(
+    () => createBurst(6, 10_000, () => findEgg("indecisive")),
+    []
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -42,6 +48,7 @@ export function ThemeToggle() {
   const cycleTheme = () => {
     const next =
       theme === "system" ? "light" : theme === "light" ? "dark" : "system";
+    themeBurst();
     if (document.startViewTransition) {
       if (next === "dark") document.documentElement.classList.add("to-dark");
       const transition = document.startViewTransition(() => setTheme(next));
@@ -79,6 +86,7 @@ export function ThemeToggle() {
     <>
       <CommandPalette onOpenChange={setIsSearchOpen} open={isSearchOpen} />
       <div className="fixed top-6 right-6 z-50 flex items-center gap-1">
+        <EggTracker />
         <button
           aria-label="Search (⌘K)"
           className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"

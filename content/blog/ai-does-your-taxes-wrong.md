@@ -1,0 +1,59 @@
+---
+title: "AI does your taxes wrong"
+date: "2026-04-06"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: []
+---
+
+One in four American taxpayers now use AI chatbots to help file their taxes. That number doubled from last year. On paper, it makes sense: tax season is stressful, professional help is expensive, and AI sounds authoritative. The problem is that AI gets taxes wrong, often by thousands of dollars, and most people have no idea.
+Tax preparation turns out to be one of the worst possible use cases for large language models. It demands exact calculations, knowledge of edge-case regulations, and zero tolerance for error. LLMs deliver none of that reliably. The 2026 tax season is shaping up to be a case study in what happens when we deploy AI into high-stakes domains before the technology is ready.
+## The numbers are alarming
+The New York Times ran one of the most revealing tests this year. They gave four leading AI chatbots, Google's Gemini, OpenAI's ChatGPT, Anthropic's Claude, and xAI's Grok, eight fictional tax scenarios developed by TaxSlayer. The chatbots miscalculated the refund or amount owed to the IRS by an average of more than \$2,000. Even when provided with every necessary form and document, they still got the math wrong.
+The ORCA Benchmark from Omni Calculator paints an even broader picture. Their research found that in the finance and economics domain, leading AI models produce "unstable" results up to 78% of the time, frequently giving different incorrect answers to the same financial prompts. They also underestimate long-term savings projections by as much as 40%.
+A separate benchmark, TaxCalcBench, tested models specifically on complete tax return preparation. The best-performing model, GPT-5 with web search enabled, achieved only 41.67% accuracy. That means even the top model got the majority of returns wrong.
+## Why LLMs fail at taxes
+The core issue is architectural. Tax preparation software like TurboTax uses procedural, "if-then" logic built for mathematical precision. Every calculation follows a deterministic path. Large language models are fundamentally different. As Erik Brynjolfsson, a senior fellow at Stanford's Institute for Human-Centered AI, explained to the New York Times, LLMs are prediction engines that "can be superhuman at many tasks yet fail at some that seem simpler to humans."
+Benedict Evans, a technology analyst, put it even more bluntly: "These models get dramatically better over the course of every six months. But they still give you what is roughly the right answer, and that's not what you want."
+"Roughly right" is fine for summarizing an article or brainstorming ideas. It is catastrophic for taxes. The U.S. tax code is built on cascading dependencies where one wrong number ripples through an entire return. A misclassified deduction, a rounding error on capital gains, a missed phase-out threshold, any of these can compound into a significant discrepancy.
+Tax prep also requires deep contextual judgment. Consider a simple-sounding question: can you deduct your dog? A CPA would say "it depends," because while pets aren't deductible, a seeing-eye dog qualifies as a medical expense under certain circumstances. Ask an AI chatbot and, as one tax expert told CNBC, it may start with "yes," and the challenge is how many people stop reading after they get the answer they want to hear.
+## The confidence-competence gap
+This gets at the most dangerous quality of LLMs in high-stakes contexts: they sound confident regardless of whether they're right. There's no hesitation, no hedge, no "I'm not sure about this one." The output reads like it was written by someone who knows what they're doing.
+That false confidence maps directly onto a well-documented human bias. People tend to trust sources that sound authoritative. When an AI chatbot produces a fluent, well-structured answer about your tax situation, it feels reliable. And according to the IPX 1031 Tax Procrastinators Survey, 46% of Americans say they trust AI to give accurate tax guidance.
+The gap between perceived competence and actual competence is where the real damage happens. You don't know what you don't know, and the AI won't tell you.
+## Nondeterminism meets financial compliance
+There's a deeper technical problem that most people never think about: nondeterminism. A calculator gives you the same answer every time. AI doesn't. The ORCA researchers captured this perfectly: "Calculators are predictable, always giving the same answer. AI is different. Mathematically, a model can get a question right today and wrong tomorrow."
+This is not a minor quirk. It's fundamental to how these models work. They generate responses probabilistically, and the same prompt can produce different outputs across runs. In creative writing, that's a feature. In tax compliance, it's a liability.
+Imagine asking the same tax question twice and getting two different answers, both wrong in different ways. That's not a hypothetical. The ORCA benchmark specifically measures this instability, and the results in finance are among the worst across all domains tested.
+## The liability problem
+Here's the part that catches most people off guard: when AI files your taxes wrong, you're the one who pays.
+The IRS has been unambiguous about this. The Taxpayer Advocate Service explicitly warns that taxpayers remain responsible for the accuracy of their returns regardless of what tools they used to prepare them. As one tax expert told CNBC, "If you make a mistake while using AI to do your taxes, it could get you in trouble with the IRS. And a valid excuse isn't, 'The AI made me do it.'"
+The consequences aren't trivial. Accuracy-related penalties can reach 20% of the underpayment. You may owe additional tax plus interest calculated from the original due date. An audit means documentation requests, examiner interactions, and potentially costly professional representation.
+And there's an ironic twist: the IRS itself is now using AI-driven audit systems for "high-precision automated flagging." Any discrepancy between what a broker reports and what you file is increasingly likely to trigger an automated notice. The same technology that's making it easier to file incorrectly is making it easier for the IRS to catch those errors.
+## The accountants are already seeing it
+This isn't theoretical. Accountants and bookkeepers are cleaning up AI-generated tax messes right now. A 2025 survey of 500 accountants and bookkeepers found that 76% saw an uptick in clients using LLMs for tax or bookkeeping advice, and they were spotting mistakes on a regular basis.
+The most common errors include misinterpretation of business expenses (44%), incorrect tax claims or charges (43%), faulty personal tax planning (36%), and payroll errors (35%). These aren't exotic edge cases. They're bread-and-butter tax work that AI gets wrong often enough to create real problems.
+Interestingly, even TurboTax's own AI assistant, Intuit Assist, has struggled. When deployed to answer tax questions, it would produce irrelevant answers. When the answers were on topic, they were often wrong. If the company that built TurboTax can't make an AI reliably answer tax questions, that should tell you something.
+## The nuanced take
+None of this means AI is useless for taxes. For genuinely simple situations, a W-2 employee with standard deductions, AI can probably help you understand basic concepts and point you in the right direction. It's decent at explaining what a 1099 form is or outlining the general steps of filing.
+The problem is that most people don't know whether their situation is simple or complex. And AI won't reliably tell you when you've crossed that line. It will happily attempt to handle edge cases, multi-step calculations, and obscure deductions with the same confident tone it uses for everything else.
+It's also worth acknowledging that traditional tax prep has never been perfect. Humans make tax errors too. TurboTax and other software have their own issues. But there's a crucial difference: you can audit a human's reasoning. You can ask a CPA to show their work. You can trace the logic of procedural software step by step. With an LLM, the reasoning is opaque, non-reproducible, and potentially different every time you ask.
+## What this tells us about AI deployment
+Tax preparation is a microcosm of a much larger pattern. We're rushing AI into domains where the cost of being wrong is high, while the technology is optimized for domains where being approximately right is good enough.
+The adoption curve is outpacing the reliability curve. Usage more than doubled in a single year, from 11% to roughly 25% of filers. That growth isn't driven by AI getting dramatically better at taxes. It's driven by AI getting dramatically better at sounding like it's good at taxes.
+The most productive framing isn't AI versus humans. It's knowing which tool fits which job. AI is extraordinary at pattern recognition, summarization, and creative generation. Tax preparation demands deterministic calculation, regulatory precision, and contextual judgment about individual circumstances. These are different skill sets, and conflating them has real costs.
+For now, the safest approach is the boring one: use AI to learn about tax concepts if you want, but verify everything against official IRS guidance. For actual filing, stick with established tax software or a qualified professional. The money you save by having a chatbot do your taxes could easily cost you multiples in penalties, interest, and professional fees to fix the mess.
+The 2026 tax season will likely produce a wave of correction notices and audit flags. When it does, it won't be because AI is bad. It will be because we asked it to do something it was never designed to do well, and trusted the confident answer over the correct one.
+## References
+1. [A Word to the Wise: Don't Trust A.I. to File Your Taxes](https://www.nytimes.com/2026/03/05/technology/artificial-intelligence-taxes-tax-refund.html), The New York Times, March 2026
+2. [Be Careful: AI Tax Calculation Risk Hits Up to 78% Incorrect Answers](https://www.omnicalculator.com/reports/ai-tax-calculation-risk-2026), Omni Calculator, 2026
+3. [Measuring AI Tax Accuracy: Comparing Filed to ChatGPT, Claude, and Gemini on TaxCalcBench](https://www.filed.com/measuring-ai-tax-accuracy-filed-vs-chatgpt-claude-gemini), Filed, 2026
+4. [I Asked ChatGPT for Tax Help, Experts Say I Fell into a Classic Trap](https://www.cnbc.com/2026/03/31/ai-tax-help-pitfalls.html), CNBC, March 2026
+5. [AI-Generated Tax Errors Are Piling Up, Accountants Warn](https://ca.finance.yahoo.com/news/a-lot-of-overpromise-ai-generated-tax-errors-are-piling-up-accountants-warn-120000217.html), Yahoo Finance Canada, 2026
+6. [Using AI to Do Your Taxes Is Likely to Backfire Spectacularly](https://futurism.com/artificial-intelligence/taxes-with-ai-disaster), Futurism, 2026
+7. [Tax Procrastination Statistics 2026](https://www.ipx1031.com/americas-biggest-tax-procrastinators-2026/), IPX 1031, 2026
+8. [ORCA Benchmark Update: Gemini 3 Flash Crushes ChatGPT-5.2 in Accuracy Test](https://www.blufftontoday.com/press-release/story/56032/gemini-3-flash-crushes-chatgpt-5-2-in-accuracy-test-orca-benchmark-update/), EIN Presswire, March 2026
+9. [Is AI Generated Tax Advice Making the Grade?](https://www.taxpayeradvocate.irs.gov/news/tax-tips/is-ai-generated-tax-advice-making-the-grade/2024/06/), IRS Taxpayer Advocate Service
+10. [Risks of Using AI for Tax Preparation: What Taxpayers Must Know](https://www.davidovcpa.com/uncategorized/risks-of-using-ai-for-tax-preparation-what-taxpayers-must-know/), Davidov CPA
+11. [As Tax Deadline Approaches, Consumers Turn to AI Before Filing](https://www.pymnts.com/taxes/2026/as-tax-deadline-approaches-consumers-are-going-to-ai-before-filing/), PYMNTS, 2026

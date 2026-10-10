@@ -3,7 +3,6 @@ import { Radio } from "lucide-react";
 import Link from "next/link";
 import { AppDeck } from "@/components/AppDeck";
 import { PostTags } from "@/components/blog/PostTags";
-import { ContributionsBanner } from "@/components/ContributionsBanner";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { ProfileBio } from "@/components/ProfileBio";
 import { StatsBento } from "@/components/StatsBento";
@@ -15,9 +14,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getCachedContributions } from "@/lib/get-cached-contributions";
+import { getBlogPosts, getProjects } from "@/lib/content";
 import { generateMetadata } from "@/lib/metadata";
-import { getBlogPosts, getProjects } from "@/lib/notion";
 
 export const metadata = generateMetadata({
   title: "a founder, designer & engineer",
@@ -27,7 +25,6 @@ export const metadata = generateMetadata({
 });
 
 export default async function Home() {
-  const contributions = getCachedContributions("jiaweing");
   const [projects, allPosts] = await Promise.all([
     getProjects(),
     getBlogPosts(),
@@ -58,9 +55,7 @@ export default async function Home() {
         OpenAI Hackathon 2024 top 10%. BSc Computing Science, University of
         Glasgow / Singapore Institute of Technology.
       </p>
-      {/* Banner is absolute — sits in background, doesn't push content */}
       <div className="relative">
-        <ContributionsBanner contributions={contributions} />
         <div className="relative z-10">
           {/* Temporarily hidden. Restore import when bringing this banner back. */}
           <ProfileBio />

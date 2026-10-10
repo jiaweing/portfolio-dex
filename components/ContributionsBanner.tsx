@@ -140,6 +140,9 @@ function YearBand({
         onHoverChange(null);
         return;
       }
+      if (hovered?.ti === ti && hovered.wi === wi && hovered.di === di) {
+        return;
+      }
       onHoverChange({
         activity,
         x: rect.left + ((wi * CELL + BLOCK / 2) / vw) * rect.width,
@@ -150,7 +153,7 @@ function YearBand({
         di,
       });
     },
-    [band, bandH, vw, ti, onHoverChange]
+    [band, bandH, vw, ti, hovered, onHoverChange]
   );
 
   return (
@@ -303,6 +306,9 @@ function Wallpaper({
     const activity = weeks[wi]?.[di];
     if (!activity) {
       onHoverChange(null);
+      return;
+    }
+    if (hovered?.ti === 0 && hovered.wi === wi && hovered.di === di) {
       return;
     }
     onHoverChange({

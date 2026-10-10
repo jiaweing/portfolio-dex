@@ -1,0 +1,58 @@
+---
+title: "America just sabotaged its own AI"
+date: "2026-03-25"
+lastEdited: "2026-04-30T09:28:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: []
+---
+
+The U.S. government wants to be an AI superpower. It has an AI Action Plan, a dedicated federal AI platform called USAi, and streamlined procurement deals to get large language models into every agency. The message to the world is clear: America is going all in on AI.
+At the same time, the government just labeled one of its most capable AI companies a national security threat, ordered every federal agency to stop using its products, and gave the Pentagon six months to rip it out of classified systems.
+The company in question is Anthropic, maker of the Claude AI model, and arguably the most safety-focused frontier AI lab in the world. The contradiction here isn't subtle. It reveals a deeper problem: American AI policy is being shaped by political leverage, not technical strategy.
+## What actually happened
+In July 2025, Anthropic's Claude became the first frontier AI model approved for use on classified government networks. It was used operationally, including reportedly in the capture of Venezuelan President Nicolás Maduro in January 2026. By any measure, the partnership was working.
+Then the Department of Defense asked Anthropic to renegotiate the contract. Specifically, the Pentagon wanted Anthropic to remove two restrictions: no use for mass domestic surveillance of Americans, and no use for fully autonomous weapons systems. Anthropic refused.
+On February 27, 2026, President Trump ordered all federal agencies to stop using Anthropic's products. The same day, Secretary of Defense Pete Hegseth announced that the Pentagon would designate Anthropic a "supply chain risk," a label historically reserved for foreign adversaries like certain Chinese telecom firms. On March 4, the designation became official. Anthropic became the first American company ever to receive it.
+Hours after the ban, OpenAI announced it had struck its own deal with the Pentagon to deploy models on classified networks. The timing was hard to miss.
+## The real incoherence
+The problem isn't that the government chose OpenAI over Anthropic. Agencies should be free to work with whichever vendor meets their needs. The problem is that the mechanism used to make that switch, a national security supply chain designation, was designed for a completely different purpose.
+Supply chain risk designations exist under 10 USC 3252 to protect the military from compromised foreign technology. Think Huawei and ZTE. Applying this tool to a domestic company over a contract negotiation is unprecedented, and legal experts have said it is likely an overreach of the statute's intent.
+"I've never heard of an order being used anything like this way. It has obviously nothing to do with national security interests," said Zach Prince, a federal contracting partner at Haynes Boone. Jessica Tillipman, associate dean for government procurement law at George Washington University, put it more bluntly: the administration's actions "send a really bad message to industry."
+Meanwhile, GSA released a draft clause for its schedule contracts on the very same day as the Anthropic designation. The nine-page document would require vendors providing AI tools to meet prescriptive requirements around data ownership, AI system disclosure, and the use of "American AI systems" only. Industry observers called it governance by sledgehammer, not scalpel.
+So on one hand, the White House says it wants to accelerate AI adoption and buy like commercial companies buy. On the other, it is punishing a vendor for negotiating contract terms and introducing procurement rules that multiple experts say will drive AI companies away from the federal market.
+## Why this matters beyond government
+This isn't just a federal contracting story. Anthropic is one of the most widely used AI platforms in the private sector. Major defense contractors like Boeing and Lockheed Martin were asked about their use of Claude in the lead-up to the designation. The chilling effect extends far beyond direct government work.
+For startups and enterprises building products on Claude, the risk calculus just changed. Not because Anthropic's technology is unreliable, but because the U.S. government demonstrated it will use national security authorities as leverage in commercial disputes. That is a new kind of platform risk, one that comes not from your vendor but from the state.
+Anthropic has filed a lawsuit challenging the designation, arguing it violates the First and Fifth Amendments and exceeds the Pentagon's statutory authority. A preliminary hearing is scheduled for late March 2026. But regardless of the legal outcome, the signal has already been sent.
+## Compare this to China's approach
+While Washington sends mixed signals, Beijing is executing a coordinated AI industrial strategy. China's 15th Five-Year Plan, formalized in March 2026, sets a target of integrating AI into 90 percent of the country's economy within five years. The plan is backed by clear funding, national computing infrastructure, and a policy framework that, for all its flaws, gives companies a consistent set of rules to operate under.
+China's approach has its own problems, heavy-handed regulation, censorship requirements, and state surveillance baked into the architecture. But what it does not suffer from is incoherence. Companies operating in China's AI ecosystem know the rules. They may not like them, but they can plan around them.
+In the U.S., the opposite is now true. The AI Action Plan says "accelerate." The Anthropic designation says "comply or be destroyed." GSA's draft rules say "disclose everything." And none of these signals seem to be coordinated with each other.
+## The real supply chain risk
+The irony of this situation is hard to overstate. The government labeled Anthropic a supply chain risk to national security. But the actual supply chain risk is the policy environment itself.
+When the government signals that any AI company could be blacklisted for holding firm on safety terms, it creates exactly the kind of uncertainty that weakens supply chains. Vendors start hedging. Startups think twice about entering the federal market. And the companies most willing to accept any terms the government demands are, almost by definition, the ones least concerned about responsible deployment.
+Anthropic took the position that current frontier AI models are not reliable enough for fully autonomous weapons, and that mass domestic surveillance violates fundamental rights. These are defensible technical and ethical positions. Punishing a company for holding them does not make the U.S. more competitive in AI. It makes the ecosystem more brittle.
+As one industry observer told Federal News Network: "What new company with a new technology wants to face this possibility and enter the federal market? These actions are not something that says 'we are open for business.'"
+## What would coherent policy look like
+A serious AI strategy would start with a few basic principles. First, procurement disputes should be resolved through negotiation and contract law, not national security designations. Second, if the government wants AI companies to accept broad use terms, it should create a transparent framework with clear rules, not threaten companies into compliance case by case. Third, safety-conscious behavior from AI companies should be encouraged, not treated as insubordination.
+OpenAI's subsequent deal with the Pentagon reportedly included similar guardrails to what Anthropic had requested, prohibitions on domestic mass surveillance and human responsibility for the use of force. Sam Altman himself admitted the deal was "definitely rushed" and that "the optics don't look good." If the government was going to accept these terms anyway, the entire confrontation with Anthropic starts to look less like a principled stand and more like a negotiation tactic dressed up in national security language.
+The U.S. still has the strongest AI ecosystem in the world. But ecosystems are fragile. They depend on trust, predictability, and the sense that the rules apply consistently. Right now, American AI policy is undermining all three.
+## References
+1. Federal News Network, "Trump administration clouds up its push for AI in government," March 23, 2026. [Link](https://federalnewsnetwork.com/artificial-intelligence/2026/03/trump-administration-clouds-up-its-push-for-ai-in-government/)
+2. Anthropic, "Where things stand with the Department of War," March 5, 2026. [Link](https://www.anthropic.com/news/where-stand-department-war)
+3. Anthropic, "Statement on the comments from Secretary of War Pete Hegseth," February 28, 2026. [Link](https://www.anthropic.com/news/statement-comments-secretary-war)
+4. NPR, "OpenAI announces Pentagon deal after Trump bans Anthropic," February 27, 2026. [Link](https://www.npr.org/2026/02/27/nx-s1-5729118/trump-anthropic-pentagon-openai-ai-weapons-ban)
+5. POLITICO, "Pentagon formally designates Anthropic a supply-chain risk," March 5, 2026. [Link](https://www.politico.com/news/2026/03/05/pentagon-tells-anthropic-it-has-designated-the-company-a-supply-chain-risk-00814758)
+6. WIRED, "Anthropic Hits Back After US Military Labels It a 'Supply Chain Risk'," March 2026. [Link](https://www.wired.com/story/anthropic-supply-chain-risk-shockwaves-silicon-valley/)
+7. CNBC, "Anthropic officially told by DOD that it's a supply chain risk even as Claude used in Iran," March 5, 2026. [Link](https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html)
+8. Federal News Network, "DoD, Anthropic now face legal, operational reckoning," March 10, 2026. [Link](https://federalnewsnetwork.com/litigation/2026/03/dod-anthropic-now-face-legal-operational-reckoning/)
+9. OPB, "Anthropic sues the Trump administration over 'supply chain risk' label," March 9, 2026. [Link](https://www.opb.org/article/2026/03/09/anthropic-sues-trump-administration-over-blacklisting-decision/)
+10. OpenAI, "Our agreement with the Department of War," February 2026. [Link](https://openai.com/index/our-agreement-with-the-department-of-war/)
+11. POLITICO, "OpenAI announces new deal with Pentagon — including ethical safeguards," February 28, 2026. [Link](https://www.politico.com/news/2026/02/28/openai-announces-new-deal-with-pentagon-including-ethical-safeguards-00805546)
+12. BBC, "Trump has ordered government agencies to stop using Anthropic AI tools," February 2026. [Link](https://www.bbc.com/news/articles/cn48jj3y8ezo)
+13. TIME, "How Anthropic Became the Most Disruptive Company in the World," March 11, 2026. [Link](https://time.com/article/2026/03/11/anthropic-claude-disruptive-company-pentagon/)
+14. Mayer Brown, "Anthropic Supply Chain Risk Designation Takes Effect," March 2026. [Link](https://www.mayerbrown.com/en/insights/publications/2026/03/anthropic-supply-chain-risk-designation-takes-effect--latest-developments-and-next-steps-for-government-contractors)
+15. CNBC, "Sen. Warren asks DOD for answers about Anthropic blacklist," March 23, 2026. [Link](https://www.cnbc.com/2026/03/23/sen-warren-dod-anthropic-blacklist-hegseth.html)
+16. Reuters, "China's new five-year plan calls for AI throughout its economy, tech breakthroughs," March 5, 2026. [Link](https://www.reuters.com/world/asia-pacific/china-vows-accelerate-technological-self-reliance-ai-push-2026-03-05/)
+17. Lawfare, "The GSA's Draft AI Clause Is Governance by Sledgehammer," March 2026. [Link](https://www.lawfaremedia.org/article/the-gsa-s-draft-ai-clause-is-governance-by-sledgehammer)

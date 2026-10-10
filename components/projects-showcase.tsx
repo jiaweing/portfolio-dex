@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import type { Project } from "@/lib/notion";
+import type { Project } from "@/lib/content";
 
 interface ProjectsShowcaseProps {
   projects: Project[];
@@ -74,7 +74,7 @@ export function ProjectCard({ project }: { project: Project }) {
               alt={project.title}
               className="h-full w-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:filter"
               height={533}
-              src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+              src={project.cover}
               unoptimized
               width={400}
             />

@@ -1,8 +1,14 @@
 "use client";
 
-import { Mail, PartyPopper, Snowflake, X } from "lucide-react";
+import { Flame, Mail, PartyPopper, Snowflake, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
+import type { Activity } from "@/components/contribution-graph";
+import {
+  GitHubContributions,
+  GitHubContributionsFallback,
+} from "@/components/github-contributions";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -36,18 +42,23 @@ const socialLinks = [
 ];
 
 const seasonalButtons: {
-  effect: "snow" | "confetti";
+  effect: "snow" | "confetti" | "embers";
   label: string;
   Icon: React.ComponentType<{ className?: string }>;
 }[] = [
   { effect: "snow", label: "Snow", Icon: Snowflake },
   { effect: "confetti", label: "Confetti", Icon: PartyPopper },
+  { effect: "embers", label: "Embers", Icon: Flame },
 ];
 
-export function SiteFooter() {
+export function SiteFooter({
+  contributions,
+}: {
+  contributions: Promise<Activity[]>;
+}) {
   return (
-    <footer className="fixed right-0 bottom-0 left-0 z-0 hidden h-[400px] w-full flex-col justify-between overflow-hidden bg-muted/10 lg:flex">
-      <div className="mx-auto flex w-full max-w-2xl flex-col px-4 pt-8">
+    <footer className="fixed right-0 bottom-0 left-0 z-0 hidden h-[560px] w-full flex-col justify-between overflow-hidden bg-muted/10 lg:flex">
+      <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-col px-4 pt-8">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <p className="font-medium text-sm">{siteConfig.name}</p>
@@ -182,7 +193,21 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="w-full overflow-hidden px-3 pb-4">
+      <div className="relative z-10 mx-auto w-full max-w-2xl px-2">
+        <TooltipProvider delay={0}>
+          <Suspense fallback={<GitHubContributionsFallback />}>
+            <GitHubContributions
+              blockMargin={3}
+              blockSize={9}
+              className="text-xs"
+              contributions={contributions}
+              githubProfileUrl={siteConfig.links.github}
+            />
+          </Suspense>
+        </TooltipProvider>
+      </div>
+
+      <div className="relative z-10 w-full overflow-hidden px-3 pb-4">
         <p
           className="select-none bg-gradient-to-r from-foreground/[0.12] via-foreground/[0.06] to-foreground/[0.02] bg-clip-text text-center font-bold text-transparent leading-none tracking-tight dark:from-foreground/[0.10] dark:via-foreground/[0.05] dark:to-transparent"
           style={{ fontSize: "11vw" }}

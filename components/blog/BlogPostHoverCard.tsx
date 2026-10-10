@@ -5,7 +5,7 @@ import { Clock } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { BlogPost } from "@/lib/notion";
+import type { BlogPost } from "@/lib/content";
 import { getTagColorClass } from "@/lib/tag-colors";
 import { cn } from "@/lib/utils";
 
@@ -73,10 +73,7 @@ export function BlogPostHoverCard({ post, children }: BlogPostHoverCardProps) {
       : pos.x + offsetX;
   const top = pos.y + offsetY;
 
-  const cover =
-    (preview?.cover ?? post.cover)
-      ? `/api/notion-image?pageId=${post.id}&prop=cover`
-      : null;
+  const cover = (preview?.cover ?? post.cover) ? post.cover : null;
 
   return (
     <>

@@ -11,8 +11,9 @@ import {
   TableOfContents,
   type TocHeading,
 } from "@/components/blog/TableOfContents";
+import { ContentRenderer } from "@/components/ContentRenderer";
 import { ScrollProgress } from "@/components/core/scroll-progress";
-import { NotionRenderer } from "@/components/NotionRenderer";
+import { SeenEgg } from "@/components/easter-eggs/EggTriggers";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/ui/fade-in";
 import {
@@ -22,12 +23,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { createBlogMarkdown } from "@/lib/blog-markdown";
-import { generateBlogMetadata, siteConfig } from "@/lib/metadata";
 import {
   extractDescriptionFromBlocks,
   getBlogPost,
   getBlogPosts,
-} from "@/lib/notion";
+} from "@/lib/content";
+import { generateBlogMetadata, siteConfig } from "@/lib/metadata";
 import { highlightCode } from "@/lib/shiki";
 import { getTagColorClass } from "@/lib/tag-colors";
 import { cn } from "@/lib/utils";
@@ -237,7 +238,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <img
                 alt={post.title}
                 className="h-full w-full object-cover"
-                src={`/api/notion-image?pageId=${post.id}&prop=cover`}
+                src={post.cover}
               />
             </div>
           </FadeIn>
@@ -245,11 +246,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <BlogTextToSpeech blocks={blocks}>
           <FadeIn delay={0.2}>
-            <NotionRenderer
+            <ContentRenderer
               blocks={blocks}
               highlightedCodeMap={highlightedCodeMap}
             />
           </FadeIn>
+          <SeenEgg id="bookworm" />
         </BlogTextToSpeech>
 
         <FadeIn delay={0.3}>
@@ -405,9 +407,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               dateModified: post.lastEdited ?? post.date,
               inLanguage: "en-US",
               image: post.cover
-                ? [
-                    `${siteConfig.url}/api/notion-image?pageId=${post.id}&prop=cover`,
-                  ]
+                ? [`${siteConfig.url}${post.cover}`]
                 : undefined,
             }),
           }}

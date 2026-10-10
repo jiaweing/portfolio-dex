@@ -16,11 +16,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Favicon } from "@/components/ui/Favicon";
 import { Input } from "@/components/ui/input";
-import type { StackItem } from "@/lib/notion";
+import type { StackItem } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-// Map Notion colors to Tailwind classes
-const NOTION_COLOR_MAP: Record<string, string> = {
+// Map tag color names to Tailwind classes
+const TAG_COLOR_MAP: Record<string, string> = {
   default: "bg-muted text-muted-foreground",
   gray: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
   brown: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300",
@@ -283,9 +283,8 @@ export function StackTable({ items }: StackTableProps) {
                                 <span
                                   className={cn(
                                     "mr-2 h-2 w-2 rounded-full",
-                                    NOTION_COLOR_MAP[
-                                      categoryColors[category]
-                                    ] ?? NOTION_COLOR_MAP.default
+                                    TAG_COLOR_MAP[categoryColors[category]] ??
+                                      TAG_COLOR_MAP.default
                                   )}
                                 />
                                 {category}
@@ -338,9 +337,8 @@ export function StackTable({ items }: StackTableProps) {
                                 <span
                                   className={cn(
                                     "mr-2 h-2 w-2 rounded-full",
-                                    NOTION_COLOR_MAP[
-                                      platformColors[platform]
-                                    ] ?? NOTION_COLOR_MAP.default
+                                    TAG_COLOR_MAP[platformColors[platform]] ??
+                                      TAG_COLOR_MAP.default
                                   )}
                                 />
                                 {platform}
@@ -396,8 +394,8 @@ export function StackTable({ items }: StackTableProps) {
                     {item.category && (
                       <span
                         className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
-                          NOTION_COLOR_MAP[item.categoryColor] ??
-                          NOTION_COLOR_MAP.default
+                          TAG_COLOR_MAP[item.categoryColor] ??
+                          TAG_COLOR_MAP.default
                         }`}
                       >
                         {item.category}
@@ -409,8 +407,8 @@ export function StackTable({ items }: StackTableProps) {
                       {item.platforms.map((platform) => (
                         <span
                           className={`inline-flex items-center rounded-sm px-3 py-1 font-medium text-sm leading-relaxed ${
-                            NOTION_COLOR_MAP[platform.color] ??
-                            NOTION_COLOR_MAP.default
+                            TAG_COLOR_MAP[platform.color] ??
+                            TAG_COLOR_MAP.default
                           }`}
                           key={platform.name}
                         >

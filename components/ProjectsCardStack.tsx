@@ -1,20 +1,20 @@
 "use client";
 
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GenerativeGradient } from "@/components/GenerativeGradient";
 import { ProjectContent } from "@/components/ProjectContent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { Project } from "@/lib/notion";
+import type { Block } from "@/lib/blocks";
+import type { Project } from "@/lib/content";
 import "swiper/css";
 import "swiper/css/effect-cards";
 import { EffectCards, Keyboard, Mousewheel } from "swiper/modules";
 import { Swiper, type SwiperClass, SwiperSlide } from "swiper/react";
 
 interface ProjectsCardStackProps {
-  projects: (Project & { blocks: BlockObjectResponse[] })[];
+  projects: (Project & { blocks: Block[] })[];
 }
 
 export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
@@ -84,7 +84,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           className="object-cover"
                           fill
                           priority={index === 0}
-                          src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+                          src={project.cover}
                           unoptimized
                         />
                       ) : (
@@ -113,7 +113,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                       <AvatarImage
                         alt={activeProject.title}
                         className="object-cover"
-                        src={`/api/notion-image?pageId=${activeProject.id}&prop=logo`}
+                        src={activeProject.logo}
                       />
                       <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
                     </Avatar>
@@ -187,7 +187,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                           className="object-cover"
                           fill
                           priority={index === 0}
-                          src={`/api/notion-image?pageId=${project.id}&prop=cover`}
+                          src={project.cover}
                           unoptimized
                         />
                       ) : (
@@ -215,7 +215,7 @@ export function ProjectsCardStack({ projects }: ProjectsCardStackProps) {
                       <AvatarImage
                         alt={activeProject.title}
                         className="object-cover"
-                        src={`/api/notion-image?pageId=${activeProject.id}&prop=logo`}
+                        src={activeProject.logo}
                       />
                       <AvatarFallback>{activeProject.title[0]}</AvatarFallback>
                     </Avatar>

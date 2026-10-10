@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { Embers } from "@/components/embers";
 import { useSeasonalEffect } from "@/hooks/use-seasonal-effect";
 
 export { SEASONAL_EVENT } from "@/hooks/use-seasonal-effect";
@@ -20,6 +21,10 @@ export function SeasonalEffects() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (effect === "embers") {
+    return <Embers />;
+  }
 
   if (effect === "snow") {
     return (

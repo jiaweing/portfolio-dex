@@ -1,0 +1,65 @@
+---
+title: "The AI and capitalism model"
+date: "2026-04-21T16:58:00.000+08:00"
+lastEdited: "2026-04-29T12:31:00.000Z"
+tags: ["Thoughts"]
+tagColors: {"Thoughts":"gray"}
+postTags: ["Layoffs","Economics","Regulation"]
+---
+
+What happens when AI doesn't just disrupt industries, but breaks the engine that makes capitalism work?
+I keep seeing the same optimistic takes recycled: "AI will create more jobs than it destroys," "capitalism always adapts," "remember the ATM didn't kill bank tellers." And sure, historically, technology has displaced workers and then created new roles. But this time feels structurally different. AI isn't automating one narrow task in one industry. It's targeting the cognitive work that props up the entire modern economy, and the downstream consequences could be catastrophic.
+I think the people building these systems know this. And I think there's a plan forming, even if nobody's saying it out loud yet.
+## The white-collar wipeout
+Let's start with what's already happening. Companies are openly citing AI as justification for layoffs. Salesforce cut 4,000 customer support workers after its CEO said AI was handling 50% of the work. Amazon announced 15,000 job cuts. Across tech, finance, consulting, and customer service, the pattern is the same: AI gets good enough at a task, headcount shrinks.
+CNBC reported that AI was a significant contributing factor to nearly 55,000 layoffs in the US in 2025 alone. Boston Consulting Group predicted that 10% to 15% of US jobs could be eliminated in the next five years, affecting 17 to 25 million people. And this is just the beginning of the curve.
+The positions most at risk aren't just repetitive data entry roles. They're financial analysts, legal researchers, software engineers, marketing strategists, the well-paying white-collar jobs that form the backbone of consumer spending. As The Atlantic put it, in this new paradigm, the educated and well-to-do could fare worse than their less-educated neighbors, because their skills are precisely the ones AI replicates best.
+Kai-Fu Lee estimated that 50% of all human jobs could be replaced by AI and robots. That's a 15% higher unemployment rate than during the Great Depression. Roman Yampolskiy went further, warning that 99% of work could be replaced within five years, with "no contingency plan" from governments or companies.
+Even if you think those numbers are extreme, you only need a fraction of that displacement to trigger a systemic crisis.
+## The domino effect nobody talks about
+Here's where it gets ugly, and where most commentary stops short.
+White-collar workers don't just earn wages. They hold mortgages. They have 401(k)s invested in the stock market. They carry the consumer spending that accounts for roughly 70% of US GDP. When these workers lose their jobs, the consequences cascade.
+First, the stock market. Tech companies are currently valued on the premise that AI will generate enormous productivity gains. But if those gains come from eliminating the customers who buy products, the math stops working. When displaced workers liquidate retirement accounts and stock holdings to cover living expenses, selling pressure compounds. Valuations that were already stretched on AI hype start deflating.
+Then, housing. Mortgage markets operate on one fundamental assumption: borrowers will remain employed and continue earning stable incomes. As Citrini Research pointed out, AI-driven job disruption forces markets to confront an uncomfortable question: "Are prime mortgages money good?" If white-collar workers can't make mortgage payments, we get a wave of defaults and foreclosures. But unlike 2008, this isn't driven by speculative lending or adjustable-rate tricks. It's driven by the structural elimination of the jobs that made those mortgages safe in the first place.
+A Redfin survey found that roughly 59% of Americans already believe AI will eliminate jobs and make it harder to afford homes. This isn't abstract fear. It's already chilling housing demand and delaying purchases.
+The feedback loop is vicious: job losses lead to stock selloffs, which lead to mortgage defaults, which lead to falling home prices, which destroy household wealth, which further reduces spending, which causes more layoffs. It's the kind of deflationary spiral that monetary policy alone can't fix.
+## The consumption paradox
+This is the fundamental contradiction that AI introduces into capitalism, and it's one that Asia Times framed perfectly: if robots produce goods and AI delivers services, who will consume them?
+Capitalism works because labor earns income, income creates demand, demand drives production, and production creates employment. It's a cycle. AI breaks that cycle by substituting for labor at scale. The purchasing power of a small capitalist class alone cannot sustain aggregate demand. You can't run an economy on luxury purchases by billionaires.
+As The Guardian's Larry Elliott noted, machines can work 24/7, they don't take holidays and they don't call in sick. But machines don't spend money on a new car or a round of drinks at the pub. When the workers who would have bought those things are unemployed, the companies that sell those things fail too.
+This isn't a new insight. Economists have understood the demand problem for decades. But AI accelerates it to a timeline that existing institutions aren't built to handle. Unemployment insurance lasts six months, maybe 18 months in a crisis. If AI eliminates the need for entire categories of office work, people could be unemployed for years.
+## Surely someone has a plan
+I refuse to believe that the people driving this transformation are blind to the consequences. The tech leaders building AI systems are many things, but they're not stupid. They can see the same chain of events I just described. Which means either they think it won't happen (unlikely, given their own public statements), or they're already thinking about what comes next.
+Sam Altman published a blueprint outlining robot taxes, public wealth funds, and automatic safety nets to manage AI's economic disruption. Elon Musk proposed "Universal High Income" via government checks, arguing that AI and robotics will produce goods and services far in excess of the increase in money supply, so inflation won't be a problem. Andrew Yang has been banging the UBI drum since 2020.
+The common thread is this: if AI breaks the labor-income-consumption cycle, you need a new mechanism to get purchasing power into people's hands. The question is what form that takes.
+Universal Basic Income is the most discussed option, with over 160 pilots conducted globally over the past four decades. The evidence shows it generally alleviates poverty and improves health and education outcomes, though the employment effects are mixed. Finland, the Netherlands, Japan, and South Korea have all trialed or debated some form of it.
+But UBI at the scale needed to replace white-collar incomes is a fundamentally different proposition than the small-scale pilots we've seen. A \$1,000 monthly payment cushions hardship. It doesn't replace a \$120,000 salary. And as critics point out, UBI funded by the same companies that eliminated the jobs starts to look less like social policy and more like the tech elite buying social stability.
+## Capitalism 2.0
+I think what we're heading toward is a restructuring of the relationship between labor, capital, and consumption that would have been unthinkable even a decade ago.
+The old model was simple: you work, you earn, you spend, the economy grows. The new model has to account for a world where human labor is increasingly optional for production. That means the value created by AI and automation needs to be distributed through mechanisms other than wages.
+This could look like several things working together. Robot taxes or automation levies that fund public wealth funds. Equity stakes in AI companies distributed to citizens. Massive expansion of public services, healthcare, education, housing, that reduce the cost of living so people need less income. New forms of work that AI can't do, or that we choose not to let AI do, valued and compensated in ways the current market doesn't support.
+The cynical reading is that this is the classic capitalist playbook: create the problem, sell the solution. The same companies displacing millions of workers will position themselves as the architects of the new economy, extracting value at every step.
+But the pragmatic reading is that this transition is happening regardless of whether we like it, and the choices made in the next few years will determine whether it's managed or chaotic. The 2008 financial crisis taught us what happens when systemic risk is ignored until it's too late. The stakes this time are higher.
+## What I actually think
+I think the optimists are wrong about the timeline and the pessimists are wrong about the endgame.
+AI displacement is going to hit faster and harder than most economic models predict, because those models are calibrated on historical technological transitions that moved at the speed of physical infrastructure. AI moves at the speed of software deployment. A new model can be rolled out to every company on Earth in weeks.
+But I also don't think this ends in permanent collapse. Capitalism is remarkably good at reinventing itself when the alternative is revolution. The New Deal didn't happen because Roosevelt was a socialist. It happened because the alternative was social breakdown. The post-war welfare state didn't emerge from pure altruism. It emerged because governments saw what happens when populations lose faith in the economic system.
+We're heading for a similar inflection point. The question isn't whether capitalism adapts, it's how much pain happens before it does, and who bears the cost of the transition.
+My bet is that the next three to five years will be defined by a growing disconnect between AI capability and economic policy. The technology will advance faster than institutions can respond. There will be real suffering, real financial crises, and real political upheaval. And then, probably after things get bad enough that inaction becomes politically impossible, we'll see the emergence of new economic structures that look nothing like what we have today.
+The people building AI know this. The question is whether the rest of us are paying attention.
+## References
+1. [AI impacting labor market 'like a tsunami' as layoff fears mount](https://www.cnbc.com/2026/01/20/ai-impacting-labor-market-like-a-tsunami-as-layoff-fears-mount.html), CNBC
+2. [The worst-case future for white-collar workers](https://www.theatlantic.com/ideas/2026/02/ai-white-collar-jobs/686031/), The Atlantic
+3. [AI and robots can't fill bellies, so capitalism's end?](https://asiatimes.com/2026/04/ai-and-robots-cant-fill-bellies-so-capitalisms-end/), Asia Times
+4. [AI is destroying jobs, and the energy crisis could make that much worse](https://www.theguardian.com/commentisfree/2026/apr/16/ai-destroying-jobs-energy-crisis-worse-doomsday-scenario), The Guardian
+5. [America isn't ready for what AI will do to jobs](https://www.theatlantic.com/magazine/2026/03/ai-economy-labor-market-transformation/685731/), The Atlantic
+6. [AI boom may be creating hidden risks in housing market](https://finance.yahoo.com/news/ai-boom-may-creating-hidden-risks-housing-market-203059810.html), Yahoo Finance
+7. [Nearly three in five Americans think AI will push homeownership even further out of reach](https://fortune.com/2026/03/24/redfin-ai-impacting-homebuying-high-mortgage-rates-white-collar-jobpocalypse/), Fortune
+8. [Sam Altman proposes a new economic system for the AI era](https://www.inc.com/leila-sheridan/sam-altman-proposes-a-new-economic-system-for-the-ai-era/91327230), Inc.
+9. [Elon Musk says government checks are the 'best way' to deal with AI job losses](https://www.businessinsider.com/elon-musk-universal-high-income-government-checks-ai-job-losses-2026-4), Business Insider
+10. [Companies are laying off workers because of AI's potential, not its performance](https://hbr.org/2026/01/companies-are-laying-off-workers-because-of-ais-potential-not-its-performance), Harvard Business Review
+11. [Universal basic income as a new social contract for the age of AI](https://blogs.lse.ac.uk/businessreview/2025/04/29/universal-basic-income-as-a-new-social-contract-for-the-age-of-ai-1/), LSE Business Review
+12. [The AI revolution could usher in a new age of stagnation](https://jacobin.com/2026/04/ai-stagnation-services-productivity-unemployment), Jacobin
+13. [The next 3 years will define capitalism for a generation](https://fortune.com/2026/02/19/capitalism-gen-z-next-3-years-defining-moment-are-ceos-up-for-it/), Fortune
+14. [Labor market impacts of AI: a new measure and early evidence](https://www.anthropic.com/research/labor-market-impacts), Anthropic
+15. [How will AI affect the US labor market?](https://www.goldmansachs.com/insights/articles/how-will-ai-affect-the-us-labor-market), Goldman Sachs

@@ -1,5 +1,5 @@
 import profileData from "@/data/profile.json";
-import { getBlogPosts, getProjects } from "@/lib/notion";
+import { getBlogPosts, getProjects } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 

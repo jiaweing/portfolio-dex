@@ -1,4 +1,4 @@
-import { getBlogPosts } from "@/lib/notion";
+import { getBlogPosts } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 

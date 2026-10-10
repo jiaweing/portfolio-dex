@@ -1,0 +1,1598 @@
+[
+  {
+    "name": "2x Logitech G502 LIGHTSPEED",
+    "description": "A very good mouse, has customizable weights but I like it light",
+    "url": "https://www.logitechg.com/en-us/products/gaming-mice/g502-lightspeed.html",
+    "category": "Mouse",
+    "categoryColor": "gray",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "2x Squirrey Kaibe Desk Cable Spine",
+    "description": "Hides cables to the floor, but not very useful since my cables go to the PC not the floor",
+    "url": "https://www.amazon.sg/Squirrey-Management-Adjustable-Durable-Organiser/dp/B0DG21652V",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "2x ULTI Vulcan Clamp-on PC Holder C55",
+    "description": "It hangs my $2.5k below my adjustable desk, scary but it works",
+    "url": "https://theultimatedesk.com/products/vulcan-pc-holder-c55",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "2x Xpanse Smart Standing Desk",
+    "description": "Electric height adjustable desk, Maple Pro, 160x60cm",
+    "url": "https://shopee.sg/xpanse.sg",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "3x Aula F75 Pro",
+    "description": "75% mechanical keyboard, I love it so much I bought 3; it’s budget price but quality is better than $200 ones",
+    "url": "https://aula.tech/products/f75",
+    "category": "Keyboard",
+    "categoryColor": "yellow",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "3x ULTI Core Single Monitor Arm",
+    "description": "Best monitor arm, cheap when on sale",
+    "url": "https://theultimatedesk.com/products/core-rugged-mechanical-spring-monitor-arm-t60b",
+    "category": "Monitor",
+    "categoryColor": "brown",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "3x Xiaomi Mi Monitor Light Bar",
+    "description": "The brightest one out there for this price",
+    "url": "https://www.mi.com/global/product/mi-computer-monitor-light-bar/",
+    "category": "Monitor",
+    "categoryColor": "brown",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "5x Apple AirTags",
+    "description": "I track my keys, wallet, bags & luggage",
+    "url": "https://www.apple.com/airtag/",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Acer KG251Q",
+    "description": "I use this as a secondary monitor to open my chat apps",
+    "url": "https://www.acer.com/us-en/monitors/gaming/kg1-series",
+    "category": "Monitor",
+    "categoryColor": "brown",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "AirPods Pro (1st Gen)",
+    "description": "Works most of the time, but doesn’t connect sometimes",
+    "url": "https://www.apple.com/shop/product/MWP22AM/A/airpods-pro",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "ANBERNIC RG40XX V",
+    "description": "I don’t play often anymore; 4-inch screen & 64GB storage retro console",
+    "url": "https://anbernic.com/products/rg40xx-v",
+    "category": "Gaming",
+    "categoryColor": "purple",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Anker Powercore 5000mAh 22.5W",
+    "description": "Charges my Pocket 3 and phone",
+    "url": "https://www.anker.com/products/a1653-usb-c-portable-charger-5000mah",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Antigravity",
+    "description": "This would have been good if it was bug free",
+    "url": "https://antigravity.google",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Apple Watch 8",
+    "description": "I wear this as my watch everywhere",
+    "url": "https://www.apple.com/apple-watch-series-8",
+    "category": "Wearable",
+    "categoryColor": "purple",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "AUKEY PA-TA09 100W Universal Travel Charger",
+    "description": "This charges everything super fast but it is $80",
+    "url": "https://www.aukey.com/products/aukey-pa-ta09-travel-mate-100w",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Backblaze",
+    "description": "Backs up unlimited files from your computer automatically",
+    "url": "https://www.backblaze.com",
+    "category": "Cloud",
+    "categoryColor": "gray",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Bitwarden",
+    "description": "Open-source password manager for securely storing and managing credentials.",
+    "url": "https://bitwarden.com",
+    "category": "Security",
+    "categoryColor": "pink",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Blip",
+    "description": "AirDrop doesn’t work, and this does across all platforms",
+    "url": "https://blip.net",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "BOIO Smart Power Strip",
+    "description": "Cheaper than buying individual smart plugs",
+    "url": "https://shopee.sg/search?keyword=boio%20smart%20power%20strip",
+    "category": "Smart Home",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Cap",
+    "description": "Open source screen recording alternative to Loom. Record, edit, and share instantly with AI-generated titles, summaries, chapters, and transcripts.",
+    "url": "https://cap.so",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "ccstatusline",
+    "description": "Shows useful Claude Code stats like your session refresh time and weekly usage",
+    "url": "https://github.com/sirmalloc/ccstatusline",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Claude Code",
+    "description": "I use this to write code",
+    "url": "https://claude.ai/code",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Claude Code Router",
+    "description": "I run ccr code to route Claude Code to Alibaba’s coding plan",
+    "url": "https://github.com/musistudio/claude-code-router",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Codex",
+    "description": "When I run out of Claude Code limits",
+    "url": "https://openai.com/index/codex",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "DeepWiki",
+    "description": "Reverse engineering and understanding open source GitHub projects",
+    "url": "https://deepwiki.com",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Dell S2721DS",
+    "description": "My second desk primary monitor",
+    "url": "https://www.dell.com/en-us/shop/dell-27-monitor-s2721ds/apd/210-AXKP/monitors-monitor-accessories",
+    "category": "Monitor",
+    "categoryColor": "brown",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Dell S2725DSM 27\" QHD Monitor",
+    "description": "Now my primary monitor",
+    "url": "https://www.dell.com/en-us/shop/dell-27-plus-qhd-monitor-s2725dsm/apd/210-btgm/monitors-monitor-accessories",
+    "category": "Monitor",
+    "categoryColor": "brown",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Desktop Microphone Stand NB03",
+    "description": "My mic stand when I don’t use the boom arm",
+    "url": "https://www.boughtnex.com/products/flexible-desktop-microphone-stand-mic-boom-arm",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Discord",
+    "description": "I use it for sharing stuff on update night server",
+    "url": "https://discord.com",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "DJI Mic 2",
+    "description": "Wireless microphone system",
+    "url": "https://www.dji.com/dji-mic-2",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "DJI Osmo Nano Action Camera",
+    "description": "4K/120fps, 143° ultra-wide, magnetic flip design, RockSteady 3.0, 128GB",
+    "url": "https://www.dji.com/nano",
+    "category": "Camera",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "DJI Osmo Nano Magnetic Adapter",
+    "description": "Two-way magnetic quick release adapter for DJI Osmo Action/Nano",
+    "url": "https://www.dji.com/nano",
+    "category": "Camera",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "DJI Pocket 3",
+    "description": "Portable camera for content creation",
+    "url": "https://www.dji.com/pocket-3",
+    "category": "Camera",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Do Not Disturb Privacy Sign",
+    "description": "Vacant/In Use door slider sign",
+    "url": "https://shopee.sg/search?keyword=do%20not%20disturb%20privacy%20sign",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Ducky One 2 Mini",
+    "description": "60% mechanical keyboard",
+    "url": "https://www.duckychannel.com.tw/en/Ducky-One2-Mini-Pure-White-RGB",
+    "category": "Keyboard",
+    "categoryColor": "yellow",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Ducky One 3",
+    "description": "Mechanical keyboard",
+    "url": "https://www.duckychannel.com.tw/en/Ducky-One3",
+    "category": "Keyboard",
+    "categoryColor": "yellow",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Focusrite Scarlett 2i2",
+    "description": "Audio interface for SM7B mic",
+    "url": "https://focusrite.com/en/usb-audio-interface/scarlett/scarlett-2i2",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Fourthwall",
+    "description": "Backend for SUPPLY, my clothing brand",
+    "url": "https://fourthwall.com",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Fujifilm X-T50",
+    "description": "Mirrorless camera for photography & video",
+    "url": "https://fujifilm-x.com/en-us/products/cameras/x-t50/",
+    "category": "Camera",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Gemini CLI",
+    "description": "AI coding agent by Google",
+    "url": "https://github.com/google-gemini/gemini-cli",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "GitHub",
+    "description": "Pretty much social media for devs at this point",
+    "url": "https://github.com",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "GitHub Copilot",
+    "description": "When I feel like using it",
+    "url": "https://github.com/features/copilot",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Google Chrome",
+    "description": "If something isn’t supported by Firefox",
+    "url": "https://www.google.com/chrome",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Google Drive",
+    "description": "I store photos and use Google Meets + Gmail",
+    "url": "https://drive.google.com",
+    "category": "Cloud",
+    "categoryColor": "gray",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Google Nest Hub",
+    "description": "It can never hear what I say",
+    "url": "https://store.google.com/product/nest_hub_2nd_gen",
+    "category": "Smart Home",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Google Nest Mini",
+    "description": "This one is deaf too",
+    "url": "https://store.google.com/product/google_nest_mini",
+    "category": "Smart Home",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Handy",
+    "description": "The only good & free speech to text app for Windows",
+    "url": "http://handy.computer",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Helium Browser",
+    "description": "Chromium fork, more lightweight than Chrome",
+    "url": "https://helium.computer",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Hetzner",
+    "description": "I host most of my servers here",
+    "url": "https://www.hetzner.com",
+    "category": "Hosting",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "iCloud",
+    "description": "Primarily for automatic photo sync only",
+    "url": "https://www.icloud.com",
+    "category": "Cloud",
+    "categoryColor": "gray",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "IKEA ALEX & SÄLJAN",
+    "description": "3 alex drawers & 2 countertops for desk setup",
+    "url": "https://www.ikea.com",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "iPad Air 4",
+    "description": "For watching shows while eating and drawing",
+    "url": "https://www.apple.com/ipad-air",
+    "category": "Tablet",
+    "categoryColor": "orange",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "iPhone 14 Pro Max",
+    "description": "Primary mobile device",
+    "url": "https://www.apple.com/iphone-14-pro",
+    "category": "Mobile",
+    "categoryColor": "blue",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "JOMO Foldable Treadmill T100S",
+    "description": "I do incline walking while working",
+    "url": "https://jomosg.com/products/foldable-treadmill-mini-running-walking-pad-home-gym-fitness-machine",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Kindle Paperwhite",
+    "description": "I hated books because of how troublesome it was",
+    "url": "https://www.amazon.com/Kindle-Paperwhite/dp/B08KTZ8249",
+    "category": "Reading",
+    "categoryColor": "blue",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Lemorele G98 HDMI+USB KVM Switch",
+    "description": "This allows me to switch my keyboard, mouse and monitor between PC and laptop with 1 click",
+    "url": "https://us.lemorele.com/products/hdmi-usb-switch-kvm-switch",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "LinkedIn",
+    "description": "Well..",
+    "url": "https://linkedin.com",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "LLANO S450 4K Wireless Display Adapter",
+    "description": "Plug & play phone to TV screen mirroring, 5.8G, 30m range",
+    "url": "https://llanolife.com",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "LocalSend",
+    "description": "AirDrop but better over local network",
+    "url": "https://localsend.org",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Logitech MX Master 3",
+    "description": "It’s too heavy",
+    "url": "https://www.logitech.com/en-us/products/mice/mx-master-3.html",
+    "category": "Mouse",
+    "categoryColor": "gray",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "M2 MacBook Air Midnight",
+    "description": "Very light & packed with power, runs out of space fast for devs",
+    "url": "https://www.apple.com/macbook-air-m2",
+    "category": "Computer",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Malwarebytes",
+    "description": "Do I need to say what this is for?",
+    "url": "https://www.malwarebytes.com",
+    "category": "Security",
+    "categoryColor": "pink",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Meld Studio",
+    "description": "Better than OBS for recording and streaming, easy to setup & beginner friendly",
+    "url": "https://www.meld.studio",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "My Collection",
+    "description": "View my complete desk setup & gear collection",
+    "url": "https://mycollection.shop/jiaweing",
+    "category": "Collection",
+    "categoryColor": "orange",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Namecheap",
+    "description": "I used to host my domains here",
+    "url": "https://www.namecheap.com",
+    "category": "Hosting",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Nintendo Switch OLED",
+    "description": "I love it but I don’t have time for it",
+    "url": "https://www.nintendo.com/switch/oled-model",
+    "category": "Gaming",
+    "categoryColor": "purple",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Notion",
+    "description": "All my notes and docs are here",
+    "url": "https://www.notion.so",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "NVIDIA Broadcast",
+    "description": "I add zoom effects to webcam",
+    "url": "https://www.nvidia.com/en-us/geforce/broadcasting/broadcast-app/",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "Windows",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "OpenCode",
+    "description": "Claude Code used to be slow so I changed, but this became slower",
+    "url": "https://opencode.ai",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "OVH",
+    "description": "I used to host here but their support sucks, it’s still cheap and good",
+    "url": "https://www.ovhcloud.com",
+    "category": "Hosting",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Parsec",
+    "description": "I can use my main computer from anywhere in the world",
+    "url": "https://parsec.app",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Powdeom 80CM LED Desk Lamp",
+    "description": "Nice adjustable lamp for 2 desks",
+    "url": "https://powdeom.com/",
+    "category": "Furniture",
+    "categoryColor": "red",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Primary Workstation",
+    "description": "i7-14700KF, RTX 4070 Ti SUPER, 32GB RAM",
+    "url": "https://www.aftershockpc.com/",
+    "category": "Computer",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "PRISM+ Q43-QE",
+    "description": "Used to be my 43-inch primary monitor, now as a TV",
+    "url": "https://prismplus.sg/collections/monitors",
+    "category": "Monitor",
+    "categoryColor": "brown",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Raycast",
+    "description": "Replaces mac spotlight and is very useful on Windows, can extend with plugins",
+    "url": "https://www.raycast.com",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Samsung Galaxy Watch 4",
+    "description": "I don’t use this anymore",
+    "url": "https://www.samsung.com/global/galaxy/galaxy-watch4",
+    "category": "Wearable",
+    "categoryColor": "purple",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Samsung S22+",
+    "description": "To develop Android apps",
+    "url": "https://www.samsung.com/global/galaxy/galaxy-s22",
+    "category": "Mobile",
+    "categoryColor": "blue",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Secondary Workstation",
+    "description": "RYZEN 5 3600, RTX 2060 SUPER, 16GB RAM",
+    "url": "https://www.aftershockpc.com/",
+    "category": "Computer",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Selens Studio Lighting Softbox Kit",
+    "description": "50x70cm softbox with LED 105W bulb, 2m light stand",
+    "url": "https://selens.com/collections/light-shapers/softbox/",
+    "category": "Camera",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Shopee",
+    "description": "I buy everything from here, Singapore’s equivalent of Amazon",
+    "url": "https://shopee.sg",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Shure SM7B",
+    "description": "The most well known mic out there",
+    "url": "https://www.shure.com/en-US/products/microphones/sm7b",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Sigma 18-50mm F2.8 DC DN Contemporary",
+    "description": "Nice budget versatile zoom lens for my Fujifilm X-T50",
+    "url": "https://www.sigma-global.com/en/lenses/c019_18_50_28/",
+    "category": "Camera",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Sony WH-1000XM5",
+    "description": "It hurts my ears when I wear for more than 10 mins",
+    "url": "https://www.sony.com/electronics/headband-headphones/wh-1000xm5",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Spaceship",
+    "description": "I host my domains here now",
+    "url": "https://www.spaceship.com",
+    "category": "Hosting",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Spotify",
+    "description": "You know what this is for",
+    "url": "https://www.spotify.com",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Tailscale",
+    "description": "I VPN into my Pi from anywhere in the world",
+    "url": "https://tailscale.com",
+    "category": "Security",
+    "categoryColor": "pink",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Telegram",
+    "description": "For general chats, making bots and news channels",
+    "url": "https://telegram.org",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Threads",
+    "description": "It’s easy to go viral with 0 followers here",
+    "url": "https://www.threads.net",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "uBlock Origin",
+    "description": "Efficient, wide-spectrum content blocker for browsers.",
+    "url": "https://ublockorigin.com",
+    "category": "Security",
+    "categoryColor": "pink",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "UGREEN 65W GaN Desktop Charger",
+    "description": "I got this for $20",
+    "url": "https://www.ugreen.com/en-sg/products/sg-45700",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Ulanzi D200H Stream Deck Controller",
+    "description": "I can switch scenes fast when recording and bind additional shortcut keys (but not used often)",
+    "url": "https://www.ulanzi.com/collections/studio-setup/products/d200h-deck-dock",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "ULTi Mic Boom Arm",
+    "description": "My main low profile mic arm for SM7B, cheap and good",
+    "url": "https://shopee.sg/theultimatedesk",
+    "category": "Audio",
+    "categoryColor": "pink",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Vention 100W GaN Charger",
+    "description": "I got this cheaper than the other one",
+    "url": "https://ventiontech.com/products/3-port-usb-c-c-a-gan-charger-100w-100w-30w-eu-plug",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Vibe Kanban",
+    "description": "Not as well known as some of the AI coding orchestrations like Conductor but it’s available on Windows",
+    "url": "https://www.vibekanban.com",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Visual Studio 2026",
+    "description": "I use this for C# and .NET",
+    "url": "https://visualstudio.microsoft.com",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "Windows",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Visual Studio Code",
+    "description": "I use this to write code everyday",
+    "url": "https://code.visualstudio.com",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Wacom One Pen Tablet",
+    "description": "I think by writing but I like physical notebooks too",
+    "url": "https://www.wacom.com/en-us/products/pen-tablets/wacom-one",
+    "category": "Tablet",
+    "categoryColor": "orange",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Wallpaper Engine",
+    "description": "The best $5 I’ve ever spent",
+    "url": "https://www.wallpaperengine.io",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Warp",
+    "description": "Good terminal but I still prefer vanilla Powershell",
+    "url": "https://www.warp.dev",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "WhatsApp",
+    "description": "For business & family communication",
+    "url": "https://www.whatsapp.com",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      },
+      {
+        "name": "Web",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "WinSCP",
+    "description": "Best SFTP and FTP client, for Windows only",
+    "url": "https://winscp.net",
+    "category": "Development",
+    "categoryColor": "blue",
+    "platforms": [
+      {
+        "name": "Windows",
+        "color": "blue"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "X",
+    "description": "It’s hard to grow here",
+    "url": "https://x.com",
+    "category": "Communication",
+    "categoryColor": "orange",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Xiaomi Air Purifier 3H",
+    "description": "Xiaomi Mi Air Purifier 3H",
+    "url": "https://www.mi.com/global/product/mi-air-purifier-3h/",
+    "category": "Smart Home",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Xiaomi Mijia Portable Vacuum Cleaner",
+    "description": "Mini wireless handheld vacuum, rechargeable, household/car",
+    "url": "https://www.mi.com/us/product/mi-vacuum-cleaner-mini/",
+    "category": "Smart Home",
+    "categoryColor": "green",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "YouTube",
+    "description": "I’m here since 2011",
+    "url": "https://youtube.com",
+    "category": "Other",
+    "categoryColor": "default",
+    "platforms": [
+      {
+        "name": "Web",
+        "color": "blue"
+      },
+      {
+        "name": "iOS",
+        "color": "default"
+      },
+      {
+        "name": "Android",
+        "color": "green"
+      }
+    ],
+    "hideFavicon": false
+  },
+  {
+    "name": "Yunzii AL75",
+    "description": "Custom mechanical keyboard with HMX Chu switches & Aifei Stealth keycaps",
+    "url": "https://yunzii.com/products/yunzii-al75-keyboard-kit",
+    "category": "Keyboard",
+    "categoryColor": "yellow",
+    "platforms": [],
+    "hideFavicon": false
+  },
+  {
+    "name": "Zen Browser",
+    "description": "My main browser just because of design, vertical tabs and ublock origin",
+    "url": "https://zen-browser.app",
+    "category": "Productivity",
+    "categoryColor": "green",
+    "platforms": [
+      {
+        "name": "macOS",
+        "color": "gray"
+      },
+      {
+        "name": "Windows",
+        "color": "blue"
+      },
+      {
+        "name": "Linux",
+        "color": "orange"
+      }
+    ],
+    "hideFavicon": false
+  }
+]

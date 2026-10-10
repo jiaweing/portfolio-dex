@@ -1,0 +1,64 @@
+---
+title: "Tech became silent"
+date: "2026-04-28T16:33:00.000+08:00"
+lastEdited: "2026-04-29T12:31:00.000Z"
+tags: ["Tech"]
+tagColors: {"Tech":"orange"}
+postTags: ["Apple","Microsoft","Google"]
+---
+
+There was a time when technology was loud. Computers announced themselves with startup chimes. Keyboards clattered. Cameras clicked. Modems screamed. Every interaction had a voice, and that voice told you something was happening.
+Somewhere along the way, we decided we'd had enough. We muted our phones, disabled our keyboard sounds, and watched the startup chime vanish from our operating systems. Technology didn't just get quieter, it went almost completely silent. And in doing so, it lost something we didn't realize we needed.
+## Sound was always the point
+Before screens were sharp and interfaces were intuitive, sound was how machines talked to us. The original Macintosh startup chime, designed by Jim Reekes in the early 1990s, wasn't just a pleasant noise. It was a diagnostic tool. A clean chime meant the hardware had passed its self-test. A strange tone or sequence of beeps meant something was broken. You could literally hear whether your computer was healthy.
+The same logic ran through everything. The click of a keyboard told you a keypress had registered. The shutter sound on a camera confirmed the photo was taken. The elevator ding told you the doors were about to open. Traffic light crossings in many countries still use audible clicks or tones to signal when it's safe to walk. These aren't decorative, they're functional. Sound is confirmation that an action happened and that something responded.
+In psychology, this is called auditory feedback, and it's one of the fastest ways to close the loop between intention and outcome. You press a button, you hear a sound, you know it worked. That loop is so fundamental to how we interact with the physical world that early interface designers borrowed it deliberately.
+## The age of sonic skeuomorphism
+When personal computing was new, designers leaned heavily on real-world metaphors to make unfamiliar technology feel approachable. This is skeuomorphism, the practice of making digital things look and behave like their physical counterparts. Your desktop had folders and a trash can. Your notepad app looked like a leather-bound notebook.
+But skeuomorphism wasn't just visual. It was sonic. The trash can made a crunching sound when you emptied it. Sending an email played a whoosh. The camera app triggered a shutter click even though there was no mechanical shutter. These sounds weren't accidental, they were carefully designed to bridge the gap between physical intuition and digital abstraction.
+Brian Eno composed the Windows 95 startup sound, a piece of music that had to convey an entire brand personality in just over three seconds. Microsoft gave him a list of adjectives the sound needed to embody. Apple's startup chime, inspired in part by the final chord of The Beatles' "A Day in the Life," was engineered to sit in a frequency range that felt warm and reassuring. These weren't just engineering decisions. They were emotional ones.
+## Why we killed the sound
+So what happened? The short answer is laptops, meetings, and social pressure.
+Jensen Harris, a former Microsoft design lead, has spoken publicly about why he removed the Windows startup sound beginning with Windows 8. The reasoning was practical: by 2010, most Windows machines were laptops. People opened them in coffee shops, in meetings, in libraries. A startup sound that once felt welcoming in a home office became a source of anxiety in a shared space. The same machine that used to sit on a desk in a spare room was now being cracked open in a conference room full of colleagues.
+Apple quietly disabled the Mac startup chime in 2016 before bringing it back in macOS Big Sur in 2020. The gap was telling. For four years, Macs booted in silence, and most people didn't even notice.
+The iPhone's physical mute switch, present since the very first model in 2007, became one of the device's most beloved features precisely because it gave users instant, tactile control over silence. When Apple replaced it with the Action Button on the iPhone 15 Pro in 2023, the reaction was visceral. People weren't upset about losing a button. They were upset about losing the certainty that their phone was muted. The old switch had a physical state you could feel in your pocket. The new button required trust in software.
+This anxiety extends to every corner of modern life. The mute toggle on Zoom calls. The moment before you play a video in public, wondering if your phone is actually silent. The reflexive volume-down press before opening any app that might make noise. We've become so conditioned to silence that any unexpected sound from a device feels like a violation.
+## The five senses of interface design
+As sound retreated, other feedback channels tried to fill the gap. Modern interfaces communicate through a layered system.
+Visual cues do the heavy lifting now. Checkmarks, progress bars, color changes, and animations tell us things worked. When you send a message in most apps, you see a delivered indicator, not hear a confirmation tone.
+Text provides explicit feedback. "Saved," "Sent," "Error," these micro-copy moments replaced what a simple beep used to accomplish.
+Icons carry enormous communicative weight. The desktop metaphor that made early computing accessible, folders, trash cans, documents, these visual shortcuts endure because they compress meaning into a tiny symbol.
+Haptics emerged as a middle ground. Apple's Taptic Engine, introduced with the iPhone 7, replaced the physical home button click with a vibration so precise it felt mechanical. When you toggle the silent switch, the phone vibrates to confirm the state change. Haptic feedback is sound's quieter cousin: felt, not heard.
+But none of these channels are as immediate as sound. Visual feedback requires you to look at the screen. Text requires you to read. Haptics require physical contact. Sound reaches you regardless of where your eyes are or what your hands are doing. It's the only feedback channel that works in your peripheral awareness.
+## We watch in silence now
+The retreat from sound extends beyond devices into how we consume content. Studies from Verizon and Publicis Media found that up to 80% of viewers are more likely to finish a video if it has subtitles, and roughly 69% of people watch video with the sound off in public places. On mobile devices, that figure climbs to 92%.
+Short-form content on TikTok, Instagram Reels, and YouTube Shorts has adapted accordingly. Subtitles and captions aren't accessibility features anymore, they're the primary text layer. Creators design for muted viewing first and audio second. The irony is notable: TikTok, a platform built on music and sound, reports that about 90% of its users watch with sound on, yet the broader trend across platforms pushes toward silent consumption.
+This shift has changed how stories are told. Film and television have long understood that sound design carries at least half the emotional weight of any scene. The tension in a thriller comes from the score. The satisfaction of a door closing in a car commercial is meticulously engineered. Songs layer multiple tracks to create harmonies that no single instrument could produce alone. Yet on the platforms where most people now consume video, the audio might never play at all.
+## What we lost
+Silence in technology isn't neutral. It's an absence.
+When every interaction is visual and silent, interfaces start to feel flat. There's a reason people describe modern software as feeling "less satisfying" than older versions, even when the newer versions are objectively faster and more capable. Part of that satisfaction came from sound. The Mac startup chime didn't just tell you the computer was working. It made you feel like something was beginning. The Windows XP startup melody felt like opening a door to possibility. These are emotional responses, and they were engineered on purpose.
+Google's Material Design team has published extensive work on "sound and haptics as material," arguing that sonic and tactile feedback aren't luxuries but essential components of how users understand digital surfaces. Their Pixel phones include carefully designed camera shutter sounds, notification tones, and ringtones that are meant to feel physical, almost tangible. It's a deliberate attempt to bring warmth back into an increasingly mute landscape.
+There's also an accessibility dimension. For users with visual impairments, auditory feedback isn't optional, it's primary. The trend toward silence in mainstream technology can inadvertently deprioritize the needs of users who rely on sound to navigate interfaces. Sonification, the practice of translating data and system states into sound, remains critical in medical devices, industrial equipment, and assistive technology.
+## The toggle anxiety era
+Perhaps the most telling symptom of our relationship with tech silence is the anxiety that now surrounds it. We've all experienced some version of it.
+The moment before unmuting on a video call, checking and rechecking that the microphone icon is actually crossed out. The panic of a notification sound going off during a presentation. The habitual swipe down to check the volume level before watching anything in a shared space. The physical comfort of feeling the iPhone's old mute switch and knowing, without looking, that the phone was silent.
+This anxiety exists because silence in technology is now a social contract. Being loud with your device in a public or professional space is a minor transgression. It signals carelessness. So we've collectively agreed to keep everything muted, and technology has obliged by making silence the default.
+But defaults shape behavior. When silence is the default, sound becomes the exception, and exceptions feel disruptive even when they're useful.
+## Finding the balance
+The solution isn't to make technology loud again. Nobody wants to return to the era of unsolicited startup jingles and aggressive notification sounds. But there's a middle ground that most products haven't found.
+Subtle, intentional sound design can add depth to interactions without being intrusive. A soft confirmation tone when a file finishes uploading. A gentle audio cue when a long-running process completes in a background tab. The kind of sounds you'd barely notice in a quiet room but would register subconsciously, closing the feedback loop without demanding attention.
+Haptics are evolving in this direction. The best implementations, like Apple's Taptic Engine or the haptic feedback in modern game controllers, create a sense of physicality that pure visuals can't achieve. But haptics still require physical contact with the device. Sound reaches further.
+The challenge is cultural as much as technical. We need to rebuild comfort with technology that speaks, even quietly. Not every interaction needs a sound. But the ones that matter, confirmations, completions, state changes, could benefit from an audio layer that we've stripped away in the name of politeness.
+## References
+1. [Hear the Evolution of Apple's Iconic Startup Sound for the Mac](https://www.wired.com/2014/10/apple-mac-startup-sound/), Wired
+2. [Macintosh startup](https://en.wikipedia.org/wiki/Macintosh_startup), Wikipedia
+3. [Why I Killed the Windows Startup Sound](https://www.youtube.com/watch?v=UWUBjM2LNJU), Jensen Harris
+4. [Ta-da! The history of Windows' classic startup sounds](https://www.20k.org/episodes/tadaitswindows), Twenty Thousand Hertz
+5. [The odd story of how Brian Eno composed the Windows 95 startup sound](https://themusicnetwork.com/the-odd-story-of-how-brian-eno-composed-the-windows-95-startup-sound/), The Music Network
+6. [Apple is killing the iPhone's silent switch](https://techcrunch.com/2023/09/12/apple-is-killing-the-iphones-silent-switch/), TechCrunch
+7. [Apple killed the mute button and replaced it with an 'action' button](https://www.fastcompany.com/90952243/apple-killed-the-mute-button-and-left-us-with-this-mess), Fast Company
+8. [Sound and Touch: Design Beyond the Screen](https://design.google/library/ux-sound-haptic-material-design), Google Design
+9. [The Role of Sound Design in UX Design](https://www.uxmatters.com/mt/archives/2024/08/the-role-of-sound-design-in-ux-design-beyond-notifications-and-alerts.php), UXmatters
+10. [Subtitle Stats: How Many People Use Subtitles](https://www.kapwing.com/resources/subtitle-statistics/), Kapwing
+11. [Skeuomorphism](https://www.nngroup.com/articles/skeuomorphism/), Nielsen Norman Group
+12. [15 forgotten tech sounds you just don't hear any more](https://www.stuff.tv/features/15-forgotten-tech-sounds-you-just-dont-hear-any-more/), Stuff

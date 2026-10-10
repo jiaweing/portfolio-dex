@@ -1,0 +1,55 @@
+---
+title: "AI can't sell itself"
+date: "2026-05-27"
+lastEdited: "2026-05-26T16:00:00.000Z"
+tags: ["Business"]
+tagColors: {"Business":"red"}
+postTags: ["Sales","Distribution","SaaS","Marketing","Moats"]
+---
+
+AI spending is approaching \$650 billion a year, growing at over 75% annually. Companies are pouring money into the most hyped technology in a generation. And yet, the most transformative technology ever still needs a small army of salespeople, solution engineers, and customer success managers to convince anyone to actually use it.
+If AI were as obviously useful as its champions claim, it would sell itself. It doesn't. That gap between what AI *can* do and what people *believe* it will do is the defining challenge of this era.
+## The trust gap is the real product problem
+The biggest friction in selling AI isn't technical. It's psychological. People don't buy AI. They buy confidence that AI won't break their workflow.
+An Alteryx survey found that while nearly half of enterprise respondents trust AI for repetitive tasks like drafting content or monitoring systems, only 28% trust it to support decision-making, and just 27% trust it for forecasting or planning. The pattern is consistent: the higher the stakes, the lower the trust.
+Workday's global research tells a similar story. Employees worry their organization will prioritize company interests over theirs when implementing AI. Leaders want human involvement in AI processes but aren't sure how to structure it. There's skepticism about governance, regulation, and whether anyone is actually accountable when things go wrong.
+IBM's data puts it plainly: 45% of enterprise leaders cite concerns about data accuracy or bias as their top barrier to adoption. Not cost. Not capability. Trust.
+This is a fundamentally different selling problem than traditional software faced. When you sold a CRM or an ERP system, the buyer understood the category. They knew what a database did. They could predict its behavior. AI introduces a layer of uncertainty that makes every purchase feel like a bet.
+## Enterprise AI sales are slower, not faster
+You might expect that a technology capable of demoing itself in real time would have a shorter sales cycle. The opposite is true.
+Traditional SaaS sales cycles run about one to two months for SMB deals, three to four months for mid-market, and six to nine months for enterprise. AI tools, despite being easier to validate technically, face longer and more complex procurement processes.
+The reason is stakeholder multiplication. An AI purchase doesn't just involve IT and the end user. It pulls in legal teams worried about liability, compliance teams evaluating data governance, security teams auditing model access, and executives assessing reputational risk. Every new stakeholder adds weeks.
+As one analysis put it, traditional SaaS sales was about demonstrating efficiency. AI SaaS sales is about establishing confidence. The AI seller today is part risk translator, part governance partner, part commercial architect. That's a fundamentally different muscle than the quota-carrying account executive of the SaaS era.
+McKinsey's 2025 State of AI survey reinforces the point: nearly two-thirds of organizations have not yet begun scaling AI across the enterprise. They're experimenting. They're piloting. But they're not buying at scale, because the organizational confidence isn't there yet.
+## Distribution beats product, and this is the purest proof
+There's a well-worn idea in tech: distribution beats product. AI is the purest version of that argument.
+The product is, in many cases, genuinely magical. You can show someone an AI tool that summarizes a 50-page legal document in seconds, generates working code from a plain-English description, or drafts a marketing campaign in minutes. The demo lands every time.
+But demos don't close deals. Distribution does.
+The companies winning in AI right now aren't necessarily the ones with the best models. They're the ones embedded in existing workflows. Microsoft's Copilot leverages the fact that 400 million people already use Office. GitHub Copilot works because developers already live in VS Code. The distribution advantage isn't about reach, it's about context. Users don't have to change their behavior. The AI just shows up where they already are.
+For startups without that built-in distribution, the challenge is existential. You can build a brilliant AI product, but if getting someone to try it requires them to leave their current tools, learn a new interface, and convince their IT team to approve yet another vendor, you've already lost.
+## The cloud parallel
+This isn't the first time a transformative technology struggled with its own adoption curve. Cloud computing followed a remarkably similar path.
+AWS launched in 2006. The technology was clearly better: more flexible, more scalable, cheaper at scale. And yet, mainstream enterprise adoption didn't really take hold until 2012 to 2015, a full decade after the technology was available. By 2023, cloud-based computing was adopted by 69% of UK firms, but the journey there was slow, uneven, and filled with the same trust-based objections AI faces today.
+The reasons were familiar. Security concerns. Compliance uncertainty. Loss of control. Cultural resistance from IT teams who had built their careers managing on-premises infrastructure. The cloud was obviously better, and it still took a decade of patient trust-building to go mainstream.
+AI is on a similar path. Microsoft's data shows that roughly one in six people worldwide have used generative AI tools as of late 2025. Consumer adoption is real, with nearly two-thirds of Americans reporting AI use in their daily routines. But enterprise adoption at scale? Still early. Still cautious. Still bottlenecked by trust, not technology.
+## Consumer adoption isn't the same as enterprise adoption
+It's worth acknowledging the counterpoint. ChatGPT reached 100 million users faster than any consumer product in history. Copilot is bundled into millions of Microsoft licenses. AI chatbots have achieved a level of consumer awareness that most enterprise software never will.
+But consumer adoption and enterprise deployment are different games entirely. A person using ChatGPT to brainstorm dinner recipes is not the same as a financial services firm deploying AI agents to process insurance claims. The individual stakes are low in the first case. In the second, you're talking about regulatory exposure, customer trust, and operational risk.
+Verasight's 2026 research captures the paradox perfectly: nearly two-thirds of Americans have adopted AI into their daily routines, yet a majority remain anxious about the technology's implications for employment, relationships, and society. People use it and distrust it at the same time. That tension is even more acute in the enterprise, where the consequences of failure are institutional, not personal.
+## The winners will make AI invisible
+The companies that will win the AI era won't be the ones that make AI the headline. They'll be the ones that make it invisible.
+When cloud computing finally achieved mass adoption, it wasn't because CIOs suddenly decided they loved the cloud. It was because software vendors stopped selling "cloud" and started selling outcomes that happened to run on the cloud. Salesforce didn't sell cloud infrastructure. It sold a better way to manage customer relationships. The cloud was just the delivery mechanism.
+AI is heading in the same direction. The most successful AI products will be the ones where users don't even realize they're using AI. The technology disappears into the workflow. It autocompletes the email, catches the anomaly in the data, routes the support ticket to the right team. No fanfare. No "powered by AI" badge. Just things working better than they did before.
+This is the irony at the heart of the AI era. The technology that promises to automate everything still can't automate the most human parts of adoption: trust, storytelling, and the slow, patient work of changing how people think about their tools. The product is magic. The distribution is still door-to-door.
+## References
+1. Forbes, "The Best And Worst Of Times: AI Vs. SaaS For \$1 Trillion Market" ([https://www.forbes.com/sites/libertbarry/2025/09/09/the-best-and-worst-of-times-----ai-vs-saas-sales-vs-traditional-its-longer-same-game-matthew-hills-ltque](https://www.forbes.com/sites/libertbarry/2025/09/09/the-best-and-worst-of-times-----ai-vs-saas-sales-vs-traditional-its-longer-same-game-matthew-hills-ltque))
+2. CX Today, "The Trust Gap Slowing Enterprise AI Adoption, Alteryx Finds" ([https://www.cxtoday.com/ai-automation-in-cx/the-trust-gap-is-slowing-enterprise-ai-adoption-alteryx-finds/](https://www.cxtoday.com/ai-automation-in-cx/the-trust-gap-is-slowing-enterprise-ai-adoption-alteryx-finds/))
+3. Workday, "Global Study: Closing the AI Trust Gap" ([https://www.workday.com/en-us/artificial-intelligence/research/ai-trust-gap.html](https://www.workday.com/en-us/artificial-intelligence/research/ai-trust-gap.html))
+4. IBM, "The 5 Biggest AI Adoption Challenges" ([https://www.ibm.com/think/insights/ai-adoption-challenges](https://www.ibm.com/think/insights/ai-adoption-challenges))
+5. SaaStr, "B2B Sales Cycle Benchmarks" ([https://www.saastr.com/dear-saastr-whats-a-good-benchmark-for-b2b-sales-cycles/](https://www.saastr.com/dear-saastr-whats-a-good-benchmark-for-b2b-sales-cycles/))
+6. LinkedIn, "AI SaaS Sales vs Traditional SaaS Sales: It's No Longer the Same Game" ([https://www.linkedin.com/pulse/ai-saas-sales-vs-traditional-its-longer-same-game-matthew-hills-ltque](https://www.linkedin.com/pulse/ai-saas-sales-vs-traditional-its-longer-same-game-matthew-hills-ltque))
+7. McKinsey, "The State of AI: Global Survey 2025" ([https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai))
+8. Microsoft, "Global AI Adoption in 2025" ([https://www.microsoft.com/en-us/corporate-responsibility/topics/ai-economy-institute/reports/global-ai-adoption-2025/](https://www.microsoft.com/en-us/corporate-responsibility/topics/ai-economy-institute/reports/global-ai-adoption-2025/))
+9. ONS, "Management Practices and the Adoption of Technology and AI in UK Firms, 2023" ([https://www.ons.gov.uk/economy/economicoutputandproductivity/productivitymeasures/articles/managementpracticesandtheadoptionoftechnologyandartificialintelligenceinukfirms2023/2025-03-24](https://www.ons.gov.uk/economy/economicoutputandproductivity/productivitymeasures/articles/managementpracticesandtheadoptionoftechnologyandartificialintelligenceinukfirms2023/2025-03-24))
+10. Verasight, "AI Adoption in 2026" ([https://www.verasight.io/reports/ai-adoption-in-2026](https://www.verasight.io/reports/ai-adoption-in-2026))
+11. Tomasz Tunguz, "Seeking a Distribution Advantage with AI" ([https://tomtunguz.com/distribution-advantage-ai/](https://tomtunguz.com/distribution-advantage-ai/))

@@ -1,0 +1,60 @@
+---
+title: "States beat Congress to AI"
+date: "2026-05-05"
+lastEdited: "2026-05-04T16:01:00.000Z"
+tags: ["AI"]
+tagColors: {"AI":"purple"}
+postTags: ["Regulation","Geopolitics","US","Safety"]
+---
+
+In May 2026, Connecticut's legislature passed one of the most sweeping state-level AI bills in the country. A week later, Colorado introduced legislation to repeal its own pioneering AI Act and replace it with something entirely different. Meanwhile, Congress held another round of hearings, released another framework, and passed nothing.
+This is the new reality of AI regulation in America. States are writing the rules. The federal government is writing recommendations. And for anyone building or deploying AI, the compliance surface area is growing faster than the product surface area.
+## Connecticut goes broad
+Connecticut's Senate Bill 5, led by Senator James Maroney (D-Milford), passed the House on a bipartisan 131-17 vote after clearing the Senate 32-4. Governor Ned Lamont has said he plans to sign it. The bill is the product of three years of effort, with Maroney introducing and refining versions each session until one stuck.
+What makes SB 5 notable is its breadth. Rather than targeting a single AI use case, it covers four distinct regulatory domains in a single piece of legislation:
+- **Frontier model safety.** Companies building the most powerful AI systems must allow employees to report catastrophic risks without fear of retaliation. This is a whistleblower protection framework tailored specifically to AI labs.
+- **Companion chatbot regulation.** AI chatbots that mimic human interaction must remind users they are not talking to a person. Chatbots must refer users in mental distress to crisis services. Operators cannot allow minors to use chatbots capable of encouraging self-harm or providing mental health services.
+- **Employment protections.** Employers using automated decision-making systems remain subject to antidiscrimination laws. Companies conducting mass layoffs must disclose whether the workforce reduction is related to AI.
+- **Provenance and transparency.** The bill lays groundwork for synthetic content watermarking and establishes a new AI Policy Office to coordinate state governance.
+That is four regulatory frameworks in one bill from a single state legislature. For context, Congress has not managed to pass even one.
+## Colorado admits it got it wrong
+Colorado made headlines in 2024 when it became the first state to enact a comprehensive AI law, SB 24-205. The original Colorado AI Act imposed algorithmic bias audits, impact assessments, and risk management obligations on deployers of "high-risk" AI systems. It was ambitious, prescriptive, and, as it turned out, unworkable in practice.
+Before the law even took effect, the backlash began. Governor Jared Polis convened an AI Policy Work Group composed of legislators, industry representatives, consumer advocates, and business groups. Their task was to evaluate whether the original framework was practical. In March 2026, the group delivered a unanimous recommendation: repeal and replace.
+The replacement bill, SB 26-189, pivots from prescriptive rules to a disclosure-based regime. Instead of requiring bias audits and risk assessments, it focuses on consumer notice. When AI or automated decision-making technology is used in consequential decisions, consumers must be told. If the decision is adverse, consumers get access to more information, the right to correct wrong data, and the option to request human review.
+On April 27, 2026, a federal court went further and paused enforcement of the original law entirely, staying litigation while the legislature finalizes the rewrite. The effective date has been pushed to January 2027.
+The Colorado pivot matters for two reasons. First, it shows that even well-intentioned AI regulation can fail when it does not account for implementation complexity. Second, it demonstrates that states can self-correct faster than Congress can act in the first place.
+## Congress talks, states ship
+The pattern is not new. It is the same playbook as data privacy.
+California passed the CCPA in 2018. It was the first comprehensive consumer data privacy law in the United States. The expectation at the time was that federal legislation would follow quickly, creating a single national standard. That never happened. Instead, state after state passed its own privacy law. By early 2026, nearly 20 states had comprehensive data privacy statutes on the books, each with different definitions, thresholds, and enforcement mechanisms. Congress still has not passed a federal privacy law.
+AI regulation is following the same trajectory, only faster. According to MultiState's tracker, state lawmakers in 45 states had introduced 1,561 AI-related bills as of March 2026, up from roughly 600 in 2024 and fewer than 200 in 2023. The acceleration is dramatic.
+The White House recognized the problem. On March 20, 2026, the administration released a National Policy Framework for Artificial Intelligence, a set of legislative recommendations covering child safety, community protections, intellectual property, free speech, innovation, workforce development, and, critically, federal preemption of state AI laws. The framework explicitly warns against "a patchwork of 50 different regulatory regimes" and calls on Congress to establish a uniform national standard.
+But the framework is nonbinding. It is a recommendation, not a law. And Congress has shown little appetite to act on it. Federal preemption of state AI laws was removed from the GOP budget reconciliation bill in 2025 and never made it into the defense authorization bill. As Politico reported in April 2026, the White House's effort to block state AI rules faces "rising skepticism from key Democrats, undercutting chances for a national AI law this Congress."
+## What this means for builders
+If you are building or deploying AI products in the United States, here is the practical reality.
+**There is no single set of rules.** You are not complying with one AI law. You are complying with N different state laws, where N keeps growing. Connecticut's chatbot disclosure rules are different from Colorado's consumer notice requirements, which are different from California's ADMT regulations under the CCPA, which are different from Illinois' biometric data rules. Each state has its own definitions, thresholds, and enforcement mechanisms.
+**Compliance cost is becoming a barrier to entry.** Large companies can absorb the cost of tracking and complying with dozens of state laws. Startups cannot. The patchwork creates an asymmetric burden that favors incumbents, which is ironic given that most state legislators say they want to encourage innovation.
+**Disclosure is the emerging baseline.** Connecticut, Colorado, and California are all converging on some form of transparency requirement: tell consumers when AI is involved in decisions that affect them, tell workers when layoffs are AI-related, tell users when they are talking to a chatbot. If you are not already building disclosure mechanisms into your products, you will need to.
+**Self-correction is part of the process.** Colorado's pivot from prescriptive audits to disclosure-based rules is a signal. Early AI laws will be rewritten. This means that compliance is not a one-time exercise. What you implement today may need to change as states iterate.
+**Federal preemption is not coming soon.** The White House wants it. Industry wants it. But Congress has failed to deliver it twice already, and political dynamics make it unlikely in the current session. Plan for a state-by-state reality for at least the next two to three years.
+## The accidental architecture
+There is a deeper question underneath all of this: is the United States accidentally building something more fragmented than the EU AI Act?
+The EU chose a single, comprehensive framework. It is complex and prescriptive, but it is one set of rules for 27 countries. The United States, by contrast, is developing AI regulation through a combination of state legislatures, executive orders, agency enforcement actions, and court decisions, with no coordinating federal statute.
+The result is not a policy. It is an emergent system. Each state is running its own experiment. Connecticut is testing breadth. Colorado is testing, and revising, prescriptiveness. California is layering AI requirements onto existing privacy infrastructure. Utah and Texas are taking yet other approaches.
+For all its messiness, this has one advantage: speed. States can pass, test, and revise laws in a fraction of the time it takes Congress to move. Connecticut went from bill introduction to passage in a single session. Colorado went from enactment to repeal-and-replace in two years. That kind of iteration is impossible at the federal level.
+But the cost is coherence. Every state that passes its own AI law makes the eventual job of federal harmonization harder. And every year Congress waits, the patchwork gets more entrenched.
+For now, the states are the de facto federal AI policy. Not because anyone planned it that way, but because they were the only ones willing to ship.
+## References
+1. [Connecticut passes AI regulations after years in development](https://ctmirror.org/2026/05/01/artificial-intelligence-house-regulation-passage-ct/), CT Mirror, May 1, 2026
+2. [Connecticut legislators pass sweeping AI bill](https://pluribusnews.com/news-and-events/connecticut-legislators-pass-sweeping-ai-bill/), Pluribus News, 2026
+3. [Bill regulating AI heads to Lamont's desk after bipartisan House passage](https://ctnewsjunkie.com/2026/05/02/bill-regulating-ai-heads-to-lamonts-desk-after-bipartisan-house-passage/), CT News Junkie, May 2, 2026
+4. [Connecticut advances omnibus AI bill covering frontier models and employment](https://wtlgovernance.com/insights/updates/connecticut-sb5-omnibus-ai-bill-frontier-models-employment), WTL Governance, 2026
+5. [Colorado officials push to repeal and replace the Colorado AI Act](https://www.globalpolicywatch.com/2026/03/colorado-officials-push-to-repeal-and-replace-the-colorado-ai-act/), Global Policy Watch, March 2026
+6. [Colorado's AI compromise would focus regulations on informing consumers](https://coloradosun.com/2026/05/01/colorado-ai-law-change-bill-introduced/), The Colorado Sun, May 1, 2026
+7. [Colorado two-step: already facing potential amendments, a federal court pauses enforcement](https://connectontech.bakermckenzie.com/colorado-two-step-already-facing-potential-amendments-a-federal-court-pauses-enforcement-of-colorados-forthcoming-ai-law/), Baker McKenzie, April 2026
+8. [Colorado AI Policy Workgroup delivers unanimous support for revised policy framework](https://governorsoffice.colorado.gov/governor/news/colorado-artificial-intelligence-policy-workgroup-delivers-unanimous-support-revised-policy), Colorado Governor's Office, March 2026
+9. [National Policy Framework for Artificial Intelligence](https://www.whitehouse.gov/wp-content/uploads/2026/03/03.20.26-National-Policy-Framework-for-Artificial-Intelligence-Legislative-Recommendations.pdf), The White House, March 20, 2026
+10. [Trump's partisan AI pitch stalls on the Hill](https://www.politico.com/news/2026/04/03/trumps-partisan-ai-pitch-stalls-on-the-hill-00858101), Politico, April 3, 2026
+11. [Artificial Intelligence (AI) Legislation Tracker 2026: All 50 States](https://www.multistate.ai/artificial-intelligence-ai-legislation), MultiState, 2026
+12. [State AI Law Tracker Map](https://www.troutman.com/state-artificial-intelligence-law-tracker/), Troutman Pepper Locke, April 2026
+13. [State AI Laws, where are they now?](https://www.cooley.com/news/insight/2026/2026-04-24-state-ai-laws-where-are-they-now), Cooley, April 24, 2026
+14. [The White House legislative recommendations: National Policy Framework for AI and federal preemption of state AI laws](https://www.ropesgray.com/en/insights/alerts/2026/03/the-white-house-legislative-recommendations-national-policy-framework-for-artificial-intelligence-an), Ropes & Gray, March 2026

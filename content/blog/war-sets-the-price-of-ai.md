@@ -1,0 +1,59 @@
+---
+title: "War sets the price of AI"
+date: "2026-03-22"
+lastEdited: "2026-04-29T15:51:00.000Z"
+tags: ["Tech"]
+tagColors: {"Tech":"orange"}
+postTags: []
+---
+
+Every AI cost model you've seen assumes one thing: that energy prices stay roughly stable. The war in the Middle East just broke that assumption.
+The US-Israel military campaign against Iran has effectively closed the Strait of Hormuz, the narrow waterway between Iran and Oman through which roughly 20% of the world's oil and a significant share of global LNG flows. Brent crude briefly touched \$119 a barrel. Iraq declared force majeure on foreign-operated oilfields. QatarEnergy issued force majeure on LNG exports. The Dallas Fed projects oil could hit \$132 per barrel if the closure extends through the year.
+This isn't just an energy story. It's an AI infrastructure story.
+## The new factory runs on fuel
+AI systems are energy-intensive in a way that previous waves of technology were not. Training a single frontier model like GPT-4 required around 30 megawatts of sustained power. Inference, the everyday use of AI by millions of people, is now growing faster than training in total energy demand.
+The numbers are staggering. US data centers consumed 176 terawatt-hours of electricity in 2023, about 4.4% of total national consumption. By 2028, that figure could reach 580 TWh, or 12% of the country's power supply. Globally, the IEA projects data center electricity consumption will double to roughly 945 TWh by 2030, growing four times faster than electricity demand from all other sectors combined.
+Data centers are the new factories. And like all factories, they need fuel.
+## The chokepoint nobody modeled
+When analysts talk about bottlenecks in AI scaling, they usually mean chips. TSMC's fabrication capacity, ASML's lithography machines, Nvidia's supply chain. The US chip export controls on China have dominated the geopolitical conversation around AI for years.
+But energy is arguably a more fundamental constraint. As a CSIS analysis put it plainly: electricity supply is "the most acutely binding constraint on expanded U.S. computational capacity." Chips, data, and electricity are the three inputs to AI. You can stockpile chips. You can curate data. But you cannot store electricity at the scale data centers require, and you cannot easily reroute it when the supply chain breaks.
+The Strait of Hormuz disruption is a live demonstration of this vulnerability. It is not a theoretical risk in a white paper. It is happening now, and it is repricing energy globally.
+## Energy was already getting expensive
+Even before the war, electricity prices were climbing. Goldman Sachs reported that US electricity prices rose 6.9% in 2025, more than double the headline inflation rate. Data center demand accounted for 40% of electricity demand growth, and the bank projected prices would keep rising through the end of the decade.
+The war has accelerated this trajectory. The disruption to Gulf oil and LNG doesn't just raise the price of fossil fuels, it tightens the entire energy market. Natural gas powers a large share of electricity generation in many countries. When gas prices spike, so do electricity bills, and that flows directly into the operating costs of every data center that doesn't generate its own power.
+## The Jevons paradox problem
+There's a popular narrative in AI right now: models are getting cheaper and more efficient, so AI will become a commodity. DeepSeek showed you could train competitive models at a fraction of the cost. Microsoft CEO Satya Nadella celebrated "Jevons paradox strikes again!" on LinkedIn.
+The Jevons paradox, named after 19th-century economist William Stanley Jevons, observes that when a technology makes a resource cheaper to use per unit, total consumption of that resource often increases rather than decreases. Cheaper AI means more AI, means more inference, means more energy.
+This logic only holds, though, when the underlying resource stays cheap. If energy prices spike and stay elevated, the paradox hits a wall. Efficiency gains in models get eaten by rising electricity costs. The math that made \$20/month AI subscriptions viable starts to break. The assumption that inference is essentially free at the margin no longer applies.
+A recent paper in *Nature Cities* found exactly this dynamic in urban data centers: algorithmic efficiency gains paradoxically enlarged, rather than shrank, the total energy footprint of AI. When energy was cheap, this was sustainable. When energy gets expensive, it becomes a compounding problem.
+## Who has a moat, and who doesn't
+This is where the war creates real winners and losers in the AI industry.
+Companies like Microsoft, Google, Amazon, and Meta have spent the last two years aggressively securing their own energy supply. Microsoft signed a 20-year power purchase agreement to restart Three Mile Island's nuclear reactor for 835 megawatts. Google struck deals with Kairos Power for small modular reactors. Amazon invested over \$20 billion converting facilities near the Susquehanna nuclear plant into AI campuses. Meta issued requests for proposals covering 1 to 4 gigawatts of new nuclear capacity.
+These are not incremental moves. They represent a strategic bet that energy independence is a core competitive advantage in AI, not just a sustainability talking point. Nuclear power, in particular, provides baseload electricity that is immune to fossil fuel price swings. Bloomberg projects that nuclear could meet up to 10% of data center electricity demand by 2035.
+Now contrast this with pure API providers, smaller AI companies, and startups that rent compute from cloud providers. They are price takers in the energy market. When electricity costs rise, their margins shrink or their prices go up. They have no hedge against geopolitical disruption.
+The war in the Middle East just widened this gap considerably.
+## The Singapore squeeze
+For a small, trade-dependent nation like Singapore, the implications are especially sharp. About 95% of Singapore's electricity comes from imported natural gas. Nearly half of the country's LNG imports in 2025 came from Qatar, whose exports are now under force majeure due to the Strait of Hormuz closure.
+Singapore has not yet dipped into its strategic energy stockpile, but the government has warned citizens to "brace for a bumpier ride ahead." Electricity prices are expected to rise, and downstream products like fertilisers and industrial chemicals will be affected too.
+For Singapore's ambitions in AI and digital infrastructure, this creates a difficult tension. The country wants to be a regional hub for AI development and data center capacity, but it sits at the end of a long and now disrupted energy supply chain. Energy-import-dependent nations cannot easily build the kind of energy moats that hyperscalers in the US are constructing.
+## The real cost of scaling AI
+The AI industry has spent the last few years obsessing over compute costs, model efficiency, and chip supply. These are real constraints. But the war in the Middle East is a reminder that the most basic input, energy, is also the most geopolitically exposed.
+Most AI cost projections assume energy prices in a relatively narrow band. That assumption is now under stress. If the Strait of Hormuz remains disrupted for months rather than weeks, the knock-on effects for cloud computing costs, AI API pricing, and the economics of training new models could be significant.
+The companies that will weather this best are the ones that treated energy as a strategic asset, not a line item. The rest are about to learn that the price of AI is, ultimately, the price of power.
+## References
+1. "Economic impact of the 2026 Iran war," Wikipedia, [https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war](https://en.wikipedia.org/wiki/Economic_impact_of_the_2026_Iran_war)
+2. "What the closure of the Strait of Hormuz means for the global economy," Federal Reserve Bank of Dallas, March 2026, [https://www.dallasfed.org/research/economics/2026/0320](https://www.dallasfed.org/research/economics/2026/0320)
+3. "Oil prices fall after Brent briefly touches \$119," CNBC, March 2026, [https://www.cnbc.com/2026/03/19/oil-jumps-iran-strikes-qatar-lng-facility-supply-worries.html](https://www.cnbc.com/2026/03/19/oil-jumps-iran-strikes-qatar-lng-facility-supply-worries.html)
+4. "Iraq declares force majeure on foreign-operated oilfields over Hormuz disruption," Reuters, March 2026, [https://www.reuters.com/business/energy/iraq-declares-force-majeure-foreign-operated-oilfields-over-hormuz-disruption-2026-03-20/](https://www.reuters.com/business/energy/iraq-declares-force-majeure-foreign-operated-oilfields-over-hormuz-disruption-2026-03-20/)
+5. "Energy demand from AI," International Energy Agency, 2025, [https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai](https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai)
+6. "United States Data Center Energy Usage Report," Lawrence Berkeley National Laboratory, 2024, referenced via Belfer Center, [https://www.belfercenter.org/research-analysis/ai-data-centers-us-electric-grid](https://www.belfercenter.org/research-analysis/ai-data-centers-us-electric-grid)
+7. "Electricity prices rising by double the rate of inflation," CNBC, February 2026, [https://www.cnbc.com/2026/02/12/electricity-price-data-center-ai-inflation-goldman.html](https://www.cnbc.com/2026/02/12/electricity-price-data-center-ai-inflation-goldman.html)
+8. "The Electricity Supply Bottleneck on U.S. AI Dominance," CSIS, March 2025, [https://www.csis.org/analysis/electricity-supply-bottleneck-us-ai-dominance](https://www.csis.org/analysis/electricity-supply-bottleneck-us-ai-dominance)
+9. "Power for AI: Easier Said Than Built," BloombergNEF, [https://about.bnef.com/insights/commodities/power-for-ai-easier-said-than-built/](https://about.bnef.com/insights/commodities/power-for-ai-easier-said-than-built/)
+10. "From Efficiency Gains to Rebound Effects: The Problem of Jevons' Paradox in AI's Polarized Environmental Debate," arXiv, 2025, [https://arxiv.org/html/2501.16548v2](https://arxiv.org/html/2501.16548v2)
+11. "Digital Jevons paradox in urban data center energy systems," *Nature Cities*, 2025, [https://www.nature.com/articles/s44284-025-00289-9](https://www.nature.com/articles/s44284-025-00289-9)
+12. "Why Microsoft, Amazon, Google and Meta are betting big on nuclear power," CNBC, December 2024, [https://www.cnbc.com/2024/12/28/why-microsoft-amazon-google-and-meta-are-betting-on-nuclear-power.html](https://www.cnbc.com/2024/12/28/why-microsoft-amazon-google-and-meta-are-betting-on-nuclear-power.html)
+13. "Nuclear power for AI: inside the data center energy deals," Introl, January 2026, [https://introl.com/blog/nuclear-power-ai-data-centers-microsoft-google-amazon-2025](https://introl.com/blog/nuclear-power-ai-data-centers-microsoft-google-amazon-2025)
+14. "Singapore has not yet dipped into its energy stockpile," CNA, March 2026, [https://www.channelnewsasia.com/singapore/petrol-lng-stockpile-energy-prepared-multiple-scenarios-middle-east-6005926](https://www.channelnewsasia.com/singapore/petrol-lng-stockpile-energy-prepared-multiple-scenarios-middle-east-6005926)
+15. "S Korea, Taiwan, and Singapore vulnerable to lost Qatari LNG," Vortexa, March 2026, [https://www.vortexa.com/insights/korea-taiwan-singapore-qatari-lng](https://www.vortexa.com/insights/korea-taiwan-singapore-qatari-lng)
+16. "Singapore's power prices may rise on US-Iran conflict," Argus Media, March 2026, [https://www.argusmedia.com/en/news-and-insights/latest-market-news/2796677-singapore-s-power-prices-may-rise-on-us-iran-conflict](https://www.argusmedia.com/en/news-and-insights/latest-market-news/2796677-singapore-s-power-prices-may-rise-on-us-iran-conflict)
