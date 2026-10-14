@@ -11,7 +11,7 @@ export const metadata = generateMetadata({
 export default function GuestbookPage() {
   return (
     <FadeIn>
-      <div className="mx-auto max-w-3xl pb-16">
+      <div>
         <GuestbookBoard />
       </div>
     </FadeIn>

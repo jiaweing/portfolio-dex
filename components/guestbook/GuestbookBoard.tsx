@@ -285,35 +285,33 @@ export function GuestbookBoard() {
   const mine = entries.filter((e) => owned[e.id]).length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-end justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="flex items-center gap-1.5 font-semibold">
-            guestbook
-            <SeasonalEmoji size={16} />
-          </h1>
-          <p className="text-muted-foreground text-sm">
-            Leave your mark. Sign, then drag your signature anywhere on the
-            wall.
-            {mine > 0 &&
-              ` You have ${mine} on the wall, they stay movable from this browser.`}
-          </p>
-        </div>
-        <Button
-          disabled={status !== "ready"}
-          onClick={() => setOpen(true)}
-          size="sm"
-        >
-          <PenLine />
-          Sign
-        </Button>
-      </div>
-
+    <>
+      {/* The whole page is the wall: full bleed, starting under the site header */}
       <div
-        className="relative overflow-hidden rounded-3xl border bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:18px_18px]"
+        className="relative -mt-20 bg-[radial-gradient(var(--color-border)_1px,transparent_1px)] [background-size:18px_18px]"
         ref={boardRef}
-        style={{ height: BOARD_HEIGHT }}
+        style={{
+          width: "100vw",
+          marginLeft: "calc(-50vw + 50%)",
+          height: BOARD_HEIGHT,
+          minHeight: "100svh",
+        }}
       >
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-30 px-4 pt-24">
+          <div className="pointer-events-auto mx-auto max-w-2xl space-y-1">
+            <h1 className="flex items-center gap-1.5 font-semibold">
+              guestbook
+              <SeasonalEmoji size={16} />
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              Leave your mark. Sign, then drag your signature anywhere on the
+              page.
+              {mine > 0 &&
+                ` You have ${mine} here, they stay movable from this browser.`}
+            </p>
+          </div>
+        </div>
+
         {status === "loading" && (
           <p className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
             Loading signatures...
@@ -341,6 +339,18 @@ export function GuestbookBoard() {
         ))}
       </div>
 
+      {/* Always reachable while scrolling around the wall */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-40 flex justify-center lg:bottom-8">
+        <Button
+          className="pointer-events-auto shadow-lg"
+          disabled={status !== "ready"}
+          onClick={() => setOpen(true)}
+        >
+          <PenLine />
+          Sign the guestbook
+        </Button>
+      </div>
+
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogContent className="sm:max-w-xl">
           <DialogTitle>Sign the guestbook</DialogTitle>
@@ -360,6 +370,6 @@ export function GuestbookBoard() {
           </Button>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
