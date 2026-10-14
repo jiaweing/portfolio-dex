@@ -348,7 +348,7 @@ export function BentoCard({ item, className, index }: BentoCardProps) {
           <CredenzaHeader>
             <CredenzaTitle>{item.title}</CredenzaTitle>
           </CredenzaHeader>
-          <div className="-mr-4 min-h-0 flex-1 overflow-y-auto pr-4">
+          <div className="scroll-fade-effect-y -mr-4 min-h-0 flex-1 overflow-y-auto pr-4">
             <div className="mt-4 grid grid-cols-2 gap-2">
               {item.detailList.map((detail, i) => (
                 <div

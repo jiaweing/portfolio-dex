@@ -1,4 +1,5 @@
 import {
+  BookEditIcon,
   BookOpen02Icon as BookOpen,
   Bookmark02Icon as Computer,
   FolderLibraryIcon,
@@ -17,4 +18,5 @@ export const NAV_ITEMS = [
 
   { href: "/books", icon: FolderLibraryIcon, label: "Books" },
   { href: "/setup", icon: Computer, label: "Setup" },
+  { href: "/guestbook", icon: BookEditIcon, label: "Guestbook" },
 ];

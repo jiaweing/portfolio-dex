@@ -100,7 +100,7 @@ export function TableOfContents({
 
   return (
     <nav
-      className={`group max-h-[75vh] w-full overflow-y-auto pr-10 ${alwaysExpanded ? "always-expanded" : ""}`}
+      className={`group scroll-fade-effect-y max-h-[75vh] w-full overflow-y-auto pr-10 ${alwaysExpanded ? "always-expanded" : ""}`}
     >
       <div className="flex flex-col gap-1">
         {headings.map((heading) => (

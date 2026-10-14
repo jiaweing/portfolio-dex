@@ -15,6 +15,7 @@ import {
   Mail,
   Monitor,
   Moon,
+  PenLine,
   Sun,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -64,6 +65,12 @@ const PAGES = [
     href: "/setup",
     icon: Laptop,
     description: "My gear & tools",
+  },
+  {
+    name: "Guestbook",
+    href: "/guestbook",
+    icon: PenLine,
+    description: "Sign the wall",
   },
 ];
 

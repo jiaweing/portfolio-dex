@@ -24,7 +24,7 @@ export function RewardCode() {
     <div className="flex items-center gap-2">
       <button
         aria-label={`Copy code ${code}`}
-        className="flex flex-1 items-center justify-between rounded-xl border border-foreground/30 border-dashed px-3 py-2 font-mono font-semibold text-sm tracking-[0.25em] transition-colors hover:bg-foreground/5"
+        className="flex flex-1 items-center justify-between rounded-2xl bg-muted px-3 py-2 font-medium font-mono text-sm tracking-widest transition-colors hover:bg-accent"
         onClick={copy}
         type="button"
       >
@@ -36,7 +36,7 @@ export function RewardCode() {
         )}
       </button>
       <a
-        className="rounded-xl bg-foreground px-3 py-2 font-medium text-background text-xs transition-opacity hover:opacity-80"
+        className="rounded-2xl bg-foreground px-3 py-2 font-medium text-background text-sm transition-opacity hover:opacity-80"
         href={REWARD_URL}
         rel="noopener noreferrer"
         target="_blank"
@@ -49,7 +49,7 @@ export function RewardCode() {
 
 export function RewardCard() {
   return (
-    <div className="rounded-2xl bg-muted/60 p-3">
+    <div className="rounded-2xl bg-muted/50 p-3 text-sm">
       <p className="flex items-center gap-1.5 font-medium">
         <Trophy className="size-4" />
         You found them all
@@ -85,15 +85,13 @@ export function RewardDialog({
         </button>
         <motion.div
           animate={{ scale: 1, rotate: 0 }}
-          className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-foreground text-background"
+          className="mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl bg-muted text-foreground"
           initial={{ scale: 0, rotate: -30 }}
           transition={{ type: "spring", stiffness: 260, damping: 14 }}
         >
-          <Trophy className="size-8" />
+          <Trophy className="size-5" />
         </motion.div>
-        <DialogTitle className="text-xl">
-          All {TOTAL_EGGS} eggs found
-        </DialogTitle>
+        <DialogTitle>All {TOTAL_EGGS} eggs found</DialogTitle>
         <p className="mt-2 mb-5 text-muted-foreground text-sm">
           You poked, held, searched and stayed up way too late. Here&apos;s 10%
           off Ryu, use it at checkout.

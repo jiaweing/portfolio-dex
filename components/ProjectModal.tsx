@@ -51,7 +51,7 @@ export function ProjectModal({ project, blocks }: ProjectModalProps) {
         >
           <XIcon className="size-4" />
         </button>
-        <div className="max-h-[80vh] overflow-y-auto px-6 pt-8 pb-6 md:px-8 md:pt-10 md:pb-8">
+        <div className="scroll-fade-effect-y max-h-[80vh] overflow-y-auto px-6 pt-8 pb-6 md:px-8 md:pt-10 md:pb-8">
           <ProjectContent
             blocks={blocks}
             project={project}

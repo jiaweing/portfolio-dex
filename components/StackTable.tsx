@@ -260,7 +260,7 @@ export function StackTable({ items }: StackTableProps) {
           >
             <SeasonalSeparator className="hidden md:block" edge="top" />
           </div>
-          <div className="w-full overflow-x-auto">
+          <div className="scroll-fade-effect-x w-full overflow-x-auto">
             <table className="w-full border-collapse">
               <thead ref={headerRef}>
                 <tr className="border-y bg-muted/50 text-left text-xs">

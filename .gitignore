@@ -50,3 +50,4 @@ next-env.d.ts
 **/public/fallback-*.js
 
 .vercel
+.env*.local

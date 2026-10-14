@@ -15,27 +15,27 @@ function CrackingEgg({ still }: { still: boolean }) {
   const halfTransition = { delay: still ? 0 : CRACK_DELAY, duration: 0.35 };
 
   return (
-    <div className="relative flex size-14 shrink-0 items-center justify-center rounded-2xl bg-foreground text-background">
+    <div className="relative flex size-9 shrink-0 items-center justify-center rounded-2xl bg-muted text-foreground">
       <motion.div
         animate={still ? undefined : { rotate: [0, -14, 12, -9, 6, 0] }}
         className="absolute inset-0 flex items-center justify-center"
         transition={{ duration: CRACK_DELAY, ease: "easeInOut" }}
       >
         <motion.span
-          animate={{ y: -10, x: -3, rotate: -28, opacity: 0 }}
+          animate={{ y: -6, x: -2, rotate: -24, opacity: 0 }}
           className="absolute [clip-path:inset(0_0_52%_0)]"
           initial={{ y: 0, x: 0, rotate: 0, opacity: 1 }}
           transition={halfTransition}
         >
-          <Egg className="size-7" />
+          <Egg className="size-4.5" />
         </motion.span>
         <motion.span
-          animate={{ y: 6, opacity: 0 }}
+          animate={{ y: 4, opacity: 0 }}
           className="absolute [clip-path:inset(48%_0_0_0)]"
           initial={{ y: 0, opacity: 1 }}
           transition={halfTransition}
         >
-          <Egg className="size-7" />
+          <Egg className="size-4.5" />
         </motion.span>
       </motion.div>
       <motion.span
@@ -48,7 +48,7 @@ function CrackingEgg({ still }: { still: boolean }) {
           damping: 12,
         }}
       >
-        <Sparkles className="size-7" />
+        <Sparkles className="size-4.5" />
       </motion.span>
     </div>
   );
@@ -79,53 +79,50 @@ export function EggUnlock({
           <motion.button
             animate={{ opacity: 1, y: 0, scale: 1 }}
             aria-live="polite"
-            className="pointer-events-auto flex w-full max-w-sm items-center gap-4 rounded-3xl border bg-popover p-3 pr-5 text-left text-popover-foreground shadow-2xl"
-            exit={{ opacity: 0, y: 24, scale: 0.96 }}
-            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+            className="pointer-events-auto w-full max-w-sm rounded-3xl bg-popover p-1.5 text-left text-popover-foreground text-sm shadow-lg outline-hidden ring-1 ring-foreground/5 dark:ring-foreground/10"
+            exit={{ opacity: 0, y: 16, scale: 0.97 }}
+            initial={{ opacity: 0, y: 24, scale: 0.96 }}
             key={unlock.id}
             onClick={() => {
               onDone();
               onOpenTracker();
             }}
-            transition={{ type: "spring", stiffness: 380, damping: 28 }}
+            transition={{ type: "spring", stiffness: 420, damping: 32 }}
             type="button"
           >
-            <CrackingEgg still={still} />
-            <div className="min-w-0 flex-1">
-              <p className="font-medium text-[10px] text-muted-foreground uppercase tracking-widest">
-                {unlock.seasonal ? "Seasonal egg found" : "Easter egg found"}
-              </p>
-              <p className="truncate font-semibold text-lg leading-tight">
-                {egg.name}
-              </p>
-              <p className="line-clamp-2 text-muted-foreground text-xs leading-snug">
-                {egg.found}
-              </p>
-              {!unlock.seasonal && (
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-                    <motion.div
-                      animate={{
-                        width: `${(unlock.count / TOTAL_EGGS) * 100}%`,
-                      }}
-                      className="h-full rounded-full bg-foreground"
-                      initial={{
-                        width: `${((unlock.count - 1) / TOTAL_EGGS) * 100}%`,
-                      }}
-                      transition={{
-                        delay: still ? 0 : CRACK_DELAY + 0.2,
-                        type: "spring",
-                        stiffness: 120,
-                        damping: 16,
-                      }}
-                    />
-                  </div>
-                  <span className="text-muted-foreground text-xs tabular-nums">
-                    {unlock.count}/{TOTAL_EGGS}
+            <div className="flex items-start gap-2.5 rounded-2xl px-2 py-2 transition-colors hover:bg-accent">
+              <CrackingEgg still={still} />
+              <div className="min-w-0 flex-1">
+                <p className="flex items-baseline justify-between gap-2">
+                  <span className="truncate font-medium">{egg.name}</span>
+                  <span className="shrink-0 text-muted-foreground text-xs tabular-nums">
+                    {unlock.seasonal
+                      ? "Seasonal"
+                      : `${unlock.count} of ${TOTAL_EGGS}`}
                   </span>
-                </div>
-              )}
+                </p>
+                <p className="line-clamp-2 text-muted-foreground text-xs leading-relaxed">
+                  {egg.found}
+                </p>
+              </div>
             </div>
+            {!unlock.seasonal && (
+              <div className="mx-3 mt-0.5 mb-2 h-1 overflow-hidden rounded-full bg-muted">
+                <motion.div
+                  animate={{ width: `${(unlock.count / TOTAL_EGGS) * 100}%` }}
+                  className="h-full rounded-full bg-foreground"
+                  initial={{
+                    width: `${((unlock.count - 1) / TOTAL_EGGS) * 100}%`,
+                  }}
+                  transition={{
+                    delay: still ? 0 : CRACK_DELAY + 0.2,
+                    type: "spring",
+                    stiffness: 120,
+                    damping: 16,
+                  }}
+                />
+              </div>
+            )}
           </motion.button>
         )}
       </AnimatePresence>
