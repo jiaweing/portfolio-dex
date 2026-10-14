@@ -339,8 +339,8 @@ export function GuestbookBoard() {
         ))}
       </div>
 
-      {/* Always reachable while scrolling around the wall */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-40 flex justify-center lg:bottom-8">
+      {/* Always reachable while scrolling, and above the bottom blur (z-50) */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-[60] flex justify-center lg:bottom-8">
         <Button
           className="pointer-events-auto shadow-lg"
           disabled={status !== "ready"}
