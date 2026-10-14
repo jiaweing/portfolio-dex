@@ -40,7 +40,7 @@ export function MobileTocSheet({ headings }: { headings: TocHeading[] }) {
             <span className="sr-only">Table of contents</span>
           </button>
         </DrawerTrigger>
-        <DrawerContent className="w-72 overflow-y-auto">
+        <DrawerContent className="scroll-fade-effect-y w-72 overflow-y-auto">
           <DrawerHeader>
             <DrawerTitle>Contents</DrawerTitle>
           </DrawerHeader>

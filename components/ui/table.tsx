@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
-      className="relative w-full overflow-x-auto"
+      className="scroll-fade-effect-x relative w-full overflow-x-auto"
       data-slot="table-container"
     >
       <table

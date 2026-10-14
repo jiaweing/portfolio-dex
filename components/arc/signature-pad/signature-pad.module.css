@@ -1,0 +1,289 @@
+.root {
+  --ink-black: var(--foreground);
+  --ink-blue: oklch(46% 0.17 262);
+  --ink-violet: oklch(49% 0.2 292);
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-body);
+  letter-spacing: var(--tracking-body);
+}
+:global(:root[data-theme="dark"]).root {
+  --ink-blue: oklch(76% 0.12 258);
+  --ink-violet: oklch(77% 0.13 295);
+}
+
+/* The pad keeps the 600 by 260 ratio of its coordinate space, so strokes scale with it at every width. */
+.pad {
+  position: relative;
+  aspect-ratio: 600 / 260;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  isolation: isolate;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+.pad[data-drawing] {
+  border-color: var(--border-strong);
+}
+
+.guide {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.baseline {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 72%;
+  border-top: 1.5px dashed var(--border-strong);
+}
+.mark {
+  position: absolute;
+  left: 7%;
+  top: 72%;
+  color: var(--text-muted);
+  translate: 0 calc(-100% - 6px);
+}
+.signer {
+  position: absolute;
+  left: 7%;
+  top: calc(72% + 8px);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-body);
+}
+.hint {
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  translate: -50% calc(-100% - 8px);
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  line-height: var(--leading-body);
+  white-space: nowrap;
+}
+
+.ink {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ink svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.stroke {
+  fill: var(--ink-black);
+}
+.stroke[data-color="blue"],
+.nib[data-color="blue"] {
+  fill: var(--ink-blue);
+}
+.stroke[data-color="violet"],
+.nib[data-color="violet"] {
+  fill: var(--ink-violet);
+}
+.nib {
+  fill: var(--ink-black);
+  opacity: 0.35;
+}
+
+/* The squeegee edge that clears the ink as it crosses the pad. */
+.sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.sweep::before {
+  content: "";
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: -1px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--foreground);
+  opacity: 0.5;
+}
+.sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -28px;
+  width: 28px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--foreground) 5%, transparent)
+  );
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background: var(--border);
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.selected {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--surface-muted);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.swatch {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ink-black);
+}
+.swatch[data-color="blue"] {
+  background: var(--ink-blue);
+}
+.swatch[data-color="violet"] {
+  background: var(--ink-violet);
+}
+.weight {
+  position: relative;
+  border-radius: 50%;
+  background: var(--foreground);
+}
+
+.iconButton {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-instant) var(--ease-standard);
+}
+.iconButton:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.iconButton:disabled {
+  color: var(--text-muted);
+  opacity: 0.45;
+  cursor: default;
+}
+.iconButton[aria-pressed="true"] {
+  background: var(--surface-muted);
+  color: var(--foreground);
+}
+.swap {
+  display: grid;
+  place-items: center;
+}
+
+.exports {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.exportLabel {
+  margin-right: 4px;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+.export {
+  display: grid;
+  min-width: 76px;
+  height: var(--control-height-sm);
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--foreground);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-instant) var(--ease-standard);
+}
+.export:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.export:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+.exportContent {
+  display: inline-flex;
+  grid-area: 1 / 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .option:hover,
+  .iconButton:hover:not(:disabled),
+  .export:hover:not(:disabled) {
+    background: var(--surface-muted);
+    color: var(--foreground);
+  }
+}

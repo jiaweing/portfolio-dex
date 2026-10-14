@@ -23,43 +23,33 @@ import { cn } from "@/lib/utils";
 import { RewardCard } from "./EggReward";
 import { SeasonalEggIcon } from "./SeasonalEggIcon";
 
+// Rows follow the dropdown menu item styling used across the site
 function EggRow({ egg, found }: { egg: Egg; found: EggId[] }) {
   const isFound = found.includes(egg.id);
-  const inSeason = egg.season ? isSeason(egg.season) : true;
+  const inSeason = egg.season ? isSeason(egg.season) : false;
   return (
-    <li className="flex items-start gap-2.5 rounded-xl px-2 py-1.5">
-      <span
-        className={cn(
-          "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[11px]",
-          isFound
-            ? "bg-foreground text-background"
-            : "bg-muted text-muted-foreground"
-        )}
-      >
-        {isFound ? <Check className="size-3" /> : <Lock className="size-2.5" />}
-      </span>
+    <li className="flex items-start gap-2.5 rounded-2xl px-3 py-2 text-sm">
+      {isFound ? (
+        <Check className="mt-0.5 size-4 shrink-0 text-foreground" />
+      ) : (
+        <Lock className="mt-0.5 size-4 shrink-0 text-muted-foreground/50" />
+      )}
       <div className="min-w-0 flex-1">
-        <p
-          className={cn(
-            "flex items-center gap-1.5 font-medium text-xs",
-            !isFound && "text-muted-foreground"
-          )}
-        >
-          {isFound ? egg.name : "???"}
+        <p className={cn("font-medium", !isFound && "text-muted-foreground")}>
+          {isFound ? egg.name : "Hidden"}
           {egg.season && (
             <span
               className={cn(
-                "rounded-full px-1.5 py-px font-normal text-[10px]",
-                inSeason
-                  ? "bg-orange-500/15 text-orange-600 dark:text-orange-400"
-                  : "bg-muted text-muted-foreground"
+                "font-normal text-xs",
+                inSeason ? "text-foreground" : "text-muted-foreground"
               )}
             >
+              {" · "}
               {inSeason ? "in season" : SEASON_LABEL[egg.season]}
             </span>
           )}
         </p>
-        <p className="text-muted-foreground text-xs leading-snug">
+        <p className="text-muted-foreground text-xs leading-relaxed">
           {isFound ? egg.found : egg.hint}
         </p>
       </div>
@@ -97,15 +87,15 @@ export function EggTracker() {
           {count}
         </span>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-80 gap-3 p-3">
-        <div className="px-1 pt-1">
-          <div className="flex items-baseline justify-between">
+      <PopoverContent align="end" className="w-80 gap-0 p-1.5">
+        <div className="px-3 pt-2.5 pb-2">
+          <div className="flex items-baseline justify-between text-sm">
             <p className="font-medium">Easter eggs</p>
             <p className="text-muted-foreground text-xs tabular-nums">
-              {count}/{TOTAL_EGGS} found
+              {count} of {TOTAL_EGGS}
             </p>
           </div>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+          <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-muted">
             <div
               className="h-full rounded-full bg-foreground transition-[width] duration-500"
               style={{ width: `${(count / TOTAL_EGGS) * 100}%` }}
@@ -118,21 +108,27 @@ export function EggTracker() {
           )}
         </div>
 
-        {complete && <RewardCard />}
+        {complete && (
+          <div className="px-1.5 pb-1.5">
+            <RewardCard />
+          </div>
+        )}
+
+        <div className="-mx-1.5 my-1 h-px bg-border/50" />
 
         <div
-          className="-mx-1 max-h-[min(50vh,360px)] overflow-y-auto"
+          className="scroll-fade-effect-y max-h-[min(50vh,360px)] overflow-y-auto"
           data-lenis-prevent
         >
-          <ul className="space-y-0.5">
+          <ul>
             {CORE_EGGS.map((egg) => (
               <EggRow egg={egg} found={found} key={egg.id} />
             ))}
           </ul>
-          <p className="mt-3 mb-1 px-2 font-medium text-[10px] text-muted-foreground uppercase tracking-widest">
-            Seasonal bonus
+          <p className="px-3 pt-3 pb-1 text-muted-foreground text-xs">
+            Seasonal bonus, only in season
           </p>
-          <ul className="space-y-0.5">
+          <ul>
             {SEASONAL_EGGS.map((egg) => (
               <EggRow egg={egg} found={found} key={egg.id} />
             ))}

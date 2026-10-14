@@ -88,7 +88,9 @@ const CredenzaContent = ({ className, children, ...props }: CredenzaProps) => {
     </DialogContent>
   ) : (
     <DrawerContent className="fixed right-0 bottom-0 left-0 z-50 mt-24 flex h-[96%] max-h-[85vh] flex-col rounded-t-[10px] bg-background">
-      <div className="flex-1 overflow-y-auto px-4 pb-4">{children}</div>
+      <div className="scroll-fade-effect-y flex-1 overflow-y-auto px-4 pb-4">
+        {children}
+      </div>
     </DrawerContent>
   );
 };

@@ -101,7 +101,7 @@ function CommandList({
   return (
     <CommandPrimitive.List
       className={cn(
-        "no-scrollbar max-h-72 scroll-py-1 overflow-y-auto overflow-x-hidden outline-none",
+        "no-scrollbar scroll-fade-effect-y max-h-72 scroll-py-1 overflow-y-auto overflow-x-hidden outline-none",
         className
       )}
       data-slot="command-list"
