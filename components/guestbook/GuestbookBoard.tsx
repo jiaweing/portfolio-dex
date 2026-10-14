@@ -249,7 +249,10 @@ export function GuestbookBoard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
-          paths: strokes.map((s) => ({ d: strokePath(s), color: s.color })),
+          // Taps too small to outline come back empty, so leave them out
+          paths: strokes
+            .map((s) => ({ d: strokePath(s), color: s.color }))
+            .filter((p) => p.d.length > 0),
           viewBox: inkBounds(strokes),
           x: clamp(0.5 + jitter()),
           y: clamp(centerY + jitter()),

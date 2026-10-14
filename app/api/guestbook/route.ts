@@ -29,7 +29,12 @@ export async function POST(request: NextRequest) {
     await request.json().catch(() => null)
   );
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+    const issue = parsed.error.issues[0];
+    const message =
+      issue?.message === "Signature is too detailed"
+        ? "That signature is too detailed, try a simpler one"
+        : "Couldn't read that signature, please try again";
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 
   const ip =

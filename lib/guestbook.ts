@@ -26,15 +26,21 @@ const PATH_DATA = /^[MmLlQqCcZz0-9.,\s-]+$/;
 
 export const signatureInput = z.object({
   name: z.string().trim().max(40).optional().default(""),
+  // A long cursive stroke outlines to tens of thousands of characters, so cap
+  // the signature as a whole rather than each stroke
   paths: z
     .array(
       z.object({
-        d: z.string().min(1).max(20_000).regex(PATH_DATA),
+        d: z.string().min(1).max(150_000).regex(PATH_DATA),
         color: z.enum(["black", "blue", "violet"]),
       })
     )
     .min(1)
-    .max(60),
+    .max(200)
+    .refine(
+      (paths) => paths.reduce((sum, p) => sum + p.d.length, 0) <= 400_000,
+      "Signature is too detailed"
+    ),
   viewBox: z.tuple([
     z.number().finite(),
     z.number().finite(),
