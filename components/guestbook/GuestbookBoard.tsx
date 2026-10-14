@@ -282,7 +282,8 @@ export function GuestbookBoard() {
     }
   };
 
-  const mine = entries.filter((e) => owned[e.id]).length;
+  // One signature per person, so signing is only offered until you have one up
+  const hasSigned = entries.some((e) => owned[e.id]);
 
   return (
     <>
@@ -304,10 +305,9 @@ export function GuestbookBoard() {
               <SeasonalEmoji size={16} />
             </h1>
             <p className="text-muted-foreground text-sm">
-              Leave your mark. Sign, then drag your signature anywhere on the
-              page.
-              {mine > 0 &&
-                ` You have ${mine} here, they stay movable from this browser.`}
+              {hasSigned
+                ? "You've signed. Drag yours anywhere, or remove it to sign again."
+                : "Leave your mark. Sign, then drag your signature anywhere on the page."}
             </p>
           </div>
         </div>
@@ -340,16 +340,18 @@ export function GuestbookBoard() {
       </div>
 
       {/* Always reachable while scrolling, and above the bottom blur (z-50) */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-[60] flex justify-center lg:bottom-8">
-        <Button
-          className="pointer-events-auto shadow-lg"
-          disabled={status !== "ready"}
-          onClick={() => setOpen(true)}
-        >
-          <PenLine />
-          Sign the guestbook
-        </Button>
-      </div>
+      {!hasSigned && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-24 z-[60] flex justify-center lg:bottom-8">
+          <Button
+            className="pointer-events-auto shadow-lg"
+            disabled={status !== "ready"}
+            onClick={() => setOpen(true)}
+          >
+            <PenLine />
+            Sign the guestbook
+          </Button>
+        </div>
+      )}
 
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogContent className="sm:max-w-xl">

@@ -66,13 +66,18 @@ export type GuestbookEntry = Omit<SignatureInput, "name"> & {
   createdAt: string;
 };
 
-type StoredEntry = GuestbookEntry & { tokenHash: string };
+type StoredEntry = GuestbookEntry & { tokenHash: string; signerHash?: string };
+
+// One live signature per signer. The signer id comes from a long lived
+// httpOnly cookie, and this key points at their current entry.
+const signerKey = (signerHash: string) => `guestbook:signer:${signerHash}`;
 
 const hashToken = (token: string) =>
   createHash("sha256").update(token).digest("hex");
 
 const toPublic = ({
   tokenHash: _hash,
+  signerHash: _signer,
   ...entry
 }: StoredEntry): GuestbookEntry => entry;
 
@@ -91,7 +96,18 @@ export async function allowSigning(redis: Redis, ip: string) {
   return count <= RATE_LIMIT.max;
 }
 
-export async function createEntry(redis: Redis, input: SignatureInput) {
+export async function createEntry(
+  redis: Redis,
+  input: SignatureInput,
+  signerId: string
+) {
+  const signerHash = hashToken(signerId);
+  const existing = await redis.get<string>(signerKey(signerHash));
+  // Only blocks while their signature is still on the wall, so a removed or
+  // moderated entry frees them to sign again
+  if (existing && (await redis.hexists(ENTRIES_KEY, existing))) {
+    return { error: "already_signed" as const };
+  }
   if ((await redis.hlen(ENTRIES_KEY)) >= MAX_ENTRIES) {
     return { error: "full" as const };
   }
@@ -103,8 +119,10 @@ export async function createEntry(redis: Redis, input: SignatureInput) {
     rotation: Math.round((Math.random() - 0.5) * 16),
     createdAt: new Date().toISOString(),
     tokenHash: hashToken(token),
+    signerHash,
   };
   await redis.hset(ENTRIES_KEY, { [entry.id]: entry });
+  await redis.set(signerKey(signerHash), entry.id);
   return { entry: toPublic(entry), token };
 }
 
@@ -132,5 +150,7 @@ export async function deleteEntry(redis: Redis, id: string, token: string) {
   const found = await findOwned(redis, id, token);
   if ("error" in found) return { error: found.error };
   await redis.hdel(ENTRIES_KEY, id);
+  if (found.entry.signerHash)
+    await redis.del(signerKey(found.entry.signerHash));
   return { ok: true as const };
 }

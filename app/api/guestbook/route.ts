@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { type NextRequest, NextResponse } from "next/server";
 import {
   allowSigning,
@@ -8,6 +9,8 @@ import {
 } from "@/lib/guestbook";
 
 export const dynamic = "force-dynamic";
+
+const SIGNER_COOKIE = "guestbook_signer";
 
 const notConfigured = () =>
   NextResponse.json(
@@ -46,12 +49,27 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const result = await createEntry(redis, parsed.data);
-  if ("error" in result) {
+  const signerId = request.cookies.get(SIGNER_COOKIE)?.value ?? randomUUID();
+  const result = await createEntry(redis, parsed.data, signerId);
+  if (result.error === "already_signed") {
+    return NextResponse.json(
+      { error: "You've already signed. Remove yours to sign again." },
+      { status: 409 }
+    );
+  }
+  if (result.error) {
     return NextResponse.json(
       { error: "The guestbook is full" },
       { status: 409 }
     );
   }
-  return NextResponse.json(result, { status: 201 });
+  const response = NextResponse.json(result, { status: 201 });
+  response.cookies.set(SIGNER_COOKIE, signerId, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24 * 365,
+    path: "/",
+  });
+  return response;
 }
