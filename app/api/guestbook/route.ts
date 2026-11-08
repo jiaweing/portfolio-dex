@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import {
   allowSigning,
   createEntry,
-  getRedis,
+  getDb,
   listEntries,
   signatureInput,
 } from "@/lib/guestbook";
@@ -19,14 +19,18 @@ const notConfigured = () =>
   );
 
 export async function GET() {
-  const redis = getRedis();
-  if (!redis) return notConfigured();
-  return NextResponse.json({ entries: await listEntries(redis) });
+  const db = await getDb();
+  if (!db) {
+    return notConfigured();
+  }
+  return NextResponse.json({ entries: await listEntries(db) });
 }
 
 export async function POST(request: NextRequest) {
-  const redis = getRedis();
-  if (!redis) return notConfigured();
+  const db = await getDb();
+  if (!db) {
+    return notConfigured();
+  }
 
   const parsed = signatureInput.safeParse(
     await request.json().catch(() => null)
@@ -42,7 +46,7 @@ export async function POST(request: NextRequest) {
 
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (!(await allowSigning(redis, ip))) {
+  if (!(await allowSigning(db, ip))) {
     return NextResponse.json(
       { error: "Too many signatures, try again later" },
       { status: 429 }
@@ -50,7 +54,7 @@ export async function POST(request: NextRequest) {
   }
 
   const signerId = request.cookies.get(SIGNER_COOKIE)?.value ?? randomUUID();
-  const result = await createEntry(redis, parsed.data, signerId);
+  const result = await createEntry(db, parsed.data, signerId);
   if (result.error === "already_signed") {
     return NextResponse.json(
       { error: "You've already signed. Remove yours to sign again." },
