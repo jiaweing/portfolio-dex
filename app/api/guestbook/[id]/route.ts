@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { deleteEntry, getRedis, moveEntry, moveInput } from "@/lib/guestbook";
+import { deleteEntry, getDb, moveEntry, moveInput } from "@/lib/guestbook";
 
 export const dynamic = "force-dynamic";
 
@@ -9,8 +9,8 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const redis = getRedis();
-  if (!redis) {
+  const db = await getDb();
+  if (!db) {
     return NextResponse.json({ error: "Not set up" }, { status: 503 });
   }
   const { id } = await params;
@@ -18,7 +18,7 @@ export async function PATCH(
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid move" }, { status: 400 });
   }
-  const result = await moveEntry(redis, id, parsed.data);
+  const result = await moveEntry(db, id, parsed.data);
   if (result.error) {
     return NextResponse.json(
       { error: result.error },
@@ -32,13 +32,13 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const redis = getRedis();
-  if (!redis) {
+  const db = await getDb();
+  if (!db) {
     return NextResponse.json({ error: "Not set up" }, { status: 503 });
   }
   const { id } = await params;
   const token = request.headers.get("x-guestbook-token") ?? "";
-  const result = await deleteEntry(redis, id, token);
+  const result = await deleteEntry(db, id, token);
   if (result.error) {
     return NextResponse.json(
       { error: result.error },
