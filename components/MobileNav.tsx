@@ -52,7 +52,7 @@ export function MobileNav({ className }: MobileNavProps) {
                   Menu
                 </div>
                 <div className="flex flex-col gap-3">
-                  <MobileLink href="/wrapped" onOpenChange={setOpen}>
+                  <MobileLink href="/2026" onOpenChange={setOpen}>
                     <span className="flex items-center gap-3">
                       <motion.span
                         animate={{
@@ -72,7 +72,7 @@ export function MobileNav({ className }: MobileNavProps) {
                           repeat: Number.POSITIVE_INFINITY,
                         }}
                       >
-                        2025 Wrapped!
+                        2026 Wrapped!
                       </motion.span>
                     </span>
                   </MobileLink>

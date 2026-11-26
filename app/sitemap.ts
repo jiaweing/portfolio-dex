@@ -57,8 +57,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date("2025-01-01"),
     },
     {
-      url: `${baseUrl}/wrapped`,
-      lastModified: new Date("2025-01-01"),
+      url: `${baseUrl}/2026`,
+      lastModified: new Date("2026-11-27"),
+    },
+    {
+      url: `${baseUrl}/2025`,
+      lastModified: new Date("2025-12-20"),
     },
     ...pageUrls,
     ...projectUrls,

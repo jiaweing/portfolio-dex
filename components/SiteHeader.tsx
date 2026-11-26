@@ -19,7 +19,7 @@ export function SiteHeader() {
       </div>
 
       <AnimatePresence>
-        {(isBannerHovered || pathname === "/wrapped") && (
+        {(isBannerHovered || pathname === "/2025") && (
           <motion.div
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

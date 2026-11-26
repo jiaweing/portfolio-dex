@@ -85,7 +85,7 @@ export function EasterEggs() {
 
   useEffect(() => {
     trackVisit(pathname);
-    if (pathname.startsWith("/wrapped")) findEgg("capsule");
+    if (/^\/20\d\d$/.test(pathname)) findEgg("capsule");
   }, [pathname]);
 
   useEffect(() => {

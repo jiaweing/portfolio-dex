@@ -71,7 +71,8 @@ async function main() {
 
     const routes = [
       "/",
-      "/wrapped",
+      "/2025",
+      "/2026",
       "/blog",
       "/projects",
       "/oss",

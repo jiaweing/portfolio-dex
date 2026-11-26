@@ -17,8 +17,8 @@ import {
 
 // Bump these when a new Wrapped ships. For RECENT_DAYS after release the
 // Wrapped announcement wins over any seasonal greeting.
-const WRAPPED_YEAR = 2025;
-const WRAPPED_RELEASED = new Date("2025-12-20");
+const WRAPPED_YEAR = 2026;
+const WRAPPED_RELEASED = new Date("2026-11-27");
 const RECENT_DAYS = 45;
 
 // One palette per announcement drives the text shimmer and the icon gradient
@@ -124,7 +124,7 @@ function pickAnnouncement(
 ): Announcement {
   const wrapped: Announcement = {
     key: `wrapped-banner-dismissed-${WRAPPED_YEAR}`,
-    href: "/wrapped",
+    href: `/${WRAPPED_YEAR}`,
     before: "My",
     highlight: `${WRAPPED_YEAR} Wrapped`,
     after: "is here!",
