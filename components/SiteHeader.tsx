@@ -12,6 +12,12 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [isBannerHovered, setIsBannerHovered] = React.useState(false);
 
+  // The 2026 Wrapped page is full-bleed art with its own chapter nav, so the
+  // banner that advertises it and the wheel stay out of its way
+  if (pathname === "/2026") {
+    return null;
+  }
+
   return (
     <>
       <div className="fixed top-6 left-1/2 z-[100] w-[calc(100%-2rem)] -translate-x-1/2 md:w-auto">
@@ -19,7 +25,7 @@ export function SiteHeader() {
       </div>
 
       <AnimatePresence>
-        {(isBannerHovered || pathname === "/wrapped") && (
+        {(isBannerHovered || pathname === "/2025") && (
           <motion.div
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

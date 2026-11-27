@@ -11,16 +11,19 @@ export function LayoutWidthWrapper({
   className?: string;
 }) {
   const pathname = usePathname();
-  const isWidePage =
-    pathname?.startsWith("/projects") || pathname === "/wrapped";
+  const isWidePage = pathname?.startsWith("/projects") || pathname === "/2025";
   const isFullWidthPage =
     pathname?.startsWith("/setup") || pathname === "/analytics";
+
+  // The 2026 Wrapped is a full-bleed update page with its own backdrop
+  const isBleedPage = pathname === "/2026";
 
   return (
     <div
       className={cn(
-        "relative mx-auto py-6 pb-20",
-        isFullWidthPage
+        "relative mx-auto",
+        isBleedPage ? "pt-6" : "py-6 pb-20",
+        isFullWidthPage || isBleedPage
           ? "max-w-none"
           : isWidePage
             ? "max-w-7xl px-6"

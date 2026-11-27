@@ -10,7 +10,7 @@ import {
 import { WrappedGiftIcon } from "@/components/wrapped/wrapped-gift-icon";
 
 export const NAV_ITEMS = [
-  { href: "/wrapped", icon: WrappedGiftIcon, label: "2025 Wrapped!" },
+  { href: "/2026", icon: WrappedGiftIcon, label: "2026 Wrapped!" },
   { href: "/", icon: HomeIcon, label: "Home" },
   { href: "/about", icon: UserSquareIcon, label: "About" },
   { href: "/blog", icon: BookOpen, label: "Writing" },

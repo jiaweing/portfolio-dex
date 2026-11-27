@@ -41,8 +41,14 @@ interface CommandPaletteProps {
 const PAGES = [
   { name: "Home", href: "/", icon: Globe, description: "Back to homepage" },
   {
+    name: "2026 Wrapped",
+    href: "/2026",
+    icon: Gift,
+    description: "Year in review",
+  },
+  {
     name: "2025 Wrapped",
-    href: "/wrapped",
+    href: "/2025",
     icon: Gift,
     description: "Year in review",
   },

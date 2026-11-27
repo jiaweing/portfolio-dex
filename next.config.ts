@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/wrapped",
+        destination: "/2026",
+        permanent: false,
+      },
+      {
         source: "/writing",
         destination: "/blog",
         permanent: true,

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AnimatedGradientText } from "@/components/wrapped/animated-gradient-text";
 import { BentoCard } from "@/components/wrapped/bento-card";
 import { BentoGrid } from "@/components/wrapped/bento-grid";
@@ -8,10 +9,10 @@ import { wrappedData } from "@/lib/wrapped-data";
 export const metadata = generateMetadata({
   title: "2025 Wrapped",
   description: "A look back at my 2025 - milestones, travels, and creations.",
-  url: "/wrapped",
+  url: "/2025",
 });
 
-export default function WrappedPage() {
+export default function Wrapped2025Page() {
   return (
     <div className="space-y-12 md:px-20 2xl:px-0">
       <div className="flex flex-col items-center space-y-8 text-center">
@@ -24,6 +25,12 @@ export default function WrappedPage() {
           </p>
         </div>
         <WrappedStoryTrigger data={wrappedData} />
+        <Link
+          className="text-muted-foreground text-sm underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
+          href="/2026"
+        >
+          My 2026 Wrapped is out →
+        </Link>
       </div>
 
       <div className="flex flex-col gap-24">
