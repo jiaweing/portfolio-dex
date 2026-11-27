@@ -14,8 +14,8 @@ import { Queue } from "./queue";
 import { Trail } from "./trail";
 import type { WrappedData } from "./types";
 
-/* 2026 Wrapped, "A Major Update": the year laid out like a game's major
-   update page. Each chapter lives in its own file; this one puts them in
+/* 2026 Wrapped: the year laid out with the art direction of a game's big
+   release page. Each chapter lives in its own file; this one puts them in
    order and works out the few numbers more than one chapter needs. */
 
 const MONTH_NAMES = [
@@ -60,8 +60,8 @@ export function Wrapped2026({
       <main>
         <Ticker
           words={[
-            "Patch 26.0 is live",
-            "A Major Update",
+            "2026 Wrapped is here",
+            "A Major year",
             "New class: Founder",
             "Ryu has dropped",
             "Job hunting removed",

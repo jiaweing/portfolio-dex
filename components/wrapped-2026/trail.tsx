@@ -3,15 +3,15 @@
 import { useEffect, useState } from "react";
 
 /* The chapter trail: a small rail on the left edge of wide screens that
-   shows which day of the update you are on and jumps between them. */
+   shows which chapter you are on and jumps between them. */
 
 const STOPS = [
-  { id: "queue", label: "Day 1", name: "Matchmaking failed" },
-  { id: "founder", label: "Day 2", name: "New class: Founder" },
-  { id: "grind", label: "Day 3", name: "The grind" },
-  { id: "drops", label: "Day 4", name: "Item drops" },
-  { id: "broadcast", label: "Day 5", name: "Now live" },
-  { id: "patch-notes", label: "Notes", name: "Patch notes" },
+  { id: "queue", label: "Chapter 1", name: "Matchmaking failed" },
+  { id: "founder", label: "Chapter 2", name: "New class: Founder" },
+  { id: "grind", label: "Chapter 3", name: "The grind" },
+  { id: "drops", label: "Chapter 4", name: "Item drops" },
+  { id: "broadcast", label: "Chapter 5", name: "Now live" },
+  { id: "recap", label: "Recap", name: "The recap" },
   { id: "next", label: "Next", name: "2027" },
 ] as const;
 

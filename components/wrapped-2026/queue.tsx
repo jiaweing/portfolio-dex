@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { HOOK } from "@/lib/wrapped-2026-data";
 import { ChapterHead, useSeen } from "./parts";
 
-/* Day 1, the plot twist. A grey matchmaking lobby counts up 3,800
+/* Chapter 1, the plot twist. A grey matchmaking lobby counts up 3,800
    applications and finds 0 interviews. Pressing "Host my own" sends a
    Distortion Wave up from the button and leaves the company behind. */
 
@@ -162,9 +162,13 @@ export function Queue() {
       id="queue"
     >
       <div className="u26-wrap">
-        <ChapterHead day="Day 1" id="queue-title" title="Matchmaking failed">
-          Every update fixes something. This one starts with a queue that never
-          popped: 3,800 job applications, and not one interview.
+        <ChapterHead
+          day="Chapter 1"
+          id="queue-title"
+          title="Matchmaking failed"
+        >
+          The year starts in a queue that never popped: 3,800 job applications,
+          and not one interview.
         </ChapterHead>
         <div ref={ref}>
           <DistortionWave

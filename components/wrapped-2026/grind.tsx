@@ -5,7 +5,7 @@ import { CODE_STATS } from "@/lib/wrapped-2026-data";
 import { ChapterHead, CountUp, Rise, useSeen, type Vars } from "./parts";
 import type { Day } from "./types";
 
-/* Day 3: GitHub. The year's calendar is laid out like a tile map, the best
+/* Chapter 3: GitHub. The year's calendar is laid out like a tile map, the best
    day gets a flag, and the rest reads like the scoreboard at the end of a
    match. Streaks and active days are worked out from the calendar itself. */
 
@@ -180,8 +180,8 @@ export function Grind({ days }: { days: Day[] }) {
       id="grind"
     >
       <div className="u26-wrap">
-        <ChapterHead day="Day 3" id="grind-title" title="The grind">
-          Most of this update was written on GitHub, one contribution at a time.
+        <ChapterHead day="Chapter 3" id="grind-title" title="The grind">
+          Most of this year was written on GitHub, one contribution at a time.
           Hover or tap the map to walk the year.
         </ChapterHead>
 

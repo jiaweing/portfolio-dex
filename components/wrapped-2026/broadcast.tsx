@@ -4,7 +4,7 @@ import { LINKEDIN } from "@/lib/wrapped-2026-data";
 import { ChapterHead, CountUp, Rise, type Vars } from "./parts";
 import type { PostTitle, SocialSeries } from "./types";
 
-/* Day 5: going live. An old set shows the year's posts month by month, the
+/* Chapter 5: going live. An old set shows the year's posts month by month, the
    channels line up on a leaderboard with their follower growth since the
    first stream, and the post titles run past underneath. */
 
@@ -202,7 +202,7 @@ export function Broadcast({
       id="broadcast"
     >
       <div className="u26-wrap">
-        <ChapterHead day="Day 5" id="broadcast-title" title="Now live">
+        <ChapterHead day="Chapter 5" id="broadcast-title" title="Now live">
           On May 4 I went live with zero followers, and started streaming and
           posting every single day.
         </ChapterHead>

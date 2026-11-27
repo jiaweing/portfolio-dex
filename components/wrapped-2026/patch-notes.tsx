@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { CODE_STATS, HOOK, LINKEDIN } from "@/lib/wrapped-2026-data";
 import { Rise, type Vars } from "./parts";
 
-/* The patch notes: the whole year again as plain lines, the way an update
-   page ends. Printed on a sheet of paper that stays paper in both themes. */
+/* The recap: the whole year again as plain lines, sorted into what was
+   removed, added and changed. Printed on a sheet of paper that stays paper
+   in both themes. */
 
 const nf = new Intl.NumberFormat("en-US");
 
@@ -122,15 +123,15 @@ export function PatchNotes({
     <section
       aria-labelledby="patch-title"
       className="u26-band u26-band--alt u26-patch"
-      id="patch-notes"
+      id="recap"
     >
       <div className="u26-wrap">
         <Rise className="u26-sheet">
           <div aria-hidden="true" className="u26-sheet-holes" />
           <header className="u26-sheet-head">
-            <p className="u26-kicker">Jia Wei Ng, version 26.0</p>
+            <p className="u26-kicker">Jia Wei Ng, 2026</p>
             <h2 className="u26-display u26-sheet-title" id="patch-title">
-              Patch notes
+              The recap
             </h2>
             <p className="u26-hand u26-sheet-date">
               the whole year, line by line
@@ -157,7 +158,7 @@ export function PatchNotes({
             );
           })}
           <p className="u26-hand u26-sheet-sign">
-            That is the whole patch. Thanks for reading it.
+            That is the whole year. Thanks for reading it.
             <span>Jia Wei</span>
           </p>
         </Rise>

@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { MILESTONES, type Milestone } from "@/lib/wrapped-2026-data";
 import { ChapterHead, Rise, Tilt, type Vars } from "./parts";
 
-/* Day 2: the new class and its achievements. The class card on the left is
+/* Chapter 2: the new class and its achievements. The class card on the left is
    the founder's character sheet; each milestone of the year is an enamel
    pin with its own drawing. */
 
@@ -166,7 +166,7 @@ function ClassCard() {
         <div className="u26-class-face">
           <p className="u26-class-top">
             <span className="u26-kicker">Class</span>
-            <span className="u26-kicker">v26.0</span>
+            <span className="u26-kicker">2026</span>
           </p>
           <div aria-hidden="true" className="u26-class-art">
             <div className="u26-class-rays" />
@@ -209,7 +209,7 @@ export function Founder() {
     >
       <div className="u26-wrap">
         <ChapterHead
-          day="Day 2"
+          day="Chapter 2"
           id="founder-title"
           title={
             <>

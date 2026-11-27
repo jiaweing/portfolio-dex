@@ -1519,7 +1519,7 @@ a.u26-ach:hover {
   background: var(--accent);
 }
 
-/* ---------- Patch notes ---------- */
+/* ---------- The recap ---------- */
 
 .u26-patch {
   --accent: var(--amber);

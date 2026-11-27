@@ -4,7 +4,7 @@ import { HeroScene } from "./hero-scene";
 import type { Vars } from "./parts";
 
 /* The top of the page: the way home, the key art, the title lockup with its
-   version seal, and four stubs for what is in the update. */
+   year seal, and four stubs for what is in this Wrapped. */
 
 const STUBS = [
   {
@@ -54,26 +54,24 @@ export function Hero() {
         </div>
         <div className="u26-wrap u26-hero-inner">
           <div className="u26-lockup">
-            <p className="u26-tag u26-tag--foil">
-              Jia Wei Ng <span aria-hidden="true">·</span> 2026 Wrapped
-            </p>
+            <p className="u26-tag u26-tag--foil">Jia Wei Ng</p>
             <h1 className="u26-display u26-title">
               <span className="u26-title-line" style={delay(80)}>
-                A Major
+                2026
               </span>
               <span
                 className="u26-title-line u26-title-line--b"
                 style={delay(200)}
               >
-                Update
+                Wrapped
               </span>
             </h1>
             <div className="u26-billing">
               <p className="u26-seal">
                 <span aria-hidden="true" className="u26-seal-shape" />
                 <span className="u26-seal-text">
-                  <small>Version</small>
-                  <b>26.0</b>
+                  <small>A Major</small>
+                  <b>Year</b>
                 </span>
               </p>
               <div className="u26-billtext">
@@ -88,17 +86,17 @@ export function Hero() {
             </div>
             <div className="u26-ctas">
               <a className="u26-btn u26-btn--foil" href="#queue">
-                Start the update <span aria-hidden="true">↓</span>
+                Unwrap it <span aria-hidden="true">↓</span>
               </a>
-              <a className="u26-btn" href="#patch-notes">
-                Read the patch notes
+              <a className="u26-btn" href="#recap">
+                Skip to the recap
               </a>
             </div>
           </div>
         </div>
       </div>
-      <nav aria-label="In this update" className="u26-wrap u26-stubs">
-        <p className="u26-hand u26-stubs-label">In this update</p>
+      <nav aria-label="In this Wrapped" className="u26-wrap u26-stubs">
+        <p className="u26-hand u26-stubs-label">In this Wrapped</p>
         <ol className="u26-stub-grid">
           {STUBS.map((stub) => {
             const vars: Vars = { "--stub": stub.ink };

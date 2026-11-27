@@ -5,7 +5,7 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import { CODE_STATS, MILESTONES, RYU_APPS } from "@/lib/wrapped-2026-data";
 import { ChapterHead, Rise, Tilt, useSeen, type Vars } from "./parts";
 
-/* Day 4: what shipped. A supply crate that opens into three item cards
+/* Chapter 4: what shipped. A supply crate that opens into three item cards
    sorted by rarity (Ryu is the foil one), and under it the inventory: every
    app that ships inside Ryu, one slot each. */
 
@@ -251,7 +251,7 @@ export function Drops() {
       id="drops"
     >
       <div className="u26-wrap">
-        <ChapterHead center day="Day 4" id="drops-title" title="Item drops">
+        <ChapterHead center day="Chapter 4" id="drops-title" title="Item drops">
           Everything that shipped this year came out of one crate. Open it.
         </ChapterHead>
 

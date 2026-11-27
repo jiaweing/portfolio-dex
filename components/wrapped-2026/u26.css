@@ -1,4 +1,4 @@
-/* 2026 Wrapped, "A Major Update": the year told like a game's major update
+/* 2026 Wrapped: the year told with the art direction of a game's big launch
    page. A screen-printed poster world: warm ink and cream paper, with the
    seven stops of the 2026 gradient as spot inks, and the whole gradient kept
    for holographic foil on the rarest things. Light theme is the day print,
@@ -796,7 +796,7 @@ body:has(.u26) .site-edge-blur {
   margin-top: 6px;
 }
 
-/* The version seal: a starburst sticker in foil */
+/* The year seal: a starburst sticker in foil */
 .u26-seal {
   position: relative;
   display: grid;
@@ -891,7 +891,7 @@ body:has(.u26) .site-edge-blur {
   margin-top: 10px;
 }
 
-/* "In this update": four stubs along the foot of the poster */
+/* "In this Wrapped": four stubs along the foot of the poster */
 .u26-stubs {
   position: relative;
   z-index: 2;

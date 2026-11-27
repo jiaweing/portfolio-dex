@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSeen } from "./parts";
 
-/* The end of the update. Once it scrolls into view, a Distortion Wave rings
-   out of 2026 and leaves the next update behind: 2027, on the same sunburst
+/* The end of the Wrapped. Once it scrolls into view, a Distortion Wave rings
+   out of 2026 and leaves next year behind: 2027, on the same sunburst
    the page opened with. */
 
 const WAVE_PALETTE = {
@@ -47,7 +47,7 @@ export function Finale() {
     const url = `${window.location.origin}/2026`;
     try {
       if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
-        await navigator.share({ title: "2026: A Major Update", url });
+        await navigator.share({ title: "Jia Wei's 2026 Wrapped", url });
         return;
       }
       await navigator.clipboard.writeText(url);
@@ -65,7 +65,7 @@ export function Finale() {
       id="next"
     >
       <div className="u26-wrap">
-        <p className="u26-hand u26-finale-kicker">that&apos;s the update.</p>
+        <p className="u26-hand u26-finale-kicker">that&apos;s a wrap.</p>
         <div ref={ref}>
           <DistortionWave
             className="u26-stage u26-stage--year"
@@ -76,7 +76,7 @@ export function Finale() {
               <div className="u26-year u26-year--next">
                 <div aria-hidden="true" className="u26-founded-rays" />
                 <div className="u26-year-inner">
-                  <p className="u26-tag u26-tag--paper">Next update</p>
+                  <p className="u26-tag u26-tag--paper">Up next</p>
                   <p className="u26-display u26-year-big" id="next-title">
                     2027
                   </p>
@@ -91,11 +91,11 @@ export function Finale() {
           >
             <div className="u26-year">
               <div className="u26-year-inner">
-                <p className="u26-tag">Installed</p>
+                <p className="u26-tag">Wrapped</p>
                 <p className="u26-display u26-year-big" ref={year}>
                   2026
                 </p>
-                <p className="u26-hand u26-year-note">update complete.</p>
+                <p className="u26-hand u26-year-note">all wrapped up.</p>
               </div>
             </div>
           </DistortionWave>
@@ -110,13 +110,13 @@ export function Finale() {
             Check out Ryu <span aria-hidden="true">↗</span>
           </a>
           <button className="u26-btn" onClick={share} type="button">
-            {copied ? "Link copied" : "Share this update"}
+            {copied ? "Link copied" : "Share this Wrapped"}
           </button>
           <button className="u26-btn" onClick={replay} type="button">
             Play it again
           </button>
           <Link className="u26-btn" href="/2025">
-            Previous update: 2025 <span aria-hidden="true">→</span>
+            2025 Wrapped <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
