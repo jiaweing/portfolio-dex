@@ -244,8 +244,36 @@ body:has(.u26) .site-edge-blur {
   outline-offset: 3px;
 }
 
-.u26-btn--foil {
+/* Small foil pieces (buttons, tags, the seal, the XP bar) are too small to
+   hold all seven inks at once. They show a quarter of the gradient at a time
+   and the rest drifts slowly past. The gradient starts and ends on amber, so
+   one full pass loops without a seam. */
+.u26-btn--foil,
+.u26-tag--foil,
+.u26-seal-shape {
   background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
+  animation: u26-foil-drift 18s linear infinite;
+}
+
+.u26-tag--foil {
+  animation-delay: -7s;
+}
+
+@keyframes u26-foil-drift {
+  from {
+    background-position:
+      0 0,
+      0% 0;
+  }
+
+  to {
+    background-position:
+      0 0,
+      133.333% 0;
+  }
 }
 
 .dark .u26 .u26-btn--foil {
@@ -279,8 +307,12 @@ body:has(.u26) .site-edge-blur {
   rotate: var(--tilt, -2deg);
 }
 
+/* Set again here because the background of .u26-tag comes later in the file */
 .u26-tag--foil {
   background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
 }
 
 .u26-tag--paper {
@@ -294,7 +326,7 @@ body:has(.u26) .site-edge-blur {
   background: var(--foil);
   background-size:
     100% 100%,
-    200% 100%;
+    300% 100%;
   background-position:
     0 0,
     calc(var(--mx, 0.5) * 100%) 0;
@@ -813,7 +845,6 @@ body:has(.u26) .site-edge-blur {
 .u26-seal-shape {
   position: absolute;
   inset: 0;
-  background: var(--foil);
   clip-path: polygon(
     50% 0%,
     58.6% 9.5%,
@@ -845,7 +876,9 @@ body:has(.u26) .site-edge-blur {
     32.3% 13.6%,
     38.7% 2.6%
   );
-  animation: u26-spin 40s linear infinite;
+  animation:
+    u26-spin 40s linear infinite,
+    u26-foil-drift 18s linear -12s infinite;
 }
 
 .u26-seal-text {

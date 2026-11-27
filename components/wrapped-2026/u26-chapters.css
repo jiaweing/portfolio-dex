@@ -199,7 +199,9 @@
 }
 
 .u26-stage-btn[data-pulse="true"] {
-  animation: u26-nudge 1.6s ease-in-out infinite;
+  animation:
+    u26-nudge 1.6s ease-in-out infinite,
+    u26-foil-drift 18s linear infinite;
 }
 
 @keyframes u26-nudge {
@@ -607,6 +609,10 @@ a.u26-ach:hover {
 
 .u26-xp-bar--now i {
   background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
+  animation: u26-foil-drift 18s linear infinite;
   border-right: 0;
 }
 
@@ -940,7 +946,7 @@ a.u26-ach:hover {
   background: var(--foil);
   background-size:
     100% 100%,
-    200% 100%;
+    300% 100%;
   background-position:
     0 0,
     calc(var(--mx, 0.5) * 100%) 0;
