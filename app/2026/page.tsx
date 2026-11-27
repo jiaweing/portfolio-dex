@@ -1,10 +1,11 @@
-import type { SocialSeries } from "@/components/wrapped-2026/socials-section";
+import type { SocialSeries } from "@/components/wrapped-2026/types";
 import { Wrapped2026 } from "@/components/wrapped-2026/wrapped-2026";
 import contributionsSnapshot from "@/data/contributions-2026.json";
 import { socialGrowthData } from "@/data/social-growth";
 import { getBlogPosts } from "@/lib/content";
 import { getCachedContributions } from "@/lib/get-cached-contributions";
 import { generateMetadata } from "@/lib/metadata";
+import { SOCIAL_LINKS } from "@/lib/wrapped-2026-data";
 
 export const metadata = generateMetadata({
   title: "2026 Wrapped",
@@ -19,22 +20,35 @@ const YEAR = "2026";
 
 // Twitch is left out: its scraped follower count jumps to a flat 6,000 in
 // August, which is a scraper glitch, not growth
-const PLATFORMS: Omit<SocialSeries, "values">[] = [
-  { key: "youtube", label: "YouTube", icon: "/logos/youtube.svg" },
+const PLATFORMS: Omit<SocialSeries, "values" | "href">[] = [
+  {
+    key: "youtube",
+    label: "YouTube",
+    icon: "/logos/youtube.svg",
+  },
   {
     key: "threads",
     label: "Threads",
     icon: "/logos/threads.svg",
     invertDark: true,
   },
-  { key: "x", label: "X", icon: "/logos/x.svg", invertDark: true },
+  {
+    key: "x",
+    label: "X",
+    icon: "/logos/x.svg",
+    invertDark: true,
+  },
   {
     key: "instagram",
     label: "Instagram",
     icon: "/logos/instagram.svg",
     invertDark: true,
   },
-  { key: "tiktok", label: "TikTok", icon: "/logos/tiktok.svg" },
+  {
+    key: "tiktok",
+    label: "TikTok",
+    icon: "/logos/tiktok.svg",
+  },
 ];
 
 export default async function Wrapped2026Page() {
@@ -53,18 +67,19 @@ export default async function Wrapped2026Page() {
   for (const p of yearPosts) {
     perMonth[Number(p.date.slice(5, 7)) - 1]++;
   }
-  // Every 7th post keeps the scrolling columns varied without shipping 800+ titles
+  // Every 7th post keeps the feed varied without shipping 800+ titles
   const posts = yearPosts
     .filter((_, i) => i % 7 === 0)
     .slice(0, 90)
     .map((p) => ({ title: p.title, slug: p.slug }));
 
-  // One point a week is plenty for a sparkline
+  // One point a week is plenty for a chart
   const snapshots = socialGrowthData.filter(
     (_s, i, all) => i % 7 === 0 || i === all.length - 1
   );
   const social: SocialSeries[] = PLATFORMS.map((p) => ({
     ...p,
+    href: SOCIAL_LINKS[p.key],
     values: snapshots.map((s) => s[p.key]),
   }));
   const first = socialGrowthData[0]?.date ?? `${YEAR}-05-04`;

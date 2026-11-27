@@ -179,12 +179,14 @@ export default function RootLayout({
                         <SiteHeader />
                       </div>
                       <ProgressiveBlur
+                        className="site-edge-blur"
                         height="100px"
                         position="top"
                         useThemeBackground
                       />
                       <div className="flex-1 pt-20">{children}</div>
                       <ProgressiveBlur
+                        className="site-edge-blur"
                         height="100px"
                         position="bottom"
                         useThemeBackground

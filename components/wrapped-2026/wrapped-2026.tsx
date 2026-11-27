@@ -1,17 +1,39 @@
-"use client";
-
-import { useState } from "react";
-import { AppsSection } from "./apps-section";
-import { CodeSection, type Day } from "./code-section";
+import "./u26.css";
+import "./u26-chapters.css";
+import { CODE_STATS } from "@/lib/wrapped-2026-data";
+import { Broadcast } from "./broadcast";
+import { Drops } from "./drops";
 import { Finale } from "./finale";
+import { body, display, hand } from "./fonts";
+import { Founder } from "./founder";
+import { Grind } from "./grind";
 import { Hero } from "./hero";
-import { Milestones } from "./milestones";
-import { PlotTwist } from "./plot-twist";
-import { type SocialSeries, SocialsSection } from "./socials-section";
-import { type PostTitle, WritingSection } from "./writing-section";
+import { Ticker } from "./parts";
+import { PatchNotes } from "./patch-notes";
+import { Queue } from "./queue";
+import { Trail } from "./trail";
+import type { WrappedData } from "./types";
 
-// Lives inside the normal site layout, so it keeps the header, the theme
-// toggle and the same type, greys and cards as every other page
+/* 2026 Wrapped, "A Major Update": the year laid out like a game's major
+   update page. Each chapter lives in its own file; this one puts them in
+   order and works out the few numbers more than one chapter needs. */
+
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const SHORT = MONTH_NAMES.map((m) => m.slice(0, 3));
+
 export function Wrapped2026({
   days,
   posts,
@@ -19,28 +41,75 @@ export function Wrapped2026({
   perMonth,
   social,
   socialSince,
-}: {
-  days: Day[];
-  posts: PostTitle[];
-  postTotal: number;
-  perMonth: number[];
-  social: SocialSeries[];
-  socialSince: string;
-}) {
-  // Bumping this spins the year in the hero again
-  const [spin, setSpin] = useState(0);
-  const again = () => setSpin((s) => s + 1);
+}: WrappedData) {
+  const total = days.reduce((sum, d) => sum + d.count, 0);
+  const contributions = total || CODE_STATS.contributionsFallback;
+  const best = days.reduce<(typeof days)[number] | undefined>(
+    (top, d) => (!top || d.count > top.count ? d : top),
+    undefined
+  );
+  const peak = Math.max(0, ...perMonth);
+  const peakMonth = perMonth.indexOf(peak);
 
   return (
-    <div className="space-y-32">
-      <Hero onSpin={again} spin={spin} />
-      <PlotTwist />
-      <Milestones />
-      <CodeSection days={days} />
-      <AppsSection />
-      <WritingSection perMonth={perMonth} posts={posts} total={postTotal} />
-      <SocialsSection series={social} since={socialSince} />
-      <Finale onReplay={again} />
+    <div
+      className={`u26 ${display.variable} ${body.variable} ${hand.variable}`}
+    >
+      <Hero />
+      <Trail />
+      <main>
+        <Ticker
+          words={[
+            "Patch 26.0 is live",
+            "A Major Update",
+            "New class: Founder",
+            "Ryu has dropped",
+            "Job hunting removed",
+          ]}
+        />
+        <Queue />
+        <div className="u26-tape" />
+        <Founder />
+        <Grind days={days} />
+        <Ticker
+          duration={44}
+          tape="var(--cyan)"
+          words={[
+            "Supply drop incoming",
+            "72 apps",
+            "400+ models",
+            "250+ MCP tools",
+            "Handle with care",
+          ]}
+        />
+        <Drops />
+        <Broadcast
+          perMonth={perMonth}
+          posts={posts}
+          postTotal={postTotal}
+          social={social}
+          socialSince={socialSince}
+        />
+        <div className="u26-tape" />
+        <PatchNotes
+          bestDay={
+            best
+              ? {
+                  count: best.count,
+                  label: `${SHORT[Number(best.date.slice(5, 7)) - 1]} ${Number(best.date.slice(8, 10))}`,
+                }
+              : undefined
+          }
+          contributions={contributions}
+          postPeak={
+            peak > 0
+              ? { count: peak, month: MONTH_NAMES[peakMonth] }
+              : undefined
+          }
+          postTotal={postTotal}
+        />
+        <Finale />
+      </main>
     </div>
   );
 }

@@ -1,130 +1,121 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
-import { EASE } from "./primitives";
+import { HeroParallax } from "./hero-parallax";
+import { HeroScene } from "./hero-scene";
+import type { Vars } from "./parts";
 
-const YEAR = [2, 0, 2, 6];
-const LOOPS = 3;
-const STRIP = Array.from({ length: 10 * LOOPS }, (_, i) => i % 10);
-const LAND = 1.9;
+/* The top of the page: the way home, the key art, the title lockup with its
+   version seal, and four stubs for what is in the update. */
 
-// A slot machine reel: spins through the strip a few times, then lands
-function Reel({
-  digit,
-  index,
-  spin,
-}: {
-  digit: number;
-  index: number;
-  spin: number;
-}) {
-  const reduced = useReducedMotion();
-  const target = 10 * (LOOPS - 1) + digit;
+const STUBS = [
+  {
+    href: "#queue",
+    day: "01",
+    title: "The queue",
+    what: "3,800 tries to get in",
+    ink: "var(--pink)",
+  },
+  {
+    href: "#founder",
+    day: "02",
+    title: "New class: Founder",
+    what: "9 achievements unlocked",
+    ink: "var(--amber)",
+  },
+  {
+    href: "#grind",
+    day: "03",
+    title: "The grind",
+    what: "6,019 contributions",
+    ink: "var(--lime)",
+  },
+  {
+    href: "#drops",
+    day: "04",
+    title: "Item drops",
+    what: "Ryu, and 72 apps inside it",
+    ink: "var(--cyan)",
+  },
+] as const;
+
+const delay = (ms: number): Vars => ({ "--delay": `${ms}ms` });
+
+export function Hero() {
   return (
-    <span className="relative inline-block h-[1em] overflow-hidden leading-none">
-      <span className="invisible">0</span>
-      <motion.span
-        animate={{ y: `${-target}em` }}
-        className="absolute inset-x-0 top-0 flex flex-col items-center"
-        initial={reduced ? false : { y: "0em" }}
-        key={spin}
-        transition={{
-          duration: 1.3 + index * 0.18,
-          ease: [0.16, 1, 0.3, 1],
-          delay: 0.15,
-        }}
-      >
-        {STRIP.map((n, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: the strip repeats digits
-          <span className="block h-[1em] leading-none" key={i}>
-            {n}
-          </span>
-        ))}
-      </motion.span>
-    </span>
-  );
-}
-
-export function Hero({ spin, onSpin }: { spin: number; onSpin: () => void }) {
-  const reduced = useReducedMotion();
-  const [hinted, setHinted] = useState(false);
-  const after = (delay: number) => ({
-    initial: reduced ? false : { opacity: 0, y: 15 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, ease: EASE, delay: reduced ? 0 : delay },
-  });
-
-  return (
-    <section className="relative flex min-h-[calc(100svh-11rem)] flex-col justify-center pt-4 lg:pt-16">
-      <motion.p
-        {...after(0)}
-        className="text-muted-foreground text-xl md:text-2xl"
-      >
-        my year in review
-      </motion.p>
-
-      <h1 className="mt-2 -ml-[0.06em] font-semibold text-[clamp(7rem,31vw,12.5rem)] text-foreground leading-none tracking-tighter">
-        <button
-          aria-label="2026, tap to spin again"
-          className="inline-flex cursor-pointer select-none"
-          onClick={() => {
-            onSpin();
-            setHinted(true);
-          }}
-          type="button"
-        >
-          {YEAR.map((d, i) => (
-            <Reel
-              digit={d}
-              index={i}
-              // biome-ignore lint/suspicious/noArrayIndexKey: fixed digits
-              key={i}
-              spin={spin}
-            />
-          ))}
-        </button>
-      </h1>
-
-      <motion.div {...after(LAND)} className="mt-1">
-        <TextShimmer
-          className="font-semibold text-4xl tracking-tight md:text-5xl"
-          duration={2.2}
-        >
-          wrapped
-        </TextShimmer>
-      </motion.div>
-
-      <motion.p
-        {...after(LAND + 0.25)}
-        className="mt-8 max-w-md text-xl leading-relaxed md:text-2xl"
-      >
-        <span className="chroma-text chroma-text-animate">
-          The year I stopped waiting for permission.
-        </span>
-      </motion.p>
-
-      <motion.div
-        {...after(LAND + 0.5)}
-        className="mt-10 flex items-center gap-6 text-muted-foreground text-sm"
-      >
-        <span className="inline-flex items-center gap-1.5">
-          <ArrowDown className="seasonal-bob size-4" />
-          scroll
-        </span>
-        <span className="text-muted-foreground/60">
-          {hinted ? "again?" : "or tap the year"}
-        </span>
-        <Link
-          className="ml-auto border-muted-foreground/40 border-b border-dashed transition-colors hover:border-foreground hover:text-foreground"
-          href="/2025"
-        >
-          2025 wrapped →
-        </Link>
-      </motion.div>
-    </section>
+    <header className="u26-hero" data-u26-hero="">
+      <HeroParallax />
+      <div className="u26-poster">
+        <HeroScene />
+        <div className="u26-top">
+          <div className="u26-wrap u26-top-row">
+            <Link className="u26-home" href="/">
+              <span aria-hidden="true">←</span> jiaweing.com
+            </Link>
+          </div>
+        </div>
+        <div className="u26-wrap u26-hero-inner">
+          <div className="u26-lockup">
+            <p className="u26-tag u26-tag--foil">
+              Jia Wei Ng <span aria-hidden="true">·</span> 2026 Wrapped
+            </p>
+            <h1 className="u26-display u26-title">
+              <span className="u26-title-line" style={delay(80)}>
+                A Major
+              </span>
+              <span
+                className="u26-title-line u26-title-line--b"
+                style={delay(200)}
+              >
+                Update
+              </span>
+            </h1>
+            <div className="u26-billing">
+              <p className="u26-seal">
+                <span aria-hidden="true" className="u26-seal-shape" />
+                <span className="u26-seal-text">
+                  <small>Version</small>
+                  <b>26.0</b>
+                </span>
+              </p>
+              <div className="u26-billtext">
+                <p className="u26-hand u26-tagline">
+                  The year I stopped waiting for permission.
+                </p>
+                <p className="u26-hook">
+                  I applied to 3,800 jobs and got 0 interviews. So I started my
+                  own company.
+                </p>
+              </div>
+            </div>
+            <div className="u26-ctas">
+              <a className="u26-btn u26-btn--foil" href="#queue">
+                Start the update <span aria-hidden="true">↓</span>
+              </a>
+              <a className="u26-btn" href="#patch-notes">
+                Read the patch notes
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="In this update" className="u26-wrap u26-stubs">
+        <p className="u26-hand u26-stubs-label">In this update</p>
+        <ol className="u26-stub-grid">
+          {STUBS.map((stub) => {
+            const vars: Vars = { "--stub": stub.ink };
+            return (
+              <li key={stub.href}>
+                <a className="u26-stub" href={stub.href} style={vars}>
+                  <span aria-hidden="true" className="u26-stub-num">
+                    {stub.day}
+                  </span>
+                  <b>{stub.title}</b>
+                  <span>{stub.what}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </header>
   );
 }
