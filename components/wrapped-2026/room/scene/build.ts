@@ -34,14 +34,34 @@ import {
 } from "./kit";
 import type { Screens } from "./screens";
 
-/* The room itself. It follows the real one: the wooden desk with two
-   monitors and a third in the corner, the stream light over them, the high
-   shelf, the white drawers with the fan, the TV on its arm, the second desk
-   under the curtain with the white chair, the wardrobe with the neon on top,
-   and the bed with its pile of plush toys under the wavy light. The mess is
-   left out. Sizes are in metres, more or less. */
+/* The room itself. It follows the real one, wall by wall. The window wall
+   has both desks in one line: the main desk on the left with its two
+   monitors, the tall third one and the stream light over them, then the
+   second desk in front of the curtain with the white chair. The high shelf
+   and the air conditioner sit above. The wardrobe stands in the next corner
+   with the neon on top, then the bedside drawers, and the bed runs along the
+   far wall with its row of plush toys under the wavy light. The TV and the
+   door close the loop, and the white drawers with the fan sit by the main
+   desk. The mess is left out. Sizes are in metres, more or less. */
 
-export const ROOM = { w: 5.6, d: 4.8, h: 2.8 };
+export const ROOM = { w: 4.4, d: 3.5, h: 2.7 };
+/** Where the camera rests: on the window wall, a little from the left */
+export const HOME_AZ = (-26 * Math.PI) / 180;
+
+/** n is the window wall. The rest follow clockwise, as the room is walked. */
+export type WallId = "n" | "e" | "s" | "w";
+
+export interface Wall {
+  id: WallId;
+  node: Group;
+  /** Points out of the room */
+  nx: number;
+  nz: number;
+  /** False once the camera has come round behind it */
+  stand: boolean;
+  /** 1 when it stands, 0 when it has dropped out of the camera's way */
+  up: number;
+}
 
 type V3 = [number, number, number];
 
@@ -57,6 +77,10 @@ export interface Actor {
   /** Where the camera looks when it is picked, and how close it gets */
   focus: Vector3;
   zoom: number;
+  /** The side the camera swings to, so the thing shows its face */
+  az: number;
+  /** The wall it hangs on, if any: it goes when the wall goes */
+  wall?: WallId;
   /** Seconds its reaction lasts */
   dur: number;
   /** p runs 0 to 1 over the reaction, t is seconds since the click */
@@ -248,6 +272,7 @@ interface Kit {
   mats: Mats;
   screens: Screens;
   logos: Logos;
+  walls: Record<WallId, Wall>;
   rand: () => number;
   idles: ((time: number, dt: number) => void)[];
   /** Pieces of foil: each shows a slice of the gradient, and it all drifts */
@@ -273,149 +298,208 @@ interface Press {
   /** Where the marker floats, if not straight above */
   markAt?: V3;
   zoom: number;
+  /** Degrees round the room, if the home view shows its back */
+  az?: number;
+  wall?: WallId;
   dur?: number;
   react?: Actor["react"];
 }
 
 const { w: W, d: D, h: H } = ROOM;
+const TURN = Math.PI / 2;
+/** Thickness of a wall */
+const T = 0.16;
 
-/* The shell */
-function buildShell(k: Kit) {
-  const { root, foil, rand } = k;
-
-  box(
-    root,
-    C.floor,
-    [W + 0.16, 0.3, D + 0.16],
-    [W / 2 - 0.08, -0.3, D / 2 - 0.08]
-  );
-  box(
-    root,
-    C.plinth,
-    [W + 0.16, 0.14, D + 0.16],
-    [W / 2 - 0.08, -0.44, D / 2 - 0.08]
-  );
-  box(root, C.wall, [0.16, H, D + 0.16], [-0.08, 0, D / 2 - 0.08]);
-  box(root, C.wall, [W, H, 0.16], [W / 2, 0, -0.08]);
-  // The cove under the ceiling, and the light strip that runs along it
-  box(root, C.trim, [0.07, 0.09, D], [0.035, H - 0.12, D / 2]);
-  box(root, C.trim, [W - 0.07, 0.09, 0.07], [W / 2 + 0.035, H - 0.12, 0.035]);
-  foil(
-    root,
-    new BoxGeometry(0.03, 0.035, D - 0.08),
-    [0.05, H - 0.15, D / 2 + 0.04],
-    0,
-    1.2
-  );
-  foil(
-    root,
-    new BoxGeometry(W - 0.08, 0.035, 0.03),
-    [W / 2 + 0.04, H - 0.15, 0.05],
-    1.2,
-    2.5
-  );
-  // Skirting
-  box(root, C.trim, [0.03, 0.09, D], [0.015, 0, D / 2], { edges: false });
-  box(root, C.trim, [W, 0.09, 0.03], [W / 2, 0, 0.015], { edges: false });
-
-  // Terrazzo chips in the floor
-  const chips = [C.coal, C.trim, C.woodDark, C.grey, C.grey, C.trim];
-  for (let i = 0; i < 110; i++) {
-    const s = 0.035 + rand() * 0.05;
-    const chip = box(
-      root,
-      chips[Math.floor(rand() * chips.length)],
-      [s, 0.003, s * (0.6 + rand() * 0.6)],
-      [0.2 + rand() * (W - 0.4), 0.0005, 0.2 + rand() * (D - 0.4)],
-      { edges: false }
-    );
-    chip.rotation.y = rand() * Math.PI;
-  }
+/** A holder that turns a thing built to face +x */
+function turned(parent: Object3D, at: V3, rotY: number) {
+  const g = group(parent, at, true);
+  g.rotation.y = rotY;
+  return g;
 }
 
-/* The window and its curtain (back wall) */
-function buildWindowAndItsCurtain(k: Kit) {
-  const { root, screens } = k;
+/** A vase of three flowers, standing on `at` */
+function flowers(parent: Object3D, at: V3) {
+  const [x, y, z] = at;
+  cyl(parent, C.trim, [0.045, 0.035, 0.16, 8], [x, y, z]);
+  [INK.amber, INK.pink, C.yellow].forEach((petal, i) => {
+    const a = i * 2.1;
+    box(
+      parent,
+      C.leaf,
+      [0.012, 0.16, 0.012],
+      [x + Math.cos(a) * 0.03, y + 0.13, z + Math.sin(a) * 0.03],
+      { edges: false }
+    );
+    ball(
+      parent,
+      petal,
+      0.05,
+      [x + Math.cos(a) * 0.05, y + 0.32 + i * 0.03, z + Math.sin(a) * 0.05],
+      { detail: 0 }
+    );
+  });
+}
 
-  box(root, C.trim, [1.6, 1.3, 0.05], [1.95, 0.95, 0.025]);
-  const glass = picture(root, screens.day.tex, 1.44, 1.14, [1.95, 1.6, 0.052]);
-  box(root, C.trim, [0.04, 1.14, 0.03], [1.95, 1.03, 0.055], { edges: false });
-  box(root, C.trim, [1.44, 0.04, 0.03], [1.95, 1.58, 0.055], { edges: false });
-  cyl(root, C.black, [0.014, 0.014, 2.1, 6], [1.95, 2.38, 0.13], {
-    rot: [0, 0, Math.PI / 2],
+/** A fan on a stem, blowing toward +x. Its blades turn on their own group. */
+function fan(parent: Object3D, at: V3, stem: number, r: number) {
+  const g = group(parent, at, true);
+  cyl(g, C.black, [r * 0.55, r * 0.65, 0.03, 10], [0, 0, 0]);
+  box(g, C.black, [0.035, stem, 0.035], [0, 0.03, 0], { edges: false });
+  const cage = cyl(g, C.coal, [r, r, 0.07, 12], [0, 0, 0], {
+    rot: [0, 0, TURN],
+  });
+  cage.position.set(0.02, stem + r, 0);
+  const blades = group(g, [0.062, stem + r, 0], true);
+  for (let i = 0; i < 3; i++) {
+    const blade = box(blades, C.grey, [0.008, r * 0.82, r * 0.36], [0, 0, 0], {
+      edges: false,
+    });
+    const a = (i / 3) * Math.PI * 2;
+    blade.position.set(0, Math.cos(a) * r * 0.44, Math.sin(a) * r * 0.44);
+    blade.rotation.x = a;
+  }
+  cyl(blades, C.black, [0.03, 0.03, 0.016, 8], [0, 0, 0], {
+    rot: [0, 0, TURN],
     edges: false,
-  }).position.y = 2.38;
+  }).position.set(0.004, 0, 0);
+  return { g, blades };
+}
+
+/* The shell: a floor and four walls. Each wall carries its own cove, light
+   strip and skirting, so it can drop out of the camera's way in one piece. */
+function buildShell(k: Kit) {
+  const { root, foil, walls } = k;
+
+  box(root, C.floor, [W + T * 2, 0.3, D + T * 2], [W / 2, -0.3, D / 2]);
+  box(root, C.plinth, [W + T * 2, 0.14, D + T * 2], [W / 2, -0.44, D / 2]);
+
+  // The window wall and the door wall run the full width and own the corners
+  const long = (id: WallId, z: number, inward: number, from: number) => {
+    const g = walls[id].node;
+    box(g, C.wall, [W + T * 2, H, T], [W / 2, 0, z - (inward * T) / 2]);
+    box(g, C.trim, [W, 0.09, 0.07], [W / 2, H - 0.12, z + inward * 0.035]);
+    foil(
+      g,
+      new BoxGeometry(W - 0.08, 0.035, 0.03),
+      [W / 2, H - 0.15, z + inward * 0.05],
+      from,
+      from + 1.2
+    );
+    box(g, C.trim, [W, 0.09, 0.03], [W / 2, 0, z + inward * 0.015], {
+      edges: false,
+    });
+  };
+  const short = (id: WallId, x: number, inward: number, from: number) => {
+    const g = walls[id].node;
+    box(g, C.wall, [T, H, D], [x - (inward * T) / 2, 0, D / 2]);
+    box(g, C.trim, [0.07, 0.09, D], [x + inward * 0.035, H - 0.12, D / 2]);
+    foil(
+      g,
+      new BoxGeometry(0.03, 0.035, D - 0.08),
+      [x + inward * 0.05, H - 0.15, D / 2],
+      from,
+      from + 1
+    );
+    box(g, C.trim, [0.03, 0.09, D], [x + inward * 0.015, 0, D / 2], {
+      edges: false,
+    });
+  };
+  long("n", 0, 1, 0);
+  short("e", W, -1, 1.2);
+  long("s", D, -1, 2.2);
+  short("w", 0, 1, 3.4);
+}
+
+/* The window wall: the curtained window behind the second desk, the air
+   conditioner, and the high shelf over the main desk */
+function buildWindowWall(k: Kit) {
+  const { screens, walls } = k;
+  const n = walls.n.node;
+  const cx = 3.14;
+
+  box(n, C.trim, [1.3, 1.4, 0.05], [cx, 0.9, 0.025]);
+  const glass = picture(n, screens.day.tex, 1.14, 1.24, [cx, 1.6, 0.052]);
+  box(n, C.trim, [0.04, 1.24, 0.03], [cx, 0.98, 0.055], { edges: false });
+  box(n, C.trim, [1.14, 0.04, 0.03], [cx, 1.58, 0.055], { edges: false });
+  cyl(n, C.black, [0.014, 0.014, 1.62, 6], [cx, 2.44, 0.13], {
+    rot: [0, 0, TURN],
+    edges: false,
+  }).position.y = 2.44;
+  // Full-height curtains, drawn almost shut
   const slat = (x: number, i: number) =>
     box(
-      root,
+      n,
       i % 2 ? C.curtain : oklch(0.4, 0.03, 165),
-      [0.125, 2.02, 0.05],
-      [x, 0.34, i % 2 ? 0.1 : 0.14]
+      [0.125, 2.26, 0.05],
+      [x, 0.18, i % 2 ? 0.1 : 0.14]
     );
-  for (let i = 0; i < 5; i++) {
-    slat(0.98 + i * 0.12, i);
+  for (let i = 0; i < 7; i++) {
+    slat(2.44 + i * 0.12, i);
   }
-  for (let i = 0; i < 3; i++) {
-    slat(2.62 + i * 0.12, i + 1);
+  for (let i = 0; i < 4; i++) {
+    slat(3.38 + i * 0.12, i);
   }
+
+  // The air conditioner
+  box(n, C.white, [0.92, 0.28, 0.2], [1.92, 2.14, 0.1]);
+  box(n, C.grey, [0.8, 0.02, 0.03], [1.92, 2.17, 0.2], { edges: false });
+  box(n, C.cream, [0.84, 0.05, 0.02], [1.92, 2.3, 0.2], { edges: false });
+
   return glass;
 }
 
-/* The main desk (left wall) */
+/* The main desk (window wall, left) */
 function buildMainDesk(k: Kit) {
-  const { root, screens, add, foil, idles } = k;
+  const { root, screens, add, foil } = k;
 
-  box(root, C.wood, [0.82, 0.05, 2.2], [0.48, 0.72, 1.45]);
-  for (const z of [0.6, 2.3]) {
-    box(root, C.black, [0.08, 0.72, 0.1], [0.44, 0, z]);
-    box(root, C.black, [0.72, 0.03, 0.1], [0.46, 0, z], { edges: false });
+  box(root, C.wood, [1.7, 0.05, 0.8], [1.59, 0.72, 0.47]);
+  for (const x of [0.9, 2.28]) {
+    box(root, C.black, [0.1, 0.72, 0.08], [x, 0, 0.44]);
+    box(root, C.black, [0.1, 0.03, 0.7], [x, 0, 0.46], { edges: false });
   }
   // The glow behind the monitors
-  foil(root, new BoxGeometry(0.05, 0.06, 1.5), [0.1, 0.8, 1.55], 0.5, 0.1);
-  // Keyboard, mouse and a cup
-  box(root, C.grey, [0.17, 0.022, 0.44], [0.62, 0.77, 1.5]);
-  box(root, C.cream, [0.13, 0.012, 0.4], [0.62, 0.792, 1.5], { edges: false });
-  box(root, INK.pink, [0.03, 0.014, 0.03], [0.665, 0.792, 1.31], {
+  foil(root, new BoxGeometry(1.36, 0.06, 0.05), [1.42, 0.8, 0.11], 0.1, 0.5);
+  // Two light bars at the left end
+  for (const [i, x] of [0.8, 0.88].entries()) {
+    box(root, C.black, [0.06, 0.02, 0.06], [x, 0.77, 0.13], { edges: false });
+    foil(
+      root,
+      new BoxGeometry(0.035, 0.9, 0.035),
+      [x, 1.24, 0.13],
+      0.1 + i * 0.45,
+      0.16 + i * 0.45
+    );
+  }
+  // Keyboard, desk mat, mouse and a cup
+  box(root, C.grey, [0.44, 0.022, 0.17], [1.32, 0.77, 0.68]);
+  box(root, C.cream, [0.4, 0.012, 0.13], [1.32, 0.792, 0.68], { edges: false });
+  box(root, INK.pink, [0.03, 0.014, 0.03], [1.13, 0.792, 0.725], {
     edges: false,
   });
-  box(root, INK.cyan, [0.03, 0.014, 0.06], [0.665, 0.792, 1.68], {
+  box(root, INK.cyan, [0.06, 0.014, 0.03], [1.5, 0.792, 0.725], {
     edges: false,
   });
-  box(root, C.coal, [0.27, 0.006, 0.3], [0.62, 0.77, 2.0]);
-  ball(root, C.black, 0.035, [0.62, 0.795, 2.0], {
+  box(root, C.coal, [0.3, 0.006, 0.27], [1.86, 0.77, 0.68]);
+  ball(root, C.black, 0.035, [1.86, 0.795, 0.68], {
     squash: [1, 0.6, 1.5],
     detail: 0,
   });
-  cyl(root, C.cream, [0.04, 0.032, 0.11, 8], [0.3, 0.77, 2.42]);
-  // The mic on its arm
-  box(root, C.black, [0.025, 0.46, 0.025], [0.12, 0.77, 2.46]);
-  box(root, C.black, [0.34, 0.025, 0.025], [0.27, 1.22, 2.42], {
-    rot: [0, 0.35, 0],
-  });
-  cyl(root, C.coal, [0.04, 0.04, 0.13, 8], [0.42, 1.08, 2.36]);
+  cyl(root, C.cream, [0.04, 0.032, 0.11, 8], [2.1, 0.77, 0.56]);
 
   // The two monitors
-  const monA = monitor(
+  const monA = monitor(root, [1.04, 0.77, 0.3], 0.64, 0.36, screens.left, 0.14);
+  const monB = monitor(
     root,
-    [0.24, 0.77, 1.2],
+    [1.72, 0.77, 0.3],
     0.64,
     0.36,
     screens.right,
-    Math.PI / 2 - 0.14
+    -0.14
   );
-  const monB = monitor(
-    root,
-    [0.24, 0.77, 1.9],
-    0.64,
-    0.36,
-    screens.left,
-    Math.PI / 2 + 0.14
-  );
-  // (the picture runs left to right as you sit at the desk)
-  const monitors = group(root, [0.24, 0.77, 1.55], true);
+  const monitors = group(root, [1.38, 0.77, 0.3], true);
   add("monitors", monitors, {
-    hit: [0.3, 0.6, 1.45],
-    hitAt: [0.05, 0.36, 0],
+    hit: [1.45, 0.6, 0.3],
+    hitAt: [0, 0.36, 0.03],
     top: 0.72,
     zoom: 2.5,
     dur: 1.5,
@@ -430,14 +514,19 @@ function buildMainDesk(k: Kit) {
   monitors.attach(monA.g);
   monitors.attach(monB.g);
 
-  // The third screen, turned in from the corner
-  monitor(root, [0.36, 0.77, 0.6], 0.56, 0.32, screens.code.tex, 0.72, 0.2);
+  // The third screen, up on its arm at the right end and turned in
+  monitor(root, [2.27, 0.77, 0.38], 0.62, 0.36, screens.code.tex, -0.58, 0.3);
+  // The tablet on its arm, in front of it
+  box(root, C.black, [0.025, 0.2, 0.025], [2.3, 0.77, 0.76], { edges: false });
+  box(root, C.coal, [0.3, 0.21, 0.016], [2.26, 0.94, 0.76], {
+    rot: [-0.3, -0.5, 0],
+  });
 
   // The phone on its stand
-  const phone = group(root, [0.64, 0.77, 2.32], true);
+  const phone = group(root, [1.63, 0.77, 0.52], true);
   box(phone, C.coal, [0.09, 0.02, 0.09], [0, 0, 0]);
   const handset = group(phone, [0, 0.02, 0], true);
-  handset.rotation.set(0, Math.PI / 2 - 0.3, 0);
+  handset.rotation.set(0, -0.2, 0);
   box(handset, C.black, [0.095, 0.19, 0.014], [0, 0, 0], {
     rot: [-0.22, 0, 0],
   });
@@ -450,68 +539,75 @@ function buildMainDesk(k: Kit) {
   );
   phoneScreen.rotation.x = -0.22;
   add("phone", phone, {
-    hit: [0.26, 0.34, 0.26],
+    hit: [0.24, 0.34, 0.24],
     hitAt: [0, 0.14, 0],
     top: 0.34,
     zoom: 1.7,
     react: (p) => {
       handset.position.y = 0.02 + arc(p) * 0.22;
-      handset.rotation.y = Math.PI / 2 - 0.3 + easeInOut(p) * Math.PI * 2;
+      handset.rotation.y = -0.2 + easeInOut(p) * Math.PI * 2;
     },
   });
+}
 
-  // The PC under the desk
-  const pc = group(root, [0.46, 0.03, 2.05], true);
-  box(pc, C.black, [0.5, 0.5, 0.24], [0, 0, 0]);
-  box(pc, C.coal, [0.03, 0.42, 0.18], [0.245, 0.04, 0], { edges: false });
+/* The PC under the main desk */
+function buildPC(k: Kit) {
+  const { root, add, foil, idles } = k;
+
+  const pc = group(root, [2.04, 0.03, 0.5], true);
+  box(pc, C.black, [0.24, 0.5, 0.5], [0, 0, 0]);
+  box(pc, C.coal, [0.18, 0.42, 0.03], [0, 0.04, 0.245], { edges: false });
   const fans: Mesh[] = [];
   for (let i = 0; i < 3; i++) {
-    const fan = foil(
-      pc,
-      new CylinderGeometry(0.058, 0.058, 0.012, 6),
-      [0.262, 0.11 + i * 0.14, 0],
-      i * 0.3,
-      i * 0.3 + 0.25,
-      [0, 0, Math.PI / 2]
+    fans.push(
+      foil(
+        pc,
+        new CylinderGeometry(0.058, 0.058, 0.012, 6),
+        [0, 0.11 + i * 0.14, 0.262],
+        i * 0.3,
+        i * 0.3 + 0.25,
+        [TURN, 0, 0]
+      )
     );
-    fans.push(fan);
   }
   let pcSpin = 1.4;
   idles.push((_time, dt) => {
     pcSpin += (1.4 - pcSpin) * Math.min(1, dt * 0.8);
-    for (const fan of fans) {
-      fan.rotation.x += dt * pcSpin;
+    for (const blade of fans) {
+      blade.rotation.y += dt * pcSpin;
     }
   });
   add("pc", pc, {
     collect: false,
-    hit: [0.56, 0.54, 0.3],
-    hitAt: [0.02, 0.26, 0],
+    hit: [0.3, 0.54, 0.56],
+    hitAt: [0, 0.26, 0.02],
     top: 0.62,
     zoom: 2.4,
     dur: 0.9,
     react: (p, t) => {
       pcSpin = 26;
-      pc.rotation.z = Math.sin(t * 46) * 0.03 * (1 - p);
+      pc.rotation.x = Math.sin(t * 46) * 0.03 * (1 - p);
     },
   });
 }
 
-/* The stream light */
+/* The stream light, on its boom over the main desk */
 function buildStreamLight(k: Kit) {
-  const { root, screens, add, foil } = k;
+  const { root, screens, add } = k;
+  const tilt = -1.15;
 
-  box(root, C.black, [0.03, 1.2, 0.03], [0.07, 0.77, 1.55], { edges: false });
-  box(root, C.black, [0.3, 0.03, 0.03], [0.2, 1.95, 1.55], { edges: false });
-  const light = group(root, [0.4, 1.84, 1.55], true);
-  light.rotation.z = 0.95;
-  box(light, C.black, [0.56, 0.16, 0.64], [0, -0.08, 0]);
+  box(root, C.black, [0.03, 1.2, 0.03], [0.96, 0.77, 0.1], { edges: false });
+  box(root, C.black, [0.5, 0.03, 0.03], [1.2, 1.94, 0.1], { edges: false });
+  box(root, C.black, [0.03, 0.03, 0.3], [1.44, 1.94, 0.24], { edges: false });
+  const light = group(root, [1.44, 1.8, 0.48], true);
+  light.rotation.x = tilt;
+  box(light, C.black, [0.64, 0.16, 0.56], [0, -0.08, 0]);
   const diffuser = plain(
     light,
-    new PlaneGeometry(0.5, 0.58),
+    new PlaneGeometry(0.58, 0.5),
     new MeshBasicMaterial({ map: screens.softbox.tex }),
     [0, -0.084, 0],
-    [Math.PI / 2, 0, 0]
+    [TURN, 0, 0]
   );
   const beam = plain(
     light,
@@ -528,7 +624,7 @@ function buildStreamLight(k: Kit) {
   );
   beam.visible = false;
   add("light", light, {
-    hit: [0.66, 0.4, 0.7],
+    hit: [0.7, 0.4, 0.66],
     hitAt: [0, -0.02, 0],
     top: 0.42,
     zoom: 2.9,
@@ -540,36 +636,38 @@ function buildStreamLight(k: Kit) {
       (beam.material as MeshBasicMaterial).opacity =
         0.13 * easeOut(part(p, 0.12, 0.7));
       diffuser.scale.setScalar(1 + 0.06 * arc(part(p, 0.1, 0.5)));
-      light.rotation.z = 0.95 + 0.12 * arc(part(p, 0, 0.4));
+      light.rotation.x = tilt - 0.12 * arc(part(p, 0, 0.4));
     },
   });
-
-  // Two light bars on the wall beside the desk
-  foil(root, new BoxGeometry(0.035, 1.0, 0.035), [0.04, 1.45, 2.61], 0.1, 0.16);
-  foil(
-    root,
-    new BoxGeometry(0.035, 1.0, 0.035),
-    [0.04, 1.45, 2.68],
-    0.55,
-    0.61
-  );
 }
 
-/* The high shelf and its trophies */
+/* The high shelf in the corner over the main desk, and its trophies */
 function buildHighShelfAndItsTrophies(k: Kit) {
-  const { root, screens, logos, add } = k;
+  const { screens, logos, add, walls } = k;
+  const n = walls.n.node;
+  const w = walls.w.node;
 
-  box(root, C.trim, [0.28, 0.04, 4.4], [0.14, 2.2, 2.5]);
-  for (const z of [0.6, 1.6, 2.6, 3.6, 4.5]) {
-    box(root, C.trim, [0.2, 0.12, 0.03], [0.1, 2.08, z], { edges: false });
+  box(n, C.trim, [1.42, 0.04, 0.28], [0.71, 2.2, 0.14]);
+  for (const x of [0.34, 0.84, 1.34]) {
+    box(n, C.trim, [0.03, 0.12, 0.2], [x, 2.08, 0.1], { edges: false });
   }
+  // It turns the corner and runs on a little way
+  box(w, C.trim, [0.28, 0.04, 1.0], [0.14, 2.2, 0.78]);
+  box(w, C.trim, [0.2, 0.12, 0.03], [0.1, 2.08, 1.2], { edges: false });
+  [C.sky, C.red, C.teal, INK.magenta].forEach((fur, i) => {
+    ball(w, fur, 0.045, [0.14, 2.285, 0.5 + i * 0.2], {
+      squash: [1, 1.15, 1],
+    });
+    ball(w, fur, 0.03, [0.14, 2.35, 0.5 + i * 0.2]);
+  });
+
   const yellow = plush(
-    root,
-    [0.15, 2.24, 0.66],
+    n,
+    [0.17, 2.24, 0.16],
     0.085,
     C.yellow,
     C.cream,
-    Math.PI / 2 - 0.3,
+    0.3,
     true
   );
   add("yellow", yellow, {
@@ -578,6 +676,7 @@ function buildHighShelfAndItsTrophies(k: Kit) {
     hitAt: [0, 0.13, 0],
     top: 0.34,
     zoom: 1.9,
+    wall: "n",
     dur: 0.7,
     react: (p) => {
       yellow.scale.set(1 + 0.2 * arc(p), 1 - 0.25 * arc(p), 1 + 0.2 * arc(p));
@@ -585,7 +684,7 @@ function buildHighShelfAndItsTrophies(k: Kit) {
   });
 
   // BLOCK71: the cup
-  const cup = group(root, [0.15, 2.24, 1.3], true);
+  const cup = group(turned(n, [0.52, 2.24, 0.15], -TURN), [0, 0, 0], true);
   box(cup, C.black, [0.13, 0.035, 0.13], [0, 0, 0]);
   cyl(cup, INK.lime, [0.025, 0.04, 0.08, 8], [0, 0.035, 0]);
   cyl(cup, INK.lime, [0.085, 0.04, 0.13, 8], [0, 0.115, 0]);
@@ -595,12 +694,13 @@ function buildHighShelfAndItsTrophies(k: Kit) {
       edges: false,
     });
   }
-  picture(cup, screens.n71.tex, 0.075, 0.075, [0.071, 0.18, 0], Math.PI / 2);
+  picture(cup, screens.n71.tex, 0.075, 0.075, [0.071, 0.18, 0], TURN);
   add("cup", cup, {
     hit: [0.26, 0.34, 0.3],
     hitAt: [0, 0.14, 0],
     top: 0.36,
     zoom: 1.8,
+    wall: "n",
     react: (p) => {
       cup.position.y += arc(p) * 0.26;
       cup.rotation.y = easeInOut(p) * Math.PI * 4;
@@ -608,28 +708,21 @@ function buildHighShelfAndItsTrophies(k: Kit) {
   });
 
   // Anthropic partner: the plaque
-  const plaque = group(root, [0.15, 2.24, 1.92], true);
+  const plaque = group(turned(n, [0.86, 2.24, 0.15], -TURN), [0, 0, 0], true);
   box(plaque, C.woodDark, [0.1, 0.03, 0.26], [0, 0, 0]);
   const slab = group(plaque, [-0.01, 0.03, 0], true);
   slab.rotation.z = 0.16;
   box(slab, C.woodDark, [0.03, 0.24, 0.24], [0, 0, 0]);
   box(slab, C.cream, [0.006, 0.19, 0.19], [0.017, 0.025, 0], { edges: false });
   if (logos.claude) {
-    picture(
-      slab,
-      logos.claude,
-      0.13,
-      0.13,
-      [0.0215, 0.12, 0],
-      Math.PI / 2,
-      true
-    );
+    picture(slab, logos.claude, 0.13, 0.13, [0.0215, 0.12, 0], TURN, true);
   }
   add("plaque", plaque, {
     hit: [0.26, 0.34, 0.32],
     hitAt: [0, 0.14, 0],
     top: 0.36,
     zoom: 1.8,
+    wall: "n",
     react: (p, t) => {
       plaque.position.y += arc(part(p, 0, 0.5)) * 0.16;
       slab.rotation.z = 0.16 + Math.sin(t * 11) * 0.22 * (1 - p);
@@ -637,7 +730,7 @@ function buildHighShelfAndItsTrophies(k: Kit) {
   });
 
   // Comebck mentor: the medal on its hook
-  const medal = group(root, [0.15, 2.24, 2.5], true);
+  const medal = group(turned(n, [1.2, 2.24, 0.15], -TURN), [0, 0, 0], true);
   box(medal, C.black, [0.12, 0.03, 0.12], [0, 0, 0]);
   box(medal, C.black, [0.02, 0.3, 0.02], [-0.03, 0.03, 0], { edges: false });
   box(medal, C.black, [0.09, 0.02, 0.02], [0.005, 0.31, 0], { edges: false });
@@ -649,47 +742,44 @@ function buildHighShelfAndItsTrophies(k: Kit) {
     rot: [-0.28, 0, 0],
   });
   cyl(swing, INK.amber, [0.058, 0.058, 0.018, 10], [0, -0.19, 0], {
-    rot: [0, 0, Math.PI / 2],
+    rot: [0, 0, TURN],
   }).position.set(0, -0.18, 0);
   add("medal", medal, {
     hit: [0.26, 0.4, 0.28],
     hitAt: [0, 0.17, 0],
     top: 0.42,
     zoom: 1.8,
+    wall: "n",
     dur: 1.8,
     react: (p, t) => {
       swing.rotation.x = Math.sin(t * 8.5) * 0.75 * (1 - p) ** 1.5;
     },
   });
-
-  // A few small figures at the far end of the shelf
-  [C.sky, C.red, C.teal, INK.magenta].forEach((fur, i) => {
-    ball(root, fur, 0.045, [0.14, 2.285, 3.05 + i * 0.16], {
-      squash: [1, 1.15, 1],
-    });
-    ball(root, fur, 0.03, [0.14, 2.35, 3.05 + i * 0.16]);
-  });
-  // The name over the TV
-  box(root, C.trim, [0.03, 0.22, 0.86], [0.2, 2.24, 4.15]);
-  picture(root, screens.sign.tex, 0.8, 0.2, [0.2165, 2.35, 4.15], Math.PI / 2);
 }
 
-/* The drawers and the fan */
+/* The white drawers in the corner left of the main desk, with the fan and
+   the flowers on top. They face into the room, away from the wall. */
 function buildDrawersAndTheFan(k: Kit) {
   const { root, add, idles } = k;
 
-  const drawers = group(root, [0.36, 0, 3.08], true);
-  box(drawers, C.white, [0.6, 0.72, 0.66], [0, 0, 0]);
-  const fronts: Group[] = [];
+  const front = (parent: Object3D, i: number) => {
+    const g = group(parent, [0.3, 0.05 + i * 0.225, 0], true);
+    box(g, C.white, [0.03, 0.2, 0.6], [0.015, 0, 0]);
+    box(g, C.grey, [0.02, 0.025, 0.16], [0.04, 0.13, 0], { edges: false });
+    box(g, C.cream, [0.26, 0.16, 0.56], [-0.13, 0.01, 0], { edges: false });
+    return g;
+  };
+
+  // The unit in the corner stays shut
+  const corner = group(root, [0.37, 0, 0.47]);
+  box(corner, C.white, [0.6, 0.72, 0.66], [0, 0, 0]);
   for (let i = 0; i < 3; i++) {
-    const front = group(drawers, [0.3, 0.05 + i * 0.225, 0], true);
-    box(front, C.white, [0.03, 0.2, 0.6], [0.015, 0, 0]);
-    box(front, C.grey, [0.02, 0.025, 0.16], [0.04, 0.13, 0], { edges: false });
-    box(front, C.cream, [0.26, 0.16, 0.56], [-0.13, 0.01, 0], {
-      edges: false,
-    });
-    fronts.push(front);
+    front(corner, i).userData.own = false;
   }
+
+  const drawers = group(root, [0.37, 0, 1.15], true);
+  box(drawers, C.white, [0.6, 0.72, 0.66], [0, 0, 0]);
+  const fronts = [0, 1, 2].map((i) => front(drawers, i));
   const stars: Mesh[] = [];
   for (let i = 0; i < 6; i++) {
     const star = plain(
@@ -701,17 +791,19 @@ function buildDrawersAndTheFan(k: Kit) {
     star.visible = false;
     stars.push(star);
   }
+  flowers(drawers, [-0.06, 0.72, 0.18]);
   add("drawers", drawers, {
     hit: [0.7, 0.76, 0.7],
     hitAt: [0.03, 0.38, 0],
     top: 1,
-    markAt: [0.24, 0.98, 0.22],
+    markAt: [0.1, 1.0, -0.12],
     zoom: 2.6,
+    az: 38,
     dur: 1.6,
     react: (p, t) => {
-      fronts.forEach((front, i) => {
+      fronts.forEach((f, i) => {
         const order = 2 - i;
-        front.position.x =
+        f.position.x =
           0.3 + 0.2 * easeBack(part(p, order * 0.1, order * 0.1 + 0.35));
       });
       stars.forEach((star, i) => {
@@ -729,32 +821,19 @@ function buildDrawersAndTheFan(k: Kit) {
     },
   });
 
-  const fan = group(root, [0.32, 0.72, 2.95], true);
-  cyl(fan, C.black, [0.09, 0.11, 0.03, 10], [0, 0, 0]);
-  box(fan, C.black, [0.035, 0.16, 0.035], [0, 0.03, 0], { edges: false });
-  const cage = cyl(fan, C.coal, [0.17, 0.17, 0.07, 12], [0, 0, 0], {
-    rot: [0, 0, Math.PI / 2],
-  });
-  cage.position.set(0.02, 0.33, 0);
-  const blades = group(fan, [0.062, 0.33, 0], true);
-  for (let i = 0; i < 3; i++) {
-    const blade = box(blades, C.grey, [0.008, 0.14, 0.06], [0, 0, 0], {
-      edges: false,
-    });
-    const a = (i / 3) * Math.PI * 2;
-    blade.position.set(0, Math.cos(a) * 0.075, Math.sin(a) * 0.075);
-    blade.rotation.x = a;
-  }
-  cyl(blades, C.black, [0.03, 0.03, 0.016, 8], [0, 0, 0], {
-    rot: [0, 0, Math.PI / 2],
-    edges: false,
-  }).position.set(0.004, 0, 0);
+  // The desk fan, in the corner by the light bars
+  const desk = fan(
+    turned(root, [0.34, 0.72, 0.42], -0.7),
+    [0, 0, 0],
+    0.16,
+    0.17
+  );
   let fanSpin = 2.2;
   idles.push((_time, dt) => {
     fanSpin += (2.2 - fanSpin) * Math.min(1, dt * 0.6);
-    blades.rotation.x += dt * fanSpin;
+    desk.blades.rotation.x += dt * fanSpin;
   });
-  add("fan", fan, {
+  add("fan", desk.g, {
     collect: false,
     hit: [0.3, 0.52, 0.4],
     hitAt: [0.02, 0.26, 0],
@@ -763,107 +842,69 @@ function buildDrawersAndTheFan(k: Kit) {
     dur: 0.6,
     react: (p) => {
       fanSpin = 30;
-      fan.rotation.y = Math.sin(p * Math.PI * 2) * 0.5;
+      desk.g.rotation.y = Math.sin(p * Math.PI * 2) * 0.5;
     },
   });
 }
 
-/* The TV */
-function buildTV(k: Kit) {
-  const { root, screens, add } = k;
-
-  box(root, C.white, [0.4, 0.5, 0.9], [0.22, 0, 4.15]);
-  box(root, C.cream, [0.02, 0.4, 0.38], [0.425, 0.05, 3.95], { edges: false });
-  box(root, C.cream, [0.02, 0.4, 0.38], [0.425, 0.05, 4.35], { edges: false });
-  box(root, C.black, [0.14, 0.06, 0.06], [0.07, 1.42, 4.15], { edges: false });
-  const tv = group(root, [0.17, 1.14, 4.15], true);
-  tv.rotation.y = -0.1;
-  box(tv, C.black, [0.04, 0.62, 1.06], [0, 0, 0]);
-  picture(tv, screens.tv.tex, 1.0, 0.56, [0.0215, 0.31, 0], Math.PI / 2);
-  add("tv", tv, {
-    hit: [0.2, 0.7, 1.14],
-    hitAt: [0.03, 0.31, 0],
-    top: 0.8,
-    zoom: 2.6,
-    dur: 1.5,
-    react: (p) => {
-      screens.tv.draw(easeOut(p));
-      tv.scale.setScalar(1 + 0.05 * arc(part(p, 0, 0.3)));
-    },
-  });
-}
-
-/* The second desk (back wall) */
+/* The second desk (window wall, right, in front of the curtain) */
 function buildSecondDesk(k: Kit) {
   const { root, screens, add } = k;
 
-  box(root, C.wood, [1.6, 0.05, 0.72], [1.95, 0.72, 0.44]);
-  for (const x of [1.22, 2.68]) {
-    for (const z of [0.14, 0.74]) {
+  box(root, C.wood, [1.22, 0.05, 0.72], [3.13, 0.72, 0.43]);
+  for (const x of [2.58, 3.68]) {
+    for (const z of [0.14, 0.72]) {
       box(root, C.white, [0.05, 0.72, 0.05], [x, 0, z]);
     }
   }
-  monitor(root, [1.68, 0.77, 0.3], 0.6, 0.34, screens.hills.tex, 0.06);
-  const tall = monitor(
+  // The wide screen: posts on the blog
+  const wide = monitor(
     root,
-    [2.36, 0.77, 0.32],
-    0.34,
-    0.58,
+    [3.07, 0.77, 0.28],
+    0.56,
+    0.33,
     screens.posts.tex,
-    -0.16,
-    0.1
+    0.06
   );
-  add("posts", tall.g, {
-    hit: [0.46, 0.76, 0.2],
-    hitAt: [0, 0.4, 0],
-    top: 0.84,
+  add("posts", wide.g, {
+    hit: [0.66, 0.56, 0.2],
+    hitAt: [0, 0.3, 0],
+    top: 0.62,
     zoom: 2.3,
     dur: 1.5,
     react: (p) => {
       screens.posts.draw(easeOut(p));
-      tall.head.scale.setScalar(1 + 0.07 * arc(part(p, 0, 0.3)));
+      wide.head.scale.setScalar(1 + 0.07 * arc(part(p, 0, 0.3)));
     },
   });
-  box(root, C.woodDark, [0.46, 0.015, 0.2], [1.72, 0.77, 0.62], {
+  // The tall screen: the green hills
+  monitor(root, [3.55, 0.77, 0.3], 0.31, 0.55, screens.hills.tex, -0.22, 0.1);
+  // The white keyboard on its wooden rest
+  box(root, C.woodDark, [0.46, 0.015, 0.2], [3.1, 0.77, 0.64], {
     edges: false,
   });
-  box(root, C.white, [0.4, 0.025, 0.13], [1.72, 0.785, 0.62]);
+  box(root, C.white, [0.4, 0.025, 0.13], [3.1, 0.785, 0.64]);
   // A row of small toys, one in each ink of the year
-  box(root, C.woodDark, [0.52, 0.035, 0.08], [1.72, 0.77, 0.47]);
+  box(root, C.woodDark, [0.52, 0.035, 0.08], [3.1, 0.77, 0.48]);
   INK_LIST.forEach((ink, i) => {
-    ball(root, ink, 0.03, [1.5 + i * 0.073, 0.835, 0.47], { detail: 0 });
+    ball(root, ink, 0.03, [2.88 + i * 0.073, 0.835, 0.48], { detail: 0 });
   });
-  // Flowers
-  cyl(root, C.trim, [0.045, 0.035, 0.16, 8], [1.3, 0.77, 0.3]);
-  [INK.amber, INK.pink, C.yellow].forEach((petal, i) => {
-    const a = i * 2.1;
-    box(
-      root,
-      C.leaf,
-      [0.012, 0.16, 0.012],
-      [1.3 + Math.cos(a) * 0.03, 0.9, 0.3 + Math.sin(a) * 0.03],
-      { edges: false }
-    );
-    ball(
-      root,
-      petal,
-      0.05,
-      [1.3 + Math.cos(a) * 0.05, 1.09 + i * 0.03, 0.3 + Math.sin(a) * 0.05],
-      { detail: 0 }
-    );
-  });
+  flowers(root, [2.64, 0.77, 0.2]);
+  // The small fan
+  fan(turned(root, [3.6, 0.77, 0.62], -1.3), [0, 0, 0], 0.05, 0.08);
 
-  // The white chair, with its blue cushion
-  const guest = chair(
-    root,
-    [2.3, 0, 1.32],
-    Math.PI / 2 + 0.25,
-    C.white,
-    C.cream
-  );
-  ball(guest.top, C.sky, 0.17, [0, 0.62, 0.02], { squash: [1.1, 0.8, 1] });
+  // The white chair, turned to the desk, with its blanket and blue cushion
+  const spin = Math.PI + 0.6;
+  const guest = chair(root, [3.2, 0, 1.44], spin, C.white, C.cream);
+  box(guest.top, C.black, [0.32, 0.15, 0.07], [0, 1.0, -0.2], {
+    rot: [-0.13, 0, 0],
+  });
+  ball(guest.top, oklch(0.87, 0.04, 75), 0.25, [0, 0.42, 0.06], {
+    squash: [1, 0.5, 1.05],
+  });
+  ball(guest.top, C.sky, 0.17, [0, 0.6, 0.04], { squash: [1.1, 0.8, 1] });
   for (const side of [-1, 1]) {
-    ball(guest.top, C.sky, 0.05, [side * 0.12, 0.76, 0.02]);
+    ball(guest.top, C.sky, 0.05, [side * 0.12, 0.74, 0.04]);
   }
   add("guest", guest.g, {
     collect: false,
@@ -873,58 +914,146 @@ function buildSecondDesk(k: Kit) {
     zoom: 2.8,
     dur: 1.4,
     react: (p) => {
-      guest.top.rotation.y = Math.PI / 2 + 0.25 + easeInOut(p) * Math.PI * 2;
+      guest.top.rotation.y = spin + easeInOut(p) * Math.PI * 2;
     },
   });
 }
 
-/* The wardrobe */
+/* The wardrobe, in the corner past the second desk */
 function buildWardrobe(k: Kit) {
   const { root, screens } = k;
+  const face = W - 0.62;
 
-  box(root, C.white, [1.0, 2.1, 0.6], [3.5, 0, 0.36]);
-  for (const side of [-1, 1]) {
-    box(root, C.trim, [0.46, 1.94, 0.02], [3.5 + side * 0.245, 0.08, 0.665]);
-    box(root, C.grey, [0.02, 0.14, 0.02], [3.5 + side * 0.05, 1.0, 0.68], {
+  box(root, C.white, [0.6, 2.1, 1.0], [W - 0.31, 0, 0.64]);
+  // One plain door and one mirror door
+  box(root, C.trim, [0.02, 1.94, 0.46], [face, 0.08, 0.395]);
+  box(root, oklch(0.86, 0.035, 225), [0.02, 1.94, 0.46], [face, 0.08, 0.885]);
+  box(root, C.trim, [0.006, 0.9, 0.05], [face - 0.012, 0.7, 0.8], {
+    rot: [0.5, 0, 0],
+    edges: false,
+  });
+  for (const z of [0.6, 0.68]) {
+    box(root, C.grey, [0.02, 0.14, 0.02], [face - 0.015, 1.0, z], {
       edges: false,
     });
   }
   // The black tee on its hanger
-  box(root, C.black, [0.34, 0.42, 0.02], [3.27, 1.22, 0.7]);
+  box(root, C.black, [0.02, 0.42, 0.34], [face - 0.03, 1.22, 0.39]);
   for (const side of [-1, 1]) {
-    box(root, C.black, [0.16, 0.12, 0.02], [3.27 + side * 0.21, 1.5, 0.7], {
-      rot: [0, 0, side * 0.5],
-      edges: false,
-    });
+    box(
+      root,
+      C.black,
+      [0.02, 0.12, 0.16],
+      [face - 0.03, 1.5, 0.39 + side * 0.21],
+      { rot: [-side * 0.5, 0, 0], edges: false }
+    );
   }
-  box(root, C.grey, [0.012, 0.1, 0.012], [3.27, 1.64, 0.7], { edges: false });
+  box(root, C.grey, [0.012, 0.1, 0.012], [face - 0.03, 1.64, 0.39], {
+    edges: false,
+  });
   // On top: the neon and two more toys
   const dream = picture(
     root,
     screens.dream.tex,
     0.62,
     0.27,
-    [3.5, 2.27, 0.5],
-    0,
+    [W - 0.36, 2.27, 0.68],
+    -1.05,
     true
   );
-  plush(root, [3.14, 2.1, 0.4], 0.09, C.woodDark, C.cream, 0.3);
-  plush(root, [3.86, 2.1, 0.4], 0.085, C.red, C.cream, -0.3);
+  plush(root, [W - 0.2, 2.1, 0.26], 0.085, C.woodDark, C.cream, -TURN + 0.5);
+  plush(root, [W - 0.2, 2.1, 1.04], 0.08, C.red, C.cream, -0.6);
   return dream;
 }
 
-/* The bed */
-function buildBed(k: Kit, dream: Mesh) {
-  const { root, screens, add, foil } = k;
+/* The bedside drawers, with the stack of mail and the big fan on top */
+function buildBedside(k: Kit) {
+  const { root, add, rand, idles } = k;
 
-  box(root, C.coal, [1.5, 0.26, 2.1], [4.8, 0, 1.22]);
-  box(root, C.sheet, [1.46, 0.2, 2.04], [4.8, 0.26, 1.22]);
-  box(root, C.grey, [1.5, 0.98, 0.12], [4.8, 0, 0.12]);
-  const bed = group(root, [4.8, 0.46, 1.22], true);
-  box(bed, C.white, [0.62, 0.1, 0.36], [-0.36, 0, -0.68]);
-  const duvet = group(bed, [0, 0, 0.36], true);
-  box(duvet, C.duvet, [1.52, 0.12, 1.34], [0, 0, 0]);
-  box(duvet, C.duvet2, [1.52, 0.06, 0.26], [0, 0.12, -0.54]);
+  box(root, C.white, [0.46, 0.56, 0.7], [W - 0.26, 0, 1.55]);
+  for (let i = 0; i < 2; i++) {
+    box(root, C.cream, [0.015, 0.21, 0.62], [W - 0.5, 0.06 + i * 0.25, 1.55]);
+    box(root, C.grey, [0.02, 0.025, 0.18], [W - 0.51, 0.2 + i * 0.25, 1.55], {
+      edges: false,
+    });
+  }
+
+  // The mail: a neat stack in a tray
+  const mail = turned(root, [W - 0.27, 0.56, 1.38], TURN);
+  box(mail, C.grey, [0.34, 0.03, 0.25], [0, 0, 0]);
+  let top = 0.03;
+  for (let i = 0; i < 13; i++) {
+    envelope(
+      mail,
+      [(rand() - 0.5) * 0.02, top, (rand() - 0.5) * 0.02],
+      [0, (rand() - 0.5) * 0.16, 0]
+    );
+    top += 0.016;
+  }
+  const flyers = Array.from({ length: 7 }, (_, i) => {
+    const a = (i / 7) * Math.PI * 2 + 0.4;
+    const home: V3 = [0, top + i * 0.016, 0];
+    const turn = (rand() - 0.5) * 0.16;
+    return {
+      node: envelope(mail, home, [0, turn, 0], true),
+      home,
+      turn,
+      a,
+      reach: 0.3 + rand() * 0.3,
+      high: 0.5 + rand() * 0.5,
+    };
+  });
+  add("mail", mail, {
+    hit: [0.4, 0.46, 0.32],
+    hitAt: [0, 0.2, 0],
+    top: 0.5,
+    zoom: 2.4,
+    dur: 1.7,
+    react: (p) => {
+      flyers.forEach((f, i) => {
+        const q = part(p, i * 0.03, 0.72 + i * 0.03);
+        const out = arc(q) * f.reach;
+        f.node.position.set(
+          f.home[0] + Math.cos(f.a) * out,
+          f.home[1] + arc(q) * f.high,
+          f.home[2] + Math.sin(f.a) * out
+        );
+        f.node.rotation.set(
+          easeInOut(q) * Math.PI * 2,
+          f.turn + easeInOut(q) * Math.PI * 2,
+          0
+        );
+      });
+    },
+  });
+
+  // The big fan, blowing across the bed
+  const tall = fan(
+    turned(root, [W - 0.25, 0.56, 1.74], Math.PI - 0.5),
+    [0, 0, 0],
+    0.2,
+    0.17
+  );
+  idles.push((_time, dt) => {
+    tall.blades.rotation.x += dt * 1.6;
+  });
+}
+
+/* The bed along the far wall, head to the wardrobe side, with its row of
+   plush toys and the lights on the wall over its head */
+function buildBed(k: Kit, dream: Mesh) {
+  const { root, screens, add } = k;
+  const bx = W - 1.05;
+  const bz = D - 0.76;
+
+  box(root, C.coal, [2.05, 0.26, 1.45], [bx, 0, bz]);
+  box(root, C.sheet, [2.0, 0.2, 1.41], [bx, 0.26, bz]);
+  box(root, C.grey, [0.12, 0.98, 1.45], [W - 0.09, 0, bz]);
+  const bed = group(root, [bx, 0.46, bz], true);
+  box(bed, C.white, [0.36, 0.1, 0.62], [0.72, 0, -0.28]);
+  const duvet = group(bed, [-0.32, 0, -0.14], true);
+  box(duvet, C.duvet, [1.42, 0.12, 1.16], [0, 0, 0]);
+  box(duvet, C.duvet2, [0.26, 0.06, 1.16], [0.58, 0.12, 0]);
   const zeds: Mesh[] = [];
   for (let i = 0; i < 3; i++) {
     const z = picture(
@@ -932,17 +1061,18 @@ function buildBed(k: Kit, dream: Mesh) {
       screens.zed.tex,
       0.26,
       0.26,
-      [-0.36, 0.5, -0.68],
-      Math.PI / 4,
+      [0.72, 0.5, -0.28],
+      HOME_AZ,
       true
     );
     z.visible = false;
     zeds.push(z);
   }
   add("bed", bed, {
-    hit: [1.5, 0.5, 2.0],
+    hit: [2.0, 0.5, 1.4],
     hitAt: [0, 0.05, 0],
     top: 0.75,
+    markAt: [-0.2, 0.62, -0.3],
     zoom: 3.4,
     dur: 2.2,
     react: (p) => {
@@ -950,54 +1080,64 @@ function buildBed(k: Kit, dream: Mesh) {
       zeds.forEach((z, i) => {
         const q = part(p, 0.1 + i * 0.16, 0.62 + i * 0.16);
         z.visible = q > 0 && q < 1;
-        z.position.set(-0.36 + q * 0.3 + i * 0.05, 0.4 + q * 1.0, -0.68);
+        z.position.set(0.72 - q * 0.3 - i * 0.05, 0.4 + q * 1.0, -0.28);
         z.scale.setScalar((0.55 + i * 0.28) * easeBack(Math.min(1, q * 3)));
         (z.material as MeshBasicMaterial).opacity = 1 - part(q, 0.7, 1);
       });
     },
   });
 
-  // The plush pile at the head of the bed
-  const pile = group(root, [4.8, 0.46, 0.34], true);
+  // The plush toys, lined up along the wall side of the bed
+  const pile = group(root, [bx, 0.46, D - 0.3], true);
+  const look = -1.9;
   const toys = [
-    plush(pile, [0.44, 0, 0.1], 0.2, C.teal, C.cream, -0.1),
-    plush(pile, [0.14, 0, 0.02], 0.13, C.trim, INK.pink, 0.2),
-    plush(pile, [-0.02, 0, 0.26], 0.1, C.black, C.grey, -0.2, true),
-    plush(pile, [0.3, 0, 0.34], 0.11, C.sky, C.trim, 0.3),
-    plush(pile, [0.58, 0, 0.46], 0.1, C.red, C.cream, -0.4),
-    plush(pile, [0.14, 0, 0.52], 0.09, INK.amber, C.trim, 0.1, true),
+    plush(pile, [-0.78, 0, -0.02], 0.2, C.teal, C.cream, look + 0.2),
+    plush(pile, [-0.42, 0, 0.04], 0.12, C.trim, INK.pink, look - 0.2),
+    plush(pile, [-0.17, 0, -0.03], 0.1, C.black, C.grey, look + 0.1, true),
+    plush(pile, [0.08, 0, 0.03], 0.13, C.sky, C.trim, look - 0.1),
+    plush(pile, [0.34, 0, -0.02], 0.1, C.red, C.cream, look + 0.3),
+    plush(pile, [0.56, 0, 0.04], 0.11, INK.amber, C.trim, look, true),
+    plush(pile, [0.8, 0, 0], 0.12, INK.pink, C.cream, look - 0.3),
   ];
   add("plush", pile, {
     collect: false,
-    hit: [1.0, 0.6, 0.8],
-    hitAt: [0.28, 0.28, 0.24],
+    hit: [2.0, 0.6, 0.5],
+    hitAt: [0, 0.28, 0],
     top: 0.82,
     zoom: 2.8,
     dur: 1.1,
     react: (p) => {
       toys.forEach((toy, i) => {
-        const q = arc(part(p, i * 0.08, 0.5 + i * 0.08));
+        const q = arc(part(p, i * 0.07, 0.5 + i * 0.07));
         toy.scale.set(1 + 0.16 * q, 1 - 0.2 * q, 1 + 0.16 * q);
         toy.position.y =
-          Math.sin(part(p, i * 0.08 + 0.2, 0.7 + i * 0.08) * Math.PI) * 0.14;
+          Math.sin(part(p, i * 0.07 + 0.2, 0.7 + i * 0.07) * Math.PI) * 0.14;
       });
     },
   });
 
-  // The wavy light, the speech bubble and the frames over the bed
+  buildOverTheBed(k, dream, bz);
+}
+
+/* On the wall over the head of the bed: the wavy light, the speech bubble
+   and the frames */
+function buildOverTheBed(k: Kit, dream: Mesh, bz: number) {
+  const { screens, add, foil, walls } = k;
+  const e = walls.e.node;
+
   const wave = new CatmullRomCurve3(
     Array.from(
       { length: 9 },
       (_, i) =>
         new Vector3(
-          4.2 + i * 0.105,
-          1.5 + Math.sin(i * 1.5) * 0.14 + i * 0.012,
-          0.03
+          W - 0.03,
+          1.8 + Math.sin(i * 1.5) * 0.14 + i * 0.012,
+          bz - 0.66 + i * 0.105
         )
     )
   );
-  foil(root, new TubeGeometry(wave, 40, 0.02, 5), [0, 0, 0], 0, 0.9);
-  const neon = group(root, [5.2, 2.08, 0.02], true);
+  foil(e, new TubeGeometry(wave, 40, 0.02, 5), [0, 0, 0], 0, 0.9);
+  const neon = turned(e, [W - 0.02, 1.9, bz + 0.46], -TURN);
   const bubble = picture(
     neon,
     screens.bubble.tex,
@@ -1013,6 +1153,8 @@ function buildBed(k: Kit, dream: Mesh) {
     hitAt: [0, 0, 0.03],
     top: 0.3,
     zoom: 2.2,
+    az: -52,
+    wall: "e",
     dur: 0.9,
     react: (p, t) => {
       bubble.visible = p >= 1 || Math.sin(t * 38) > -0.2;
@@ -1021,7 +1163,11 @@ function buildBed(k: Kit, dream: Mesh) {
   });
 
   // The certificate
-  const diploma = group(root, [4.52, 2.06, 0.02], true);
+  const diploma = group(
+    turned(e, [W - 0.02, 1.4, bz - 0.2], -TURN),
+    [0, 0, 0],
+    true
+  );
   box(diploma, C.woodDark, [0.5, 0.39, 0.03], [0, -0.195, 0]);
   picture(diploma, screens.diploma.tex, 0.42, 0.32, [0, 0, 0.0165]);
   const cap = group(diploma, [0.2, 0.2, 0.05], true);
@@ -1036,6 +1182,8 @@ function buildBed(k: Kit, dream: Mesh) {
     hitAt: [0, 0.02, 0.04],
     top: 0.42,
     zoom: 2.2,
+    az: -52,
+    wall: "e",
     dur: 1.4,
     react: (p, t) => {
       diploma.rotation.z = Math.sin(t * 9) * 0.1 * (1 - p);
@@ -1044,17 +1192,58 @@ function buildBed(k: Kit, dream: Mesh) {
       cap.rotation.set(0.2 + easeInOut(q) * Math.PI * 2, 0.5, -0.3);
     },
   });
-  box(root, C.black, [0.24, 0.2, 0.025], [5.3, 1.46, 0.02]);
-  box(root, INK.cyan, [0.19, 0.15, 0.006], [5.3, 1.485, 0.035], {
+  // The small frame beside it
+  box(e, C.black, [0.025, 0.2, 0.24], [W - 0.02, 1.34, bz + 0.34]);
+  box(e, INK.cyan, [0.006, 0.15, 0.19], [W - 0.035, 1.365, bz + 0.34], {
     edges: false,
   });
 }
 
-/* The boss chair */
+/* The door wall: the TV on its arm by the foot of the bed, then the door,
+   with the name on the shelf over it */
+function buildDoorWall(k: Kit) {
+  const { screens, add, walls } = k;
+  const s = walls.s.node;
+
+  box(s, C.trim, [1.02, 2.08, 0.03], [0.66, 0, D - 0.015]);
+  box(s, C.white, [0.86, 2.0, 0.05], [0.66, 0, D - 0.04]);
+  box(s, C.cream, [0.6, 0.7, 0.012], [0.66, 1.1, D - 0.068], { edges: false });
+  box(s, C.cream, [0.6, 0.7, 0.012], [0.66, 0.22, D - 0.068], { edges: false });
+  box(s, C.grey, [0.12, 0.03, 0.05], [0.98, 1.0, D - 0.09], { edges: false });
+  // The shelf over the door, and the name
+  box(s, C.trim, [1.02, 0.04, 0.22], [0.66, 2.12, D - 0.11]);
+  box(s, C.trim, [0.86, 0.22, 0.03], [0.66, 2.16, D - 0.13]);
+  picture(s, screens.sign.tex, 0.8, 0.2, [0.66, 2.27, D - 0.1465], Math.PI);
+
+  box(s, C.black, [0.06, 0.06, 0.2], [1.66, 1.4, D - 0.1], { edges: false });
+  const tv = group(
+    turned(s, [1.66, 1.12, D - 0.22], TURN - 0.12),
+    [0, 0, 0],
+    true
+  );
+  box(tv, C.black, [0.04, 0.62, 1.06], [0, 0, 0]);
+  picture(tv, screens.tv.tex, 1.0, 0.56, [0.0215, 0.31, 0], TURN);
+  add("tv", tv, {
+    hit: [0.2, 0.7, 1.14],
+    hitAt: [0.03, 0.31, 0],
+    top: 0.8,
+    zoom: 2.6,
+    az: -150,
+    wall: "s",
+    dur: 1.5,
+    react: (p) => {
+      screens.tv.draw(easeOut(p));
+      tv.scale.setScalar(1 + 0.05 * arc(part(p, 0, 0.3)));
+    },
+  });
+}
+
+/* The boss chair, at the main desk */
 function buildBossChair(k: Kit) {
   const { root, add } = k;
+  const spin = -2.0;
 
-  const boss = chair(root, [1.4, 0, 1.92], 0.95, C.black, C.coal);
+  const boss = chair(root, [1.5, 0, 1.52], spin, C.black, C.coal);
   const crown = group(boss.top, [0, 1.3, -0.3], true);
   cyl(crown, INK.amber, [0.11, 0.1, 0.06, 8], [0, 0, 0]);
   for (let i = 0; i < 5; i++) {
@@ -1074,7 +1263,7 @@ function buildBossChair(k: Kit) {
     zoom: 2.9,
     dur: 1.7,
     react: (p) => {
-      boss.top.rotation.y = 0.95 + easeInOut(part(p, 0, 0.8)) * Math.PI * 4;
+      boss.top.rotation.y = spin + easeInOut(part(p, 0, 0.8)) * Math.PI * 4;
       crown.visible = p > 0.25;
       const q = part(p, 0.25, 1);
       crown.position.y = 1.9 - 0.62 * easeOut(q) + 0.06 * arc(part(q, 0.6, 1));
@@ -1083,70 +1272,12 @@ function buildBossChair(k: Kit) {
   });
 }
 
-/* The pile of mail */
-function buildPileOfMail(k: Kit) {
-  const { root, add, rand } = k;
-
-  const mail = group(root, [1.75, 0, 3.72], true);
-  let top = 0;
-  for (let i = 0; i < 52; i++) {
-    const layer = Math.floor(i / 6);
-    const spread = 0.4 - layer * 0.045;
-    const a = rand() * Math.PI * 2;
-    const r = Math.sqrt(rand()) * spread;
-    top = 0.01 + layer * 0.07;
-    envelope(
-      mail,
-      [Math.cos(a) * r, top + rand() * 0.03, Math.sin(a) * r],
-      [(rand() - 0.5) * 0.5, rand() * Math.PI, (rand() - 0.5) * 0.5]
-    );
-  }
-  const flyers = Array.from({ length: 9 }, (_, i) => {
-    const a = (i / 9) * Math.PI * 2 + 0.4;
-    const home: V3 = [
-      Math.cos(a) * 0.12,
-      top + 0.06 + i * 0.012,
-      Math.sin(a) * 0.12,
-    ];
-    return {
-      node: envelope(mail, home, [0.1, a, -0.1], true),
-      home,
-      a,
-      reach: 0.5 + rand() * 0.5,
-      high: 0.8 + rand() * 0.7,
-    };
-  });
-  add("mail", mail, {
-    hit: [1.0, 0.7, 1.0],
-    hitAt: [0, 0.3, 0],
-    top: 0.82,
-    zoom: 2.8,
-    dur: 1.7,
-    react: (p) => {
-      flyers.forEach((f, i) => {
-        const q = part(p, i * 0.03, 0.72 + i * 0.03);
-        const out = arc(q) * f.reach;
-        f.node.position.set(
-          f.home[0] + Math.cos(f.a) * out,
-          f.home[1] + arc(q) * f.high,
-          f.home[2] + Math.sin(f.a) * out
-        );
-        f.node.rotation.set(
-          0.1 + easeInOut(q) * Math.PI * 2,
-          f.a + q * 3,
-          -0.1 + easeInOut(q) * Math.PI * 2 * (i % 2 ? 1 : -1)
-        );
-      });
-    },
-  });
-}
-
-/* The supply crate */
+/* The supply crate, the one thing on the floor */
 function buildSupplyCrate(k: Kit) {
   const { root, logos, add, foil, idles } = k;
 
-  const crate = group(root, [3.72, 0, 3.5], true);
-  crate.rotation.y = 0.28;
+  const crate = group(root, [1.12, 0, 2.62], true);
+  crate.rotation.y = -0.3;
   box(crate, INK.amber, [0.74, 0.5, 0.74], [0, 0, 0]);
   for (const x of [-0.2, 0.2]) {
     box(crate, C.trim, [0.11, 0.51, 0.76], [x, 0, 0]);
@@ -1158,7 +1289,7 @@ function buildSupplyCrate(k: Kit) {
     box(lid, C.trim, [0.11, 0.12, 0.82], [x, 0, 0.39]);
   }
   const prize = group(crate, [0, 0.3, 0], true);
-  prize.rotation.y = Math.PI / 4 - 0.28;
+  prize.rotation.y = HOME_AZ + 0.3;
   foil(prize, new CircleGeometry(0.32, 28), [0, 0, -0.01], 0.05, 0.5);
   plain(
     prize,
@@ -1218,6 +1349,21 @@ export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
   const marked = new Set<string>();
   const rand = dice(2026);
 
+  const wall = (id: WallId, nx: number, nz: number): Wall => ({
+    id,
+    node: group(root, [0, 0, 0], true),
+    nx,
+    nz,
+    stand: true,
+    up: 1,
+  });
+  const walls: Record<WallId, Wall> = {
+    n: wall("n", 0, -1),
+    e: wall("e", 1, 0),
+    s: wall("s", 0, 1),
+    w: wall("w", -1, 0),
+  };
+
   /** Pieces of foil: each shows a slice of the gradient, and it all drifts */
   const foil = (
     parent: Object3D,
@@ -1249,6 +1395,8 @@ export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
         : new Vector3(0, o.top - o.hitAt[1], 0),
       focus: new Vector3(...o.hitAt),
       zoom: o.zoom,
+      az: o.az === undefined ? HOME_AZ : (o.az * Math.PI) / 180,
+      wall: o.wall,
       dur: o.dur ?? 1.2,
       react: o.react,
       hover: 0,
@@ -1256,19 +1404,20 @@ export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
     });
   };
 
-  const k: Kit = { root, mats, screens, logos, rand, idles, foil, add };
+  const k: Kit = { root, mats, screens, logos, walls, rand, idles, foil, add };
   buildShell(k);
-  const glass = buildWindowAndItsCurtain(k);
+  const glass = buildWindowWall(k);
   buildMainDesk(k);
+  buildPC(k);
   buildStreamLight(k);
   buildHighShelfAndItsTrophies(k);
   buildDrawersAndTheFan(k);
-  buildTV(k);
   buildSecondDesk(k);
   const dream = buildWardrobe(k);
+  buildBedside(k);
   buildBed(k, dream);
+  buildDoorWall(k);
   buildBossChair(k);
-  buildPileOfMail(k);
   buildSupplyCrate(k);
 
   weld(root, mats);
@@ -1280,13 +1429,19 @@ export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
     if (marked.has(actor.id)) {
       actor.root.localToWorld(actor.anchor);
     } else {
-      actor.anchor.add(actor.focus);
+      // Straight above, whichever way the thing itself is turned
+      actor.anchor.set(
+        actor.focus.x,
+        actor.focus.y + actor.anchor.y,
+        actor.focus.z
+      );
     }
   }
 
   return {
     root,
     actors,
+    walls: Object.values(walls),
     glass,
     /** Things that move without being asked */
     idle: (time: number, dt: number) => {

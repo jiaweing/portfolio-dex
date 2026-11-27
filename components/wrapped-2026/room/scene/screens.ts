@@ -215,41 +215,42 @@ export function createScreens(data: WrappedData, fonts: Fonts) {
     });
   });
 
-  /* The tall screen on the second desk: posts on the blog, month by month */
+  /* The wide screen on the second desk: posts on the blog, month by month */
   const peak = Math.max(1, ...data.perMonth);
   const peakAt = data.perMonth.indexOf(peak);
-  const posts = screen(408, 696, (ctx, p) => {
+  const posts = screen(696, 408, (ctx, p) => {
     ctx.fillStyle = P.ink;
-    ctx.fillRect(0, 0, 408, 696);
+    ctx.fillRect(0, 0, 696, 408);
     ctx.textBaseline = "alphabetic";
     ctx.textAlign = "left";
     ctx.fillStyle = P.pink;
-    round(ctx, 30, 34, 132, 44, 8);
+    round(ctx, 30, 30, 132, 44, 8);
     ctx.fill();
     ctx.fillStyle = P.ink;
     ctx.font = body(24, 800);
-    ctx.fillText("ON AIR", 46, 65);
+    ctx.fillText("ON AIR", 46, 61);
     ctx.fillStyle = P.amber;
-    ctx.font = display(112);
-    ctx.fillText(nf.format(Math.round(data.postTotal * p)), 26, 204);
+    ctx.font = display(118);
+    ctx.fillText(nf.format(Math.round(data.postTotal * p)), 26, 218);
     ctx.fillStyle = P.paper;
     ctx.font = body(30);
-    ctx.fillText("posts on the blog", 30, 250);
-    const base = 628;
-    const span = 300;
+    ctx.fillText("posts on", 30, 272);
+    ctx.fillText("the blog", 30, 310);
+    const base = 338;
+    const span = 270;
     data.perMonth.forEach((n, i) => {
       const h = Math.max(6, (n / peak) * span * p);
       ctx.fillStyle = i === peakAt ? P.pink : P.paper;
-      round(ctx, 30 + i * 29.4, base - h, 22, h, 5);
+      round(ctx, 296 + i * 31.5, base - h, 23, h, 5);
       ctx.fill();
       ctx.fillStyle = P.paper2;
       ctx.font = body(18, 700);
       ctx.textAlign = "center";
-      ctx.fillText("JFMAMJJASOND"[i], 41 + i * 29.4, base + 30);
+      ctx.fillText("JFMAMJJASOND"[i], 307.5 + i * 31.5, base + 32);
     });
   });
 
-  /* The screen in the corner: work in progress, drawn as bars */
+  /* The third screen on the main desk: work in progress, drawn as bars */
   const code = screen(600, 340, (ctx) => {
     ctx.fillStyle = P.ink2;
     ctx.fillRect(0, 0, 600, 340);
@@ -271,27 +272,27 @@ export function createScreens(data: WrappedData, fonts: Fonts) {
     }
   });
 
-  /* The wide screen on the second desk: a wallpaper of hills */
-  const hills = screen(600, 340, (ctx) => {
+  /* The tall screen on the second desk: a wallpaper of hills */
+  const hills = screen(340, 600, (ctx) => {
     ctx.fillStyle = P.cyan;
-    ctx.fillRect(0, 0, 600, 340);
+    ctx.fillRect(0, 0, 340, 600);
     ctx.fillStyle = P.paper3;
     ctx.beginPath();
-    ctx.arc(450, 96, 44, 0, Math.PI * 2);
+    ctx.arc(236, 132, 44, 0, Math.PI * 2);
     ctx.fill();
     const band = (fill: string, y: number, amp: number, shift: number) => {
       ctx.fillStyle = fill;
       ctx.beginPath();
-      ctx.moveTo(0, 340);
-      for (let x = 0; x <= 600; x += 20) {
-        ctx.lineTo(x, y + Math.sin(x / 90 + shift) * amp);
+      ctx.moveTo(0, 600);
+      for (let x = 0; x <= 340; x += 20) {
+        ctx.lineTo(x, y + Math.sin(x / 70 + shift) * amp);
       }
-      ctx.lineTo(600, 340);
+      ctx.lineTo(340, 600);
       ctx.fill();
     };
-    band(P.green, 190, 26, 0.4);
-    band("oklch(0.74 0.17 150)", 240, 20, 2.2);
-    band("oklch(0.56 0.13 152)", 290, 14, 4);
+    band(P.green, 320, 32, 0.4);
+    band("oklch(0.74 0.17 150)", 410, 24, 2.2);
+    band("oklch(0.56 0.13 152)", 500, 16, 4);
   });
 
   /* The phone: a job well finished */
@@ -327,7 +328,7 @@ export function createScreens(data: WrappedData, fonts: Fonts) {
   });
   softbox.draw(0);
 
-  /* The name over the TV */
+  /* The name over the door */
   const sign = screen(640, 160, (ctx) => {
     ctx.fillStyle = P.paper3;
     ctx.fillRect(0, 0, 640, 160);

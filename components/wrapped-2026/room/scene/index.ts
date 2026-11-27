@@ -24,15 +24,16 @@ import {
   WebGLRenderer,
 } from "three";
 import type { WrappedData } from "../../types";
-import { type Actor, buildRoom, type Logos, ROOM } from "./build";
+import { type Actor, buildRoom, HOME_AZ, type Logos, ROOM } from "./build";
 import { createMats, foilAt, foilSlice, INK_LIST, oklch } from "./kit";
 import { createScreens, type Fonts } from "./screens";
 
-/* Runs the room: the camera you can drag, pinch and scroll, the pointer that
-   finds things, the day and night lighting, and the loop that keeps it all
-   moving. With `still` set (for people who turn motion off) nothing moves on
-   its own: the camera cuts, reactions jump to their end, and a frame is only
-   drawn when something changed. */
+/* Runs the room: the camera you can drag all the way round, pinch and
+   scroll, the walls that drop out of its way, the pointer that finds things,
+   the day and night lighting, and the loop that keeps it all moving. With
+   `still` set (for people who turn motion off) nothing moves on its own: the
+   camera cuts, reactions jump to their end, and a frame is only drawn when
+   something changed. */
 
 export interface RoomOptions {
   canvas: HTMLCanvasElement;
@@ -59,8 +60,11 @@ export interface RoomHandle {
 }
 
 const DEG = Math.PI / 180;
-const AZ = 45 * DEG;
+const AZ = HOME_AZ;
 const EL = 31 * DEG;
+/** The same angle as the first, on the turn nearest to the second */
+const nearest = (to: number, from: number) =>
+  from + Math.atan2(Math.sin(to - from), Math.cos(to - from));
 const clamp = (n: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, n));
 
@@ -146,7 +150,6 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
 
   const hemi = new HemisphereLight(0xff_ff_ff, 0xff_ff_ff, 1);
   const sun = new DirectionalLight(0xff_ff_ff, 1);
-  sun.position.set(ROOM.w / 2 + 3.5, 9, ROOM.d / 2 + 5.5);
   sun.target.position.set(ROOM.w / 2, 0, ROOM.d / 2);
   sun.castShadow = true;
   sun.shadow.mapSize.set(1024, 1024);
@@ -159,9 +162,9 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   sun.shadow.bias = -0.0006;
   sun.shadow.normalBias = 0.02;
   const strip = new PointLight(0xff_ff_ff, 0, 11, 1.4);
-  strip.position.set(ROOM.w * 0.42, 2.45, ROOM.d * 0.42);
+  strip.position.set(ROOM.w * 0.5, 2.45, ROOM.d * 0.45);
   const desk = new PointLight(0xff_ff_ff, 0, 5, 1.5);
-  desk.position.set(0.7, 1.05, 1.55);
+  desk.position.set(1.4, 1.05, 0.62);
   scene.add(hemi, sun, sun.target, strip, desk);
 
   const DAY = {
@@ -237,6 +240,8 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   let width = 1;
   let height = 1;
   let selected: string | null = null;
+  /** The angle to go back to when the card closes */
+  let backAz = AZ;
   const insets = { left: 0, bottom: 0 };
   const right = new Vector3();
   const up = new Vector3();
@@ -252,18 +257,20 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
     up.crossVectors(dir, right).normalize();
   };
 
-  /** How tall the view must be to hold the whole room from the home angle */
+  /** How tall the view must be to hold the room, whichever way it is turned */
   const measure = () => {
-    axes(AZ, EL);
     let w = 0;
     let h = 0;
     const p = new Vector3();
-    for (const x of [-0.16, ROOM.w]) {
-      for (const y of [-0.44, ROOM.h]) {
-        for (const z of [-0.16, ROOM.d]) {
-          p.set(x, y, z).sub(centre);
-          w = Math.max(w, Math.abs(p.dot(right)));
-          h = Math.max(h, Math.abs(p.dot(up)));
+    for (let turn = 0; turn < 12; turn++) {
+      axes(AZ + (turn * Math.PI) / 12, EL);
+      for (const x of [-0.16, ROOM.w + 0.16]) {
+        for (const y of [-0.44, ROOM.h]) {
+          for (const z of [-0.16, ROOM.d + 0.16]) {
+            p.set(x, y, z).sub(centre);
+            w = Math.max(w, Math.abs(p.dot(right)));
+            h = Math.max(h, Math.abs(p.dot(up)));
+          }
         }
       }
     }
@@ -323,6 +330,8 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
 
   /* ---------- The loop ---------- */
 
+  type Ease = (rate: number) => number;
+
   let raf = 0;
   let last = 0;
   let time = 0;
@@ -335,8 +344,6 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   const scl = new Vector3(1, 1, 1);
   const pos = new Vector3();
   const tilt = new Object3D();
-
-  type Ease = (rate: number) => number;
 
   const moveActor = (actor: Actor, ease: Ease) => {
     const want = actor.id === hovered || actor.id === selected ? 1 : 0;
@@ -361,7 +368,7 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
     // Gems keep their size on screen however far the camera is
     const gemSize = (clamp(width / 90, 7, 11) * view.size) / height;
     markers.forEach((m, i) => {
-      const want = found.has(m.actor.id) ? 0 : 1;
+      const want = found.has(m.actor.id) || !shown(m.actor) ? 0 : 1;
       m.size += (want - m.size) * ease(8);
       const big = m.actor.id === hovered ? 1.5 : 1;
       const bob = still ? 0 : Math.sin(time * 2.2 + i) * gemSize * 0.35;
@@ -398,6 +405,30 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
     confetti.instanceMatrix.needsUpdate = true;
   };
 
+  /** A wall drops once the camera comes round behind it, and the sun follows
+      the camera, so the room is always lit from the open side */
+  const moveWalls = (ease: Ease) => {
+    const sx = Math.sin(view.az);
+    const cz = Math.cos(view.az);
+    for (const wall of room.walls) {
+      const behind = wall.nx * sx + wall.nz * cz;
+      wall.stand = behind < (wall.stand ? 0.22 : 0.08);
+      wall.up += ((wall.stand ? 1 : 0) - wall.up) * ease(9);
+      wall.node.visible = wall.up > 0.015;
+      wall.node.scale.y = Math.max(0.001, wall.up);
+    }
+    const lit = view.az - 0.12;
+    sun.position.set(
+      ROOM.w / 2 + Math.sin(lit) * 6.5,
+      9,
+      ROOM.d / 2 + Math.cos(lit) * 6.5
+    );
+  };
+  const wallOf = new Map(room.walls.map((wall) => [wall.id, wall]));
+  /** False while the wall a thing hangs on is out of the way */
+  const shown = (actor: Actor) =>
+    !actor.wall || (wallOf.get(actor.wall)?.up ?? 1) > 0.6;
+
   const moveLabel = () => {
     const actor = hovered ? byId.get(hovered) : undefined;
     if (!actor) {
@@ -422,6 +453,7 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
     view.size += (goal.size - view.size) * k;
     view.target.lerp(goal.target, k);
     placeCamera();
+    moveWalls(ease);
 
     const map = mats.foil.map;
     if (map && !still) {
@@ -482,13 +514,14 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   sizes.observe(canvas);
   resize();
   snap();
+  // Start with the near walls already out of the way
+  moveWalls(() => 1);
 
   /* ---------- Pointer ---------- */
 
   const ray = new Raycaster();
   ray.layers.set(1);
   const ndc = new Vector2();
-  const hits = room.actors.map((a) => a.hit);
   const under = (clientX: number, clientY: number) => {
     const box = canvas.getBoundingClientRect();
     ndc.set(
@@ -496,6 +529,7 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
       -((clientY - box.top) / box.height) * 2 + 1
     );
     ray.setFromCamera(ndc, camera);
+    const hits = room.actors.filter(shown).map((a) => a.hit);
     const hit = ray.intersectObjects(hits, false)[0];
     return (hit?.object.userData.actor as string | undefined) ?? null;
   };
@@ -511,14 +545,20 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   };
 
   const select = (id: string | null) => {
+    const was = selected;
     selected = id && byId.has(id) ? id : null;
     const actor = selected ? byId.get(selected) : undefined;
     if (actor) {
+      // Swing round to the side the thing shows its face from
+      if (!was) {
+        backAz = goal.az;
+      }
       actor.clickedAt = time;
+      goal.az = nearest(actor.az, goal.az);
     } else {
-      goal.az = AZ;
-      goal.el = EL;
+      goal.az = backAz;
     }
+    goal.el = EL;
     frame();
     wake();
   };
@@ -529,8 +569,7 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   let downAt = 0;
 
   const limit = () => {
-    // Far enough to look round things, never so far that a wall turns edge on
-    goal.az = clamp(goal.az, AZ - 27 * DEG, AZ + 27 * DEG);
+    // All the way round: the walls get out of the way
     goal.el = clamp(goal.el, 17 * DEG, 50 * DEG);
     goal.size = clamp(goal.size, 1.5, fit * 1.15);
     goal.target.x = clamp(goal.target.x, -0.5, ROOM.w + 0.5);

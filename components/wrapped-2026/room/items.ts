@@ -124,7 +124,7 @@ export function roomItems(data: WrappedData): RoomItem[] {
   return [
     {
       id: "mail",
-      thing: "The pile of mail",
+      thing: "The stack of mail",
       kicker: "Matchmaking failed",
       title: `${nf.format(HOOK.applied)} applications`,
       body: `I applied to ${nf.format(HOOK.applied)} jobs and got ${HOOK.interviews} interviews. So I started my own company.`,
