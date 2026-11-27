@@ -1,200 +1,163 @@
 "use client";
 
-import { animate, motion, useInView } from "framer-motion";
 import {
-  createContext,
-  type RefObject,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { BurstHandle } from "./burst-canvas";
 
-interface WrappedContext {
-  scroller: RefObject<HTMLDivElement | null>;
-  burst: RefObject<BurstHandle | null>;
-  reduced: boolean;
+// The same easing and rise the home page uses for its sections
+export const EASE = [0.21, 0.47, 0.32, 0.98] as [
+  number,
+  number,
+  number,
+  number,
+];
+
+export const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05, delayChildren: 0.05 },
+  },
+};
+
+export const item = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+};
+
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 15 }}
+      transition={{ duration: 0.6, ease: EASE, delay }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
-export const Wrapped2026Context = createContext<WrappedContext | null>(null);
+// Section heading in the home page style: small, semibold, lowercase
+export function SectionTitle({
+  children,
+  aside,
+}: {
+  children: React.ReactNode;
+  aside?: React.ReactNode;
+}) {
+  return (
+    <div className="mb-6 flex items-center justify-between gap-4">
+      <h2 className="flex items-center gap-2 font-semibold">{children}</h2>
+      {aside ? (
+        <div className="text-muted-foreground text-sm">{aside}</div>
+      ) : null}
+    </div>
+  );
+}
 
-export function useWrapped() {
-  const ctx = useContext(Wrapped2026Context);
-  if (!ctx) {
-    throw new Error("useWrapped must be used inside Wrapped2026");
-  }
-  return ctx;
+const STRIP = Array.from({ length: 10 }, (_, i) => i);
+
+// One digit on a vertical strip of 0 to 9 that rolls to its value
+function RollDigit({ digit }: { digit: number }) {
+  return (
+    <span className="relative inline-block h-[1em] overflow-hidden leading-none">
+      <span className="invisible">0</span>
+      <motion.span
+        animate={{ y: `${-digit}em` }}
+        className="absolute inset-x-0 top-0 flex flex-col items-center"
+        initial={false}
+        transition={{ type: "spring", stiffness: 280, damping: 18, mass: 0.3 }}
+      >
+        {STRIP.map((n) => (
+          <span className="block h-[1em] leading-none" key={n}>
+            {n}
+          </span>
+        ))}
+      </motion.span>
+    </span>
+  );
 }
 
 const nf = new Intl.NumberFormat("en-US");
 
-// Counts up once the number scrolls into view, optionally firing a burst of
-// sparks from the number itself when it lands
-export function CountUp({
-  to,
-  from = 0,
-  duration = 2.2,
-  suffix = "",
+// A number whose digits roll like the home page counters, with thousands
+// commas unless `plain` (for years)
+export function RollingNumber({
+  value,
   className,
-  explode = false,
+  plain = false,
+}: {
+  value: number;
+  className?: string;
+  plain?: boolean;
+}) {
+  const whole = Math.max(0, Math.round(value));
+  const text = plain ? String(whole) : nf.format(whole);
+  const chars = text.split("");
+  return (
+    <span
+      aria-label={text}
+      className={cn("inline-flex items-baseline tabular-nums", className)}
+      role="img"
+    >
+      {chars.map((ch, i) => {
+        // Key from the right so each place keeps its strip as the number grows
+        const place = chars.length - i;
+        return ch === "," ? (
+          <span aria-hidden key={`c-${place}`}>
+            ,
+          </span>
+        ) : (
+          <RollDigit digit={Number(ch)} key={`d-${place}`} />
+        );
+      })}
+    </span>
+  );
+}
+
+// Springs from 0 up to `to` the first time it scrolls into view
+export function Counter({
+  to,
+  className,
+  stiffness = 20,
 }: {
   to: number;
-  from?: number;
-  duration?: number;
-  suffix?: string;
   className?: string;
-  explode?: boolean;
+  stiffness?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const { burst, reduced } = useWrapped();
-  const [value, setValue] = useState(reduced ? to : from);
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
+  const reduced = useReducedMotion();
+  const mv = useMotionValue(0);
+  const spring = useSpring(mv, { stiffness, damping: 10, mass: 1.5 });
+  const [display, setDisplay] = useState(reduced ? to : 0);
 
+  useEffect(() => spring.on("change", (v) => setDisplay(v)), [spring]);
   useEffect(() => {
-    if (!inView || reduced) {
-      return;
+    if (inView) {
+      mv.set(to);
     }
-    const controls = animate(from, to, {
-      duration,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => setValue(Math.round(v)),
-      onComplete: () => {
-        if (!(explode && ref.current)) {
-          return;
-        }
-        const r = ref.current.getBoundingClientRect();
-        burst.current?.burst(
-          r.left + r.width / 2,
-          r.top + r.height / 2,
-          180,
-          13
-        );
-      },
-    });
-    return () => controls.stop();
-  }, [inView, reduced, from, to, duration, explode, burst]);
+  }, [inView, mv, to]);
 
   return (
-    <span className={cn("tabular-nums", className)} ref={ref}>
-      {nf.format(value)}
-      {suffix}
+    <span ref={ref}>
+      <RollingNumber className={className} value={reduced ? to : display} />
     </span>
-  );
-}
-
-const GLYPHS = "!<>-_\\/[]{}=+*^?#01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-// Letters cycle through random glyphs before settling, left to right
-export function Scramble({
-  text,
-  className,
-  delay = 0,
-}: {
-  text: string;
-  className?: string;
-  delay?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
-  const { reduced } = useWrapped();
-  const [out, setOut] = useState(reduced ? text : "");
-
-  useEffect(() => {
-    if (!inView || reduced) {
-      return;
-    }
-    let frame = 0;
-    let raf = 0;
-    const startAt = performance.now() + delay * 1000;
-    const tick = (now: number) => {
-      raf = requestAnimationFrame(tick);
-      if (now < startAt) {
-        return;
-      }
-      frame++;
-      const settled = Math.floor(frame / 2.2);
-      setOut(
-        text
-          .split("")
-          .map((ch, i) => {
-            if (ch === " ") {
-              return " ";
-            }
-            if (i < settled) {
-              return ch;
-            }
-            return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-          })
-          .join("")
-      );
-      if (settled >= text.length) {
-        cancelAnimationFrame(raf);
-      }
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, reduced, text, delay]);
-
-  return (
-    <span className={className} ref={ref}>
-      <span className="sr-only">{text}</span>
-      <span aria-hidden>{out || " "}</span>
-    </span>
-  );
-}
-
-// Words rise in from a blur, one after another
-export function RevealWords({
-  text,
-  className,
-  delay = 0,
-}: {
-  text: string;
-  className?: string;
-  delay?: number;
-}) {
-  const words = text.split(" ");
-  return (
-    <span className={className}>
-      {words.map((word, i) => (
-        <motion.span
-          className="inline-block whitespace-pre"
-          initial={{ opacity: 0, y: "0.6em", filter: "blur(12px)" }}
-          // biome-ignore lint/suspicious/noArrayIndexKey: words can repeat
-          key={`${word}-${i}`}
-          transition={{
-            delay: delay + i * 0.06,
-            duration: 0.7,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          viewport={{ once: true, amount: 0.8 }}
-          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        >
-          {word}
-          {i < words.length - 1 ? " " : ""}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
-export function Eyebrow({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <p
-      className={cn(
-        "font-mono text-[11px] text-white/50 uppercase tracking-[0.35em] md:text-xs",
-        className
-      )}
-    >
-      {children}
-    </p>
   );
 }

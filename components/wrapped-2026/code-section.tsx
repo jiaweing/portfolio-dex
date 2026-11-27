@@ -1,23 +1,27 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
+import {
+  Bot,
+  CalendarCheck,
+  CircleDot,
+  Flame,
+  GitPullRequest,
+  Star,
+  Zap,
+} from "lucide-react";
+import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import { CODE_STATS } from "@/lib/wrapped-2026-data";
-import { CountUp, Eyebrow, RevealWords, useWrapped } from "./primitives";
+import { Counter, Reveal, SectionTitle } from "./primitives";
+import { type Stat, StatGrid } from "./stat-tile";
 
 export interface Day {
   date: string;
   count: number;
   level: number;
 }
-
-const LEVEL_COLORS = [
-  "rgba(255,255,255,0.06)",
-  "#5b21b6",
-  "#a21caf",
-  "#ec4899",
-  "#fb923c",
-];
 
 const MONTHS = [
   "Jan",
@@ -32,6 +36,15 @@ const MONTHS = [
   "Oct",
   "Nov",
   "Dec",
+];
+
+// The same grey steps as the contribution graph in the site footer
+const LEVELS = [
+  "bg-muted-foreground/10",
+  "bg-muted-foreground/30",
+  "bg-muted-foreground/50",
+  "bg-foreground/70",
+  "bg-foreground",
 ];
 
 function summarise(days: Day[]) {
@@ -60,18 +73,17 @@ function formatDay(date: string) {
   return `${MONTHS[m - 1]} ${d}`;
 }
 
-// The real 2026 contribution calendar, lighting up in a diagonal wave
+// The real 2026 calendar. Squares pop in as a diagonal wave.
 function Heatmap({ days }: { days: Day[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.3 });
-  const { reduced } = useWrapped();
+  const inView = useInView(ref, { once: true, amount: 0.4 });
   const [hover, setHover] = useState<Day | null>(null);
 
-  // Pad the front so Jan 1 sits on its weekday row, then cut into weeks
   const weeks = useMemo(() => {
     if (days.length === 0) {
       return [];
     }
+    // Pad the front so Jan 1 sits on its weekday row
     const first = new Date(`${days[0].date}T00:00:00Z`).getUTCDay();
     const padded: (Day | null)[] = [...new Array(first).fill(null), ...days];
     const out: (Day | null)[][] = [];
@@ -82,150 +94,172 @@ function Heatmap({ days }: { days: Day[] }) {
   }, [days]);
 
   return (
-    <div className="relative" ref={ref}>
-      <div className="overflow-x-auto pb-2 [scrollbar-width:none]">
-        <div className="flex w-max gap-[3px] md:gap-1">
-          {weeks.map((week, wi) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: weeks are positional
-            <div className="flex flex-col gap-[3px] md:gap-1" key={wi}>
-              {week.map((day, di) => (
-                <motion.div
-                  animate={
-                    inView || reduced
-                      ? { opacity: 1, scale: 1 }
-                      : { opacity: 0, scale: 0 }
-                  }
-                  className="size-[9px] rounded-[2px] md:size-[15px] md:rounded-[3px] lg:size-[17px]"
-                  initial={reduced ? false : { opacity: 0, scale: 0 }}
-                  // biome-ignore lint/suspicious/noArrayIndexKey: days are positional
-                  key={di}
-                  onPointerEnter={() => day && setHover(day)}
-                  onPointerLeave={() => setHover(null)}
-                  style={{
-                    backgroundColor: day
-                      ? LEVEL_COLORS[day.level]
-                      : "transparent",
-                    boxShadow:
-                      day && day.level >= 3
-                        ? `0 0 12px ${LEVEL_COLORS[day.level]}`
-                        : undefined,
-                  }}
-                  transition={{
-                    delay: (wi + di) * 0.012,
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 18,
-                  }}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
+    <div ref={ref}>
+      <div
+        className="grid grid-flow-col grid-rows-7 gap-[2px] sm:gap-[3px]"
+        onPointerLeave={() => setHover(null)}
+        style={{
+          gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))`,
+        }}
+      >
+        {weeks.flatMap((week, wi) =>
+          week.map((day, di) => (
+            <div
+              className={cn(
+                "aspect-square rounded-[2px] transition-transform duration-150",
+                day ? LEVELS[day.level] : "bg-transparent",
+                day && "hover:scale-150 hover:bg-foreground"
+              )}
+              // biome-ignore lint/suspicious/noArrayIndexKey: days are positional
+              key={`${wi}-${di}`}
+              onPointerEnter={() => day && setHover(day)}
+              style={
+                inView
+                  ? {
+                      animation: `cellPop 500ms cubic-bezier(0.21,0.47,0.32,0.98) ${(wi + di) * 14}ms both`,
+                    }
+                  : { opacity: 0 }
+              }
+            />
+          ))
+        )}
       </div>
-      <p className="mt-3 h-5 font-mono text-white/60 text-xs">
+      <div className="mt-2 flex justify-between text-[10px] text-muted-foreground/70">
+        {MONTHS.map((m) => (
+          <span key={m}>{m}</span>
+        ))}
+      </div>
+      <p className="mt-3 h-5 text-muted-foreground text-xs">
         {hover
           ? `${hover.count} contribution${hover.count === 1 ? "" : "s"} on ${formatDay(hover.date)}`
-          : "Hover a square"}
+          : "hover a square"}
       </p>
     </div>
   );
 }
 
-function Tile({
-  children,
-  label,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  label: string;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      className={`relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm ${className ?? ""}`}
-      initial={{ opacity: 0, y: 40, rotateX: -25 }}
-      transition={{ delay, type: "spring", stiffness: 120, damping: 16 }}
-      viewport={{ once: true, amount: 0.4 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-    >
-      <div className="font-black text-5xl text-white tracking-tight md:text-6xl">
-        {children}
-      </div>
-      <p className="mt-2 text-sm text-white/60">{label}</p>
-    </motion.div>
-  );
-}
-
 export function CodeSection({ days }: { days: Day[] }) {
-  const stats = useMemo(() => summarise(days), [days]);
-  const total = stats.total || CODE_STATS.contributionsFallback;
+  const s = useMemo(() => summarise(days), [days]);
+  const total = s.total || CODE_STATS.contributionsFallback;
   const multiple = (total / CODE_STATS.contributions2025).toFixed(1);
 
+  const stats: Stat[] = [
+    ...(s.best && s.total > 0
+      ? [
+          {
+            value: s.best.count,
+            label: "contributions in one day",
+            sublabel: formatDay(s.best.date),
+            icon: <Zap className="h-4 w-4" />,
+          },
+          {
+            value: s.active,
+            label: "days with a contribution",
+            sublabel: "out of the year",
+            icon: <CalendarCheck className="h-4 w-4" />,
+          },
+          {
+            value: s.longest,
+            label: "day streak",
+            sublabel: "longest of the year",
+            icon: <Flame className="h-4 w-4" />,
+          },
+        ]
+      : []),
+    {
+      value: CODE_STATS.amajorRepos,
+      label: "new repos at A Major",
+      sublabel: "github.com/amajorai",
+      icon: (
+        <Image
+          alt="A Major"
+          className="h-4 w-4 dark:invert"
+          height={16}
+          src="/logos/amajor.svg"
+          width={16}
+        />
+      ),
+      wide: true,
+      href: "https://github.com/amajorai",
+    },
+    {
+      value: CODE_STATS.pullRequests,
+      label: "pull requests",
+      sublabel: "opened",
+      icon: <GitPullRequest className="h-4 w-4" />,
+    },
+    {
+      value: CODE_STATS.dropDrawerStars,
+      label: "stars on DropDrawer",
+      sublabel: `plus ${CODE_STATS.ryuStars} on Ryu`,
+      icon: <Star className="h-4 w-4" />,
+      wide: true,
+      href: "https://github.com/jiaweing/DropDrawer",
+    },
+    {
+      value: CODE_STATS.issues,
+      label: "issues opened",
+      sublabel: "on GitHub",
+      icon: <CircleDot className="h-4 w-4" />,
+    },
+    {
+      value: CODE_STATS.models,
+      suffix: "+",
+      label: "AI models",
+      sublabel: "built into Ryu",
+      icon: <Bot className="h-4 w-4" />,
+    },
+    {
+      value: CODE_STATS.mcpTools,
+      suffix: "+",
+      label: "MCP tools",
+      sublabel: "built into Ryu",
+      wide: true,
+      href: "https://ryuhq.com",
+      icon: (
+        <Image
+          alt="Ryu"
+          className="h-4 w-4"
+          height={16}
+          src="/logos/ryu.png"
+          width={16}
+        />
+      ),
+    },
+  ];
+
   return (
-    <section className="relative px-6 py-32 md:px-16 md:py-48">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(236,72,153,0.18),transparent_50%),radial-gradient(circle_at_80%_70%,rgba(34,211,238,0.12),transparent_50%)]" />
-      <div className="relative mx-auto max-w-6xl">
-        <Eyebrow>Chapter 3 · Shipped</Eyebrow>
-        <h2 className="mt-4 font-black text-[clamp(5rem,20vw,16rem)] leading-[0.85] tracking-tighter">
-          <CountUp
-            className="bg-gradient-to-r from-violet-400 via-pink-400 to-orange-300 bg-clip-text text-transparent"
-            explode
-            to={total}
-          />
-        </h2>
-        <p className="mt-4 max-w-2xl text-2xl text-white/80 md:text-4xl">
-          <RevealWords
-            text={`contributions on GitHub. That's ${multiple}× last year.`}
-          />
-        </p>
-
-        <div className="mt-16">
-          <Heatmap days={days} />
-        </div>
-
-        {stats.best && stats.total > 0 ? (
-          <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <Tile
-              label={`contributions in one day, ${formatDay(stats.best.date)}`}
-            >
-              <CountUp to={stats.best.count} />
-            </Tile>
-            <Tile delay={0.1} label="days with at least one contribution">
-              <CountUp to={stats.active} />
-            </Tile>
-            <Tile delay={0.2} label="day streak, longest of the year">
-              <CountUp to={stats.longest} />
-            </Tile>
-          </div>
-        ) : null}
-
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <Tile className="col-span-2" label="new repos at A Major">
-            <CountUp explode to={CODE_STATS.amajorRepos} />
-          </Tile>
-          <Tile delay={0.1} label="pull requests">
-            <CountUp to={CODE_STATS.pullRequests} />
-          </Tile>
-          <Tile delay={0.2} label="issues opened">
-            <CountUp to={CODE_STATS.issues} />
-          </Tile>
-          <Tile delay={0.1} label="AI models in Ryu">
-            <CountUp suffix="+" to={CODE_STATS.models} />
-          </Tile>
-          <Tile delay={0.2} label="MCP tools in Ryu">
-            <CountUp suffix="+" to={CODE_STATS.mcpTools} />
-          </Tile>
-          <Tile
-            className="col-span-2"
-            delay={0.3}
-            label={`stars on DropDrawer, plus ${CODE_STATS.ryuStars} on Ryu`}
+    <section>
+      <SectionTitle
+        aside={
+          <a
+            className="transition-colors hover:text-foreground"
+            href="https://github.com/jiaweing"
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            <CountUp suffix=" ★" to={CODE_STATS.dropDrawerStars} />
-          </Tile>
-        </div>
+            github ↗
+          </a>
+        }
+      >
+        shipped
+      </SectionTitle>
+
+      <Reveal>
+        <p className="font-semibold text-7xl text-foreground leading-none tracking-tighter md:text-8xl">
+          <Counter stiffness={12} to={total} />
+        </p>
+        <p className="mt-3 text-muted-foreground text-xl md:text-2xl">
+          contributions on GitHub,{" "}
+          <span className="text-foreground">{multiple}×</span> last year.
+        </p>
+      </Reveal>
+
+      <div className="mt-10">
+        <Heatmap days={days} />
       </div>
+
+      <StatGrid className="mt-8" stats={stats} />
     </section>
   );
 }

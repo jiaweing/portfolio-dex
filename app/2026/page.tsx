@@ -20,11 +20,21 @@ const YEAR = "2026";
 // Twitch is left out: its scraped follower count jumps to a flat 6,000 in
 // August, which is a scraper glitch, not growth
 const PLATFORMS: Omit<SocialSeries, "values">[] = [
-  { key: "youtube", label: "YouTube", color: "#ff3b3b" },
-  { key: "threads", label: "Threads", color: "#e5e5e5" },
-  { key: "x", label: "X", color: "#38bdf8" },
-  { key: "instagram", label: "Instagram", color: "#f97316" },
-  { key: "tiktok", label: "TikTok", color: "#ec4899" },
+  { key: "youtube", label: "YouTube", icon: "/logos/youtube.svg" },
+  {
+    key: "threads",
+    label: "Threads",
+    icon: "/logos/threads.svg",
+    invertDark: true,
+  },
+  { key: "x", label: "X", icon: "/logos/x.svg", invertDark: true },
+  {
+    key: "instagram",
+    label: "Instagram",
+    icon: "/logos/instagram.svg",
+    invertDark: true,
+  },
+  { key: "tiktok", label: "TikTok", icon: "/logos/tiktok.svg" },
 ];
 
 export default async function Wrapped2026Page() {

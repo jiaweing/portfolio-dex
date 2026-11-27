@@ -1,219 +1,129 @@
 "use client";
 
-import {
-  motion,
-  useAnimationControls,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { useEffect, useRef } from "react";
-import { Nebula, type NebulaHandle } from "./nebula";
-import { Scramble, useWrapped } from "./primitives";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
+import { EASE } from "./primitives";
 
-const DIGITS = ["2", "0", "2", "6"];
+const YEAR = [2, 0, 2, 6];
+const LOOPS = 3;
+const STRIP = Array.from({ length: 10 * LOOPS }, (_, i) => i % 10);
+const LAND = 1.9;
 
-// Where each digit flies in from before it slams into place
-const ENTRY = [
-  { x: "-60vw", y: "-40vh", rotate: -70 },
-  { x: "-10vw", y: "70vh", rotate: 40 },
-  { x: "20vw", y: "-80vh", rotate: -30 },
-  { x: "70vw", y: "30vh", rotate: 80 },
-];
-
-const LAND_DELAY = 0.35;
-const STAGGER = 0.14;
-const LAND_AT = LAND_DELAY + STAGGER * (DIGITS.length - 1) + 0.55;
-
-export function Hero() {
-  const { burst, reduced, scroller } = useWrapped();
-  const nebula = useRef<NebulaHandle>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const shake = useAnimationControls();
-  const ring = useAnimationControls();
-
-  const { scrollYProgress } = useScroll({
-    container: scroller,
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const titleScale = useTransform(scrollYProgress, [0, 1], [1, 1.9]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const titleBlur = useTransform(
-    scrollYProgress,
-    [0, 0.7],
-    ["blur(0px)", "blur(18px)"]
+// A slot machine reel: spins through the strip a few times, then lands
+function Reel({
+  digit,
+  index,
+  spin,
+}: {
+  digit: number;
+  index: number;
+  spin: number;
+}) {
+  const reduced = useReducedMotion();
+  const target = 10 * (LOOPS - 1) + digit;
+  return (
+    <span className="relative inline-block h-[1em] overflow-hidden leading-none">
+      <span className="invisible">0</span>
+      <motion.span
+        animate={{ y: `${-target}em` }}
+        className="absolute inset-x-0 top-0 flex flex-col items-center"
+        initial={reduced ? false : { y: "0em" }}
+        key={spin}
+        transition={{
+          duration: 1.3 + index * 0.18,
+          ease: [0.16, 1, 0.3, 1],
+          delay: 0.15,
+        }}
+      >
+        {STRIP.map((n, i) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: the strip repeats digits
+          <span className="block h-[1em] leading-none" key={i}>
+            {n}
+          </span>
+        ))}
+      </motion.span>
+    </span>
   );
+}
 
-  // The moment the last digit lands: shake, shockwave, sparks, flash
-  useEffect(() => {
-    if (reduced) {
-      return;
-    }
-    const id = window.setTimeout(() => {
-      const r = titleRef.current?.getBoundingClientRect();
-      const x = r ? r.left + r.width / 2 : window.innerWidth / 2;
-      const y = r ? r.top + r.height / 2 : window.innerHeight / 2;
-      burst.current?.burst(x, y, 520, 24);
-      nebula.current?.pulse(1.3);
-      shake.start({
-        x: [0, -18, 16, -12, 9, -5, 0],
-        y: [0, 10, -12, 8, -5, 2, 0],
-        transition: { duration: 0.55 },
-      });
-      ring.start({
-        scale: [0, 9],
-        opacity: [0.9, 0],
-        transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
-      });
-    }, LAND_AT * 1000);
-    return () => window.clearTimeout(id);
-  }, [reduced, burst, shake, ring]);
-
-  // Clicking anywhere on the hero is purely decorative, so it's a plain
-  // listener rather than a button
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) {
-      return;
-    }
-    const onDown = (e: PointerEvent) => {
-      burst.current?.burst(e.clientX, e.clientY, 220, 15);
-      nebula.current?.pulse(0.6);
-    };
-    // A thin trail of sparks follows the pointer across the hero
-    let last = 0;
-    const onMove = (e: PointerEvent) => {
-      const now = performance.now();
-      if (e.pointerType !== "mouse" || now - last < 16) {
-        return;
-      }
-      last = now;
-      burst.current?.burst(e.clientX, e.clientY, 4, 2.5);
-    };
-    el.addEventListener("pointerdown", onDown);
-    el.addEventListener("pointermove", onMove);
-    return () => {
-      el.removeEventListener("pointerdown", onDown);
-      el.removeEventListener("pointermove", onMove);
-    };
-  }, [burst]);
+export function Hero({ spin, onSpin }: { spin: number; onSpin: () => void }) {
+  const reduced = useReducedMotion();
+  const [hinted, setHinted] = useState(false);
+  const after = (delay: number) => ({
+    initial: reduced ? false : { opacity: 0, y: 15 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: EASE, delay: reduced ? 0 : delay },
+  });
 
   return (
-    <section
-      className="relative h-[100svh] min-h-[560px] w-full cursor-crosshair overflow-hidden"
-      ref={sectionRef}
-    >
-      <Nebula animate={!reduced} className="absolute inset-0" ref={nebula} />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#05010d_95%)]" />
+    <section className="relative flex min-h-[calc(100svh-11rem)] flex-col justify-center pt-4 lg:pt-16">
+      <motion.p
+        {...after(0)}
+        className="text-muted-foreground text-xl md:text-2xl"
+      >
+        my year in review
+      </motion.p>
+
+      <h1 className="mt-2 -ml-[0.06em] font-semibold text-[clamp(7rem,31vw,12.5rem)] text-foreground leading-none tracking-tighter">
+        <button
+          aria-label="2026, tap to spin again"
+          className="inline-flex cursor-pointer select-none"
+          onClick={() => {
+            onSpin();
+            setHinted(true);
+          }}
+          type="button"
+        >
+          {YEAR.map((d, i) => (
+            <Reel
+              digit={d}
+              index={i}
+              // biome-ignore lint/suspicious/noArrayIndexKey: fixed digits
+              key={i}
+              spin={spin}
+            />
+          ))}
+        </button>
+      </h1>
+
+      <motion.div {...after(LAND)} className="mt-1">
+        <TextShimmer
+          className="font-semibold text-4xl tracking-tight md:text-5xl"
+          duration={2.2}
+        >
+          wrapped
+        </TextShimmer>
+      </motion.div>
+
+      <motion.p
+        {...after(LAND + 0.25)}
+        className="mt-8 max-w-md text-xl leading-relaxed md:text-2xl"
+      >
+        <span className="chroma-text chroma-text-animate">
+          The year I stopped waiting for permission.
+        </span>
+      </motion.p>
 
       <motion.div
-        animate={shake}
-        className="relative flex h-full flex-col items-center justify-center px-4"
+        {...after(LAND + 0.5)}
+        className="mt-10 flex items-center gap-6 text-muted-foreground text-sm"
       >
-        <motion.div
-          animate={ring}
-          className="pointer-events-none absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/80 opacity-0 shadow-[0_0_60px_10px_rgba(236,72,153,0.6)]"
-        />
-
-        <motion.div
-          className="flex flex-col items-center"
-          style={
-            reduced
-              ? undefined
-              : { scale: titleScale, opacity: titleOpacity, filter: titleBlur }
-          }
+        <span className="inline-flex items-center gap-1.5">
+          <ArrowDown className="seasonal-bob size-4" />
+          scroll
+        </span>
+        <span className="text-muted-foreground/60">
+          {hinted ? "again?" : "or tap the year"}
+        </span>
+        <Link
+          className="ml-auto border-muted-foreground/40 border-b border-dashed transition-colors hover:border-foreground hover:text-foreground"
+          href="/2025"
         >
-          <motion.p
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-2 font-mono text-[11px] text-white/60 uppercase tracking-[0.5em] md:text-sm"
-            initial={reduced ? false : { opacity: 0, y: -20 }}
-            transition={{ delay: LAND_AT + 0.2, duration: 0.8 }}
-          >
-            Jia Wei Ng presents
-          </motion.p>
-
-          <h1
-            aria-label="2026"
-            className="relative flex select-none font-black text-[36vw] leading-[0.8] tracking-[-0.07em] md:text-[min(30vw,28rem)]"
-            ref={titleRef}
-          >
-            {DIGITS.map((d, i) => (
-              <motion.span
-                animate={{
-                  x: 0,
-                  y: 0,
-                  rotate: 0,
-                  scale: 1,
-                  opacity: 1,
-                  filter: "blur(0px)",
-                }}
-                aria-hidden
-                className="relative inline-block bg-gradient-to-b from-white via-white to-fuchsia-300/70 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(236,72,153,0.55)]"
-                initial={
-                  reduced
-                    ? false
-                    : {
-                        ...ENTRY[i],
-                        scale: 3.5,
-                        opacity: 0,
-                        filter: "blur(30px)",
-                      }
-                }
-                // biome-ignore lint/suspicious/noArrayIndexKey: fixed digits
-                key={i}
-                transition={{
-                  delay: LAND_DELAY + i * STAGGER,
-                  type: "spring",
-                  stiffness: 140,
-                  damping: 14,
-                  mass: 1.1,
-                }}
-              >
-                {d}
-              </motion.span>
-            ))}
-          </h1>
-
-          <motion.div
-            animate={{ opacity: 1, scale: 1 }}
-            className="mt-4 font-mono font-semibold text-lg text-white uppercase tracking-[0.6em] md:mt-6 md:text-3xl"
-            initial={reduced ? false : { opacity: 0, scale: 0.6 }}
-            transition={{
-              delay: LAND_AT,
-              type: "spring",
-              stiffness: 260,
-              damping: 18,
-            }}
-          >
-            <Scramble delay={LAND_AT} text="WRAPPED" />
-          </motion.div>
-
-          <motion.p
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 max-w-md text-balance text-center text-base text-white/70 md:text-xl"
-            initial={reduced ? false : { opacity: 0, y: 20 }}
-            transition={{ delay: LAND_AT + 0.6, duration: 0.8 }}
-          >
-            The year I stopped waiting for permission.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          animate={{ opacity: 1 }}
-          className="absolute bottom-8 flex flex-col items-center gap-3 text-white/50"
-          initial={reduced ? false : { opacity: 0 }}
-          transition={{ delay: LAND_AT + 1.2, duration: 1 }}
-        >
-          <span className="font-mono text-[10px] uppercase tracking-[0.4em]">
-            Click anywhere · scroll to begin
-          </span>
-          <motion.span
-            animate={reduced ? undefined : { y: [0, 8, 0] }}
-            className="block h-10 w-px bg-gradient-to-b from-white/70 to-transparent"
-            transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY }}
-          />
-        </motion.div>
+          2025 wrapped →
+        </Link>
       </motion.div>
     </section>
   );

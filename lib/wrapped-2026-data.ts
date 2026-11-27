@@ -16,9 +16,10 @@ export interface Milestone {
   title: string;
   body: string;
   href?: string;
-  // Two colours for the card's gradient
-  from: string;
-  to: string;
+  // A logo or icon from /public, shown next to the title
+  icon?: string;
+  // Black logos that need flipping to white in dark mode
+  invertDark?: boolean;
 }
 
 export const MILESTONES: Milestone[] = [
@@ -27,16 +28,13 @@ export const MILESTONES: Milestone[] = [
     kicker: "School's out",
     title: "Graduated with Distinction",
     body: "BSc (Hons) Computing Science from SIT and the University of Glasgow.",
-    from: "#6366f1",
-    to: "#06b6d4",
+    icon: "/images/icons/Shooting Star.png",
   },
   {
     id: "better-age",
     kicker: "Chapter closed",
     title: "3.5 years as Lead Mobile Developer",
     body: "Wrapped up at Better Age Solutions, shipping a medicine delivery app for Singapore's public hospitals.",
-    from: "#0ea5e9",
-    to: "#22c55e",
   },
   {
     id: "ceo",
@@ -44,8 +42,8 @@ export const MILESTONES: Milestone[] = [
     title: "Full-time CEO of A Major",
     body: "My own software studio. Bootstrapped, no outside money.",
     href: "https://amajor.ai",
-    from: "#f59e0b",
-    to: "#ef4444",
+    icon: "/logos/amajor.svg",
+    invertDark: true,
   },
   {
     id: "live",
@@ -53,16 +51,13 @@ export const MILESTONES: Milestone[] = [
     title: "Went live from zero",
     body: "Started streaming and posting every single day with zero followers.",
     href: "https://youtube.com/@jiaweihq",
-    from: "#ef4444",
-    to: "#ec4899",
+    icon: "/logos/youtube.svg",
   },
   {
     id: "block71",
     kicker: "Accepted",
     title: "BLOCK71 Spring 2026 residency",
     body: "Got in with no product. Just an idea people already wanted.",
-    from: "#a855f7",
-    to: "#6366f1",
   },
   {
     id: "ryu",
@@ -70,8 +65,7 @@ export const MILESTONES: Milestone[] = [
     title: "Introduced Ryu to the world",
     body: "Managed infrastructure for AI agents. Bring your own agent, Ryu does everything else.",
     href: "https://ryuhq.com",
-    from: "#8b5cf6",
-    to: "#ec4899",
+    icon: "/logos/ryu.png",
   },
   {
     id: "anthropic",
@@ -79,16 +73,13 @@ export const MILESTONES: Milestone[] = [
     title: "Anthropic partner",
     body: "A Major joined the Claude Partner Network.",
     href: "https://amajor.ai",
-    from: "#f97316",
-    to: "#facc15",
+    icon: "/logos/claude.svg",
   },
   {
     id: "comebck",
     kicker: "Giving back",
     title: "Mentor for Comebck Pakistan",
     body: "Mentoring the founding cohort, with A Major as the official AI learning partner.",
-    from: "#10b981",
-    to: "#14b8a6",
   },
   {
     id: "grind",
@@ -96,8 +87,7 @@ export const MILESTONES: Milestone[] = [
     title: "15 hour days, 7 days a week",
     body: "Two dev machines running 24/7 crashed more times than I can count.",
     href: "https://x.com/jiaweing",
-    from: "#f43f5e",
-    to: "#7c3aed",
+    icon: "/images/icons/Fire.png",
   },
 ];
 

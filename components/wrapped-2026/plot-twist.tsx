@@ -3,73 +3,110 @@
 import {
   motion,
   useMotionValueEvent,
+  useReducedMotion,
   useScroll,
   useTransform,
 } from "framer-motion";
 import { useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import { HOOK } from "@/lib/wrapped-2026-data";
-import { Eyebrow, useWrapped } from "./primitives";
+import { RollingNumber } from "./primitives";
 
-const nf = new Intl.NumberFormat("en-US");
+const BIG =
+  "font-semibold text-[clamp(6rem,24vw,15rem)] leading-none tracking-tighter";
+const LINE = "text-2xl text-muted-foreground md:text-4xl";
 
-// Three beats pinned to the screen while you scroll through 320vh:
-// 3,800 applications, a zero that swallows the screen, then the company
+function Company({ sweep }: { sweep: boolean }) {
+  return (
+    <>
+      <p className="text-2xl text-background/60 md:text-4xl">So I started</p>
+      <p
+        className={cn(
+          "mt-2 font-semibold text-[clamp(3rem,11vw,9rem)] leading-[0.95] tracking-tighter lg:text-[6vw]",
+          sweep ? "chroma-text-out chroma-text-out-animate" : "text-background"
+        )}
+        // The sweep ends on the panel's text colour, which is the inverse of the theme
+        style={{ "--chroma-base": "var(--background)" } as React.CSSProperties}
+      >
+        my own company.
+      </p>
+      <a
+        className="mt-10 inline-flex items-center gap-1.5 border-background/40 border-b border-dashed text-background/70 text-sm transition-colors hover:border-background hover:text-background"
+        href={HOOK.href}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        pinned on Threads, {HOOK.likes} likes ↗
+      </a>
+    </>
+  );
+}
+
+// Pinned while you scroll through it: the count runs to 3,800, a zero grows
+// until you fall through it, and the screen flips to the inverse colours
 export function PlotTwist() {
-  const { scroller, burst, reduced } = useWrapped();
+  const reduced = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress: p } = useScroll({
-    container: scroller,
     target: ref,
     offset: ["start start", "end end"],
   });
 
-  const [count, setCount] = useState(reduced ? HOOK.applied : 0);
-  const fired = useRef(false);
+  const [count, setCount] = useState(0);
+  const [sweep, setSweep] = useState(false);
   useMotionValueEvent(p, "change", (v) => {
-    setCount(Math.round(Math.min(1, v / 0.26) * HOOK.applied));
-    if (v > 0.7 && !fired.current) {
-      fired.current = true;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      burst.current?.burst(w * 0.25, h * 0.5, 260, 18);
-      burst.current?.burst(w * 0.75, h * 0.5, 260, 18);
-    }
-    if (v < 0.6) {
-      fired.current = false;
+    setCount(Math.min(1, Math.max(0, (v - 0.02) / 0.2)) * HOOK.applied);
+    if (v > 0.72) {
+      setSweep(true);
+    } else if (v < 0.6) {
+      setSweep(false);
     }
   });
 
-  // Beat 1: applications
-  const b1Opacity = useTransform(p, [0, 0.04, 0.3, 0.36], [0, 1, 1, 0]);
-  const b1Y = useTransform(p, [0.3, 0.36], ["0%", "-20%"]);
+  // Beat 1 is already showing as the section scrolls in, so there's no blank screen
+  const b1Opacity = useTransform(p, [0.26, 0.32], [1, 0]);
+  const b1Y = useTransform(p, [0.26, 0.32], [0, -40]);
 
-  // Beat 2: the zero grows until it fills the screen and you fall through it
-  const b2Opacity = useTransform(p, [0.34, 0.4, 0.62, 0.68], [0, 1, 1, 0]);
-  const zeroScale = useTransform(p, [0.4, 0.66], [1, 26]);
-  const b2TextOpacity = useTransform(p, [0.4, 0.46, 0.5], [0, 1, 0]);
-  const flash = useTransform(p, [0.58, 0.64, 0.7], [0, 0.85, 0]);
+  // Beat 2: the zero rushes at you
+  const b2Opacity = useTransform(p, [0.3, 0.35], [0, 1]);
+  const b2Words = useTransform(p, [0.34, 0.38, 0.44, 0.48], [0, 1, 1, 0]);
+  const zeroScale = useTransform(p, [0.46, 0.62], [1, 16]);
+  const zeroOpacity = useTransform(p, [0.56, 0.62], [1, 0]);
 
-  // Beat 3: the company
+  // Beat 3: an inverted card blooms out of the middle
+  const panelScale = useTransform(p, [0.56, 0.68], [0.2, 1]);
+  const panelOpacity = useTransform(p, [0.56, 0.6], [0, 1]);
   const b3Opacity = useTransform(p, [0.66, 0.72], [0, 1]);
-  const b3Scale = useTransform(p, [0.66, 0.8], [0.7, 1]);
+  const b3Y = useTransform(p, [0.66, 0.76], [30, 0]);
+
+  if (reduced) {
+    return (
+      <section className="space-y-16 py-10">
+        <div>
+          <p className={LINE}>I applied to</p>
+          <RollingNumber className={BIG} value={HOOK.applied} />
+          <p className={LINE}>jobs, and got 0 interviews.</p>
+        </div>
+        <div className="rounded-3xl bg-foreground p-8">
+          <Company sweep={false} />
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="relative h-[320vh]" ref={ref}>
+    <section
+      className="relative left-1/2 h-[320vh] w-screen -translate-x-1/2"
+      ref={ref}
+    >
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(124,58,237,0.25),transparent_60%)]" />
-
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
           style={{ opacity: b1Opacity, y: b1Y }}
         >
-          <Eyebrow>Chapter 1 · The plot twist</Eyebrow>
-          <p className="mt-6 text-2xl text-white/70 md:text-4xl">
-            I applied to
-          </p>
-          <p className="font-black text-[clamp(5rem,22vw,18rem)] text-white tabular-nums leading-none tracking-tighter">
-            {nf.format(count)}
-          </p>
-          <p className="text-2xl text-white/70 md:text-4xl">jobs.</p>
+          <p className={LINE}>I applied to</p>
+          <RollingNumber className={BIG} value={count} />
+          <p className={LINE}>jobs.</p>
         </motion.div>
 
         <motion.div
@@ -77,46 +114,35 @@ export function PlotTwist() {
           style={{ opacity: b2Opacity }}
         >
           <motion.p
-            className="absolute top-[18%] text-2xl text-white/70 md:text-4xl"
-            style={{ opacity: b2TextOpacity }}
+            className={cn(LINE, "absolute top-[22%]")}
+            style={{ opacity: b2Words }}
           >
             and got
           </motion.p>
           <motion.span
-            className="block bg-gradient-to-br from-rose-400 via-fuchsia-500 to-violet-600 bg-clip-text font-black text-[clamp(10rem,40vw,30rem)] text-transparent leading-none"
-            style={{ scale: reduced ? 1 : zeroScale }}
+            className={cn(BIG, "block will-change-transform")}
+            style={{ scale: zeroScale, opacity: zeroOpacity }}
           >
             0
           </motion.span>
           <motion.p
-            className="absolute bottom-[18%] text-2xl text-white/70 md:text-4xl"
-            style={{ opacity: b2TextOpacity }}
+            className={cn(LINE, "absolute bottom-[22%]")}
+            style={{ opacity: b2Words }}
           >
             interviews.
           </motion.p>
         </motion.div>
 
         <motion.div
-          className="pointer-events-none absolute inset-0 bg-white"
-          style={{ opacity: flash }}
+          className="absolute inset-x-3 top-20 bottom-28 rounded-[2.5rem] bg-foreground md:inset-x-8 lg:inset-x-[236px] lg:bottom-20"
+          style={{ scale: panelScale, opacity: panelOpacity }}
         />
 
         <motion.div
-          className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
-          style={{ opacity: b3Opacity, scale: b3Scale }}
+          className="absolute inset-x-3 top-20 bottom-28 flex flex-col items-center justify-center px-6 text-center md:inset-x-8 lg:inset-x-[236px] lg:bottom-20"
+          style={{ opacity: b3Opacity, y: b3Y }}
         >
-          <p className="text-2xl text-white/70 md:text-4xl">So I started</p>
-          <p className="mt-2 bg-[linear-gradient(110deg,#facc15,#f97316,#ec4899,#a855f7,#22d3ee)] bg-clip-text font-black text-[clamp(3.5rem,13vw,11rem)] text-transparent leading-[0.9] tracking-tighter">
-            my own company.
-          </p>
-          <a
-            className="mt-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 font-mono text-white/70 text-xs backdrop-blur transition hover:border-white/40 hover:text-white"
-            href={HOOK.href}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Pinned on Threads · {HOOK.likes} likes ↗
-          </a>
+          <Company sweep={sweep} />
         </motion.div>
       </div>
     </section>
