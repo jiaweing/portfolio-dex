@@ -1,0 +1,686 @@
+/* The room: the immersive mode of 2026 Wrapped. Same print as the page (ink
+   outlines, hard shadows, the seven spot inks), laid over a 3D canvas. This
+   file is only fetched once somebody opens the room. */
+
+.u26-room {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  animation: u26-room-in 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes u26-room-in {
+  from {
+    clip-path: circle(0% at 50% 58%);
+  }
+
+  to {
+    clip-path: circle(120% at 50% 58%);
+  }
+}
+
+/* Behind the model: the sunburst from the top of the page, printed faint,
+   and a field of halftone dots */
+.u26-room-sky {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--dot) 1.3px, transparent 1.6px);
+  background-size: 14px 14px;
+}
+
+.u26-room-sky::before {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  width: max(150vw, 150vh);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  content: "";
+  background: var(--rays);
+  opacity: 0.2;
+  mask-image: radial-gradient(
+    circle closest-side,
+    #000 0%,
+    rgba(0, 0, 0, 0.7) 30%,
+    transparent 62%
+  );
+  animation: u26-spin 300s linear infinite;
+}
+
+.dark .u26 .u26-room-sky::before {
+  opacity: 0.13;
+}
+
+.u26-room-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.u26-room[data-status="failed"] .u26-room-canvas {
+  display: none;
+}
+
+/* The tag that follows whatever is under the pointer. The scene sets its
+   place with `translate`; the transform lifts it clear of the gem. */
+.u26-room-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  margin: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate(-50%, -290%);
+  transition: opacity 120ms ease;
+}
+
+.u26-room-label[data-on="true"] {
+  opacity: 1;
+}
+
+/* ---------- The bar along the top ---------- */
+
+.u26-room-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 18px;
+  pointer-events: none;
+}
+
+.u26-room-bar > * {
+  pointer-events: auto;
+}
+
+.u26-room:focus {
+  outline: none;
+}
+
+.u26-room-back {
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.u26-room-back-more {
+  margin-left: -0.22em;
+}
+
+.u26-room-bar-right[hidden] {
+  display: none;
+}
+
+.u26-room-bar-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.u26-room-count {
+  position: relative;
+  display: flex;
+  gap: 0.5em;
+  align-items: baseline;
+  margin: 0;
+  padding: 0.38em 0.95em 0.62em;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--ink);
+  background: var(--paper-3);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.u26-room-count .u26-num {
+  font-size: 1.25rem;
+}
+
+.u26-room-count small {
+  font-size: 0.78em;
+  opacity: 0.6;
+}
+
+.u26-room-count .u26-kicker {
+  font-size: 0.7rem;
+}
+
+/* How far along: a strip of foil that grows along the foot of the pill */
+.u26-room-count i {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(var(--have, 0) * 100%);
+  height: 6px;
+  background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
+  border-top: 2px solid var(--ink);
+  animation: u26-foil-drift 18s linear infinite;
+  transition: width 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.u26-room-count--all {
+  background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
+  animation: u26-foil-drift 18s linear infinite;
+}
+
+.u26-room-count--all i {
+  display: none;
+}
+
+.u26-room-sound,
+.u26-room-x {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: var(--ink);
+  cursor: pointer;
+  background: var(--paper-3);
+  border: 2.5px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition:
+    translate 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.u26-room-sound:active,
+.u26-room-x:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.u26-room-sound svg,
+.u26-room-x svg {
+  width: 22px;
+  height: 22px;
+}
+
+.u26-room-sound[aria-pressed="false"] {
+  background: var(--grey);
+}
+
+/* ---------- The hint ---------- */
+
+.u26-room-hint {
+  position: absolute;
+  bottom: 104px;
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 0.5em 1em 0.55em;
+  color: var(--ink);
+  font-size: 1.22rem;
+  text-align: center;
+  pointer-events: none;
+  background: var(--paper-3);
+  border: 2.5px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--ink);
+  translate: -50% 0;
+  rotate: -1.2deg;
+  animation: u26-room-rise 500ms 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.u26-room-hint b {
+  font-weight: 400;
+  background: linear-gradient(transparent 58%, var(--lime) 58%);
+}
+
+.u26-room-hint-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .u26-room-hint-mouse {
+    display: none;
+  }
+
+  .u26-room-hint-touch {
+    display: inline;
+  }
+}
+
+@keyframes u26-room-rise {
+  from {
+    opacity: 0;
+    translate: -50% 14px;
+  }
+}
+
+/* ---------- The card for a find ---------- */
+
+.u26-room-card {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  z-index: 5;
+  display: grid;
+  gap: 14px;
+  width: min(400px, 36vw);
+  max-height: calc(100% - 210px);
+  padding: 22px 22px 24px;
+  overflow: visible;
+  translate: 0 -50%;
+  animation: u26-room-card-in 380ms cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+}
+
+@keyframes u26-room-card-in {
+  from {
+    opacity: 0;
+    transform: translateX(-28px) rotate(-2deg);
+  }
+}
+
+/* The rarest finds carry a band of the year's foil */
+.u26-room-card--foil::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 10px;
+  content: "";
+  background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
+  border-bottom: 2.5px solid var(--line);
+  border-radius: 11px 11px 0 0;
+  animation: u26-foil-drift 18s linear infinite;
+}
+
+.u26-room-card--foil {
+  padding-top: 30px;
+}
+
+.u26-room-card-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.u26-room-card-top .u26-kicker {
+  flex: 1;
+}
+
+.u26-room-x {
+  width: 36px;
+  height: 36px;
+}
+
+.u26-room-x svg {
+  width: 18px;
+  height: 18px;
+}
+
+.u26-room-card-head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.u26-room-pin {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  color: var(--ink);
+  background: var(--accent);
+  border: 2.5px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--shade-2);
+  rotate: -4deg;
+}
+
+.u26-room-pin svg {
+  width: 32px;
+  height: 32px;
+}
+
+.u26-room-thing {
+  margin: 0 0 2px;
+  color: var(--fg-dim);
+  font-size: 1.15rem;
+}
+
+.u26-room-title {
+  margin: 0;
+  font-size: clamp(1.15rem, 1.7vw, 1.42rem);
+  line-height: 1.04;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.u26-room-body {
+  margin: 0;
+  font-weight: 500;
+}
+
+.u26-room-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 10px 14px;
+  margin: 0;
+  padding: 12px 0 0;
+  border-top: 2.5px dashed var(--line);
+}
+
+.u26-room-stats div {
+  display: grid;
+  gap: 2px;
+}
+
+.u26-room-stats dd {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.u26-room-stats dt {
+  color: var(--fg-dim);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.u26-room-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.u26-room-card-foot .u26-btn {
+  padding: 0.6em 1em;
+  font-family: inherit;
+  font-size: 0.92rem;
+}
+
+.dark .u26 .u26-room-card-foot .u26-btn {
+  --btn-shade: var(--paper);
+}
+
+.u26-room-stamp {
+  position: absolute;
+  top: -16px;
+  right: 54px;
+  padding: 0.3em 0.7em;
+  color: var(--ink);
+  font-family: var(--font-u26-display), "Arial Black", sans-serif;
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  background: var(--lime);
+  border: 2.5px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--ink);
+  rotate: 6deg;
+  animation: u26-room-stamp 460ms 160ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes u26-room-stamp {
+  from {
+    opacity: 0;
+    scale: 2.4;
+    rotate: -14deg;
+  }
+}
+
+.u26-room-done h2 {
+  margin: 0;
+  font-size: 2.6rem;
+}
+
+.u26-room-done p {
+  margin: 0;
+}
+
+.u26-room-done .u26-tag {
+  justify-self: start;
+}
+
+/* ---------- The tray of finds ---------- */
+
+.u26-room-tray {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  z-index: 4;
+  max-width: calc(100% - 16px);
+  translate: -50% 0;
+}
+
+.u26-room-tray ol {
+  display: grid;
+  grid-template-columns: repeat(14, 44px);
+  gap: 8px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: color-mix(in oklch, var(--bg) 82%, transparent);
+  border: 2.5px solid var(--line);
+  border-radius: 18px;
+}
+
+.u26-room-slot {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--grey-fg);
+  font-family: var(--font-u26-display), "Arial Black", sans-serif;
+  font-size: 1.05rem;
+  cursor: pointer;
+  background: var(--grey);
+  border: 2.5px dashed var(--grey-fg);
+  border-radius: 11px;
+  transition:
+    translate 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.u26-room-slot svg {
+  width: 26px;
+  height: 26px;
+}
+
+.u26-room-slot[data-have="true"] {
+  color: var(--ink);
+  background: var(--accent);
+  border: 2.5px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--shade-2);
+  animation: u26-room-pop 420ms cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+
+.u26-room-slot:hover,
+.u26-room-slot[aria-current="true"] {
+  translate: 0 -4px;
+}
+
+.u26-room-slot[data-have="true"]:hover,
+.u26-room-slot[data-have="true"][aria-current="true"] {
+  box-shadow: 3px 5px 0 var(--shade-2);
+}
+
+@keyframes u26-room-pop {
+  from {
+    scale: 0.4;
+    rotate: -20deg;
+  }
+}
+
+/* ---------- When the room cannot be drawn ---------- */
+
+.u26-room-plain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  justify-items: start;
+  padding: 96px max(20px, calc((100% - 920px) / 2)) 48px;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.u26-room-plain h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+}
+
+.u26-room-plain > p {
+  margin: 0;
+}
+
+.u26-room-plain ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+  gap: 18px;
+  width: 100%;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.u26-room-plain li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+}
+
+.u26-room-plain li p,
+.u26-room-plain li h3 {
+  margin: 0;
+}
+
+.u26-room-plain li h3 {
+  margin-block: 2px 4px;
+  font-size: 1.15rem;
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 899px) {
+  .u26-room-bar {
+    padding: 12px;
+  }
+
+  .u26-room-back {
+    font-size: 0.82rem;
+  }
+
+  .u26-room-back-more {
+    display: none;
+  }
+
+  .u26-room-count {
+    padding: 0.3em 0.8em 0.55em;
+  }
+
+  .u26-room-count .u26-num {
+    font-size: 1.05rem;
+  }
+
+  .u26-room-tray {
+    bottom: 10px;
+  }
+
+  .u26-room-tray ol {
+    grid-template-columns: repeat(7, 40px);
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .u26-room-slot {
+    width: 40px;
+    height: 40px;
+  }
+
+  .u26-room-hint {
+    bottom: 132px;
+    font-size: 1.08rem;
+  }
+
+  .u26-room-card {
+    top: auto;
+    right: 10px;
+    bottom: 124px;
+    left: 10px;
+    gap: 10px;
+    width: auto;
+    max-height: 44%;
+    padding: 16px 16px 18px;
+    translate: none;
+    animation-name: u26-room-card-up;
+  }
+
+  .u26-room-card--foil {
+    padding-top: 24px;
+  }
+
+  .u26-room-pin {
+    width: 46px;
+    height: 46px;
+  }
+
+  .u26-room-pin svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .u26-room-body {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .u26-room-stats {
+    grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+    gap: 8px 10px;
+    padding-top: 10px;
+  }
+
+  .u26-room-stats dd {
+    font-size: 1.15rem;
+  }
+
+  .u26-room-card-foot .u26-btn {
+    padding: 0.55em 0.85em;
+    font-size: 0.86rem;
+  }
+}
+
+@keyframes u26-room-card-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}

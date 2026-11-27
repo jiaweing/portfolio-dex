@@ -88,6 +88,10 @@ export function Hero() {
               <a className="u26-btn u26-btn--foil" href="#queue">
                 Unwrap it <span aria-hidden="true">↓</span>
               </a>
+              <a className="u26-btn u26-btn--room" href="#room">
+                <span aria-hidden="true" className="u26-btn-gem" />
+                Enter my room
+              </a>
               <a className="u26-btn" href="#recap">
                 Skip to the recap
               </a>

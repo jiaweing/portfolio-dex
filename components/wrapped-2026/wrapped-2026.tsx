@@ -11,6 +11,7 @@ import { Hero } from "./hero";
 import { Ticker } from "./parts";
 import { PatchNotes } from "./patch-notes";
 import { Queue } from "./queue";
+import { RoomGate } from "./room/room-gate";
 import { Trail } from "./trail";
 import type { WrappedData } from "./types";
 
@@ -110,6 +111,10 @@ export function Wrapped2026({
         />
         <Finale />
       </main>
+      <RoomGate
+        data={{ days, posts, postTotal, perMonth, social, socialSince }}
+        fonts={`${display.variable} ${body.variable} ${hand.variable}`}
+      />
     </div>
   );
 }

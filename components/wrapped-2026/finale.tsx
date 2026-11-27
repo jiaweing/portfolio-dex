@@ -109,6 +109,10 @@ export function Finale() {
           >
             Check out Ryu <span aria-hidden="true">↗</span>
           </a>
+          <a className="u26-btn u26-btn--room" href="#room">
+            <span aria-hidden="true" className="u26-btn-gem" />
+            Enter my room
+          </a>
           <button className="u26-btn" onClick={share} type="button">
             {copied ? "Link copied" : "Share this Wrapped"}
           </button>
