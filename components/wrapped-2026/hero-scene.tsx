@@ -1,8 +1,8 @@
 import type { Vars } from "./parts";
 
 /* The key art, printed in four depth layers: the sunburst and its sun, the
-   city that had no room, the mountain of 3,800 applications with a desk
-   built on top of it, and the ground. HeroParallax moves each layer by its
+   sea of cloud, the mountain of 3,800 applications that rises out of it with
+   a desk built on top, and the ground. HeroParallax moves each layer by its
    depth (--d). All of it is decoration, hidden from assistive technology. */
 
 // A small seeded generator, so the server and the browser draw the same pile
@@ -257,75 +257,150 @@ function Mountain() {
   );
 }
 
-interface Building {
-  x: number;
-  w: number;
-  h: number;
-  lit: number[];
+// Clouds are a row of scallops on a flat base. Each scallop is an arc from one
+// point of the outline to the next; "echo" is the short second line drawn
+// inside some of them, the way a printed cloud gets its shading.
+interface Outline {
+  d: string;
+  echo: string;
 }
 
-function city(): Building[] {
-  const rand = seeded(71);
-  const out: Building[] = [];
-  let x = -30;
-  while (x < 1500) {
-    const w = 46 + rand() * 54;
-    const h = 70 + rand() * 170;
-    const lit: number[] = [];
-    for (let i = 0; i < 2; i++) {
-      if (rand() > 0.72) {
-        lit.push(Math.floor(rand() * 40));
-      }
+const n1 = (v: number) => v.toFixed(1);
+
+function scallops(
+  rand: () => number,
+  points: [number, number][],
+  every: number
+): Outline {
+  let [px, py] = points[0];
+  let d = "";
+  let echo = "";
+  for (let i = 1; i < points.length; i++) {
+    const [x, y] = points[i];
+    const chord = Math.hypot(x - px, y - py);
+    const r = chord * (0.56 + rand() * 0.1);
+    d += `A${n1(r)} ${n1(r)} 0 0 1 ${n1(x)} ${n1(y)}`;
+    if (i % every === 0 && chord > 44) {
+      const drop = chord * 0.2;
+      const ax = px + (x - px) * 0.3;
+      const ay = py + (y - py) * 0.3 + drop;
+      const bx = px + (x - px) * 0.86;
+      const by = py + (y - py) * 0.86 + drop;
+      const er = n1(r * 0.7);
+      echo += `M${n1(ax)} ${n1(ay)}A${er} ${er} 0 0 1 ${n1(bx)} ${n1(by)}`;
     }
-    out.push({ x, w, h, lit });
-    x += w + rand() * 8;
+    px = x;
+    py = y;
   }
-  return out;
+  return { d, echo };
 }
 
-const CITY = city();
+// One loose cloud, w wide and h tall: scallops over the top, and a flat
+// base with its two ends rounded off
+function cloud(seed: number, w: number, h: number, bumps: number): Outline {
+  const rand = seeded(seed);
+  const end = h * 0.24;
+  const top = h - end;
+  const points: [number, number][] = [[0, top]];
+  for (let i = 1; i < bumps; i++) {
+    const t = i / bumps + (rand() - 0.5) * (0.4 / bumps);
+    const lift = Math.sin(Math.PI * t) ** 0.6 * (0.74 + rand() * 0.26);
+    points.push([w * t, top - (top - 4) * lift]);
+  }
+  points.push([w, top]);
+  const { d, echo } = scallops(rand, points, 2);
+  const e = n1(end);
+  const base = `A${e} ${e} 0 0 1 ${n1(w - end)} ${h}H${e}A${e} ${e} 0 0 1 0 ${n1(top)}`;
+  return { d: `M0 ${n1(top)}${d}${base}Z`, echo };
+}
 
-// The city in the distance. Nearly every window is dark.
-function Skyline() {
+// A bank of cloud, wide enough that no screen has to stretch it. It rolls
+// between base and base - swell, and is filled down to the bottom of the
+// drawing.
+function bank(
+  seed: number,
+  base: number,
+  swell: number,
+  size: number
+): Outline {
+  const rand = seeded(seed);
+  const points: [number, number][] = [[-70, base]];
+  let x = -70;
+  while (x < 2470) {
+    x += size * (0.62 + rand() * 0.76);
+    const roll = 0.5 + 0.5 * Math.sin(x / 150 + seed);
+    points.push([x, base - swell * roll * (0.55 + rand() * 0.45)]);
+  }
+  const { d, echo } = scallops(rand, points, 3);
+  return { d: `M-70 400V${base}${d}V400Z`, echo };
+}
+
+const BANK_FAR = bank(11, 146, 46, 120);
+const BANK_MID = bank(23, 206, 44, 104);
+const BANK_NEAR = bank(37, 258, 40, 92);
+
+// The sea of cloud the mountain stands in: three banks, each one nearer,
+// paler and more firmly outlined than the one behind it
+function CloudSea() {
   return (
     <svg
       aria-hidden="true"
-      className="u26-skyline"
+      className="u26-clouds"
       preserveAspectRatio="xMidYMax slice"
-      viewBox="0 0 1440 300"
+      viewBox="0 0 2400 400"
     >
-      {CITY.map((b) => {
-        const cols = Math.max(2, Math.floor((b.w - 12) / 14));
-        const rows = Math.max(2, Math.floor((b.h - 16) / 18));
-        const windows: React.ReactNode[] = [];
-        for (let r = 0; r < rows; r++) {
-          for (let c = 0; c < cols; c++) {
-            const index = r * cols + c;
-            windows.push(
-              <rect
-                className={b.lit.includes(index) ? "lit" : "w"}
-                height="8"
-                key={index}
-                width="7"
-                x={b.x + 8 + c * 14}
-                y={300 - b.h + 12 + r * 18}
-              />
-            );
-          }
-        }
-        return (
-          <g key={b.x.toFixed(1)}>
-            <rect
-              className="b"
-              height={b.h + 4}
-              width={b.w}
-              x={b.x}
-              y={300 - b.h}
-            />
-            {windows}
-          </g>
-        );
-      })}
+      <defs>
+        <pattern
+          height="10"
+          id="u26-cloud-dots"
+          patternUnits="userSpaceOnUse"
+          width="10"
+        >
+          <circle className="u26-cloud-dot" cx="2.5" cy="2.5" r="1.7" />
+          <circle className="u26-cloud-dot" cx="7.5" cy="7.5" r="1.7" />
+        </pattern>
+        <linearGradient id="u26-cloud-fade" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0.3" stopColor="#fff" stopOpacity="0" />
+          <stop offset="1" stopColor="#fff" stopOpacity="1" />
+        </linearGradient>
+        <mask id="u26-cloud-shade" maskContentUnits="objectBoundingBox">
+          <rect fill="url(#u26-cloud-fade)" height="1" width="1" />
+        </mask>
+      </defs>
+      <path className="far" d={BANK_FAR.d} />
+      <path className="mid" d={BANK_MID.d} />
+      <path className="echo echo--mid" d={BANK_MID.echo} />
+      <path className="near" d={BANK_NEAR.d} />
+      <path className="dots" d={BANK_NEAR.d} mask="url(#u26-cloud-shade)" />
+      <path className="echo" d={BANK_NEAR.echo} />
+    </svg>
+  );
+}
+
+// A loose cloud. The dots and their fade are defined once, in CloudSea.
+function Cloud({
+  seed,
+  w,
+  h,
+  bumps,
+  className,
+}: {
+  seed: number;
+  w: number;
+  h: number;
+  bumps: number;
+  className: string;
+}) {
+  const shape = cloud(seed, w, h, bumps);
+  return (
+    <svg
+      aria-hidden="true"
+      className={`u26-cloud ${className}`}
+      viewBox={`0 0 ${w} ${h}`}
+    >
+      <path className="near" d={shape.d} />
+      <path className="dots" d={shape.d} mask="url(#u26-cloud-shade)" />
+      <path className="echo" d={shape.echo} />
     </svg>
   );
 }
@@ -363,13 +438,22 @@ export function HeroScene() {
         <div className="u26-sun" />
       </div>
       <div className="u26-layer" style={depth(-11)}>
-        <Skyline />
+        <CloudSea />
+        <Cloud bumps={5} className="u26-cloud--a" h={74} seed={5} w={210} />
+        <Cloud bumps={4} className="u26-cloud--b" h={60} seed={9} w={170} />
         <Plane delay="-3s" fly="31s" top="24%" />
         <Plane delay="-17s" fly="38s" top="38%" />
         <Plane delay="-26s" fly="27s" top="14%" />
       </div>
       <div className="u26-layer" style={depth(-19)}>
         <Mountain />
+        <Cloud
+          bumps={6}
+          className="u26-cloud--front"
+          h={96}
+          seed={14}
+          w={300}
+        />
         <p className="u26-sign u26-hand">
           <b>3,800</b>
           applications

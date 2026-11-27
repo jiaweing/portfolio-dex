@@ -456,8 +456,11 @@ body:has(.u26) .site-edge-blur {
   --sky-0: oklch(0.9 0.05 215);
   --sky-1: oklch(0.945 0.04 150);
   --sky-2: oklch(0.93 0.07 88);
-  --far: oklch(0.83 0.04 230);
-  --far-win: oklch(0.74 0.05 235);
+  --cloud-far: oklch(0.885 0.048 226);
+  --cloud-mid: oklch(0.94 0.034 222);
+  --cloud-near: oklch(0.985 0.012 220);
+  --cloud-dot: oklch(0.82 0.07 232);
+  --cloud-line: var(--ink);
   --env-1: oklch(0.985 0.015 90);
   --env-2: oklch(0.945 0.03 88);
   --env-3: oklch(0.9 0.04 84);
@@ -494,8 +497,11 @@ body:has(.u26) .site-edge-blur {
   --sky-0: oklch(0.17 0.022 262);
   --sky-1: oklch(0.225 0.04 256);
   --sky-2: oklch(0.31 0.06 62);
-  --far: oklch(0.27 0.03 258);
-  --far-win: oklch(0.21 0.03 258);
+  --cloud-far: oklch(0.25 0.045 264);
+  --cloud-mid: oklch(0.31 0.062 268);
+  --cloud-near: oklch(0.39 0.08 272);
+  --cloud-dot: oklch(0.3 0.07 270);
+  --cloud-line: oklch(0.14 0.02 262);
   --env-1: oklch(0.9 0.03 88);
   --env-2: oklch(0.83 0.035 86);
   --env-3: oklch(0.76 0.04 82);
@@ -575,25 +581,98 @@ body:has(.u26) .site-edge-blur {
   mask-image: linear-gradient(200deg, transparent 30%, #000 90%);
 }
 
-.u26-skyline {
+/* The sea of cloud. Nearer banks are paler and more firmly outlined. */
+.u26-clouds {
   position: absolute;
   right: 0;
-  bottom: 150px;
+  bottom: 8px;
   left: 0;
   width: 100%;
-  height: 300px;
+  height: 400px;
+  overflow: visible;
 }
 
-.u26-skyline .b {
-  fill: var(--far);
+.u26-clouds .far {
+  fill: var(--cloud-far);
 }
 
-.u26-skyline .w {
-  fill: var(--far-win);
+.u26-clouds .mid {
+  fill: var(--cloud-mid);
+  stroke: color-mix(in oklch, var(--cloud-line) 45%, var(--cloud-mid));
+  stroke-width: 2;
+  stroke-linejoin: round;
 }
 
-.u26-skyline .lit {
-  fill: var(--amber);
+.u26-clouds .near,
+.u26-cloud .near {
+  fill: var(--cloud-near);
+  stroke: var(--cloud-line);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.u26-clouds .dots,
+.u26-cloud .dots {
+  fill: url("#u26-cloud-dots");
+}
+
+.u26-cloud-dot {
+  fill: var(--cloud-dot);
+}
+
+.u26-clouds .echo,
+.u26-cloud .echo {
+  fill: none;
+  stroke: var(--cloud-line);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.u26-clouds .echo--mid {
+  stroke: color-mix(in oklch, var(--cloud-line) 45%, var(--cloud-mid));
+  stroke-width: 2;
+}
+
+/* Loose clouds, placed from the mountain so they keep their place beside
+   the sun on every screen */
+.u26-cloud {
+  position: absolute;
+  height: auto;
+  overflow: visible;
+  animation: u26-waft 19s ease-in-out infinite alternate;
+}
+
+.u26-cloud--a {
+  bottom: calc(var(--mw) * 0.86);
+  left: calc(var(--cx) - var(--mw) * 0.47);
+  width: clamp(120px, 14vw, 210px);
+}
+
+.u26-cloud--b {
+  bottom: calc(var(--mw) * 0.47);
+  left: calc(var(--cx) + var(--mw) * 0.3);
+  width: clamp(100px, 11vw, 170px);
+  animation-duration: 25s;
+  animation-direction: alternate-reverse;
+}
+
+/* One cloud in front of the mountain's foot, so the pile stands in the sea
+   rather than on top of it */
+.u26-cloud--front {
+  right: -70px;
+  bottom: 84px;
+  width: clamp(220px, 21vw, 320px);
+  animation-duration: 31s;
+}
+
+@keyframes u26-waft {
+  from {
+    translate: -16px 0;
+  }
+
+  to {
+    translate: 16px 0;
+  }
 }
 
 .u26-mountain {
@@ -1055,9 +1134,24 @@ body:has(.u26) .site-edge-blur {
     font-size: clamp(2.6rem, 13.2vw, 6rem);
   }
 
-  .u26-skyline {
-    bottom: 90px;
-    height: 200px;
+  .u26-clouds {
+    bottom: 10px;
+    height: 300px;
+  }
+
+  .u26-cloud--a {
+    bottom: calc(var(--mw) * 0.66);
+    left: -34px;
+  }
+
+  .u26-cloud--b {
+    right: -30px;
+    bottom: calc(var(--mw) * 0.5);
+    left: auto;
+  }
+
+  .u26-cloud--front {
+    display: none;
   }
 
   /* Keep the planes down in the art, clear of the lockup */
