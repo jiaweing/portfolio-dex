@@ -38,10 +38,11 @@ import { softBox, softPlane } from "./soft";
 /* The room itself. It follows the real one, wall by wall. The window wall
    has both desks in one line: the main desk on the left with its two
    monitors, the tall third one and the stream light over them, then the
-   second desk in front of the curtain with the white chair. The high shelf
-   and the air conditioner sit above. The wardrobe stands in the next corner
-   with the neon on top, then the bedside drawers, and the bed runs along the
-   far wall with its row of plush toys under the wavy light. The TV and the
+   second desk in front of the curtain with the white chair, running all the
+   way into the corner. The high shelf and the air conditioner sit above.
+   The wardrobe stands on the next wall, just past the end of that desk, with
+   the neon on top. Then straight to the bed, which runs along the far wall
+   with its row of plush toys under the wavy light. The TV and the
    door close the loop, and the white drawers with the fan sit by the main
    desk. The mess is left out. Sizes are in metres, more or less. */
 
@@ -198,14 +199,18 @@ function monitor(
   return { g, head };
 }
 
-/** A gaming chair, facing +z. The seat spins on its base. Every part is a
-    fat cushion: nothing on it is thinner than a hand. */
+/** A Secretlab gaming chair, facing +z, like the two in the room. The seat
+    spins on its base. A tall backrest with wide shoulder wings and side
+    bolsters, a bucket seat with raised edges, a black head pillow on a strap,
+    and the name on the backrest and the pillow. Every part is a fat cushion:
+    nothing on it is thinner than a hand. */
 function chair(
   parent: Object3D,
   at: V3,
   rotY: number,
   shell: Color,
-  pad: Color
+  pad: Color,
+  logos: { back: Texture; pillow: Texture }
 ) {
   const g = group(parent, at, true);
   for (let i = 0; i < 5; i++) {
@@ -219,27 +224,58 @@ function chair(
   cyl(g, C.black, [0.04, 0.05, 0.3], [0, 0.07, 0]);
   const top = group(g, [0, 0, 0], true);
   top.rotation.y = rotY;
-  const lean: V3 = [-0.13, 0, 0];
-  box(top, shell, [0.56, 0.14, 0.52], [0, 0.36, 0], { r: 0.06, corner: 0.14 });
-  box(top, pad, [0.42, 0.06, 0.4], [0, 0.47, 0.02], { r: 0.028, corner: 0.12 });
-  box(top, shell, [0.54, 0.82, 0.13], [0, 0.46, -0.26], {
-    rot: lean,
-    r: 0.06,
-    corner: 0.2,
+
+  // The bucket seat: a base, a softer middle and two raised edges
+  box(top, C.black, [0.5, 0.08, 0.46], [0, 0.33, -0.01], { r: 0.035 });
+  box(top, shell, [0.56, 0.12, 0.52], [0, 0.38, 0], { r: 0.06, corner: 0.14 });
+  box(top, pad, [0.36, 0.05, 0.42], [0, 0.49, 0.02], { r: 0.024, corner: 0.1 });
+  for (const side of [-1, 1]) {
+    box(top, shell, [0.1, 0.08, 0.46], [side * 0.235, 0.47, 0.02], {
+      r: 0.04,
+      corner: 0.06,
+    });
+  }
+
+  // The backrest leans back on its own hinge. Its parts are placed in its
+  // own space: up is up the backrest, +z is out of its face.
+  const back = group(top, [0, 0.5, -0.27], true);
+  back.rotation.x = -0.14;
+  box(back, shell, [0.44, 0.86, 0.14], [0, 0, 0], { r: 0.06, corner: 0.16 });
+  // Wide shoulders, the Secretlab wings
+  box(back, shell, [0.6, 0.24, 0.15], [0, 0.5, -0.005], {
+    r: 0.065,
+    corner: 0.1,
   });
-  box(top, pad, [0.36, 0.24, 0.07], [0, 0.6, -0.185], {
-    rot: lean,
-    r: 0.032,
-    corner: 0.09,
+  // Side bolsters that hug the back
+  for (const side of [-1, 1]) {
+    box(back, shell, [0.1, 0.5, 0.17], [side * 0.215, 0.02, 0.02], {
+      r: 0.045,
+      corner: 0.05,
+    });
+  }
+  // The soft middle, in the second colour
+  box(back, pad, [0.28, 0.42, 0.03], [0, 0.05, 0.07], {
+    r: 0.014,
+    corner: 0.08,
   });
-  box(top, pad, [0.3, 0.15, 0.08], [0, 1.02, -0.235], {
-    rot: lean,
-    r: 0.038,
+  // The lumbar pillow at the small of the back
+  box(back, C.black, [0.3, 0.13, 0.08], [0, 0.1, 0.1], {
+    r: 0.04,
+    corner: 0.06,
+  });
+  // The black head pillow on its strap
+  box(back, C.black, [0.34, 0.15, 0.1], [0, 0.56, 0.1], {
+    r: 0.045,
     corner: 0.07,
   });
+  picture(back, logos.pillow, 0.14, 0.056, [0, 0.637, 0.152], 0, true);
+  // The name across the top of the backrest
+  picture(back, logos.back, 0.15, 0.06, [0, 0.79, 0.072], 0, true);
+
+  // The armrests
   for (const side of [-1, 1]) {
-    box(top, C.black, [0.045, 0.17, 0.045], [side * 0.31, 0.46, 0.02]);
-    box(top, C.black, [0.085, 0.05, 0.3], [side * 0.31, 0.62, 0.04], {
+    box(top, C.black, [0.045, 0.19, 0.045], [side * 0.31, 0.44, 0.0]);
+    box(top, C.black, [0.09, 0.05, 0.3], [side * 0.31, 0.62, 0.04], {
       r: 0.024,
       corner: 0.04,
     });
@@ -915,12 +951,22 @@ function buildDrawersAndTheFan(k: Kit) {
   });
 }
 
-/* The second desk (window wall, right, in front of the curtain) */
+/* The second desk (window wall, right, in front of the curtain). It runs all
+   the way into the corner, and the wardrobe stands just past its end. */
 function buildSecondDesk(k: Kit) {
   const { root, screens, add } = k;
+  const right = W - 0.015;
 
-  box(root, C.wood, [1.22, 0.05, 0.72], [3.13, 0.72, 0.43], { corner: 0.08 });
-  for (const x of [2.58, 3.68]) {
+  box(
+    root,
+    C.wood,
+    [right - 2.52, 0.05, 0.72],
+    [(right + 2.52) / 2, 0.72, 0.43],
+    {
+      corner: 0.08,
+    }
+  );
+  for (const x of [2.58, right - 0.06]) {
     for (const z of [0.14, 0.72]) {
       box(root, C.white, [0.05, 0.72, 0.05], [x, 0, z]);
     }
@@ -961,11 +1007,9 @@ function buildSecondDesk(k: Kit) {
 
   // The white chair, turned to the desk, with its blanket and blue cushion
   const spin = Math.PI + 0.6;
-  const guest = chair(root, [3.2, 0, 1.44], spin, C.white, C.cream);
-  box(guest.top, C.black, [0.32, 0.16, 0.09], [0, 1.0, -0.2], {
-    rot: [-0.13, 0, 0],
-    r: 0.042,
-    corner: 0.075,
+  const guest = chair(root, [3.2, 0, 1.44], spin, C.white, C.cream, {
+    back: screens.secretlabInk.tex,
+    pillow: screens.secretlab.tex,
   });
   ball(guest.top, oklch(0.87, 0.04, 75), 0.25, [0, 0.42, 0.06], {
     squash: [1, 0.5, 1.05],
@@ -987,60 +1031,71 @@ function buildSecondDesk(k: Kit) {
   });
 }
 
-/* The wardrobe, in the corner past the second desk */
+/* The wardrobe, along the right-hand wall just past the end of the second
+   desk, so nothing stands in front of its doors. Then comes the bed. */
 function buildWardrobe(k: Kit) {
   const { root, screens } = k;
   const face = W - 0.62;
+  // How far along the wall it starts: just clear of the desk
+  const z0 = 0.82;
 
-  box(root, C.white, [0.6, 2.1, 1.0], [W - 0.31, 0, 0.64], CHEST);
+  box(root, C.white, [0.6, 2.1, 1.0], [W - 0.31, 0, z0 + 0.5], CHEST);
   // One plain door and one mirror door
-  box(root, C.trim, [0.02, 1.94, 0.46], [face, 0.08, 0.395]);
-  box(root, oklch(0.86, 0.035, 225), [0.02, 1.94, 0.46], [face, 0.08, 0.885]);
-  box(root, C.trim, [0.006, 0.9, 0.05], [face - 0.012, 0.7, 0.8], {
+  box(root, C.trim, [0.02, 1.94, 0.46], [face, 0.08, z0 + 0.255]);
+  box(
+    root,
+    oklch(0.86, 0.035, 225),
+    [0.02, 1.94, 0.46],
+    [face, 0.08, z0 + 0.745]
+  );
+  box(root, C.trim, [0.006, 0.9, 0.05], [face - 0.012, 0.7, z0 + 0.66], {
     rot: [0.5, 0, 0],
   });
-  for (const z of [0.6, 0.68]) {
+  for (const z of [z0 + 0.46, z0 + 0.54]) {
     box(root, C.grey, [0.02, 0.14, 0.02], [face - 0.015, 1.0, z]);
   }
   // The black tee on its hanger
-  box(root, C.black, [0.02, 0.42, 0.34], [face - 0.03, 1.22, 0.39]);
+  box(root, C.black, [0.02, 0.42, 0.34], [face - 0.03, 1.22, z0 + 0.25]);
   for (const side of [-1, 1]) {
     box(
       root,
       C.black,
       [0.02, 0.12, 0.16],
-      [face - 0.03, 1.5, 0.39 + side * 0.21],
+      [face - 0.03, 1.5, z0 + 0.25 + side * 0.21],
       { rot: [-side * 0.5, 0, 0] }
     );
   }
-  box(root, C.grey, [0.012, 0.1, 0.012], [face - 0.03, 1.64, 0.39]);
+  box(root, C.grey, [0.012, 0.1, 0.012], [face - 0.03, 1.64, z0 + 0.25]);
   // On top: the neon and two more toys
   const dream = picture(
     root,
     screens.dream.tex,
     0.62,
     0.27,
-    [W - 0.36, 2.27, 0.68],
+    [W - 0.36, 2.27, z0 + 0.54],
     -1.05,
     true
   );
-  plush(root, [W - 0.2, 2.1, 0.26], 0.085, C.woodDark, C.cream, -TURN + 0.5);
-  plush(root, [W - 0.2, 2.1, 1.04], 0.08, C.red, C.cream, -0.6);
+  plush(
+    root,
+    [W - 0.2, 2.1, z0 + 0.12],
+    0.085,
+    C.woodDark,
+    C.cream,
+    -TURN + 0.5
+  );
+  plush(root, [W - 0.2, 2.1, z0 + 0.9], 0.08, C.red, C.cream, -0.6);
   return dream;
 }
 
-/* The bedside drawers, with the stack of mail and the big fan on top */
-function buildBedside(k: Kit) {
+/* The far end of the second desk, in the corner: the stack of mail and the
+   big fan. There are no drawers by the bed: the wardrobe comes straight
+   before it. */
+function buildDeskEnd(k: Kit) {
   const { root, add, rand, idles } = k;
 
-  box(root, C.white, [0.46, 0.56, 0.7], [W - 0.26, 0, 1.55], CHEST);
-  for (let i = 0; i < 2; i++) {
-    box(root, C.cream, [0.015, 0.21, 0.62], [W - 0.5, 0.06 + i * 0.25, 1.55]);
-    box(root, C.grey, [0.02, 0.025, 0.18], [W - 0.51, 0.2 + i * 0.25, 1.55]);
-  }
-
   // The mail: a neat stack in a tray
-  const mail = turned(root, [W - 0.27, 0.56, 1.38], TURN);
+  const mail = turned(root, [W - 0.38, 0.77, 0.5], TURN);
   box(mail, C.grey, [0.34, 0.03, 0.25], [0, 0, 0]);
   let top = 0.03;
   for (let i = 0; i < 13; i++) {
@@ -1088,9 +1143,9 @@ function buildBedside(k: Kit) {
     },
   });
 
-  // The big fan, blowing across the bed
+  // The big fan, in the corner, blowing into the room
   const tall = fan(
-    turned(root, [W - 0.25, 0.56, 1.74], Math.PI - 0.5),
+    turned(root, [W - 0.17, 0.77, 0.2], -(Math.PI - 0.7)),
     [0, 0, 0],
     0.2,
     0.17
@@ -1336,8 +1391,11 @@ function buildBossChair(k: Kit) {
   const { root, add } = k;
   const spin = -2.0;
 
-  const boss = chair(root, [1.5, 0, 1.52], spin, C.black, C.coal);
-  const crown = group(boss.top, [0, 1.3, -0.3], true);
+  const boss = chair(root, [1.5, 0, 1.52], spin, C.black, C.coal, {
+    back: k.screens.secretlab.tex,
+    pillow: k.screens.secretlab.tex,
+  });
+  const crown = group(boss.top, [0, 1.42, -0.39], true);
   cyl(crown, INK.amber, [0.11, 0.1, 0.06], [0, 0, 0]);
   for (let i = 0; i < 5; i++) {
     const a = (i / 5) * Math.PI * 2;
@@ -1359,7 +1417,7 @@ function buildBossChair(k: Kit) {
       boss.top.rotation.y = spin + easeInOut(part(p, 0, 0.8)) * Math.PI * 4;
       crown.visible = p > 0.25;
       const q = part(p, 0.25, 1);
-      crown.position.y = 1.9 - 0.62 * easeOut(q) + 0.06 * arc(part(q, 0.6, 1));
+      crown.position.y = 2.04 - 0.62 * easeOut(q) + 0.06 * arc(part(q, 0.6, 1));
       crown.rotation.y = q * Math.PI * 2;
     },
   });
@@ -1532,7 +1590,7 @@ export function buildRoom(
   buildDrawersAndTheFan(k);
   buildSecondDesk(k);
   const dream = buildWardrobe(k);
-  buildBedside(k);
+  buildDeskEnd(k);
   buildBed(k, dream);
   buildDoorWall(k);
   buildBossChair(k);

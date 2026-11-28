@@ -507,6 +507,30 @@ export function createScreens(
     ctx.stroke();
   });
 
+  /* The maker's name on the two chairs: on their backrests and head pillows.
+     Pale for a dark cushion, dark for the white backrest. */
+  const wordmark = (colour: string) =>
+    screen(320, 128, (ctx) => {
+      ctx.fillStyle = colour;
+      // A small pointed shield, then the name in two lines beside it
+      ctx.beginPath();
+      ctx.moveTo(14, 22);
+      ctx.lineTo(96, 22);
+      ctx.lineTo(96, 58);
+      ctx.lineTo(55, 108);
+      ctx.lineTo(14, 58);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = body(48, 800);
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.letterSpacing = "3px";
+      ctx.fillText("SECRET", 112, 62);
+      ctx.fillText("LAB", 112, 112);
+    });
+  const secretlab = wordmark("oklch(0.9 0.01 90)");
+  const secretlabInk = wordmark("oklch(0.42 0.012 270)");
+
   /* The number on the cup */
   const n71 = screen(128, 128, (ctx) => {
     ctx.fillStyle = P.lime;
@@ -569,6 +593,8 @@ export function createScreens(
     diploma,
     n71,
     zed,
+    secretlab,
+    secretlabInk,
     day: sky(false),
     night: sky(true),
   };
