@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LINKEDIN } from "@/lib/wrapped-2026-data";
+import { LINKEDIN, THREADS } from "@/lib/wrapped-2026-data";
 import { ChapterHead, CountUp, Rise, type Vars } from "./parts";
 import type { PostTitle, SocialSeries } from "./types";
 
@@ -210,6 +210,24 @@ export function Broadcast({
           <TvSet perMonth={perMonth} total={postTotal} />
           <div className="u26-broadcast-side">
             <Leaderboard series={social} since={socialSince} />
+            <Rise className="u26-linkedin" delay={160}>
+              <a href={THREADS.href} rel="noopener noreferrer" target="_blank">
+                <span className="u26-lead-icon">
+                  <Image
+                    alt=""
+                    className="u26-invert"
+                    height={22}
+                    src="/logos/threads.svg"
+                    width={22}
+                  />
+                </span>
+                <span>
+                  <b className="u26-num">{nf.format(THREADS.views)}</b> views
+                  on Threads, and{" "}
+                  <b className="u26-num">{nf.format(THREADS.likes)}</b> likes
+                </span>
+              </a>
+            </Rise>
             <Rise className="u26-linkedin" delay={200}>
               <a href={LINKEDIN.href} rel="noopener noreferrer" target="_blank">
                 <span className="u26-lead-icon">
