@@ -151,12 +151,13 @@ function hat(parent: Object3D, at: V3, r: number, rot: V3) {
   ball(tip, X.snow, r * 0.3, [0, r * 1.2, 0]);
 }
 
-/* The tree, by the wall between the drawers and the door, and what is
-   under it */
+/* A small tree on top of the two short cabinets by the left wall, and what
+   is under it */
 function buildTree(k: Kit) {
   const { root, add, foil, idles } = k;
 
-  const tree = group(root, [0.42, 0, 1.94], true);
+  const tree = group(root, [0.3, 0.5, 2.19], true);
+  tree.scale.setScalar(0.7);
   cyl(tree, X.red, [0.16, 0.125, 0.18], [0, 0, 0]);
   cyl(tree, C.trim, [0.168, 0.168, 0.035], [0, 0.15, 0]);
   cyl(tree, C.woodDark, [0.04, 0.045, 0.16], [0, 0.18, 0]);
