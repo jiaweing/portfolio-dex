@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { HeroParallax } from "./hero-parallax";
 import { HeroScene } from "./hero-scene";
 import type { Vars } from "./parts";
 
-/* The top of the page: the way home, the key art, the title lockup with its
+/* The top of the page: the key art, the title lockup with its
    year seal, and four stubs for what is in this Wrapped. */
 
 const STUBS = [
@@ -45,13 +44,6 @@ export function Hero() {
       <HeroParallax />
       <div className="u26-poster">
         <HeroScene />
-        <div className="u26-top">
-          <div className="u26-wrap u26-top-row">
-            <Link className="u26-home" href="/">
-              <span aria-hidden="true">←</span> jiaweing.com
-            </Link>
-          </div>
-        </div>
         <div className="u26-wrap u26-hero-inner">
           <div className="u26-lockup">
             <p className="u26-tag u26-tag--foil">Jia Wei Ng</p>
