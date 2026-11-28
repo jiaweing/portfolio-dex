@@ -284,6 +284,54 @@ body:has(.u26) .site-edge-blur {
   background: var(--accent);
 }
 
+/* The way into the room: the immersive mode */
+.u26-btn--room {
+  background: var(--lime);
+}
+
+.dark .u26 .u26-btn--room {
+  --btn-shade: var(--paper);
+}
+
+.u26-btn-gem {
+  width: 0.78em;
+  height: 0.78em;
+  background: var(--foil);
+  background-size:
+    100% 100%,
+    400% 100%;
+  border: 2px solid var(--ink);
+  rotate: 45deg;
+  animation: u26-foil-drift 18s linear -4s infinite;
+}
+
+/* The room opens over the whole page. Its interface and the 3D scene load
+   on demand; only this shell and its waiting screen ship with the page. */
+.u26.u26-room-root {
+  position: fixed;
+  inset: 0;
+  /* Above the site's own floating buttons */
+  z-index: 2147483000;
+  margin: 0;
+  overflow: hidden;
+  font-size: 16px;
+}
+
+.u26-room-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  color: var(--fg);
+  font-size: 1.7rem;
+  background: var(--bg);
+}
+
+.u26-room-veil span {
+  rotate: -2deg;
+}
+
 .dark .u26 .u26-btn--accent {
   --btn-shade: var(--paper);
 }
