@@ -222,8 +222,8 @@ export function Broadcast({
                   />
                 </span>
                 <span>
-                  <b className="u26-num">{nf.format(THREADS.views)}</b> views
-                  on Threads, and{" "}
+                  <b className="u26-num">{nf.format(THREADS.views)}</b> views on
+                  Threads, and{" "}
                   <b className="u26-num">{nf.format(THREADS.likes)}</b> likes
                 </span>
               </a>

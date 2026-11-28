@@ -154,9 +154,22 @@
   outline: none;
 }
 
+/* The way out: a paper pill. It used to borrow the hero's home pill, which
+   the hero no longer has, so it carries its own look. */
 .u26-room-back {
+  display: inline-flex;
+  gap: 0.5em;
+  align-items: center;
+  padding: 0.4em 0.8em;
+  color: var(--ink);
   font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
   white-space: nowrap;
+  background: var(--paper-3);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--ink);
   cursor: pointer;
 }
 
