@@ -778,14 +778,22 @@ body:has(.u26) .site-edge-blur {
   fill: var(--bg);
 }
 
+/* Paper planes glide across in soft waves. Three animations run together:
+   u26-fly carries the plane across at a steady pace, u26-bob lifts and drops
+   it, and u26-pitch tilts the nose a quarter wave ahead of the bob, so the
+   nose rises on the climb, levels at the crest and dips on the way down.
+   The drawing points about 15deg up, so 15deg is level flight. */
 .u26-plane {
+  --wave: 3.6s;
   position: absolute;
   width: 46px;
   height: auto;
   overflow: visible;
-  animation: u26-fly var(--fly, 26s) linear infinite;
-  animation-delay: var(--delay, 0s);
-  offset-rotate: auto;
+  animation:
+    u26-fly var(--fly, 26s) linear var(--delay, 0s) infinite,
+    u26-bob var(--wave) ease-in-out var(--delay, 0s) infinite alternate,
+    u26-pitch var(--wave) ease-in-out calc(var(--delay, 0s) - var(--wave) / 2)
+    infinite alternate;
 }
 
 .u26-plane path {
@@ -797,20 +805,33 @@ body:has(.u26) .site-edge-blur {
 @keyframes u26-fly {
   0% {
     opacity: 0;
-    transform: translate(0, 0) rotate(-8deg);
+    translate: 0 0;
   }
-  6% {
-    opacity: 1;
-  }
-  50% {
-    transform: translate(46vw, -90px) rotate(4deg);
-  }
+  6%,
   94% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translate(92vw, 10px) rotate(-6deg);
+    translate: calc(100vw + 120px) -40px;
+  }
+}
+
+@keyframes u26-bob {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-46px);
+  }
+}
+
+@keyframes u26-pitch {
+  from {
+    rotate: 24deg;
+  }
+  to {
+    rotate: 6deg;
   }
 }
 
@@ -1077,42 +1098,6 @@ body:has(.u26) .site-edge-blur {
   line-height: 1.2;
 }
 
-/* Top bar: the way home and the chapter trail */
-.u26-top {
-  position: absolute;
-  top: 26px;
-  right: 0;
-  left: 0;
-  z-index: 5;
-}
-
-.u26-top-row {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  padding-right: 120px;
-}
-
-.u26-home {
-  display: inline-flex;
-  gap: 0.5em;
-  align-items: center;
-  padding: 0.4em 0.8em;
-  color: var(--ink);
-  font-size: 0.88rem;
-  font-weight: 800;
-  background: var(--paper-3);
-  border: 2.5px solid var(--ink);
-  border-radius: 999px;
-  box-shadow: 3px 3px 0 var(--ink);
-}
-
-@media (min-width: 1024px) {
-  .u26-top-row {
-    padding-left: 64px;
-  }
-}
-
 @media (max-width: 900px) {
   .u26-hero {
     --mw: clamp(430px, 118vw, 700px);
@@ -1156,7 +1141,7 @@ body:has(.u26) .site-edge-blur {
 
   /* Keep the planes down in the art, clear of the lockup */
   .u26-plane {
-    translate: 0 36vh;
+    margin-top: 36vh;
   }
 
   /* The scene is wider than a phone, so the sign is placed from the screen edge,
