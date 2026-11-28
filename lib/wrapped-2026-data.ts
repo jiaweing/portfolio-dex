@@ -188,6 +188,13 @@ export const LINKEDIN = {
   href: "https://linkedin.com/in/jiaweing",
 };
 
+// Threads, last 12 months, from BlackTwist on 28 Nov 2026
+export const THREADS = {
+  views: 1_379_147,
+  likes: 7545,
+  href: "https://www.threads.com/@jiaweihq",
+};
+
 export const SOCIAL_LINKS = {
   youtube: "https://youtube.com/@jiaweihq",
   threads: "https://www.threads.com/@jiaweihq",
