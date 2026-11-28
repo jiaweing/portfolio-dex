@@ -43,6 +43,8 @@ export interface RoomOptions {
   fonts: Fonts;
   dark: boolean;
   still: boolean;
+  /** December: the room is dressed up and it snows outside */
+  festive: boolean;
   found: string[];
   onHover: (id: string | null) => void;
   onPick: (id: string, collect: boolean) => void;
@@ -114,8 +116,10 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   const logos: Logos = { ryu, claude };
 
   const mats = createMats();
-  const screens = createScreens(o.data, o.fonts);
-  const room = buildRoom(mats, screens, logos);
+  const screens = createScreens(o.data, o.fonts, o.festive);
+  // The decorations are only fetched when they are wanted
+  const decorate = o.festive ? (await import("./festive")).decorate : undefined;
+  const room = buildRoom(mats, screens, logos, decorate);
   const scene = new Scene();
   scene.add(room.root);
 
@@ -338,6 +342,7 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   let dirty = true;
   let dead = false;
   let hovered: string | null = null;
+  let snowAt = 0;
   const projected = new Vector3();
   const matrix = new Matrix4();
   const quat = new Quaternion();
@@ -464,6 +469,10 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
       moveActor(actor, ease);
     }
     room.idle(time, still ? 0 : dt);
+    if (time - snowAt > 0.045) {
+      snowAt = time;
+      screens.snow(time, night > 0.5);
+    }
     moveMarkers(ease);
     moveConfetti();
     moveLabel();

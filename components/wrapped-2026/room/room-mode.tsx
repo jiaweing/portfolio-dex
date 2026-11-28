@@ -15,6 +15,7 @@ import type { WrappedData } from "../types";
 import { type RoomItem, roomItems } from "./items";
 import type { RoomHandle } from "./scene";
 import { createSound, type Sound } from "./scene/sound";
+import { isFestive } from "./season";
 
 /* The room's interface: the way out, the counter, the tray of finds, the
    card for whatever was just picked up, and the canvas the scene draws on.
@@ -32,6 +33,7 @@ const TOYS: Record<string, string> = {
   guest: "The other chair",
   plush: "The plush pile",
   neon: "The neon",
+  tree: "The tree",
 };
 const STORE_SOUND = "u26-room-sound";
 
@@ -515,6 +517,7 @@ export function RoomMode({
   const [sound, setSound] = useState(true);
   const [touched, setTouched] = useState(false);
   const [done, setDone] = useState(false);
+  const [festive, setFestive] = useState(false);
 
   const stage = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -589,6 +592,8 @@ export function RoomMode({
       hand: css.getPropertyValue("--font-u26-hand").trim() || "cursive",
     };
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const dressed = isFestive();
+    setFestive(dressed);
     const ready = Promise.all([
       import("./scene"),
       ...Object.values(fonts).map((family) =>
@@ -604,6 +609,7 @@ export function RoomMode({
           fonts,
           dark: document.documentElement.classList.contains("dark"),
           still,
+          festive: dressed,
           found: foundRef.current,
           onHover: setHover,
           onPick: (id, isFind) => {
@@ -701,7 +707,13 @@ export function RoomMode({
   const tagText = tagFor(items, hover);
 
   return (
-    <div className="u26-room" data-status={status} ref={stage} tabIndex={-1}>
+    <div
+      className="u26-room"
+      data-festive={festive}
+      data-status={status}
+      ref={stage}
+      tabIndex={-1}
+    >
       <div aria-hidden="true" className="u26-room-sky" />
       <canvas
         aria-label="A small model of my room. Drag to look around, and press things to pick them up."

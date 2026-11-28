@@ -47,6 +47,8 @@ import type { Screens } from "./screens";
 export const ROOM = { w: 4.4, d: 3.5, h: 2.7 };
 /** Where the camera rests: on the window wall, a little from the left */
 export const HOME_AZ = (-26 * Math.PI) / 180;
+/** The window, on the window wall: its centre and the size of the glass */
+export const WINDOW = { x: 3.14, y: 1.6, w: 1.14, h: 1.24 };
 
 /** n is the window wall. The rest follow clockwise, as the room is walked. */
 export type WallId = "n" | "e" | "s" | "w";
@@ -63,7 +65,7 @@ export interface Wall {
   up: number;
 }
 
-type V3 = [number, number, number];
+export type V3 = [number, number, number];
 
 export interface Actor {
   id: string;
@@ -89,7 +91,7 @@ export interface Actor {
   clickedAt: number;
 }
 
-const C = {
+export const C = {
   wall: oklch(0.945, 0.028, 88),
   trim: oklch(0.985, 0.012, 90),
   floor: oklch(0.82, 0.022, 78),
@@ -126,7 +128,7 @@ const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const part = (p: number, from: number, to: number) =>
   clamp01((p - from) / (to - from));
 
-function group(parent: Object3D, at: V3 = [0, 0, 0], own = false) {
+export function group(parent: Object3D, at: V3 = [0, 0, 0], own = false) {
   const g = new Group();
   g.position.set(...at);
   g.userData.own = own;
@@ -135,7 +137,7 @@ function group(parent: Object3D, at: V3 = [0, 0, 0], own = false) {
 }
 
 /** A mesh with its own material, left out of the weld */
-function plain(
+export function plain(
   parent: Object3D,
   geo: BufferGeometry,
   mat: Material,
@@ -267,8 +269,12 @@ function envelope(parent: Object3D, at: V3, rot: V3, own = false) {
   return g;
 }
 
-interface Kit {
+export interface Kit {
   root: Group;
+  /** True in December, when the room is dressed up */
+  festive: boolean;
+  /** Things a later builder may want to dress up */
+  refs: { bigPlush?: Group; monitor?: Group };
   mats: Mats;
   screens: Screens;
   logos: Logos;
@@ -415,10 +421,14 @@ function buildShell(k: Kit) {
 function buildWindowWall(k: Kit) {
   const { screens, walls } = k;
   const n = walls.n.node;
-  const cx = 3.14;
+  const cx = WINDOW.x;
 
   box(n, C.trim, [1.3, 1.4, 0.05], [cx, 0.9, 0.025]);
-  const glass = picture(n, screens.day.tex, 1.14, 1.24, [cx, 1.6, 0.052]);
+  const glass = picture(n, screens.day.tex, WINDOW.w, WINDOW.h, [
+    cx,
+    WINDOW.y,
+    0.052,
+  ]);
   box(n, C.trim, [0.04, 1.24, 0.03], [cx, 0.98, 0.055], { edges: false });
   box(n, C.trim, [1.14, 0.04, 0.03], [cx, 1.58, 0.055], { edges: false });
   cyl(n, C.black, [0.014, 0.014, 1.62, 6], [cx, 2.44, 0.13], {
@@ -433,11 +443,15 @@ function buildWindowWall(k: Kit) {
       [0.125, 2.26, 0.05],
       [x, 0.18, i % 2 ? 0.1 : 0.14]
     );
+  // In December they are pulled back a little, to watch the snow
+  const [left, right, pitch] = k.festive
+    ? [2.36, 3.57, 0.07]
+    : [2.44, 3.38, 0.12];
   for (let i = 0; i < 7; i++) {
-    slat(2.44 + i * 0.12, i);
+    slat(left + i * pitch, i);
   }
   for (let i = 0; i < 4; i++) {
-    slat(3.38 + i * 0.12, i);
+    slat(right + i * pitch, i);
   }
 
   // The air conditioner
@@ -496,6 +510,7 @@ function buildMainDesk(k: Kit) {
     screens.right,
     -0.14
   );
+  k.refs.monitor = monA.head;
   const monitors = group(root, [1.38, 0.77, 0.3], true);
   add("monitors", monitors, {
     hit: [1.45, 0.6, 0.3],
@@ -1099,6 +1114,7 @@ function buildBed(k: Kit, dream: Mesh) {
     plush(pile, [0.56, 0, 0.04], 0.11, INK.amber, C.trim, look, true),
     plush(pile, [0.8, 0, 0], 0.12, INK.pink, C.cream, look - 0.3),
   ];
+  k.refs.bigPlush = toys[0];
   add("plush", pile, {
     collect: false,
     hit: [2.0, 0.6, 0.5],
@@ -1342,7 +1358,13 @@ function buildSupplyCrate(k: Kit) {
   });
 }
 
-export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
+export function buildRoom(
+  mats: Mats,
+  screens: Screens,
+  logos: Logos,
+  /** Dresses the room up before it is welded: the December decorations */
+  decorate?: (k: Kit) => void
+) {
   const root = new Group();
   const actors: Actor[] = [];
   const idles: ((time: number, dt: number) => void)[] = [];
@@ -1404,7 +1426,19 @@ export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
     });
   };
 
-  const k: Kit = { root, mats, screens, logos, walls, rand, idles, foil, add };
+  const k: Kit = {
+    root,
+    festive: Boolean(decorate),
+    refs: {},
+    mats,
+    screens,
+    logos,
+    walls,
+    rand,
+    idles,
+    foil,
+    add,
+  };
   buildShell(k);
   const glass = buildWindowWall(k);
   buildMainDesk(k);
@@ -1419,6 +1453,7 @@ export function buildRoom(mats: Mats, screens: Screens, logos: Logos) {
   buildDoorWall(k);
   buildBossChair(k);
   buildSupplyCrate(k);
+  decorate?.(k);
 
   weld(root, mats);
 

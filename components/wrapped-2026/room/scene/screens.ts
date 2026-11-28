@@ -92,7 +92,109 @@ function round(
   ctx.roundRect(x, y, w, h, r);
 }
 
-export function createScreens(data: WrappedData, fonts: Fonts) {
+/* Snow for the window in December: where each flake starts, how fast it
+   falls and how big it is. The same every visit. */
+const FLAKES = Array.from({ length: 54 }, (_, i) => {
+  const unit = (n: number) =>
+    Math.abs((Math.sin(i * 127.1 + n * 311.7) * 43_758.5453) % 1);
+  return {
+    x: unit(1) * 300,
+    y: unit(2),
+    fall: 0.045 + unit(3) * 0.06,
+    size: 2.6 + unit(4) * 3.4,
+    sway: unit(5) * 6.3,
+  };
+});
+
+/** The sky outside, top and bottom: at night, on a snowy day, on a clear day */
+function skyColours(night: boolean, snowy: boolean) {
+  if (night) {
+    return ["oklch(0.3 0.09 280)", "oklch(0.46 0.14 300)"];
+  }
+  if (snowy) {
+    return ["oklch(0.74 0.09 238)", "oklch(0.92 0.04 225)"];
+  }
+  return ["oklch(0.86 0.09 215)", "oklch(0.96 0.05 95)"];
+}
+
+/** Turns the round moon into a crescent, and puts the stars out */
+function nightSky(ctx: Ctx) {
+  ctx.fillStyle = "oklch(0.3 0.09 280)";
+  ctx.beginPath();
+  ctx.arc(226, 66, 22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = P.paper3;
+  for (const [x, y] of [
+    [40, 40],
+    [96, 92],
+    [140, 30],
+    [60, 150],
+    [262, 160],
+    [170, 130],
+  ]) {
+    ctx.fillRect(x, y, 5, 5);
+  }
+}
+
+/** The winter view: white hills, three firs and the snow coming down */
+function snowscape(ctx: Ctx, night: boolean, time: number) {
+  const far = night ? "oklch(0.62 0.07 285)" : "oklch(0.9 0.035 235)";
+  const near = night ? "oklch(0.8 0.045 285)" : P.paper3;
+  const fir = night ? "oklch(0.36 0.07 200)" : "oklch(0.5 0.1 165)";
+  ctx.fillStyle = far;
+  ctx.beginPath();
+  ctx.moveTo(0, 240);
+  ctx.lineTo(0, 176);
+  ctx.quadraticCurveTo(70, 132, 150, 170);
+  ctx.quadraticCurveTo(230, 204, 300, 150);
+  ctx.lineTo(300, 240);
+  ctx.fill();
+  for (const [x, y, s] of [
+    [58, 168, 1],
+    [96, 178, 0.7],
+    [246, 176, 0.85],
+  ]) {
+    ctx.fillStyle = fir;
+    for (let i = 0; i < 3; i++) {
+      const w = (22 - i * 5) * s;
+      const top = y - (26 + i * 15) * s;
+      ctx.beginPath();
+      ctx.moveTo(x, top);
+      ctx.lineTo(x + w, top + 24 * s);
+      ctx.lineTo(x - w, top + 24 * s);
+      ctx.fill();
+    }
+    ctx.fillStyle = near;
+    ctx.beginPath();
+    ctx.moveTo(x, y - 58 * s);
+    ctx.lineTo(x + 8 * s, y - 44 * s);
+    ctx.lineTo(x - 8 * s, y - 44 * s);
+    ctx.fill();
+  }
+  ctx.fillStyle = near;
+  ctx.beginPath();
+  ctx.moveTo(0, 240);
+  ctx.lineTo(0, 206);
+  ctx.quadraticCurveTo(90, 176, 170, 204);
+  ctx.quadraticCurveTo(240, 226, 300, 196);
+  ctx.lineTo(300, 240);
+  ctx.fill();
+  ctx.fillStyle = night ? "oklch(0.97 0.02 280)" : "oklch(1 0 0)";
+  for (const f of FLAKES) {
+    const y = ((f.y + time * f.fall) % 1) * 256 - 8;
+    const x = f.x + Math.sin(time * 0.8 + f.sway) * 9;
+    ctx.beginPath();
+    ctx.arc(x, y, f.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+export function createScreens(
+  data: WrappedData,
+  fonts: Fonts,
+  /** December: snow outside the window */
+  snowy = false
+) {
   const display = (px: number) => `${px}px ${fonts.display}, sans-serif`;
   const body = (px: number, weight = 700) =>
     `${weight} ${px}px ${fonts.body}, sans-serif`;
@@ -432,15 +534,12 @@ export function createScreens(data: WrappedData, fonts: Fonts) {
 
   /* What is outside the window, by day and by night */
   const sky = (night: boolean) =>
-    screen(300, 240, (ctx) => {
+    // Here the second number is the time, so the snow can fall
+    screen(300, 240, (ctx, time) => {
       const g = ctx.createLinearGradient(0, 0, 0, 240);
-      if (night) {
-        g.addColorStop(0, "oklch(0.3 0.09 280)");
-        g.addColorStop(1, "oklch(0.46 0.14 300)");
-      } else {
-        g.addColorStop(0, "oklch(0.86 0.09 215)");
-        g.addColorStop(1, "oklch(0.96 0.05 95)");
-      }
+      const [top, bottom] = skyColours(night, snowy);
+      g.addColorStop(0, top);
+      g.addColorStop(1, bottom);
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, 300, 240);
       ctx.fillStyle = night ? P.paper3 : P.amber;
@@ -448,21 +547,10 @@ export function createScreens(data: WrappedData, fonts: Fonts) {
       ctx.arc(214, 74, night ? 26 : 34, 0, Math.PI * 2);
       ctx.fill();
       if (night) {
-        ctx.fillStyle = "oklch(0.3 0.09 280)";
-        ctx.beginPath();
-        ctx.arc(226, 66, 22, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = P.paper3;
-        for (const [x, y] of [
-          [40, 40],
-          [96, 92],
-          [140, 30],
-          [60, 150],
-          [262, 160],
-          [170, 130],
-        ]) {
-          ctx.fillRect(x, y, 5, 5);
-        }
+        nightSky(ctx);
+      }
+      if (snowy) {
+        snowscape(ctx, night, time);
       }
     });
 
@@ -496,7 +584,14 @@ export function createScreens(data: WrappedData, fonts: Fonts) {
     }
   };
 
-  return { ...all, dispose };
+  /** Moves the snow on. Does nothing outside December. */
+  const snow = (time: number, night: boolean) => {
+    if (snowy) {
+      (night ? all.night : all.day).draw(time);
+    }
+  };
+
+  return { ...all, snow, dispose };
 }
 
 export type Screens = ReturnType<typeof createScreens>;
