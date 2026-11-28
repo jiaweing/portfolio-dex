@@ -1,6 +1,20 @@
 /* The room: the immersive mode of 2026 Wrapped. Same print as the page (ink
-   outlines, hard shadows, the seven spot inks), laid over a 3D canvas. This
-   file is only fetched once somebody opens the room. */
+   outlines, hard shadows, the seven spot inks), laid over a 3D canvas. The
+   model has no hard corner anywhere, so nothing laid over it has one either.
+   This file is only fetched once somebody opens the room. */
+
+.u26-room .u26-card {
+  border-radius: 26px;
+}
+
+.u26-room .u26-btn,
+.u26-room .u26-tag {
+  border-radius: 999px;
+}
+
+.u26-room .u26-tag {
+  padding-inline: 0.9em;
+}
 
 .u26-room {
   position: absolute;
@@ -264,14 +278,14 @@
   width: max-content;
   max-width: calc(100% - 32px);
   margin: 0;
-  padding: 0.5em 1em 0.55em;
+  padding: 0.5em 1.2em 0.55em;
   color: var(--ink);
   font-size: 1.22rem;
   text-align: center;
   pointer-events: none;
   background: var(--paper-3);
   border: 2.5px solid var(--ink);
-  border-radius: 14px;
+  border-radius: 24px;
   box-shadow: 4px 4px 0 var(--ink);
   translate: -50% 0;
   rotate: -1.2deg;
@@ -328,21 +342,35 @@
   }
 }
 
-/* The rarest finds carry a band of the year's foil */
+/* The rarest finds carry a band of the year's foil. It is a sheet the size
+   of the card, shown only along the top, so it follows the round corners. */
 .u26-room-card--foil::before {
   position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 10px;
+  inset: 0;
+  pointer-events: none;
   content: "";
-  background: var(--foil);
+  background:
+    linear-gradient(
+      transparent 11px,
+      var(--line) 11px 13.5px,
+      transparent 13.5px
+    ), var(--foil);
   background-size:
     100% 100%,
+    100% 100%,
     400% 100%;
-  border-bottom: 2.5px solid var(--line);
-  border-radius: 11px 11px 0 0;
-  animation: u26-foil-drift 18s linear infinite;
+  border-radius: 23.5px;
+  mask-image: linear-gradient(#000 13.5px, transparent 13.5px);
+  animation: u26-room-foil-band 18s linear infinite;
+}
+
+@keyframes u26-room-foil-band {
+  to {
+    background-position:
+      0 0,
+      0 0,
+      133.333% 0;
+  }
 }
 
 .u26-room-card--foil {
@@ -384,7 +412,7 @@
   color: var(--ink);
   background: var(--accent);
   border: 2.5px solid var(--ink);
-  border-radius: 14px;
+  border-radius: 20px;
   box-shadow: 3px 3px 0 var(--shade-2);
   rotate: -4deg;
 }
@@ -460,14 +488,14 @@
   position: absolute;
   top: -16px;
   right: 54px;
-  padding: 0.3em 0.7em;
+  padding: 0.3em 0.95em;
   color: var(--ink);
   font-family: var(--font-u26-display), "Arial Black", sans-serif;
   font-size: 0.86rem;
   text-transform: uppercase;
   background: var(--lime);
   border: 2.5px solid var(--ink);
-  border-radius: 8px;
+  border-radius: 999px;
   box-shadow: 3px 3px 0 var(--ink);
   rotate: 6deg;
   animation: u26-room-stamp 460ms 160ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
@@ -514,7 +542,7 @@
   list-style: none;
   background: color-mix(in oklch, var(--bg) 82%, transparent);
   border: 2.5px solid var(--line);
-  border-radius: 18px;
+  border-radius: 28px;
 }
 
 .u26-room-slot {
@@ -529,7 +557,7 @@
   cursor: pointer;
   background: var(--grey);
   border: 2.5px dashed var(--grey-fg);
-  border-radius: 11px;
+  border-radius: 18px;
   transition:
     translate 140ms ease,
     box-shadow 140ms ease;
@@ -647,11 +675,13 @@
     grid-template-columns: repeat(7, 40px);
     gap: 6px;
     padding: 7px;
+    border-radius: 24px;
   }
 
   .u26-room-slot {
     width: 40px;
     height: 40px;
+    border-radius: 16px;
   }
 
   .u26-room-hint {
@@ -679,6 +709,7 @@
   .u26-room-pin {
     width: 46px;
     height: 46px;
+    border-radius: 17px;
   }
 
   .u26-room-pin svg {

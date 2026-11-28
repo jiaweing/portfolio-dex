@@ -2,12 +2,12 @@ import {
   CatmullRomCurve3,
   type Color,
   ExtrudeGeometry,
-  IcosahedronGeometry,
   InstancedMesh,
   Matrix4,
   MeshBasicMaterial,
   type Object3D,
   Shape,
+  SphereGeometry,
   TorusGeometry,
   TubeGeometry,
   Vector3,
@@ -42,7 +42,7 @@ function lamps(parent: Object3D, spots: V3[], r: number): Glow {
   const paints = turns.map((turn) => {
     const paint = new MeshBasicMaterial();
     const mesh = new InstancedMesh(
-      new IcosahedronGeometry(r, 1),
+      new SphereGeometry(r, 10, 8),
       paint,
       turn.length
     );
@@ -86,12 +86,9 @@ function strand(
   );
   shape(
     parent,
-    new TubeGeometry(line, steps * 2, 0.007, 4),
+    new TubeGeometry(line, steps * 2, 0.007, 6),
     C.black,
-    [0, 0, 0],
-    {
-      edges: false,
-    }
+    [0, 0, 0]
   );
   const count = loops * perLoop;
   return lamps(
@@ -132,11 +129,10 @@ function present(
   g.rotation.y = rotY;
   const [w, h, d] = size;
   box(g, paper, size, [0, 0, 0]);
-  box(g, ribbon, [w * 0.2, h + 0.006, d + 0.006], [0, 0, 0], { edges: false });
-  box(g, ribbon, [w + 0.006, h + 0.006, d * 0.2], [0, 0, 0], { edges: false });
+  box(g, ribbon, [w * 0.2, h + 0.006, d + 0.006], [0, 0, 0]);
+  box(g, ribbon, [w + 0.006, h + 0.006, d * 0.2], [0, 0, 0]);
   for (const side of [-1, 1]) {
     ball(g, ribbon, w * 0.14, [side * w * 0.13, h + w * 0.07, 0], {
-      detail: 0,
       squash: [1.2, 0.7, 0.8],
     });
   }
@@ -147,11 +143,11 @@ function present(
 function hat(parent: Object3D, at: V3, r: number, rot: V3) {
   const g = group(parent, at);
   g.rotation.set(...rot);
-  cyl(g, X.snow, [r * 1.14, r * 1.14, r * 0.4, 10], [0, 0, 0]);
-  cyl(g, X.red, [r * 0.56, r, r * 0.95, 10], [0, r * 0.38, 0]);
+  cyl(g, X.snow, [r * 1.14, r * 1.14, r * 0.4], [0, 0, 0]);
+  cyl(g, X.red, [r * 0.56, r, r * 0.95], [0, r * 0.38, 0]);
   const tip = group(g, [r * 0.06, r * 1.26, 0]);
   tip.rotation.z = -0.85;
-  cyl(tip, X.red, [r * 0.12, r * 0.56, r * 1.05, 10], [0, 0, 0]);
+  cyl(tip, X.red, [r * 0.12, r * 0.56, r * 1.05], [0, 0, 0]);
   ball(tip, X.snow, r * 0.3, [0, r * 1.2, 0]);
 }
 
@@ -161,24 +157,18 @@ function buildTree(k: Kit) {
   const { root, add, foil, idles } = k;
 
   const tree = group(root, [0.42, 0, 1.94], true);
-  cyl(tree, X.red, [0.16, 0.125, 0.18, 10], [0, 0, 0]);
-  cyl(tree, C.trim, [0.168, 0.168, 0.035, 10], [0, 0.15, 0], { edges: false });
-  cyl(tree, C.woodDark, [0.04, 0.045, 0.16, 6], [0, 0.18, 0], { edges: false });
+  cyl(tree, X.red, [0.16, 0.125, 0.18], [0, 0, 0]);
+  cyl(tree, C.trim, [0.168, 0.168, 0.035], [0, 0.15, 0]);
+  cyl(tree, C.woodDark, [0.04, 0.045, 0.16], [0, 0.18, 0]);
 
   const spots: V3[] = [];
   for (let i = 0; i < 4; i++) {
     const wide = 0.37 - i * 0.078;
     const tall = 0.42 - i * 0.025;
     const y = 0.3 + i * 0.265;
-    cyl(
-      tree,
-      i % 2 ? X.pine2 : X.pine,
-      [wide * 0.2, wide, tall, 9],
-      [0, y, 0],
-      {
-        rot: [0, i * 0.5, 0],
-      }
-    );
+    cyl(tree, i % 2 ? X.pine2 : X.pine, [wide * 0.2, wide, tall], [0, y, 0], {
+      rot: [0, i * 0.5, 0],
+    });
     // Where the side of this tier is, a part of the way up
     const side = (a: number, up: number, out = 0): V3 => {
       const r = wide * (1 - 0.8 * up) + out;
@@ -247,25 +237,21 @@ function buildLights(k: Kit) {
 function buildWreath(k: Kit) {
   const s = k.walls.s.node;
   const wreath = group(s, [0.66, 1.6, ROOM.d - 0.12]);
-  shape(wreath, new TorusGeometry(0.17, 0.052, 6, 12), X.pine, [0, 0, 0]);
+  shape(wreath, new TorusGeometry(0.17, 0.056, 10, 28), X.pine, [0, 0, 0]);
   for (let i = 0; i < 7; i++) {
     const a = (i / 7) * Math.PI * 2 + 0.5;
-    ball(
-      wreath,
-      i % 3 ? X.red : INK.amber,
-      0.024,
-      [Math.cos(a) * 0.17, Math.sin(a) * 0.17, -0.05],
-      { detail: 0 }
-    );
+    ball(wreath, i % 3 ? X.red : INK.amber, 0.024, [
+      Math.cos(a) * 0.17,
+      Math.sin(a) * 0.17,
+      -0.05,
+    ]);
   }
   for (const side of [-1, 1]) {
     ball(wreath, X.red, 0.055, [side * 0.06, -0.17, -0.06], {
-      detail: 0,
       squash: [1.2, 0.75, 0.6],
     });
     box(wreath, X.red, [0.04, 0.13, 0.012], [side * 0.045, -0.33, -0.06], {
       rot: [0, 0, side * 0.3],
-      edges: false,
     });
   }
 }
@@ -284,17 +270,13 @@ function buildHatsAndSnowman(k: Kit) {
   const man = group(root, [2.69, 0.77, 0.58]);
   ball(man, X.snow, 0.062, [0, 0.055, 0]);
   ball(man, X.snow, 0.044, [0, 0.145, 0]);
-  cyl(man, X.carrot, [0, 0.011, 0.045, 5], [0, 0, 0], {
+  cyl(man, X.carrot, [0, 0.011, 0.045], [0, 0, 0], {
     rot: [Math.PI / 2, 0, 0],
-    edges: false,
   }).position.set(0.01, 0.145, 0.06);
   for (const side of [-1, 1]) {
-    ball(man, C.black, 0.007, [side * 0.017, 0.16, 0.039], {
-      detail: 0,
-      edges: false,
-    });
+    ball(man, C.black, 0.007, [side * 0.017, 0.16, 0.039]);
   }
-  box(man, X.red, [0.1, 0.02, 0.1], [0, 0.098, 0], { edges: false });
+  box(man, X.red, [0.1, 0.02, 0.1], [0, 0.098, 0]);
   hat(man, [0, 0.178, 0], 0.036, [0, 0, 0.1]);
 }
 

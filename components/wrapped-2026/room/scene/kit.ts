@@ -1,33 +1,30 @@
 import {
-  BoxGeometry,
   BufferGeometry,
   Color,
-  CylinderGeometry,
   DataTexture,
-  EdgesGeometry,
   Float32BufferAttribute,
-  IcosahedronGeometry,
+  LinearFilter,
   LinearSRGBColorSpace,
-  LineBasicMaterial,
-  LineSegments,
   Matrix3,
   Matrix4,
   Mesh,
   MeshBasicMaterial,
   MeshToonMaterial,
-  NearestFilter,
   type Object3D,
   RedFormat,
   RepeatWrapping,
   RGBAFormat,
+  SphereGeometry,
   SRGBColorSpace,
   Vector3,
 } from "three";
+import { type SoftBox, softBox, softCyl } from "./soft";
 
 /* The building kit for the room. Everything in the scene is made from a few
-   plain shapes with one flat colour each. Shapes that never move on their own
-   are welded into a single mesh per group, so the whole room draws in about
-   a hundred calls and stays light on a laptop GPU. */
+   soft shapes with one flat colour each: no hard corners and no outlines.
+   Shapes that never move on their own are welded into a single mesh per
+   group, so the whole room draws in well under a hundred calls and stays
+   light on a laptop GPU. */
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
@@ -124,16 +121,23 @@ export function foilTexture(size = 256) {
   return tex;
 }
 
-/** Hard steps of light, so the shading reads like a print and not a render */
+/** Four tones of light, like a print, that melt into each other where they
+    meet, so a rolled edge shades softly and never shows a hard band */
 function toonSteps() {
-  const tex = new DataTexture(
-    new Uint8Array([120, 178, 228, 255]),
-    4,
-    1,
-    RedFormat
-  );
-  tex.minFilter = NearestFilter;
-  tex.magFilter = NearestFilter;
+  const tones = [124, 180, 228, 255];
+  const size = 128;
+  const data = new Uint8Array(size);
+  for (let i = 0; i < size; i++) {
+    const x = (i / (size - 1)) * tones.length - 0.5;
+    const at = Math.min(tones.length - 2, Math.max(0, Math.floor(x)));
+    // Flat through the middle of each tone, blended across the joins
+    const t = Math.min(1, Math.max(0, (x - at - 0.5) / 0.42 + 0.5));
+    const blend = t * t * (3 - 2 * t);
+    data[i] = Math.round(tones[at] + (tones[at + 1] - tones[at]) * blend);
+  }
+  const tex = new DataTexture(data, size, 1, RedFormat);
+  tex.minFilter = LinearFilter;
+  tex.magFilter = LinearFilter;
   tex.needsUpdate = true;
   return tex;
 }
@@ -143,7 +147,6 @@ export interface Mats {
   /** The same paint with a warm lift, for whatever the pointer is on */
   hot: MeshToonMaterial;
   glow: MeshBasicMaterial;
-  line: LineBasicMaterial;
   foil: MeshBasicMaterial;
   steps: DataTexture;
 }
@@ -162,11 +165,6 @@ export function createMats(): Mats {
     solid,
     hot,
     glow: new MeshBasicMaterial({ vertexColors: true }),
-    line: new LineBasicMaterial({
-      color: INK.ink,
-      transparent: true,
-      opacity: 0.6,
-    }),
     foil: new MeshBasicMaterial({ map: foilTexture() }),
   };
 }
@@ -174,8 +172,6 @@ export function createMats(): Mats {
 interface PartOpts {
   /** Lit by nothing: screens, neon, LEDs */
   glow?: boolean;
-  /** Skip the ink outline */
-  edges?: boolean;
   rot?: [number, number, number];
 }
 
@@ -195,51 +191,54 @@ function tag(geo: BufferGeometry, color: Tint, opts: PartOpts = {}) {
   return mesh;
 }
 
-/** A box. `at` is the centre of its base. */
+/** A soft box. `at` is the centre of its base. */
 export function box(
   parent: Object3D,
   color: Tint,
   size: [number, number, number],
   at: [number, number, number],
-  opts?: PartOpts
+  opts?: PartOpts & SoftBox
 ) {
-  const mesh = tag(new BoxGeometry(...size), color, opts);
+  const mesh = tag(softBox(size, opts), color, opts);
   place(mesh, at, size[1] / 2);
   parent.add(mesh);
   return mesh;
 }
 
-/** A cylinder or cone standing on `at` */
+/** A cylinder or cone with rolled rims, standing on `at` */
 export function cyl(
   parent: Object3D,
   color: Tint,
-  size: [top: number, bottom: number, height: number, sides?: number],
+  size: [top: number, bottom: number, height: number],
   at: [number, number, number],
-  opts?: PartOpts
+  opts?: PartOpts & { r?: number }
 ) {
-  const mesh = tag(
-    new CylinderGeometry(size[0], size[1], size[2], size[3] ?? 10),
-    color,
-    opts
-  );
+  const mesh = tag(softCyl(size[0], size[1], size[2], opts?.r), color, opts);
   place(mesh, at, size[2] / 2);
   parent.add(mesh);
   return mesh;
 }
 
-/** A faceted ball. `at` is its centre. */
+/** How finely a ball is cut: the bigger it is, the rounder it has to look */
+function ballCut(radius: number): [number, number] {
+  if (radius < 0.02) {
+    return [8, 6];
+  }
+  if (radius < 0.06) {
+    return [14, 10];
+  }
+  return radius < 0.12 ? [20, 14] : [28, 18];
+}
+
+/** A ball. `at` is its centre. */
 export function ball(
   parent: Object3D,
   color: Tint,
   radius: number,
   at: [number, number, number],
-  opts?: PartOpts & { detail?: number; squash?: [number, number, number] }
+  opts?: PartOpts & { squash?: [number, number, number] }
 ) {
-  const mesh = tag(
-    new IcosahedronGeometry(radius, opts?.detail ?? 1),
-    color,
-    opts
-  );
+  const mesh = tag(new SphereGeometry(radius, ...ballCut(radius)), color, opts);
   mesh.position.set(...at);
   if (opts?.squash) {
     mesh.scale.set(...opts.squash);
@@ -266,13 +265,14 @@ class Weld {
   pos: number[] = [];
   nor: number[] = [];
   col: number[] = [];
+  idx: number[] = [];
 
+  /** Each shape keeps its own normals: flat where it is flat, soft where it
+      curves */
   add(geo: BufferGeometry, matrix: Matrix4, color: Color) {
-    const flat = geo.index ? geo.toNonIndexed() : geo.clone();
-    // Per-face normals: every shape keeps its facets
-    flat.computeVertexNormals();
-    const p = flat.attributes.position;
-    const n = flat.attributes.normal;
+    const p = geo.attributes.position;
+    const n = geo.attributes.normal;
+    const base = this.pos.length / 3;
     const nm = new Matrix3().getNormalMatrix(matrix);
     const v = new Vector3();
     for (let i = 0; i < p.count; i++) {
@@ -282,7 +282,10 @@ class Weld {
       this.nor.push(v.x, v.y, v.z);
       this.col.push(color.r, color.g, color.b);
     }
-    flat.dispose();
+    const count = geo.index ? geo.index.count : p.count;
+    for (let i = 0; i < count; i++) {
+      this.idx.push(base + (geo.index ? geo.index.getX(i) : i));
+    }
   }
 
   build() {
@@ -290,53 +293,39 @@ class Weld {
     geo.setAttribute("position", new Float32BufferAttribute(this.pos, 3));
     geo.setAttribute("normal", new Float32BufferAttribute(this.nor, 3));
     geo.setAttribute("color", new Float32BufferAttribute(this.col, 3));
+    geo.setIndex(this.idx);
     return geo;
   }
 }
 
 /**
- * Welds every tagged shape under `root` into one lit mesh, one unlit mesh and
- * one set of ink outlines. A child marked `userData.own` is welded on its
- * own, so it can still move by itself.
+ * Welds every tagged shape under `root` into one lit mesh and one unlit
+ * mesh. A child marked `userData.own` is welded on its own, so it can still
+ * move by itself.
  */
 export function weld(root: Object3D, mats: Mats) {
   root.updateMatrixWorld(true);
   const inv = new Matrix4().copy(root.matrixWorld).invert();
   const solid = new Weld();
   const glow = new Weld();
-  const lines: number[] = [];
   const used: Mesh[] = [];
   const m = new Matrix4();
-  const v = new Vector3();
 
   interface Part {
     color: Color;
     glow?: boolean;
-    edges?: boolean;
   }
-
-  const take = (mesh: Mesh, data: Part) => {
-    m.multiplyMatrices(inv, mesh.matrixWorld);
-    (data.glow ? glow : solid).add(mesh.geometry, m, data.color);
-    if (data.edges ?? !data.glow) {
-      const edges = new EdgesGeometry(mesh.geometry, 28);
-      const p = edges.attributes.position;
-      for (let i = 0; i < p.count; i++) {
-        v.fromBufferAttribute(p, i).applyMatrix4(m);
-        lines.push(v.x, v.y, v.z);
-      }
-      edges.dispose();
-    }
-    used.push(mesh);
-  };
 
   const walk = (node: Object3D) => {
     for (const child of [...node.children]) {
       const data = child.userData.part as Part | undefined;
+      const mesh = child as Mesh;
       if (child.userData.own) {
         weld(child, mats);
-      } else if (data && (child as Mesh).isMesh) {
-        take(child as Mesh, data);
+      } else if (data && mesh.isMesh) {
+        m.multiplyMatrices(inv, mesh.matrixWorld);
+        (data.glow ? glow : solid).add(mesh.geometry, m, data.color);
+        used.push(mesh);
       } else {
         walk(child);
       }
@@ -356,11 +345,6 @@ export function weld(root: Object3D, mats: Mats) {
   }
   if (glow.pos.length > 0) {
     root.add(new Mesh(glow.build(), mats.glow));
-  }
-  if (lines.length > 0) {
-    const geo = new BufferGeometry();
-    geo.setAttribute("position", new Float32BufferAttribute(lines, 3));
-    root.add(new LineSegments(geo, mats.line));
   }
 }
 

@@ -11,7 +11,6 @@ import {
   Object3D,
   OctahedronGeometry,
   OrthographicCamera,
-  PCFSoftShadowMap,
   PlaneGeometry,
   PointLight,
   Quaternion,
@@ -21,6 +20,7 @@ import {
   type Texture,
   Vector2,
   Vector3,
+  VSMShadowMap,
   WebGLRenderer,
 } from "three";
 import type { WrappedData } from "../../types";
@@ -107,7 +107,8 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setClearColor(0x00_00_00, 0);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  // Blurred shadows: every one lands with a soft rim
+  renderer.shadowMap.type = VSMShadowMap;
 
   const [ryu, claude] = await Promise.all([
     loadLogo("/logos/ryu.png"),
@@ -163,8 +164,10 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
   sun.shadow.camera.bottom = -6;
   sun.shadow.camera.near = 1;
   sun.shadow.camera.far = 30;
-  sun.shadow.bias = -0.0006;
+  sun.shadow.bias = -0.0004;
   sun.shadow.normalBias = 0.02;
+  sun.shadow.radius = 5;
+  sun.shadow.blurSamples = 12;
   const strip = new PointLight(0xff_ff_ff, 0, 11, 1.4);
   strip.position.set(ROOM.w * 0.5, 2.45, ROOM.d * 0.45);
   const desk = new PointLight(0xff_ff_ff, 0, 5, 1.5);
@@ -207,7 +210,6 @@ export async function createRoom(o: RoomOptions): Promise<RoomHandle> {
       glass.map = want;
       glass.needsUpdate = true;
     }
-    mats.line.opacity = 0.6 - 0.15 * night;
   };
 
   /* ---------- Confetti for the last find ---------- */

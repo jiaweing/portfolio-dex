@@ -352,24 +352,23 @@ export function createScreens(
     });
   });
 
-  /* The third screen on the main desk: work in progress, drawn as bars */
-  const code = screen(600, 340, (ctx) => {
+  /* The third screen on the main desk, stood on its end: work in progress,
+     drawn as bars */
+  const code = screen(340, 600, (ctx) => {
     ctx.fillStyle = P.ink2;
-    ctx.fillRect(0, 0, 600, 340);
+    ctx.fillRect(0, 0, 340, 600);
     ctx.fillStyle = P.ink3;
-    ctx.fillRect(0, 0, 130, 340);
-    const widths = [220, 300, 180, 340, 260, 120, 310, 200, 280, 150];
-    widths.forEach((w, i) => {
-      ctx.fillStyle = i % 4 === 0 ? INKS[(i / 2) % INKS.length] : P.ink3;
-      if (i % 4 !== 0) {
-        ctx.fillStyle = "oklch(0.5 0.03 62)";
-      }
-      round(ctx, 160 + (i % 3) * 22, 34 + i * 29, w, 13, 6);
+    ctx.fillRect(0, 0, 84, 600);
+    const widths = [120, 190, 100, 210, 160, 70, 200, 130, 180, 90];
+    for (let i = 0; i < 18; i++) {
+      ctx.fillStyle =
+        i % 4 === 0 ? INKS[(i / 2) % INKS.length] : "oklch(0.5 0.03 62)";
+      round(ctx, 104 + (i % 3) * 18, 36 + i * 30, widths[i % 10], 13, 6);
       ctx.fill();
-    });
-    for (let i = 0; i < 7; i++) {
+    }
+    for (let i = 0; i < 14; i++) {
       ctx.fillStyle = "oklch(0.45 0.03 62)";
-      round(ctx, 20, 36 + i * 30, 70 + ((i * 37) % 30), 11, 5);
+      round(ctx, 14, 38 + i * 30, 36 + ((i * 37) % 24), 11, 5);
       ctx.fill();
     }
   });
